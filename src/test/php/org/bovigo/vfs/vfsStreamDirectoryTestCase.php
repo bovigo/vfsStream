@@ -160,13 +160,18 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
                   ->method('appliesTo')
                   ->with($this->equalTo('bar'))
                   ->will($this->returnValue(true));
+        $mockChild->expects($this->once())
+                  ->method('size')
+                  ->will($this->returnValue(5));
         $this->dir->addChild($mockChild);
         $this->assertTrue($this->dir->hasChild('bar'));
         $bar = $this->dir->getChild('bar');
         $this->assertSame($mockChild, $bar);
-        $this->assertEquals($this->dir->getChildren(), array($mockChild));
+        $this->assertEquals(array($mockChild), $this->dir->getChildren());
+        $this->assertEquals(5, $this->dir->size());
         $this->assertTrue($this->dir->removeChild('bar'));
-        $this->assertEquals($this->dir->getChildren(), array());
+        $this->assertEquals(array(), $this->dir->getChildren());
+        $this->assertEquals(0, $this->dir->size());
     }
 
     /**
