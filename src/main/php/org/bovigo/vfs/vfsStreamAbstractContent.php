@@ -2,14 +2,14 @@
 /**
  * Base stream contents container.
  *
- * @author      Frank Kleine <mikey@stubbles.net>
- * @package     stubbles_vfs
+ * @author      Frank Kleine <mikey@bovigo.org>
+ * @package     bovigo_vfs
  */
 require_once dirname(__FILE__) . '/vfsStreamContent.php';
 /**
  * Base stream contents container.
  *
- * @package     stubbles_vfs
+ * @package     bovigo_vfs
  */
 abstract class vfsStreamAbstractContent implements vfsStreamContent
 {

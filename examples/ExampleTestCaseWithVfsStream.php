@@ -2,8 +2,8 @@
 /**
  * Test case for class Example.
  *
- * @author      Frank Kleine <mikey@stubbles.net>
- * @package     stubbles_vfs
+ * @author      Frank Kleine <mikey@bovigo.org>
+ * @package     bovigo_vfs
  * @subpackage  examples
  */
 require_once 'PHPUnit/Framework.php';
@@ -12,7 +12,7 @@ require_once 'Example.php';
 /**
  * Test case for class Example.
  *
- * @package     stubbles_vfs
+ * @package     bovigo_vfs
  * @subpackage  examples
  */
 class ExampleTestCaseWithVfsStream extends PHPUnit_Framework_TestCase

@@ -2,14 +2,14 @@
 /**
  * Example class.
  *
- * @author      Frank Kleine <mikey@stubbles.net>
- * @package     stubbles_vfs
+ * @author      Frank Kleine <mikey@bovigo.org>
+ * @package     bovigo_vfs
  * @subpackage  examples
  */
 /**
  * Example class.
  *
- * @package     stubbles_vfs
+ * @package     bovigo_vfs
  * @subpackage  examples
  */
 class Example

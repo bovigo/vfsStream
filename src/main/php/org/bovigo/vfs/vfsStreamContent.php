@@ -2,13 +2,13 @@
 /**
  * Interface for stream contents.
  *
- * @author      Frank Kleine <mikey@stubbles.net>
- * @package     stubbles_vfs
+ * @author      Frank Kleine <mikey@bovigo.org>
+ * @package     bovigo_vfs
  */
 /**
  * Interface for stream contents.
  *
- * @package     stubbles_vfs
+ * @package     bovigo_vfs
  */
 interface vfsStreamContent
 {

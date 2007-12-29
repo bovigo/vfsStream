@@ -3,8 +3,8 @@
  * script to automate the generation of the
  * package.xml file.
  *
- * @author      Frank Kleine <mikey@stubbles.net>
- * @package     stubbles_vfs
+ * @author      Frank Kleine <mikey@bovigo.org>
+ * @package     bovigo_vfs
  * @subpackage  build
  */
 
@@ -82,7 +82,7 @@ $package->setNotes($notes);
 $package->setPackageType('php');
 $package->setLicense('BSD', 'http://www.opensource.org/licenses/bsd-license.php');
 
-$package->addMaintainer('lead', 'mikey', 'Frank Kleine', 'mikey@stubbles.net', 'yes');
+$package->addMaintainer('lead', 'mikey', 'Frank Kleine', 'mikey@bovigo.org', 'yes');
 
 $package->setPhpDep('5.2.0');
 $package->setPearinstallerDep('1.4.0');

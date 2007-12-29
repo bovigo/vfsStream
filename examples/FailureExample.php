@@ -2,14 +2,14 @@
 /**
  * Example class to demonstrate testing of failure behaviour with vfsStream.
  *
- * @author      Frank Kleine <mikey@stubbles.net>
- * @package     stubbles_vfs
+ * @author      Frank Kleine <mikey@bovigo.org>
+ * @package     bovigo_vfs
  * @subpackage  examples
  */
 /**
  * Example class to demonstrate testing of failure behaviour with vfsStream.
  *
- * @package     stubbles_vfs
+ * @package     bovigo_vfs
  * @subpackage  examples
  */
 class FailureExample

@@ -2,8 +2,8 @@
 /**
  * Stream wrapper to mock file system requests.
  *
- * @author      Frank Kleine <mikey@stubbles.net>
- * @package     stubbles_vfs
+ * @author      Frank Kleine <mikey@bovigo.org>
+ * @package     bovigo_vfs
  */
 require_once dirname(__FILE__) . '/vfsStreamDirectory.php';
 require_once dirname(__FILE__) . '/vfsStreamFile.php';
@@ -11,7 +11,7 @@ require_once dirname(__FILE__) . '/vfsStreamException.php';
 /**
  * Stream wrapper to mock file system requests.
  *
- * @package     stubbles_vfs
+ * @package     bovigo_vfs
  */
 class vfsStreamWrapper
 {
