@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<project name="vfsStream" default="main">
+  <property name="build.base.dir" value="${stubbles.base.dir}/build/vfs/build" override="true"/>
+  <property name="pkg.dir" value="${stubbles.base.dir}/src/main/php/org/stubbles/vfs" />
+  <property name="pkg.name" value="vfsStream-${version}"/>
+  <property name="build.src.dir" value="${build.base.dir}/${pkg.name}"/>
+  
+  <path id="phing.tasks.classpath">
+    <pathelement dir="${stubbles.base.dir}/src/main/php/org/stubbles/phing/tasks"/>
+  </path>
+  
+  <taskdef name="mySimpletest" classname="MySimpleTestTask" classpathref="${stubbles.base.dir}/src/test" />
+
+  <target name="main" if="version" depends="check-style,test,build"/>
+  
+  <target name="build" if="version" depends="versioncheck,copy-files"/>
+
+  <target name="versioncheck" unless="version">
+    <echo message="====================================================="/>
+    <echo message="Version not specified. You must enter a version. In"/>
+    <echo message="the future you can add this to build.properties or"/>
+    <echo message="enter it on the command line: "/>
+    <echo message=" "/>
+    <echo message="-Dversion=2.0.0b1"/>
+    <echo message="====================================================="/>
+    <input propertyname="version" promptChar=":">version</input>
+
+    <property name="pkg.name" value="vfsStream-${version}" override="true"/>
+    <property name="build.src.dir" value="${build.base.dir}/${pkg.name}" override="true"/>
+  </target>
+
+  <target name="copy-files">
+    <echo>-----------------------------</echo>
+    <echo>| Creating directory layout |</echo>
+    <echo>-----------------------------</echo>
+    <delete dir="${build.src.dir}"/>
+    <copy file="${stubbles.base.dir}/build/vfs/LICENSE" tofile="${build.src.dir}/LICENSE" />
+    <copy file="${stubbles.base.dir}/build/vfs/package.xml" tofile="${build.src.dir}/package.xml" />
+    <copy file="${stubbles.base.dir}/build/vfs/package.php" tofile="${build.src.dir}/package.php" />
+    <append destFile="${build.src.dir}/VERSION">vfsStream version ${version}</append>
+    <copy todir="${build.src.dir}/vfsStream">
+      <fileset dir="${stubbles.base.dir}/src/main/php/org/stubbles/vfs">
+        <include name="**/*.php"/>
+        <exclude name="**/examples/*"/>
+      </fileset>
+    </copy>
+    <copy todir="${build.src.dir}/examples">
+      <fileset dir="${stubbles.base.dir}/src/main/php/org/stubbles/vfs/examples">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="test" description="run test suite">
+    <phingcall target="test-preparation" />
+    <mySimpletest testfile="&quot;${stubbles.base.dir}/src/test/php/org/stubbles/vfs/run.php&quot;" exit="true" />
+  </target>
+
+  <target name="test-integration">
+    <!-- intentionally empty, no integration tests required -->
+  </target>
+
+  <target name="check-style" description="check coding standards">
+    <echo>----------------------------------</echo>
+    <echo>| Checking CS of source files    |</echo>
+    <echo>----------------------------------</echo>
+    <exec command="phpcs --standard=stubbles ${stubbles.base.dir}/src/main/php/org/stubbles/vfs" passthru="true"/>
+  </target>
+</project>

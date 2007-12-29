@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.6.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+ <name>vfsStream</name>
+ <channel>pear.php-tools.net</channel>
+ <summary>Mock file system calls.</summary>
+ <description>vfsStream is a stream wrapper for a virtual file system that may be helpful
+in unit tests to mock the real file system.</description>
+ <lead>
+  <name>Frank Kleine</name>
+  <user>mikey</user>
+  <email>mikey@stubbles.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2007-12-29</date>
+ <time>14:27:52</time>
+ <version>
+  <release>0.2.0</release>
+  <api>0.2.0</api>
+ </version>
+ <stability>
+  <release>alpha</release>
+  <api>alpha</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+ <notes>- moved vfsStreamWrapper::PROTOCOL to vfsStream::SCHEME
+- added new vfsStream::url() method to assist in creating correct vfsStream urls
+- added vfsStream::path() method as opposite to vfsStream::url()
+- a call to vfsStreamWrapper::register() will now reset the root to null (implemented because of a hint by David Zülke)
+- added support for is_readable(), is_dir(), is_file()
+- added vfsStream::newFile() to be able to do $file = vfsStream::newFile(&quot;foo.txt&quot;)-&gt;withContent(&quot;bar&quot;);</notes>
+ <contents>
+  <dir baseinstalldir="/" name="/">
+   <dir name="examples">
+    <file name="Example.php" role="doc" />
+    <file name="ExampleTestCaseOldWay.php" role="doc" />
+    <file name="ExampleTestCaseWithVfsStream.php" role="doc" />
+    <file name="FailureExample.php" role="doc" />
+    <file name="FailureExampleTestCase.php" role="doc" />
+   </dir> <!-- /examples -->
+   <dir name="vfsStream">
+    <file name="vfsStream.php" role="php" />
+    <file name="vfsStreamAbstractContent.php" role="php" />
+    <file name="vfsStreamContent.php" role="php" />
+    <file name="vfsStreamDirectory.php" role="php" />
+    <file name="vfsStreamException.php" role="php" />
+    <file name="vfsStreamFile.php" role="php" />
+    <file name="vfsStreamWrapper.php" role="php" />
+   </dir> <!-- /vfsStream -->
+   <file name="LICENSE" role="data" />
+   <file name="VERSION" role="data" />
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>0.1.0</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2007-12-14</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>Initial release.</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.2.0</release>
+    <api>0.2.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2007-12-29</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>- moved vfsStreamWrapper::PROTOCOL to vfsStream::SCHEME
+- added new vfsStream::url() method to assist in creating correct vfsStream urls
+- added vfsStream::path() method as opposite to vfsStream::url()
+- a call to vfsStreamWrapper::register() will now reset the root to null (implemented because of a hint by David Zülke)
+- added support for is_readable(), is_dir(), is_file()
+- added vfsStream::newFile() to be able to do $file = vfsStream::newFile(&quot;foo.txt&quot;)-&gt;withContent(&quot;bar&quot;);</notes>
+  </release>
+ </changelog>
+</package>
