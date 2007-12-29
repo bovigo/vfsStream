@@ -1,20 +1,20 @@
 <?php
 /**
- * Test for org::stubbles::vfs::vfsStreamDirectory.
+ * Test for org::bovigo::vfs::vfsStreamDirectory.
  *
- * @author      Frank Kleine <mikey@stubbles.net>
- * @package     stubbles_vfs
+ * @author      Frank Kleine <mikey@bovigo.org>
+ * @package     bovigo_vfs
  * @subpackage  test
  */
-require_once SRC_PATH . '/main/php/org/stubbles/vfs/vfsStreamDirectory.php';
-Mock::generate('vfsStreamContent');
+require_once 'org/bovigo/vfs/vfsStreamDirectory.php';
+require_once 'PHPUnit/Framework.php';
 /**
- * Test for org::stubbles::vfs::vfsStreamDirectory.
+ * Test for org::bovigo::vfs::vfsStreamDirectory.
  *
- * @package     stubbles_vfs
+ * @package     bovigo_vfs
  * @subpackage  test
  */
-class vfsStreamDirectoryTestCase extends UnitTestCase
+class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
@@ -33,115 +33,177 @@ class vfsStreamDirectoryTestCase extends UnitTestCase
 
     /**
      * assure that a directory seperator inside the name throws an exception
+     *
+     * @test
+     * @expectedException  vfsStreamException
      */
-    public function testInvalidCharacterInName()
+    public function invalidCharacterInName()
     {
-        $this->expectException('vfsStreamException');
         $dir = new vfsStreamDirectory('foo/bar');
     }
 
     /**
      * test default values and methods
+     *
+     * @test
      */
-    public function testDefaultValues()
+    public function defaultValues()
     {
-        $this->assertEqual($this->dir->getType(), vfsStreamContent::TYPE_DIR);
-        $this->assertEqual($this->dir->getName(), 'foo');
+        $this->assertEquals(vfsStreamContent::TYPE_DIR, $this->dir->getType());
+        $this->assertEquals('foo', $this->dir->getName());
         $this->assertTrue($this->dir->appliesTo('foo'));
         $this->assertTrue($this->dir->appliesTo('foo/bar'));
         $this->assertFalse($this->dir->appliesTo('bar'));
-        $this->assertEqual($this->dir->getChildren(), array());
+        $this->assertEquals(array(), $this->dir->getChildren());
     }
 
     /**
      * test renaming the directory
+     *
+     * @test
      */
-    public function testRename()
+    public function rename()
     {
         $this->dir->rename('bar');
-        $this->assertEqual($this->dir->getName(), 'bar');
+        $this->assertEquals('bar', $this->dir->getName());
         $this->assertFalse($this->dir->appliesTo('foo'));
         $this->assertFalse($this->dir->appliesTo('foo/bar'));
         $this->assertTrue($this->dir->appliesTo('bar'));
-        
-        $this->expectException('vfsStreamException');
+    }
+
+    /**
+     * renaming the directory to an invalid name throws a vfsStreamException
+     *
+     * @test
+     * @expectedException  vfsStreamException
+     */
+    public function renameToInvalidNameThrowsvfsStreamException()
+    {
         $this->dir->rename('foo/baz');
     }
 
     /**
      * test that correct directory structure is created
+     *
+     * @test
      */
-    public function testCreate()
+    public function create()
     {
         $foo = vfsStreamDirectory::create('foo/bar/baz');
-        $this->assertEqual($foo->getName(), 'foo');
+        $this->assertEquals('foo', $foo->getName());
         $this->assertTrue($foo->hasChild('bar'));
         $this->assertTrue($foo->hasChild('bar/baz'));
         $this->assertFalse($foo->hasChild('baz'));
         $bar = $foo->getChild('bar');
-        $this->assertEqual($bar->getName(), 'bar');
+        $this->assertEquals('bar', $bar->getName());
         $this->assertTrue($bar->hasChild('baz'));
         $baz1 = $bar->getChild('baz');
-        $this->assertEqual($baz1->getName(), 'baz');
+        $this->assertEquals('baz', $baz1->getName());
         $baz2 = $foo->getChild('bar/baz');
-        $this->assertReference($baz1, $baz2);
+        $this->assertSame($baz1, $baz2);
+    }
+
+    /**
+     * test that correct directory structure is created
+     *
+     * @test
+     */
+    public function createWithSlashAtStart()
+    {
+        $foo = vfsStreamDirectory::create('/foo/bar/baz');
+        $this->assertEquals('foo', $foo->getName());
+        $this->assertTrue($foo->hasChild('bar'));
+        $this->assertTrue($foo->hasChild('bar/baz'));
+        $this->assertFalse($foo->hasChild('baz'));
+        $bar = $foo->getChild('bar');
+        $this->assertEquals('bar', $bar->getName());
+        $this->assertTrue($bar->hasChild('baz'));
+        $baz1 = $bar->getChild('baz');
+        $this->assertEquals('baz', $baz1->getName());
+        $baz2 = $foo->getChild('bar/baz');
+        $this->assertSame($baz1, $baz2);
     }
 
     /**
      * test checking and retrieving a non existing child
+     *
+     * @test
      */
-    public function testNonExistingChild()
+    public function nonExistingChild()
     {
         $this->assertFalse($this->dir->hasChild('bar'));
         $this->assertNull($this->dir->getChild('bar'));
+        $this->assertFalse($this->dir->removeChild('bar'));
+        $mockChild = $this->getMock('vfsStreamContent');
+        $mockChild->expects($this->any())
+                  ->method('appliesTo')
+                  ->will($this->returnValue(false));
+        $mockChild->expects($this->any())
+                  ->method('getName')
+                  ->will($this->returnValue('baz'));
+        $this->dir->addChild($mockChild);
         $this->assertFalse($this->dir->removeChild('bar'));
     }
 
     /**
      * test that adding, handling and removing of a child works as expected
+     *
+     * @test
      */
-    public function testChildHandling()
+    public function childHandling()
     {
-        $mockChild = new MockvfsStreamContent();
-        $mockChild->setReturnValue('getName', 'bar');
+        $mockChild = $this->getMock('vfsStreamContent');
+        $mockChild->expects($this->any())
+                  ->method('getName')
+                  ->will($this->returnValue('bar'));
+        $mockChild->expects($this->any())
+                  ->method('appliesTo')
+                  ->with($this->equalTo('bar'))
+                  ->will($this->returnValue(true));
         $this->dir->addChild($mockChild);
         $this->assertTrue($this->dir->hasChild('bar'));
         $bar = $this->dir->getChild('bar');
-        $this->assertReference($mockChild, $bar);
-        $this->assertEqual($this->dir->getChildren(), array($mockChild));
+        $this->assertSame($mockChild, $bar);
+        $this->assertEquals($this->dir->getChildren(), array($mockChild));
         $this->assertTrue($this->dir->removeChild('bar'));
-        $this->assertEqual($this->dir->getChildren(), array());
+        $this->assertEquals($this->dir->getChildren(), array());
     }
 
     /**
      * test method to be used for iterating
+     *
+     * @test
      */
-    public function testIteration()
+    public function iteration()
     {
-        $mockChild1 = new MockvfsStreamContent();
-        $mockChild1->setReturnValue('getName', 'bar');
+        $mockChild1 = $this->getMock('vfsStreamContent');
+        $mockChild1->expects($this->any())
+                   ->method('getName')
+                   ->will($this->returnValue('bar'));
         $this->dir->addChild($mockChild1);
-        $mockChild2 = new MockvfsStreamContent();
-        $mockChild2->setReturnValue('getName', 'baz');
+        $mockChild2 = $this->getMock('vfsStreamContent');
+        $mockChild2->expects($this->any())
+                   ->method('getName')
+                   ->will($this->returnValue('baz'));
         $this->dir->addChild($mockChild2);
-        $this->assertEqual($this->dir->key(), 'bar');
+        $this->assertEquals('bar', $this->dir->key());
         $this->assertTrue($this->dir->valid());
         $bar = $this->dir->current();
-        $this->assertReference($mockChild1, $bar);
+        $this->assertSame($mockChild1, $bar);
         $this->dir->next();
-        $this->assertEqual($this->dir->key(), 'baz');
+        $this->assertEquals('baz', $this->dir->key());
         $this->assertTrue($this->dir->valid());
         $baz = $this->dir->current();
-        $this->assertReference($mockChild2, $baz);
+        $this->assertSame($mockChild2, $baz);
         $this->dir->next();
         $this->assertFalse($this->dir->valid());
         $this->assertNull($this->dir->key());
         $this->assertNull($this->dir->current());
         $this->dir->rewind();
         $this->assertTrue($this->dir->valid());
-        $this->assertEqual($this->dir->key(), 'bar');
+        $this->assertEquals('bar', $this->dir->key());
         $bar2 = $this->dir->current();
-        $this->assertReference($mockChild1, $bar2);
+        $this->assertSame($mockChild1, $bar2);
     }
 }
 ?>

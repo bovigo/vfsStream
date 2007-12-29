@@ -92,6 +92,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     public function setFilemtime($filemtime)
     {
         $this->filemtime = $filemtime;
+        return $this;
     }
 
     /**

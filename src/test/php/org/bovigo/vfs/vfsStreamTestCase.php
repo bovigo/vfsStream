@@ -1,49 +1,55 @@
 <?php
 /**
- * Test for org::stubbles::vfs::vfsStream.
+ * Test for org::bovigo::vfs::vfsStream.
  *
- * @author      Frank Kleine <mikey@stubbles.net>
- * @package     stubbles_vfs
+ * @author      Frank Kleine <mikey@bovigo.org>
+ * @package     bovigo_vfs
  * @subpackage  test
  */
-require_once SRC_PATH . '/main/php/org/stubbles/vfs/vfsStream.php';
-Mock::generate('vfsStreamContent');
+require_once 'org/bovigo/vfs/vfsStream.php';
+require_once 'PHPUnit/Framework.php';
 /**
- * Test for org::stubbles::vfs::vfsStream.
+ * Test for org::bovigo::vfs::vfsStream.
  *
- * @package     stubbles_vfs
+ * @package     bovigo_vfs
  * @subpackage  test
  */
-class vfsStreamTestCase extends UnitTestCase
+class vfsStreamTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * assure that path2url conversion works correct
+     *
+     * @test
      */
-    public function testURL()
+    public function url()
     {
-        $this->assertEqual('vfs://foo', vfsStream::url('foo'));
-        $this->assertEqual('vfs://foo/bar.baz', vfsStream::url('foo/bar.baz'));
-        $this->assertEqual('vfs://foo/bar.baz', vfsStream::url('foo\bar.baz'));
+        $this->assertEquals('vfs://foo', vfsStream::url('foo'));
+        $this->assertEquals('vfs://foo/bar.baz', vfsStream::url('foo/bar.baz'));
+        $this->assertEquals('vfs://foo/bar.baz', vfsStream::url('foo\bar.baz'));
     }
 
     /**
      * assure that url2path conversion works correct
+     *
+     * @test
      */
-    public function testPath()
+    public function path()
     {
-        $this->assertEqual('foo', vfsStream::path('vfs://foo'));
-        $this->assertEqual('foo/bar.baz', vfsStream::path('vfs://foo/bar.baz'));
-        $this->assertEqual('foo/bar.baz', vfsStream::path('vfs://foo\bar.baz'));
+        $this->assertEquals('foo', vfsStream::path('vfs://foo'));
+        $this->assertEquals('foo/bar.baz', vfsStream::path('vfs://foo/bar.baz'));
+        $this->assertEquals('foo/bar.baz', vfsStream::path('vfs://foo\bar.baz'));
     }
 
     /**
      * test to create a new file
+     *
+     * @test
      */
-    public function testNewFile()
+    public function newFile()
     {
         $file = vfsStream::newFile('filename.txt');
-        $this->assertIsA($file, 'vfsStreamFile');
-        $this->assertEqual('filename.txt', $file->getName());
+        $this->assertType('vfsStreamFile', $file);
+        $this->assertEquals('filename.txt', $file->getName());
     }
 }
 ?>

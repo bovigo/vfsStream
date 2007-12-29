@@ -1,19 +1,20 @@
 <?php
 /**
- * Test for org::stubbles::vfs::vfsStreamFile.
+ * Test for org::bovigo::vfs::vfsStreamFile.
  *
- * @author      Frank Kleine <mikey@stubbles.net>
- * @package     stubbles_vfs
+ * @author      Frank Kleine <mikey@bovigo.org>
+ * @package     bovigo_vfs
  * @subpackage  test
  */
-require_once SRC_PATH . '/main/php/org/stubbles/vfs/vfsStreamFile.php';
+require_once 'org/bovigo/vfs/vfsStreamFile.php';
+require_once 'PHPUnit/Framework.php';
 /**
- * Test for org::stubbles::vfs::vfsStreamFile.
+ * Test for org::bovigo::vfs::vfsStreamFile.
  *
- * @package     stubbles_vfs
+ * @package     bovigo_vfs
  * @subpackage  test
  */
-class vfsStreamFileTest extends UnitTestCase
+class vfsStreamFileTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
@@ -32,11 +33,13 @@ class vfsStreamFileTest extends UnitTestCase
 
     /**
      * test default values and methods
+     *
+     * @test
      */
-    public function testDefaultValues()
+    public function defaultValues()
     {
-        $this->assertEqual($this->file->getType(), vfsStreamContent::TYPE_FILE);
-        $this->assertEqual($this->file->getName(), 'foo');
+        $this->assertEquals(vfsStreamContent::TYPE_FILE, $this->file->getType());
+        $this->assertEquals('foo', $this->file->getName());
         $this->assertTrue($this->file->appliesTo('foo'));
         $this->assertFalse($this->file->appliesTo('foo/bar'));
         $this->assertFalse($this->file->appliesTo('bar'));
@@ -45,23 +48,27 @@ class vfsStreamFileTest extends UnitTestCase
 
     /**
      * test setting and getting the content of a file
+     *
+     * @test
      */
-    public function testContent()
+    public function content()
     {
         $this->assertNull($this->file->getContent());
-        $this->assertReference($this->file, $this->file->setContent('bar'));
-        $this->assertEqual('bar', $this->file->getContent());
-        $this->assertReference($this->file, $this->file->withContent('baz'));
-        $this->assertEqual('baz', $this->file->getContent());
+        $this->assertSame($this->file, $this->file->setContent('bar'));
+        $this->assertEquals('bar', $this->file->getContent());
+        $this->assertSame($this->file, $this->file->withContent('baz'));
+        $this->assertEquals('baz', $this->file->getContent());
     }
 
     /**
      * test renaming the directory
+     *
+     * @test
      */
-    public function testRename()
+    public function rename()
     {
         $this->file->rename('bar');
-        $this->assertEqual($this->file->getName(), 'bar');
+        $this->assertEquals('bar', $this->file->getName());
         $this->assertFalse($this->file->appliesTo('foo'));
         $this->assertFalse($this->file->appliesTo('foo/bar'));
         $this->assertTrue($this->file->appliesTo('bar'));
@@ -69,111 +76,124 @@ class vfsStreamFileTest extends UnitTestCase
 
     /**
      * test reading contents from the file
+     *
+     * @test
      */
-    public function testReadEmptyFile()
+    public function readEmptyFile()
     {
         $this->assertTrue($this->file->eof());
-        $this->assertEqual($this->file->size(), 0);
-        $this->assertEqual($this->file->read(5), '');
-        $this->assertEqual($this->file->getBytesRead(), 5);
+        $this->assertEquals(0, $this->file->size());
+        $this->assertEquals('', $this->file->read(5));
+        $this->assertEquals(5, $this->file->getBytesRead());
         $this->assertTrue($this->file->eof());
     }
 
     /**
      * test reading contents from the file
+     *
+     * @test
      */
-    public function testRead()
+    public function read()
     {
         $this->file->setContent('foobarbaz');
         $this->assertFalse($this->file->eof());
-        $this->assertEqual($this->file->size(), 9);
-        $this->assertEqual($this->file->read(3), 'foo');
-        $this->assertEqual($this->file->getBytesRead(), 3);
+        $this->assertEquals(9, $this->file->size());
+        $this->assertEquals('foo', $this->file->read(3));
+        $this->assertEquals(3, $this->file->getBytesRead());
         $this->assertFalse($this->file->eof());
-        $this->assertEqual($this->file->size(), 9);
-        $this->assertEqual($this->file->read(3), 'bar');
-        $this->assertEqual($this->file->getBytesRead(), 6);
+        $this->assertEquals(9, $this->file->size());
+        $this->assertEquals('bar', $this->file->read(3));
+        $this->assertEquals(6, $this->file->getBytesRead());
         $this->assertFalse($this->file->eof());
-        $this->assertEqual($this->file->size(), 9);
-        $this->assertEqual($this->file->read(3), 'baz');
-        $this->assertEqual($this->file->getBytesRead(), 9);
+        $this->assertEquals(9, $this->file->size());
+        $this->assertEquals('baz', $this->file->read(3));
+        $this->assertEquals(9, $this->file->getBytesRead());
+        $this->assertEquals(9, $this->file->size());
         $this->assertTrue($this->file->eof());
-        $this->assertEqual($this->file->read(3), '');
+        $this->assertEquals('', $this->file->read(3));
     }
 
     /**
      * test seeking to offset
+     *
+     * @test
      */
-    public function testSeekEmptyFile()
+    public function seekEmptyFile()
     {
         $this->assertFalse($this->file->seek(0, 55));
         $this->assertTrue($this->file->seek(0, SEEK_SET));
-        $this->assertEqual($this->file->getBytesRead(), 0);
+        $this->assertEquals(0, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(5, SEEK_SET));
-        $this->assertEqual($this->file->getBytesRead(), 5);
+        $this->assertEquals(5, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(0, SEEK_CUR));
-        $this->assertEqual($this->file->getBytesRead(), 5);
+        $this->assertEquals(5, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(2, SEEK_CUR));
-        $this->assertEqual($this->file->getBytesRead(), 7);
+        $this->assertEquals(7, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(0, SEEK_END));
-        $this->assertEqual($this->file->getBytesRead(), 0);
+        $this->assertEquals(0, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(2, SEEK_END));
-        $this->assertEqual($this->file->getBytesRead(), 2);
+        $this->assertEquals(2, $this->file->getBytesRead());
     }
 
     /**
      * test seeking to offset
+     *
+     * @test
      */
-    public function testSeekRead()
+    public function seekRead()
     {
         $this->file->setContent('foobarbaz');
         $this->assertFalse($this->file->seek(0, 55));
         $this->assertTrue($this->file->seek(0, SEEK_SET));
-        $this->assertEqual($this->file->readUntilEnd(), 'foobarbaz');
-        $this->assertEqual($this->file->getBytesRead(), 0);
+        $this->assertEquals('foobarbaz', $this->file->readUntilEnd());
+        $this->assertEquals(0, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(5, SEEK_SET));
-        $this->assertEqual($this->file->readUntilEnd(), 'rbaz');
-        $this->assertEqual($this->file->getBytesRead(), 5);
+        $this->assertEquals('rbaz', $this->file->readUntilEnd());
+        $this->assertEquals(5, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(0, SEEK_CUR));
-        $this->assertEqual($this->file->readUntilEnd(), 'rbaz');
-        $this->assertEqual($this->file->getBytesRead(), 5);
+        $this->assertEquals('rbaz', $this->file->readUntilEnd());
+        $this->assertEquals(5, $this->file->getBytesRead(), 5);
         $this->assertTrue($this->file->seek(2, SEEK_CUR));
-        $this->assertEqual($this->file->readUntilEnd(), 'az');
-        $this->assertEqual($this->file->getBytesRead(), 7);
+        $this->assertEquals('az', $this->file->readUntilEnd());
+        $this->assertEquals(7, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(0, SEEK_END));
-        $this->assertEqual($this->file->readUntilEnd(), '');
-        $this->assertEqual($this->file->getBytesRead(), 9);
+        $this->assertEquals('', $this->file->readUntilEnd());
+        $this->assertEquals(9, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(2, SEEK_END));
-        $this->assertEqual($this->file->readUntilEnd(), '');
-        $this->assertEqual($this->file->getBytesRead(), 11);
+        $this->assertEquals('', $this->file->readUntilEnd());
+        $this->assertEquals(11, $this->file->getBytesRead());
     }
 
     /**
      * test writing data into the file
+     *
+     * @test
      */
-    public function testWriteEmptyFile()
+    public function writeEmptyFile()
     {
-        $this->assertEqual($this->file->write('foo'), 3);
-        $this->assertEqual($this->file->getContent(), 'foo');
-        $this->assertEqual($this->file->size(), 3);
-        $this->assertEqual($this->file->write('bar'), 3);
-        $this->assertEqual($this->file->getContent(), 'foobar');
-        $this->assertEqual($this->file->size(), 6);
+        $this->assertEquals(3, $this->file->write('foo'));
+        $this->assertEquals('foo', $this->file->getContent());
+        $this->assertEquals(3, $this->file->size());
+        $this->assertEquals(3, $this->file->write('bar'));
+        $this->assertEquals('foobar', $this->file->getContent());
+        $this->assertEquals(6, $this->file->size());
     }
 
     /**
      * test writing data into the file
+     *
+     * @test
      */
-    public function testWrite()
+    public function write()
     {
         $this->file->setContent('foobarbaz');
         $this->assertTrue($this->file->seek(3, SEEK_SET));
-        $this->assertEqual($this->file->write('foo'), 3);
-        $this->assertEqual($this->file->getContent(), 'foofoobaz');
-        $this->assertEqual($this->file->size(), 9);
-        $this->assertEqual($this->file->write('bar'), 3);
-        $this->assertEqual($this->file->getContent(), 'foofoobar');
-        $this->assertEqual($this->file->size(), 9);
+        $this->assertEquals(3, $this->file->write('foo'));
+        $this->assertEquals('foofoobaz', $this->file->getContent());
+        $this->assertEquals(9, $this->file->size());
+        $this->assertEquals(3, $this->file->write('bar'));
+        $this->assertEquals('foofoobar', $this->file->getContent());
+        $this->assertEquals(9, $this->file->size());
     }
 }
 ?>
