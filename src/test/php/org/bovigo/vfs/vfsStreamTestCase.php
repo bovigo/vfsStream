@@ -51,5 +51,59 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $this->assertType('vfsStreamFile', $file);
         $this->assertEquals('filename.txt', $file->getName());
     }
+
+    /**
+     * test to create a new directory structure
+     *
+     * @test
+     */
+    public function newSingleDirectory()
+    {
+        $foo = vfsStream::newDirectory('foo');
+        $this->assertEquals('foo', $foo->getName());
+        $this->assertEquals(0, count($foo->getChildren()));
+    }
+
+    /**
+     * test to create a new directory structure
+     *
+     * @test
+     */
+    public function newDirectoryStructure()
+    {
+        $foo = vfsStream::newDirectory('foo/bar/baz');
+        $this->assertEquals('foo', $foo->getName());
+        $this->assertTrue($foo->hasChild('bar'));
+        $this->assertTrue($foo->hasChild('bar/baz'));
+        $this->assertFalse($foo->hasChild('baz'));
+        $bar = $foo->getChild('bar');
+        $this->assertEquals('bar', $bar->getName());
+        $this->assertTrue($bar->hasChild('baz'));
+        $baz1 = $bar->getChild('baz');
+        $this->assertEquals('baz', $baz1->getName());
+        $baz2 = $foo->getChild('bar/baz');
+        $this->assertSame($baz1, $baz2);
+    }
+
+    /**
+     * test that correct directory structure is created
+     *
+     * @test
+     */
+    public function newDirectoryWithSlashAtStart()
+    {
+        $foo = vfsStream::newDirectory('/foo/bar/baz');
+        $this->assertEquals('foo', $foo->getName());
+        $this->assertTrue($foo->hasChild('bar'));
+        $this->assertTrue($foo->hasChild('bar/baz'));
+        $this->assertFalse($foo->hasChild('baz'));
+        $bar = $foo->getChild('bar');
+        $this->assertEquals('bar', $bar->getName());
+        $this->assertTrue($bar->hasChild('baz'));
+        $baz1 = $bar->getChild('baz');
+        $this->assertEquals('baz', $baz1->getName());
+        $baz2 = $foo->getChild('bar/baz');
+        $this->assertSame($baz1, $baz2);
+    }
 }
 ?>

@@ -23,7 +23,7 @@ class ExampleTestCaseWithVfsStream extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('exampleDir'));
+        vfsStreamWrapper::setRoot(vfsStream::newDirectory('exampleDir'));
     }
 
     /**

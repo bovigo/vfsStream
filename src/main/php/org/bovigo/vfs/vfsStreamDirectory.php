@@ -42,27 +42,6 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     }
 
     /**
-     * factory method to create a directory structure for a given string
-     *
-     * @param   string  $dir
-     * @return  vfsStreamDirectory
-     */
-    public static function create($dir)
-    {
-        if ('/' === $dir{0}) {
-            $dir = substr($dir, 1);
-        }
-        
-        $dirParts = explode('/', $dir);
-        $content = new self($dirParts[0]);
-        if (count($dirParts) > 1) {
-            $content->addChild(self::create(self::getChildName($dir, $dirParts[0])));
-        }
-        
-        return $content;
-    }
-
-    /**
      * returns size of directory
      *
      * The size of a directory is always 0 bytes. To calculate the summarized

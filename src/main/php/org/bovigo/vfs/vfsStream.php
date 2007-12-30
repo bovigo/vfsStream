@@ -59,12 +59,29 @@ class vfsStream
     /**
      * returns a new directory with given name
      *
+     * If the name contains slashes, a new directory structure will be created.
+     * The returned directory will always be the parent directory of this
+     * directory structure.
+     *
      * @param   string              $name
      * @return  vfsStreamDirectory
      */
     public static function newDirectory($name)
     {
-        return new vfsStreamDirectory($name);
+        if ('/' === $name{0}) {
+            $name = substr($name, 1);
+        }
+        
+        $firstSlash = strpos($name, '/');
+        if (false === $firstSlash) {
+            return new vfsStreamDirectory($name);
+        }
+        
+        $ownName   = substr($name, 0, $firstSlash);
+        $subDirs   = substr($name, $firstSlash + 1);
+        $directory = new vfsStreamDirectory($ownName);
+        self::newDirectory($subDirs)->at($directory);
+        return $directory;
     }
 }
 ?>

@@ -83,48 +83,6 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * test that correct directory structure is created
-     *
-     * @test
-     */
-    public function create()
-    {
-        $foo = vfsStreamDirectory::create('foo/bar/baz');
-        $this->assertEquals('foo', $foo->getName());
-        $this->assertTrue($foo->hasChild('bar'));
-        $this->assertTrue($foo->hasChild('bar/baz'));
-        $this->assertFalse($foo->hasChild('baz'));
-        $bar = $foo->getChild('bar');
-        $this->assertEquals('bar', $bar->getName());
-        $this->assertTrue($bar->hasChild('baz'));
-        $baz1 = $bar->getChild('baz');
-        $this->assertEquals('baz', $baz1->getName());
-        $baz2 = $foo->getChild('bar/baz');
-        $this->assertSame($baz1, $baz2);
-    }
-
-    /**
-     * test that correct directory structure is created
-     *
-     * @test
-     */
-    public function createWithSlashAtStart()
-    {
-        $foo = vfsStreamDirectory::create('/foo/bar/baz');
-        $this->assertEquals('foo', $foo->getName());
-        $this->assertTrue($foo->hasChild('bar'));
-        $this->assertTrue($foo->hasChild('bar/baz'));
-        $this->assertFalse($foo->hasChild('baz'));
-        $bar = $foo->getChild('bar');
-        $this->assertEquals('bar', $bar->getName());
-        $this->assertTrue($bar->hasChild('baz'));
-        $baz1 = $bar->getChild('baz');
-        $this->assertEquals('baz', $baz1->getName());
-        $baz2 = $foo->getChild('bar/baz');
-        $this->assertSame($baz1, $baz2);
-    }
-
-    /**
      * test checking and retrieving a non existing child
      *
      * @test

@@ -23,7 +23,7 @@
       <dirroles key="docs">doc</dirroles>
 
       <changelog version="${version}">
-        - added vfsStream::newDirectory()
+        - added vfsStream::newDirectory(), dropped vfsStreamDirectory::ceate()
         - added new interface vfsStreamContainer
         - added vfsStreamContent::at() which allows code like
           $file = vfsStream::newFile('file.txt.')->withContent('foo')->at($otherDir);
