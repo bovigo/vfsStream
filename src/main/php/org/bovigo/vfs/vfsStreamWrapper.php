@@ -61,7 +61,7 @@ class vfsStreamWrapper
             return;
         }
 
-        if (stream_wrapper_register(vfsStream::SCHEME, __CLASS__) === false) {
+        if (@stream_wrapper_register(vfsStream::SCHEME, __CLASS__) === false) {
             throw new vfsStreamException('A handler has already been registered for the ' . vfsStream::SCHEME . ' protocol.');
         }
 
