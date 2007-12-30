@@ -1,13 +1,28 @@
 <?xml version="1.0"?>
 <project name="vfsStream" default="main">
   <property name="build.base.dir" value="build/build" override="true"/>
+  <property name="build.report.dir" value="build/reports" override="true"/>
   <property name="pkg.dir" value="src/main/php/org/bovigo/vfs" />
   <property name="pkg.name" value="vfsStream-${version}"/>
   <property name="build.src.dir" value="${build.base.dir}/${pkg.name}"/>
   
-  <target name="main" if="version" depends="check-style,test,build"/>
-  
-  <target name="build" if="version" depends="versioncheck,copy-files"/>
+  <target name="main" if="version" depends="check-style,test,versioncheck,copy-files"/>
+
+  <target name="check-style" description="check coding standards">
+    <echo>----------------------------------</echo>
+    <echo>| Checking CS of source files    |</echo>
+    <echo>----------------------------------</echo>
+    <exec command="phpcs --standard=stubbles ${pkg.dir}" passthru="true"/>
+  </target>
+
+  <target name="test" description="run test suite">
+    <delete>
+      <fileset dir="${build.report.dir}">
+        <include name="**"/>
+      </fileset>
+    </delete>
+    <exec passthru="true" command="phpunit --log-metrics ${build.report.dir}/metrics.xml --log-pmd ${build.report.dir}/pmd.xml --coverage-html ${build.report.dir}/coverage src_test_AllTests"/>
+  </target>
 
   <target name="versioncheck" unless="version">
     <echo message="====================================================="/>
@@ -28,9 +43,14 @@
     <echo>| Creating directory layout |</echo>
     <echo>-----------------------------</echo>
     <delete dir="${build.src.dir}"/>
-    <copy file="LICENSE" tofile="${build.src.dir}/LICENSE" />
-    <copy file="build/package.xml" tofile="${build.src.dir}/package.xml" />
-    <copy file="build/package.php" tofile="${build.src.dir}/package.php" />
+    <copy file="LICENSE" tofile="${build.src.dir}/LICENSE"/>
+    <copy file="build/package.xml" tofile="${build.src.dir}/package.xml"/>
+    <copy file="build/package.php" tofile="${build.src.dir}/package.php"/>
+    <copy todir="${build.src.dir}/docs">
+      <fileset dir="${build.report.dir}">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
     <append destFile="${build.src.dir}/VERSION">vfsStream version ${version}</append>
     <copy todir="${build.src.dir}/vfsStream">
       <fileset dir="src/main/php/org/bovigo/vfs">
@@ -42,15 +62,5 @@
         <include name="**/*"/>
       </fileset>
     </copy>
-  </target>
-
-  <target name="test" description="run test suite">
-  </target>
-
-  <target name="check-style" description="check coding standards">
-    <echo>----------------------------------</echo>
-    <echo>| Checking CS of source files    |</echo>
-    <echo>----------------------------------</echo>
-    <exec command="phpcs --standard=stubbles src/main/php/org/bovigo/vfs" passthru="true"/>
   </target>
 </project>
