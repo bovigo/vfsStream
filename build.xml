@@ -77,5 +77,11 @@
       </fileset>
     </copy>
   </target>
-  
+
+  <target name="package" description="Build the pear package" depends="versioncheck">
+    <!-- Creation of package.xml is in another file because changelog should not
+         litter the build file. -->
+    <phing phingfile="build/pear.xml" target="package" inheritAll="true"/>
+    <exec command="pear package" dir="${build.src.dir}" passthru="true"/>
+  </target>
 </project>
