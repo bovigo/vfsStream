@@ -5,6 +5,9 @@
  * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
  */
+/**
+ * @ignore
+ */
 require_once dirname(__FILE__) . '/vfsStreamDirectory.php';
 require_once dirname(__FILE__) . '/vfsStreamFile.php';
 require_once dirname(__FILE__) . '/vfsStreamException.php';

@@ -5,8 +5,10 @@
  * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
  */
+/**
+ * @ignore
+ */
 require_once dirname(__FILE__) . '/vfsStreamWrapper.php';
-
 /**
  * Some utility methods for vfsStream.
  *
