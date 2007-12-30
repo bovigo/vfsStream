@@ -89,6 +89,47 @@ class vfsStreamWrapper
     }
 
     /**
+     * returns content for given path
+     *
+     * @param   string            $path
+     * @return  vfsStreamContent
+     */
+    protected function getContent($path)
+    {
+        if (null === self::$root) {
+            return null;
+        }
+        
+        if (self::$root->getName() === $path) {
+            return self::$root;
+        }
+        
+        if (self::$root->hasChild($path) === true) {
+            return self::$root->getChild($path);
+        }
+        
+        return null;
+    }
+
+    /**
+     * splits path into its dirname and the basename
+     *
+     * @param   string  $path
+     * @return  array
+     */
+    protected function splitPath($path)
+    {
+        $lastSlashPos = strrpos($path, '/');
+        if (false === $lastSlashPos) {
+            return array('dirname' => '', 'basename' => $path);
+        }
+        
+        return array('dirname'  => substr($path, 0, $lastSlashPos),
+                     'basename' => substr($path, $lastSlashPos + 1)
+               );
+    }
+
+    /**
      * open the stream
      *
      * @param   string  $path         the path to open
@@ -100,40 +141,23 @@ class vfsStreamWrapper
      */
     public function stream_open($path, $mode, $options, $opened_path)
     {
-        if (null === self::$root) {
-            return false;
-        }
-        
-        $path = vfsStream::path($path);
-        if (self::$root->getName() === $path) {
-            $this->content = self::$root;
-        } elseif (self::$root->hasChild($path) === false) {
+        $path          = vfsStream::path($path);
+        $this->content = $this->getContent($path);
+        if (null === $this->content) {
             // next step depends on $mode value
-            $lastSlashPos = strrpos($path, '/');
-            $subPath      = substr($path, 0, $lastSlashPos);
-            if (self::$root->getName() === $subPath) {
-                $dir = self::$root;
-            } elseif (self::$root->hasChild($subPath) === true) {
-                $dir = self::$root->getChild($subPath);
-            } else {
+            $names = $this->splitPath($path);
+            $dir   = $this->getContent($names['dirname']);
+            if (null === $dir || $dir->getType() !== vfsStreamContent::TYPE_DIR) {
                 return false;
             }
             
-            if ($dir->getType() !== vfsStreamContent::TYPE_DIR) {
-                return false;
-            }
-            
-            $this->content = new vfsStreamFile(substr($path, $lastSlashPos + 1));
+            $this->content = new vfsStreamFile($names['basename']);
             $dir->addChild($this->content);
-        } else {
-            $this->content = self::$root->getChild($path);
-        }
-        
-        if ($this->content->getType() !== vfsStreamContent::TYPE_FILE) {
+            return true;
+        } elseif ($this->content->getType() !== vfsStreamContent::TYPE_FILE) {
             return false;
         }
         
-        // FIXME!!! $mode not evaluated here
         $this->content->seek(0, SEEK_SET);
         return true;
     }
@@ -240,29 +264,23 @@ class vfsStreamWrapper
      */
     public function unlink($path)
     {
-        if (null === self::$root) {
+        $realPath = vfsStream::path($path);
+        $content  = $this->getContent($realPath);
+        if (null === $content) {
             return false;
         }
         
-        $realPath = vfsStream::path($path);
         if (self::$root->getName() === $realPath) {
             // delete root? very brave. :)
             self::$root = null;
             clearstatcache();
             return true;
-        } elseif (self::$root->hasChild($realPath) === false) {
-            return false;
         }
         
-        $subPath = substr($realPath, 0, strrpos($realPath, '/'));
-        if (self::$root->getName() === $subPath) {
-            $content = self::$root;
-        } else {
-            $content = self::$root->getChild($subPath);
-        }
-        
+        $names   = $this->splitPath($realPath);
+        $content = $this->getContent($names['dirname']);
         clearstatcache();
-        return $content->removeChild(substr($realPath, strrpos($realPath, '/') + 1));
+        return $content->removeChild($names['basename']);
     }
 
     /**
@@ -275,10 +293,6 @@ class vfsStreamWrapper
      */
     public function rename($path_from, $path_to)
     {
-        if (null === self::$root) {
-            return false;
-        }
-        
         return false;
     }
 
@@ -289,18 +303,14 @@ class vfsStreamWrapper
      * @param   int     $mode
      * @param   int     $options
      * @return  bool
+     * @todo    set $mode on new directory
      */
     public function mkdir($path, $mode, $options)
     {
-        if (null === self::$root) {
-            return false;
-        }
-        
-        $path         = vfsStream::path($path);
-        $lastSlashPos = strrpos($path, '/');
-        $recursive    = ((STREAM_MKDIR_RECURSIVE & $options) !== 0) ? (true) : (false);
+        $names     = $this->splitPath(vfsStream::path($path));
+        $recursive = ((STREAM_MKDIR_RECURSIVE & $options) !== 0) ? (true) : (false);
         try {
-            $this->createDir(substr($path, 0, $lastSlashPos), substr($path, $lastSlashPos + 1), $recursive);
+            $this->createDir($names['dirname'], $names['basename'], $recursive);
         } catch (vfsStreamException $stse) {
             return false;
         }
@@ -314,39 +324,25 @@ class vfsStreamWrapper
      * @param   string  $subPath    the path where to create directory in
      * @param   string  $directory  the name of the directory to create
      * @param   bool    $recursive  whether recursive creation is allowed or not
-     * @param   int     $depth      depth of recursion
      * @throws  vfsStreamException
      */
-    protected function createDir($subPath, $directory, $recursive, $depth = 0)
+    protected function createDir($subPath, $directory, $recursive)
     {
-        $dir = null;
-        if (self::$root->getName() === $subPath) {
-            $dir = self::$root;
-        } elseif (self::$root->hasChild($subPath) === true) {
-            $dir = self::$root->getChild($subPath);
-        }
-        
+        $dir = $this->getContent($subPath);
         if (null === $dir) {
-            $lastSlashPos = strrpos($subPath, '/');
-            if (false === $lastSlashPos) {
-                throw new vfsStreamException('Creation of new directory ' . $directory . ' failed, could not find ' . $subPath);
+            if (false === $recursive) {
+                throw new vfsStreamException('Creation of new directory ' . $directory . ' failed, can not create recursively.');
             }
             
-            $this->createDir(substr($subPath, 0, $lastSlashPos), substr($subPath, $lastSlashPos + 1), $recursive, $depth + 1);
-            if (self::$root->hasChild($subPath) === false) {
-                throw new vfsStreamException('Creation of new directory ' . $directory . ' failed, could not find ' . $subPath);
-            }
-            
-            $dir = self::$root->getChild($subPath);
-        }
-        
-        if ($dir->getType() !== vfsStreamContent::TYPE_DIR) {
+            $names = $this->splitPath($subPath);
+            $dir   = $this->createDir($names['dirname'], $names['basename'], $recursive);
+        } elseif ($dir->getType() !== vfsStreamContent::TYPE_DIR) {
             throw new vfsStreamException('Creation of new directory ' . $directory . ' failed, ' . $subPath . ' is not a directory.');
-        } elseif (false === $recursive && 0 < $depth) {
-            throw new vfsStreamException('Creation of new directory ' . $directory . ' failed, can not create recursively.');
         }
         
-        $dir->addChild(new vfsStreamDirectory($directory));
+        $newDir = new vfsStreamDirectory($directory);
+        $dir->addChild($newDir);
+        return $newDir;
     }
 
     /**
@@ -359,10 +355,6 @@ class vfsStreamWrapper
      */
     public function rmdir($path, $options)
     {
-        if (null === self::$root) {
-            return false;
-        }
-        
         return false;
     }
 
@@ -375,20 +367,8 @@ class vfsStreamWrapper
      */
     public function dir_opendir($path, $options)
     {
-        if (null === self::$root) {
-            return false;
-        }
-        
-        $path = vfsStream::path($path);
-        if (self::$root->getName() === $path) {
-            $this->dir = self::$root;
-        } elseif (self::$root->hasChild($path) === false) {
-            return false;
-        } else {            
-            $this->dir = self::$root->getChild($path);
-        }
-        
-        if ($this->dir->getType() !== vfsStreamContent::TYPE_DIR) {
+        $this->dir = $this->getContent(vfsStream::path($path));
+        if (null === $this->dir || $this->dir->getType() !== vfsStreamContent::TYPE_DIR) {
             return false;
         }
         
@@ -441,17 +421,9 @@ class vfsStreamWrapper
      */
     public function url_stat($path)
     {
-        if (null === self::$root) {
+        $content = $this->getContent(vfsStream::path($path));
+        if (null === $content) {
             return false;
-        }
-        
-        $path = vfsStream::path($path);
-        if (self::$root->getName() === $path) {
-            $content = self::$root;
-        } elseif (self::$root->hasChild($path) === false) {
-            return false;
-        } else {
-            $content = self::$root->getChild($path);
         }
         
         return array(2       => $content->getType() + octdec(0777),
