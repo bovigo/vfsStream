@@ -231,7 +231,7 @@ class vfsStreamWrapperTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * assert that mkdir() creates the correct directory structure
+     * mkdir() should not overwrite existing root
      *
      * @test
      */
@@ -262,7 +262,7 @@ class vfsStreamWrapperTestCase extends PHPUnit_Framework_TestCase
      */
     public function mkdirRecursively()
     {
-        $this->assertTrue(mkdir($this->fooURL . '/another/more', 0700, true));
+        $this->assertTrue(mkdir($this->fooURL . '/another/more', null, true));
         $this->assertEquals(3, count($this->foo->getChildren()));
         $another = $this->foo->getChild('another');
         $this->assertTrue($another->hasChild('more'));

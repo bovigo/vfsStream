@@ -35,13 +35,15 @@ class vfsStreamWrapperWithoutRootTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * no root > can not create subdirectory
+     * no root > new directory becomes root
      *
      * @test
      */
-    public function canNotCreateNewDirectoryWithmkdir()
+    public function canCreateNewDirectoryWithmkdir()
     {
-        $this->assertFalse(@mkdir(vfsStream::url('foo')));
+        $this->assertTrue(@mkdir(vfsStream::url('foo')));
+        $this->assertEquals(vfsStreamContent::TYPE_DIR, vfsStreamWrapper::getRoot()->getType());
+        $this->assertEquals('foo', vfsStreamWrapper::getRoot()->getName());
     }
 
     /**

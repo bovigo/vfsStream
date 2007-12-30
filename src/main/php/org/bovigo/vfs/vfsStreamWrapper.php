@@ -322,40 +322,36 @@ class vfsStreamWrapper
      */
     public function mkdir($path, $mode, $options)
     {
-        $names     = $this->splitPath(vfsStream::path($path));
-        $recursive = ((STREAM_MKDIR_RECURSIVE & $options) !== 0) ? (true) : (false);
-        try {
-            $this->createDir($names['dirname'], $names['basename'], $recursive);
-        } catch (vfsStreamException $stse) {
+        $path = vfsStream::path($path);
+        if (null === self::$root) {
+            self::$root = vfsStream::newDirectory($path);
+            return true;
+        }
+        
+        $maxDepth = count(explode('/', $path));
+        $names    = $this->splitPath($path);
+        $newDirs  = $names['basename'];
+        $dir      = null;
+        $i        = 0;
+        while ($dir === null && $i < $maxDepth) {
+            $dir     = $this->getContent($names['dirname']);
+            $names   = $this->splitPath($names['dirname']);
+            $newDirs = $names['basename'] . '/' . $newDirs;
+            $i++;
+        }
+        
+        if (null === $dir || $dir->getType() !== vfsStreamContent::TYPE_DIR) {
             return false;
         }
         
-        return true;
-    }
-
-    /**
-     * helper method to create a directory recursively
-     *
-     * @param   string  $subPath    the path where to create directory in
-     * @param   string  $directory  the name of the directory to create
-     * @param   bool    $recursive  whether recursive creation is allowed or not
-     * @throws  vfsStreamException
-     */
-    protected function createDir($subPath, $directory, $recursive)
-    {
-        $dir = $this->getContent($subPath);
-        if (null === $dir) {
-            if (false === $recursive) {
-                throw new vfsStreamException('Creation of new directory ' . $directory . ' failed, can not create recursively.');
-            }
-            
-            $names = $this->splitPath($subPath);
-            $dir   = $this->createDir($names['dirname'], $names['basename'], $recursive);
-        } elseif ($dir->getType() !== vfsStreamContent::TYPE_DIR) {
-            throw new vfsStreamException('Creation of new directory ' . $directory . ' failed, ' . $subPath . ' is not a directory.');
+        $newDirs = str_replace($dir->getName() . '/', '', $newDirs);
+        $recursive = ((STREAM_MKDIR_RECURSIVE & $options) !== 0) ? (true) : (false);
+        if (strpos($newDirs, '/') !== false && false === $recursive) {
+            return false;
         }
-        
-        return vfsStream::newDirectory($directory)->at($dir);
+
+        vfsStream::newDirectory($newDirs)->at($dir);
+        return true;
     }
 
     /**
