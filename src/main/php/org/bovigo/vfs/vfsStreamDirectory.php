@@ -9,13 +9,14 @@
  * @ignore
  */
 require_once dirname(__FILE__) . '/vfsStreamAbstractContent.php';
+require_once dirname(__FILE__) . '/vfsStreamContainer.php';
 require_once dirname(__FILE__) . '/vfsStreamException.php';
 /**
  * Directory container.
  *
  * @package     bovigo_vfs
  */
-class vfsStreamDirectory extends vfsStreamAbstractContent implements Iterator
+class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamContainer
 {
     /**
      * list of directory children

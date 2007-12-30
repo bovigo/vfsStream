@@ -43,7 +43,6 @@ class vfsStreamFileTestCase extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->file->appliesTo('foo'));
         $this->assertFalse($this->file->appliesTo('foo/bar'));
         $this->assertFalse($this->file->appliesTo('bar'));
-        $this->assertFalse($this->file->hasChild('bar'));
     }
 
     /**

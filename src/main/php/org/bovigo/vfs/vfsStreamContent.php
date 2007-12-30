@@ -6,6 +6,10 @@
  * @package     bovigo_vfs
  */
 /**
+ * @ignore
+ */
+require_once dirname(__FILE__) . '/vfsStreamContainer.php';
+/**
  * Interface for stream contents.
  *
  * @package     bovigo_vfs
@@ -46,14 +50,6 @@ interface vfsStreamContent
     public function rename($newName);
 
     /**
-     * checks whether the container contains a child with the given name
-     *
-     * @param   string  $name
-     * @return  bool
-     */
-    public function hasChild($name);
-
-    /**
      * checks whether the container can be applied to given name
      *
      * @param   string  $name
@@ -78,7 +74,8 @@ interface vfsStreamContent
     /**
      * sets the last modification time of the stream content
      *
-     * @param  int  $filemtime
+     * @param   int               $filemtime
+     * @return  vfsStreamContent
      */
     public function setFilemtime($filemtime);
 
@@ -88,5 +85,13 @@ interface vfsStreamContent
      * @return  int
      */
     public function filemtime();
+
+    /**
+     * add contents to given container
+     *
+     * @param   vfsStreamContainer  $container
+     * @return  vfsStreamContent
+     */
+    public function at(vfsStreamContainer $container);
 }
 ?>

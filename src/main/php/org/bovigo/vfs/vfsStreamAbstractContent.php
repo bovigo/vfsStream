@@ -107,5 +107,17 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     {
         return $this->filemtime;
     }
+
+    /**
+     * add contents to given container
+     *
+     * @param   vfsStreamContainer  $container
+     * @return  vfsStreamContent
+     */
+    public function at(vfsStreamContainer $container)
+    {
+        $container->addChild($this);
+        return $this;
+    }
 }
 ?>

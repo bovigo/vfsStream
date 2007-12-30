@@ -41,17 +41,6 @@ class vfsStreamFile extends vfsStreamAbstractContent
     }
 
     /**
-     * checks whether the container contains a child with the given name
-     *
-     * @param   string  $name
-     * @return  bool
-     */
-    public function hasChild($name)
-    {
-        return false;
-    }
-
-    /**
      * checks whether the container can be applied to given name
      *
      * @param   string  $name

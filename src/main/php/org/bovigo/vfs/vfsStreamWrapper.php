@@ -57,11 +57,11 @@ class vfsStreamWrapper
     public static function register()
     {
         self::$root = null;
-        if (true == self::$registered) {
+        if (true === self::$registered) {
             return;
         }
 
-        if (stream_wrapper_register(vfsStream::SCHEME, __CLASS__) == false) {
+        if (stream_wrapper_register(vfsStream::SCHEME, __CLASS__) === false) {
             throw new vfsStreamException('A handler has already been registered for the ' . vfsStream::SCHEME . ' protocol.');
         }
 
@@ -112,6 +112,23 @@ class vfsStreamWrapper
     }
 
     /**
+     * returns content for given path but only when it is of given type
+     *
+     * @param   string            $path
+     * @param   int               $type
+     * @return  vfsStreamContent
+     */
+    protected function getContentOfType($path, $type)
+    {
+        $content = $this->getContent($path);
+        if (null !== $content && $content->getType() === $type) {
+            return $content;
+        }
+        
+        return null;
+    }
+
+    /**
      * splits path into its dirname and the basename
      *
      * @param   string  $path
@@ -142,23 +159,21 @@ class vfsStreamWrapper
     public function stream_open($path, $mode, $options, $opened_path)
     {
         $path          = vfsStream::path($path);
-        $this->content = $this->getContent($path);
-        if (null === $this->content) {
-            // next step depends on $mode value
-            $names = $this->splitPath($path);
-            $dir   = $this->getContent($names['dirname']);
-            if (null === $dir || $dir->getType() !== vfsStreamContent::TYPE_DIR) {
-                return false;
-            }
-            
-            $this->content = new vfsStreamFile($names['basename']);
-            $dir->addChild($this->content);
+        $this->content = $this->getContentOfType($path, vfsStreamContent::TYPE_FILE);
+        if (null !== $this->content) {
+            $this->content->seek(0, SEEK_SET);
             return true;
-        } elseif ($this->content->getType() !== vfsStreamContent::TYPE_FILE) {
+        }
+        
+        $names = $this->splitPath($path);
+        $dir   = $this->getContentOfType($names['dirname'], vfsStreamContent::TYPE_DIR);
+        // parent directory does not exist, or it does exist but then already
+        // a directory with the basename exists
+        if (null === $dir  || $dir->hasChild($names['basename']) === true) {
             return false;
         }
         
-        $this->content->seek(0, SEEK_SET);
+        $this->content = vfsStream::newFile($names['basename'])->at($dir);
         return true;
     }
 
@@ -340,9 +355,7 @@ class vfsStreamWrapper
             throw new vfsStreamException('Creation of new directory ' . $directory . ' failed, ' . $subPath . ' is not a directory.');
         }
         
-        $newDir = new vfsStreamDirectory($directory);
-        $dir->addChild($newDir);
-        return $newDir;
+        return vfsStream::newDirectory($directory)->at($dir);
     }
 
     /**
@@ -367,8 +380,8 @@ class vfsStreamWrapper
      */
     public function dir_opendir($path, $options)
     {
-        $this->dir = $this->getContent(vfsStream::path($path));
-        if (null === $this->dir || $this->dir->getType() !== vfsStreamContent::TYPE_DIR) {
+        $this->dir = $this->getContentOfType(vfsStream::path($path), vfsStreamContent::TYPE_DIR);
+        if (null === $this->dir) {
             return false;
         }
         

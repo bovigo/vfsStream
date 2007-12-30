@@ -55,5 +55,16 @@ class vfsStream
     {
         return new vfsStreamFile($name);
     }
+
+    /**
+     * returns a new directory with given name
+     *
+     * @param   string              $name
+     * @return  vfsStreamDirectory
+     */
+    public static function newDirectory($name)
+    {
+        return new vfsStreamDirectory($name);
+    }
 }
 ?>
