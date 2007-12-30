@@ -364,7 +364,28 @@ class vfsStreamWrapper
      */
     public function rmdir($path, $options)
     {
-        return false;
+        $path  = vfsStream::path($path);
+        $child = $this->getContentOfType($path, vfsStreamContent::TYPE_DIR);
+        if (null === $child) {
+            return false;
+        }
+        
+        // can only remove empty directories
+        if (count($child->getChildren()) > 0) {
+            return false;
+        }
+        
+        if (self::$root->getName() === $path) {
+            // delete root? very brave. :)
+            self::$root = null;
+            clearstatcache();
+            return true;
+        }
+        
+        $names = $this->splitPath($path);
+        $dir   = $this->getContentOfType($names['dirname'], vfsStreamContent::TYPE_DIR);
+        clearstatcache();
+        return $dir->removeChild($child->getName());
     }
 
     /**

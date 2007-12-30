@@ -35,18 +35,6 @@ class vfsStreamWrapperWithoutRootTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * no root > new directory becomes root
-     *
-     * @test
-     */
-    public function canCreateNewDirectoryWithmkdir()
-    {
-        $this->assertTrue(@mkdir(vfsStream::url('foo')));
-        $this->assertEquals(vfsStreamContent::TYPE_DIR, vfsStreamWrapper::getRoot()->getType());
-        $this->assertEquals('foo', vfsStreamWrapper::getRoot()->getName());
-    }
-
-    /**
      * can not unlink without root
      *
      * @test
@@ -54,16 +42,6 @@ class vfsStreamWrapperWithoutRootTestCase extends PHPUnit_Framework_TestCase
     public function canNotUnlink()
     {
         $this->assertFalse(@unlink(vfsStream::url('foo')));
-    }
-
-    /**
-     * can not unlink without root
-     *
-     * @test
-     */
-    public function canNotUnlinkDirectory()
-    {
-        $this->assertFalse(@rmdir(vfsStream::url('foo')));
     }
 
     /**

@@ -23,6 +23,7 @@
       <dirroles key="docs">doc</dirroles>
 
       <changelog version="${version}">
+        - added support for rmdir()
         - added vfsStream::newDirectory(), dropped vfsStreamDirectory::ceate()
         - added new interface vfsStreamContainer
         - added vfsStreamContent::at() which allows code like
