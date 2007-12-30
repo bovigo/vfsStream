@@ -110,12 +110,10 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements Iterator
     public function removeChild($name)
     {
         foreach ($this->children as $key => $child) {
-            if ($child->appliesTo($name) === false) {
-                continue;
+            if ($child->appliesTo($name) === true) {
+                unset($this->children[$key]);
+                return true;
             }
-            
-            unset($this->children[$key]);
-            return true;
         }
         
         return false;
@@ -129,23 +127,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements Iterator
      */
     public function hasChild($name)
     {
-        if ($this->appliesTo($name) === true) {
-            $childName = self::getChildName($name, $this->name);
-        } else {
-            $childName = $name;
-        }
-        
-        foreach ($this->children as $child) {
-            if ($child->appliesTo($childName) === false) {
-                continue;
-            }
-            
-            if ($child->getName() === $childName || $child->hasChild($childName) === true) {
-                return true;
-            }
-        }
-        
-        return false;
+        return ($this->getChild($name) !== null);
     }
 
     /**
@@ -156,27 +138,33 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements Iterator
      */
     public function getChild($name)
     {
-        if ($this->appliesTo($name) === true) {
-            $childName = self::getChildName($name, $this->name);
-        } else {
-            $childName = $name;
-        }
-        
+        $childName = $this->getRealChildName($name);
         foreach ($this->children as $child) {
-            if ($child->appliesTo($childName) === false) {
-                continue;
-            }
-            
             if ($child->getName() === $childName) {
                 return $child;
             }
             
-            if ($child->hasChild($childName) === true) {
+            if ($child->appliesTo($childName) === true && $child->hasChild($childName) === true) {
                 return $child->getChild($childName);
             }
         }
         
         return null;
+    }
+
+    /**
+     * helper method to detect the real child name
+     *
+     * @param   string  $name
+     * @return  string
+     */
+    protected function getRealChildName($name)
+    {
+        if ($this->appliesTo($name) === true) {
+            return self::getChildName($name, $this->name);
+        }
+        
+        return $name;
     }
 
     /**
