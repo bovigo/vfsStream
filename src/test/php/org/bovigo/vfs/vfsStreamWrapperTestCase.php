@@ -78,7 +78,7 @@ class vfsStreamWrapperTestCase extends PHPUnit_Framework_TestCase
         $this->foo->setFilemtime(100);
         $this->bar     = new vfsStreamDirectory('bar');
         $this->bar->setFilemtime(200);
-        $this->baz1    = vfsStream::newFile('baz1')->withContent('baz 1')->setFilemtime(300);
+        $this->baz1    = vfsStream::newFile('baz1')->lastModified(300)->withContent('baz 1');
         $this->baz2    = vfsStream::newFile('baz2')->withContent('baz2')->setFilemtime(400);
         $this->bar->addChild($this->baz1);
         $this->foo->addChild($this->bar);

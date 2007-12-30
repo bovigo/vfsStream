@@ -29,11 +29,11 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      */
     protected $type;
     /**
-     * time of last modification
+     * timestamp of last modification
      *
      * @var  int
      */
-    protected $filemtime;
+    protected $lastModified;
 
     /**
      * constructor
@@ -42,8 +42,8 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      */
     public function __construct($name)
     {
-        $this->name      = $name;
-        $this->filemtime = time();
+        $this->name         = $name;
+        $this->lastModified = time();
     }
 
     /**
@@ -88,13 +88,26 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     }
 
     /**
-     * sets the last modification time of the stream content
+     * alias for lastModified()
      *
-     * @param  int  $filemtime
+     * @param   int               $filemtime
+     * @return  vfsStreamContent
+     * @see     lastModified()
      */
     public function setFilemtime($filemtime)
     {
-        $this->filemtime = $filemtime;
+        return $this->lastModified($filemtime);
+    }
+
+    /**
+     * sets the last modification time of the stream content
+     *
+     * @param   int               $filemtime
+     * @return  vfsStreamContent
+     */
+    public function lastModified($filemtime)
+    {
+        $this->lastModified = $filemtime;
         return $this;
     }
 
@@ -105,11 +118,11 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      */
     public function filemtime()
     {
-        return $this->filemtime;
+        return $this->lastModified;
     }
 
     /**
-     * add contents to given container
+     * adds content to given container
      *
      * @param   vfsStreamContainer  $container
      * @return  vfsStreamContent

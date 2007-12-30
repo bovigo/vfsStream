@@ -23,9 +23,15 @@
       <dirroles key="docs">doc</dirroles>
 
       <changelog version="${version}">
+        - added vfsStream::newDirectory()
+        - added new interface vfsStreamContainer
+        - added vfsStreamContent::at() which allows code like
+          $file = vfsStream::newFile('file.txt.')->withContent('foo')->at($otherDir);
+        - added vfsStreamContent::lastModified(), made
+          vfsStreamContent::setFilemtime() an alias for this
         - moved from Stubbles development environment
           to bovigo
-        - fixed some minor issues
+        - refactorings to reduce crap index of various methods
       </changelog>
 
       <changelog version="0.2.0" date="2007-12-29">
