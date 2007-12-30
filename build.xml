@@ -5,8 +5,10 @@
   <property name="pkg.dir" value="src/main/php/org/bovigo/vfs" />
   <property name="pkg.name" value="vfsStream-${version}"/>
   <property name="build.src.dir" value="${build.base.dir}/${pkg.name}"/>
-  
+
   <target name="main" if="version" depends="check-style,test,create-api-doc,versioncheck,copy-files"/>
+
+  <target name="release" depends="main,package"/>
 
   <target name="check-style" description="check coding standards">
     <echo>----------------------------------</echo>
@@ -47,7 +49,6 @@
     <echo message="-Dversion=2.0.0b1"/>
     <echo message="====================================================="/>
     <input propertyname="version" promptChar=":">version</input>
-
     <property name="pkg.name" value="vfsStream-${version}" override="true"/>
     <property name="build.src.dir" value="${build.base.dir}/${pkg.name}" override="true"/>
   </target>
@@ -58,8 +59,6 @@
     <echo>-----------------------------</echo>
     <delete dir="${build.src.dir}"/>
     <copy file="LICENSE" tofile="${build.src.dir}/LICENSE"/>
-    <copy file="build/package.xml" tofile="${build.src.dir}/package.xml"/>
-    <copy file="build/package.php" tofile="${build.src.dir}/package.php"/>
     <copy todir="${build.src.dir}/docs">
       <fileset dir="${build.report.dir}">
         <include name="**/*"/>
