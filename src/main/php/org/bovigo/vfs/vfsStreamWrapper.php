@@ -360,7 +360,6 @@ class vfsStreamWrapper
      * @param   string  $path
      * @param   int     $options
      * @return  bool
-     * @todo    implement :)
      */
     public function rmdir($path, $options)
     {
