@@ -154,6 +154,9 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
     {
         $mockChild = $this->getMock('vfsStreamContent');
         $mockChild->expects($this->any())
+                  ->method('getType')
+                  ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
+        $mockChild->expects($this->any())
                   ->method('getName')
                   ->will($this->returnValue('bar'));
         $mockChild->expects($this->any())
@@ -168,10 +171,43 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
         $bar = $this->dir->getChild('bar');
         $this->assertSame($mockChild, $bar);
         $this->assertEquals(array($mockChild), $this->dir->getChildren());
-        $this->assertEquals(5, $this->dir->size());
+        $this->assertEquals(0, $this->dir->size());
+        $this->assertEquals(5, $this->dir->sizeSummarized());
         $this->assertTrue($this->dir->removeChild('bar'));
         $this->assertEquals(array(), $this->dir->getChildren());
         $this->assertEquals(0, $this->dir->size());
+        $this->assertEquals(0, $this->dir->sizeSummarized());
+    }
+
+    /**
+     * test that adding, handling and removing of a child works as expected
+     *
+     * @test
+     */
+    public function childHandlingWithSubdirectory()
+    {
+        $mockChild = $this->getMock('vfsStreamContent');
+        $mockChild->expects($this->any())
+                  ->method('getType')
+                  ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
+        $mockChild->expects($this->any())
+                  ->method('getName')
+                  ->will($this->returnValue('bar'));
+        $mockChild->expects($this->once())
+                  ->method('size')
+                  ->will($this->returnValue(5));
+        $subdir = new vfsStreamDirectory('subdir');
+        $subdir->addChild($mockChild);
+        $this->dir->addChild($subdir);
+        $this->assertTrue($this->dir->hasChild('subdir'));
+        $this->assertSame($subdir, $this->dir->getChild('subdir'));
+        $this->assertEquals(array($subdir), $this->dir->getChildren());
+        $this->assertEquals(0, $this->dir->size());
+        $this->assertEquals(5, $this->dir->sizeSummarized());
+        $this->assertTrue($this->dir->removeChild('subdir'));
+        $this->assertEquals(array(), $this->dir->getChildren());
+        $this->assertEquals(0, $this->dir->size());
+        $this->assertEquals(0, $this->dir->sizeSummarized());
     }
 
     /**

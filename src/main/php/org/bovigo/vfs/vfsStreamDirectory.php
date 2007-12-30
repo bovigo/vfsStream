@@ -62,15 +62,32 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements Iterator
     }
 
     /**
-     * returns size of content
+     * returns size of directory
+     *
+     * The size of a directory is always 0 bytes. To calculate the summarized
+     * size of all children in the directory use sizeSummarized().
      *
      * @return  int
      */
     public function size()
     {
+        return 0;
+    }
+
+    /**
+     * returns summarized size of directory and its children
+     *
+     * @return  int
+     */
+    public function sizeSummarized()
+    {
         $size = 0;
         foreach ($this->children as $child) {
-            $size += $child->size();
+            if ($child->getType() === vfsStreamContent::TYPE_DIR) {
+                $size += $child->sizeSummarized();
+            } else {
+                $size += $child->size();
+            }
         }
         
         return $size;

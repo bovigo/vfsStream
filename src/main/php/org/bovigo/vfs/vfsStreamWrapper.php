@@ -457,12 +457,12 @@ class vfsStreamWrapper
         return array(2       => $content->getType() + octdec(0777),
                      4       => 0,
                      5       => 0,
-                     7       => (($content->getType() !== vfsStreamContent::TYPE_DIR) ? ($content->size()) : (0)),
+                     7       => $content->size(),
                      9       => $content->filemtime(),
                      'mode'  => $content->getType() + octdec(0777),
                      'uid'   => 0,
                      'gid'   => 0,
-                     'size'  => (($content->getType() !== vfsStreamContent::TYPE_DIR) ? ($content->size()) : (0)),
+                     'size'  => $content->size(),
                      'mtime' => $content->filemtime()
                );
     }
