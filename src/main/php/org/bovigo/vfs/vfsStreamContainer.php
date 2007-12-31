@@ -4,7 +4,6 @@
  *
  * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
- * @since       0.2.1
  */
 /**
  * Interface for stream contents that are able to store other stream contents.
