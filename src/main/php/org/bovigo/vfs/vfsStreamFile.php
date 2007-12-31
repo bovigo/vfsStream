@@ -66,6 +66,9 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * sets the contents of the file
      *
+     * Setting content with this method does not change the time when the file
+     * was last modified.
+     *
      * @param   string  $content
      * @return  vfsStreamFile
      * @see     setContent()
@@ -111,6 +114,8 @@ class vfsStreamFile extends vfsStreamAbstractContent
 
     /**
      * writes an amount of data
+     *
+     * Using this method changes the time when the file was last modified.
      *
      * @param   string  $data
      * @return  amount of written bytes
