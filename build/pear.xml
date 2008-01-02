@@ -13,20 +13,20 @@
       </description>
       <lead user="mikey" name="Frank Kleine" email="mikey@bovigo.org"/>
       <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-      <version release="${version}" api="0.3.0"/>
-      <stability release="alpha" api="alpha"/>
       <dependencies>
         <php minimum_version="5.2.0"/>
         <pear minimum_version="1.4.0"/>
       </dependencies>
       <dirroles key="examples">doc</dirroles>
       <dirroles key="docs">doc</dirroles>
+      <version release="${version}" api="0.3.0"/>
+      <stability release="alpha" api="alpha"/>
 
       <changelog version="${version}">
         - nothing yet
       </changelog>
 
-      <changelog version="0.3.0" date="2008-01-02">
+      <changelog version="0.3.0" api_version="0.3.0" date="2008-01-02">
         - added support for rmdir()
         - added vfsStream::newDirectory(), dropped vfsStreamDirectory::ceate()
         - added new interface vfsStreamContainer
@@ -39,7 +39,7 @@
         - refactorings to reduce crap index of various methods
       </changelog>
 
-      <changelog version="0.2.0" date="2007-12-29">
+      <changelog version="0.2.0" api_version="0.2.0" date="2007-12-29">
         - moved vfsStreamWrapper::PROTOCOL to
           vfsStream::SCHEME
         - added new vfsStream::url() method to assist
@@ -55,7 +55,7 @@
           $file = vfsStream::newFile("foo.txt")->withContent("bar");
       </changelog>
 
-      <changelog version="0.1.0" date="2007-12-14">
+      <changelog version="0.1.0" api_version="0.1.0" date="2007-12-14">
         Initial release.
       </changelog>
 
