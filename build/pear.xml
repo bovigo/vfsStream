@@ -13,16 +13,20 @@
       </description>
       <lead user="mikey" name="Frank Kleine" email="mikey@bovigo.org"/>
       <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-      <version release="${version}" api="0.2.0"/>
+      <version release="${version}" api="0.3.0"/>
       <stability release="alpha" api="alpha"/>
       <dependencies>
         <php minimum_version="5.2.0"/>
-        <pear minimum_version="1.6.0"/>
+        <pear minimum_version="1.4.0"/>
       </dependencies>
       <dirroles key="examples">doc</dirroles>
       <dirroles key="docs">doc</dirroles>
 
       <changelog version="${version}">
+        - nothing yet
+      </changelog>
+
+      <changelog version="0.3.0" date="2008-01-02">
         - added support for rmdir()
         - added vfsStream::newDirectory(), dropped vfsStreamDirectory::ceate()
         - added new interface vfsStreamContainer
