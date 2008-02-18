@@ -259,13 +259,13 @@ class vfsStreamWrapper
     public function stream_stat()
     {
         return array(2       => $this->content->getType() + octdec(0777),
-                     4       => 0,
-                     5       => 0,
+                     4       => (int) getmyuid(),
+                     5       => (int) getmygid(),
                      7       => $this->content->size(),
                      9       => $this->content->filemtime(),
                      'mode'  => $this->content->getType() + octdec(0777),
-                     'uid'   => 0,
-                     'gid'   => 0,
+                     'uid'   => (int) getmyuid(),
+                     'gid'   => (int) getmygid(),
                      'size'  => $this->content->size(),
                      'mtime' => $this->content->filemtime()
                );
@@ -456,13 +456,13 @@ class vfsStreamWrapper
         }
         
         return array(2       => $content->getType() + octdec(0777),
-                     4       => 0,
-                     5       => 0,
+                     4       => (int) getmyuid(),
+                     5       => (int) getmygid(),
                      7       => $content->size(),
                      9       => $content->filemtime(),
                      'mode'  => $content->getType() + octdec(0777),
-                     'uid'   => 0,
-                     'gid'   => 0,
+                     'uid'   => (int) getmyuid(),
+                     'gid'   => (int) getmygid(),
                      'size'  => $content->size(),
                      'mtime' => $content->filemtime()
                );
