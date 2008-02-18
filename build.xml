@@ -6,7 +6,7 @@
   <property name="pkg.name" value="vfsStream-${version}"/>
   <property name="build.src.dir" value="${build.base.dir}/${pkg.name}"/>
 
-  <target name="main" if="version" depends="check-style,test,create-api-doc,versioncheck,copy-files"/>
+  <target name="main" if="version" depends="check-style,test-report,create-api-doc,versioncheck,copy-files"/>
 
   <target name="release" depends="main,package"/>
 
