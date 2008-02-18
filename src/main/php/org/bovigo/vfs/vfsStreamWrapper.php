@@ -258,14 +258,24 @@ class vfsStreamWrapper
      */
     public function stream_stat()
     {
+        $uid = 0;
+        if (function_exists('posix_getuid') === true) {
+            $uid = posix_getuid();
+        }
+        
+        $gid = 0;
+        if (function_exists('posix_getgid') === true) {
+            $gid = posix_getgid();
+        }
+        
         return array(2       => $this->content->getType() + octdec(0777),
-                     4       => (int) getmyuid(),
-                     5       => (int) getmygid(),
+                     4       => $uid,
+                     5       => $gid,
                      7       => $this->content->size(),
                      9       => $this->content->filemtime(),
                      'mode'  => $this->content->getType() + octdec(0777),
-                     'uid'   => (int) getmyuid(),
-                     'gid'   => (int) getmygid(),
+                     'uid'   => $uid,
+                     'gid'   => $gid,
                      'size'  => $this->content->size(),
                      'mtime' => $this->content->filemtime()
                );
@@ -455,14 +465,24 @@ class vfsStreamWrapper
             return false;
         }
         
+        $uid = 0;
+        if (function_exists('posix_getuid') === true) {
+            $uid = posix_getuid();
+        }
+        
+        $gid = 0;
+        if (function_exists('posix_getgid') === true) {
+            $gid = posix_getgid();
+        }
+        
         return array(2       => $content->getType() + octdec(0777),
-                     4       => (int) getmyuid(),
-                     5       => (int) getmygid(),
+                     4       => $uid,
+                     5       => $gid,
                      7       => $content->size(),
                      9       => $content->filemtime(),
                      'mode'  => $content->getType() + octdec(0777),
-                     'uid'   => (int) getmyuid(),
-                     'gid'   => (int) getmygid(),
+                     'uid'   => $uid,
+                     'gid'   => $gid,
                      'size'  => $content->size(),
                      'mtime' => $content->filemtime()
                );
