@@ -29,7 +29,7 @@ class vfsStream
      */
     public static function url($path)
     {
-        return self::SCHEME . '://' . str_replace(DIRECTORY_SEPARATOR, '/', $path);
+        return self::SCHEME . '://' . str_replace('\\', '/', $path);
     }
 
     /**
@@ -41,7 +41,7 @@ class vfsStream
     public static function path($url)
     {
         $path = substr($url, strlen(self::SCHEME . '://'));
-        $path = str_replace(DIRECTORY_SEPARATOR, '/', $path);
+        $path = str_replace('\\', '/', $path);
         return $path;
     }
 
