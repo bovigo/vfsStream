@@ -11,7 +11,7 @@ if (defined('PHPUnit_MAIN_METHOD') === false) {
 }
 
 define('SOURCE_DIR', realpath(dirname(__FILE__) . '/../main/php'));
-ini_set('include_path', SOURCE_DIR . ';' . ini_get('include_path'));
+ini_set('include_path', SOURCE_DIR . PATH_SEPARATOR . ini_get('include_path'));
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Util/Filter.php';
