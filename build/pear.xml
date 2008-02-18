@@ -23,7 +23,8 @@
       <stability release="alpha" api="alpha"/>
 
       <changelog version="${version}">
-        - nothing yet
+        - fixed path/directory separator issues under linux systems
+        - fixed uid/gid issues under linux systems
       </changelog>
 
       <changelog version="0.3.0" api_version="0.3.0" date="2008-01-02">
