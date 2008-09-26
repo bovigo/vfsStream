@@ -23,7 +23,7 @@
       <stability release="alpha" api="alpha"/>
 
       <changelog version="${version}">
-        - nothing yet
+        - support trailing slashes on directories in vfsStream urls, patch provided by Gabriel Birke
       </changelog>
 
       <changelog version="0.3.1" api_version="0.3.0" date="2008-02-18">
