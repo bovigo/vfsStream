@@ -41,6 +41,64 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * windows directory separators are converted into default separator
+     *
+     * @author  Gabriel Birke <gabriel.birke@delti.com>
+     * @test
+     */
+    public function pathConvertsWindowsDirectorySeparators()
+    {
+        $this->assertEquals('foo/bar', vfsStream::path('vfs://foo\\bar'));
+    }
+
+    /**
+     * trailing whitespace should be removed
+     *
+     * @author  Gabriel Birke <gabriel.birke@delti.com>
+     * @test
+     */
+    public function pathRemovesTrailingWhitespace()
+    {
+        $this->assertEquals('foo/bar', vfsStream::path('vfs://foo/bar '));
+    }
+
+    /**
+     * trailing slashes are removed
+     *
+     * @author  Gabriel Birke <gabriel.birke@delti.com>
+     * @test
+     */
+    public function pathRemovesTrailingSlash()
+    {
+        $this->assertEquals('foo/bar', vfsStream::path('vfs://foo/bar/'));
+    }
+
+    /**
+     * trailing slash and whitespace should be removed
+     *
+     * @author  Gabriel Birke <gabriel.birke@delti.com>
+     * @test
+     */
+    public function pathRemovesTrailingSlashAndWhitespace()
+    {
+        $this->assertEquals('foo/bar', vfsStream::path('vfs://foo/bar/ '));
+    }
+
+    /**
+     * double slashes should be replaced by single slash
+     *
+     * @author  Gabriel Birke <gabriel.birke@delti.com>
+     * @test
+     */
+    public function pathRemovesDoubleSlashes()
+    {
+        // Regular path
+        $this->assertEquals('my/path', vfsStream::path('vfs://my/path'));
+        // Path with double slashes
+        $this->assertEquals('my/path', vfsStream::path('vfs://my//path'));
+    }
+
+    /**
      * test to create a new file
      *
      * @test

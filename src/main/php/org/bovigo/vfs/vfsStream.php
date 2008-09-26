@@ -40,8 +40,12 @@ class vfsStream
      */
     public static function path($url)
     {
-        $path = substr($url, strlen(self::SCHEME . '://'));
+        // remove line feeds and trailing whitespaces
+        $path = trim($url," \t\r\n\0\x0B/");
+        $path = substr($path, strlen(self::SCHEME . '://'));
         $path = str_replace('\\', '/', $path);
+        // replace double slashes with single slashes
+        $path = str_replace('//', '/', $path);
         return $path;
     }
 
