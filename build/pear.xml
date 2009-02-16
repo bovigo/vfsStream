@@ -22,7 +22,7 @@
       <version release="${version}" api="0.3.0"/>
       <stability release="alpha" api="alpha"/>
 
-      <changelog version="${version}">
+      <changelog version="0.3.2" api_version="0.3.0" date="2009-02-16">
         - support trailing slashes on directories in vfsStream urls, patch provided by Gabriel Birke
         - fixed bug #4: vfsstream can only be read once, reported by Christoph Bloemer
         - enabled multiple iterations at the same time over the same directory
