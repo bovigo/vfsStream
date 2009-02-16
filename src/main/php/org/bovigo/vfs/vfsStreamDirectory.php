@@ -2,14 +2,15 @@
 /**
  * Directory container.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
+ * @version     $Id$
  */
 /**
  * @ignore
  */
 require_once dirname(__FILE__) . '/vfsStreamAbstractContent.php';
 require_once dirname(__FILE__) . '/vfsStreamContainer.php';
+require_once dirname(__FILE__) . '/vfsStreamContainerIterator.php';
 require_once dirname(__FILE__) . '/vfsStreamException.php';
 /**
  * Directory container.
@@ -186,59 +187,13 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     }
 
     /**
-     * resets children pointer
-     */
-    public function rewind()
-    {
-        reset($this->children);
-    }
-
-    /**
-     * returns the current child
+     * returns iterator for the children
      *
-     * @return  vfsStreamContent
+     * @return  vfsStreamContainerIterator
      */
-    public function current()
+    public function getIterator()
     {
-        $child = current($this->children);
-        if (false === $child) {
-            return null;
-        }
-        
-        return $child;
-    }
-
-    /**
-     * returns the name of the current child
-     *
-     * @return  string
-     */
-    public function key()
-    {
-        $child = current($this->children);
-        if (false === $child) {
-            return null;
-        }
-        
-        return $child->getName();
-    }
-
-    /**
-     * iterates to next child
-     */
-    public function next()
-    {
-        next($this->children);
-    }
-
-    /**
-     * checks if the current value is valid
-     *
-     * @return  bool
-     */
-    public function valid()
-    {
-        return (false !== current($this->children));
+        return new vfsStreamContainerIterator($this->children);
     }
 }
 ?>

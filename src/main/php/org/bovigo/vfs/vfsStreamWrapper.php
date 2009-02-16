@@ -2,8 +2,8 @@
 /**
  * Stream wrapper to mock file system requests.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
+ * @version     $Id$
  */
 /**
  * @ignore
@@ -42,6 +42,12 @@ class vfsStreamWrapper
      * @var  vfsStreamDirectory
      */
     protected $dir;
+    /**
+     * shortcut to directory container iterator
+     *
+     * @var  vfsStreamDirectory
+     */
+    protected $dirIterator;
 
     /**
      * method to register the stream wrapper
@@ -411,6 +417,7 @@ class vfsStreamWrapper
             return false;
         }
         
+        $this->dirIterator = $this->dir->getIterator();
         return true;
     }
 
@@ -421,12 +428,12 @@ class vfsStreamWrapper
      */
     public function dir_readdir()
     {
-        $dir = $this->dir->current();
+        $dir = $this->dirIterator->current();
         if (null === $dir) {
             return false;
         }
         
-        $this->dir->next();
+        $this->dirIterator->next();
         return $dir->getName();
     }
 
@@ -437,7 +444,7 @@ class vfsStreamWrapper
      */
     public function dir_rewinddir()
     {
-        return $this->dir->rewind();
+        return $this->dirIterator->rewind();
     }
 
     /**
@@ -447,6 +454,7 @@ class vfsStreamWrapper
      */
     public function dir_closedir()
     {
+        $this->dirIterator = null;
         return true;
     }
 

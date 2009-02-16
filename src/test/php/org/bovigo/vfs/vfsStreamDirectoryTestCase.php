@@ -2,9 +2,9 @@
 /**
  * Test for org::bovigo::vfs::vfsStreamDirectory.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
  * @subpackage  test
+ * @version     $Id$
  */
 require_once 'org/bovigo/vfs/vfsStreamDirectory.php';
 require_once 'PHPUnit/Framework.php';
@@ -166,43 +166,6 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->dir->getChildren());
         $this->assertEquals(0, $this->dir->size());
         $this->assertEquals(0, $this->dir->sizeSummarized());
-    }
-
-    /**
-     * test method to be used for iterating
-     *
-     * @test
-     */
-    public function iteration()
-    {
-        $mockChild1 = $this->getMock('vfsStreamContent');
-        $mockChild1->expects($this->any())
-                   ->method('getName')
-                   ->will($this->returnValue('bar'));
-        $this->dir->addChild($mockChild1);
-        $mockChild2 = $this->getMock('vfsStreamContent');
-        $mockChild2->expects($this->any())
-                   ->method('getName')
-                   ->will($this->returnValue('baz'));
-        $this->dir->addChild($mockChild2);
-        $this->assertEquals('bar', $this->dir->key());
-        $this->assertTrue($this->dir->valid());
-        $bar = $this->dir->current();
-        $this->assertSame($mockChild1, $bar);
-        $this->dir->next();
-        $this->assertEquals('baz', $this->dir->key());
-        $this->assertTrue($this->dir->valid());
-        $baz = $this->dir->current();
-        $this->assertSame($mockChild2, $baz);
-        $this->dir->next();
-        $this->assertFalse($this->dir->valid());
-        $this->assertNull($this->dir->key());
-        $this->assertNull($this->dir->current());
-        $this->dir->rewind();
-        $this->assertTrue($this->dir->valid());
-        $this->assertEquals('bar', $this->dir->key());
-        $bar2 = $this->dir->current();
-        $this->assertSame($mockChild1, $bar2);
     }
 }
 ?>

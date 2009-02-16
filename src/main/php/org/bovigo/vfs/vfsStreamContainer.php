@@ -2,15 +2,15 @@
 /**
  * Interface for stream contents that are able to store other stream contents.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
+ * @version     $Id$
  */
 /**
  * Interface for stream contents that are able to store other stream contents.
  *
  * @package     bovigo_vfs
  */
-interface vfsStreamContainer extends Iterator
+interface vfsStreamContainer extends IteratorAggregate
 {
     /**
      * adds child to the directory

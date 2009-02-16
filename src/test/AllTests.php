@@ -2,9 +2,9 @@
 /**
  * Class to organize all tests.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
- * @package     bovigo
+ * @package     bovigo_vfs
  * @subpackage  test
+ * @version     $Id$
  */
 if (defined('PHPUnit_MAIN_METHOD') === false) {
     define('PHPUnit_MAIN_METHOD', 'src_test_AllTests::main');
@@ -19,7 +19,7 @@ PHPUnit_Util_Filter::addDirectoryToWhitelist(SOURCE_DIR);
 /**
  * Class to organize all tests.
  *
- * @package     bovigo
+ * @package     bovigo_vfs
  * @subpackage  test
  */
 class src_test_AllTests extends PHPUnit_Framework_TestSuite
@@ -41,6 +41,7 @@ class src_test_AllTests extends PHPUnit_Framework_TestSuite
     {
         $suite   = new self();
         $dirname = dirname(__FILE__);
+        $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamContainerIteratorTestCase.php');
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamDirectoryTestCase.php');
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamFileTestCase.php');
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamTestCase.php');
