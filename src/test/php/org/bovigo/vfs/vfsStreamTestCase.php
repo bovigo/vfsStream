@@ -2,9 +2,9 @@
 /**
  * Test for org::bovigo::vfs::vfsStream.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
  * @subpackage  test
+ * @version     $Id$
  */
 require_once 'org/bovigo/vfs/vfsStream.php';
 require_once 'PHPUnit/Framework.php';
@@ -43,7 +43,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     /**
      * windows directory separators are converted into default separator
      *
-     * @author  Gabriel Birke <gabriel.birke@delti.com>
+     * @author  Gabriel Birke
      * @test
      */
     public function pathConvertsWindowsDirectorySeparators()
@@ -54,7 +54,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     /**
      * trailing whitespace should be removed
      *
-     * @author  Gabriel Birke <gabriel.birke@delti.com>
+     * @author  Gabriel Birke
      * @test
      */
     public function pathRemovesTrailingWhitespace()
@@ -65,7 +65,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     /**
      * trailing slashes are removed
      *
-     * @author  Gabriel Birke <gabriel.birke@delti.com>
+     * @author  Gabriel Birke
      * @test
      */
     public function pathRemovesTrailingSlash()
@@ -76,7 +76,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     /**
      * trailing slash and whitespace should be removed
      *
-     * @author  Gabriel Birke <gabriel.birke@delti.com>
+     * @author  Gabriel Birke
      * @test
      */
     public function pathRemovesTrailingSlashAndWhitespace()
@@ -87,7 +87,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     /**
      * double slashes should be replaced by single slash
      *
-     * @author  Gabriel Birke <gabriel.birke@delti.com>
+     * @author  Gabriel Birke
      * @test
      */
     public function pathRemovesDoubleSlashes()
