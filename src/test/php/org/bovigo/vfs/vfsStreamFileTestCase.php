@@ -2,9 +2,9 @@
 /**
  * Test for org::bovigo::vfs::vfsStreamFile.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
  * @subpackage  test
+ * @version     $Id$
  */
 require_once 'org/bovigo/vfs/vfsStreamFile.php';
 require_once 'PHPUnit/Framework.php';
@@ -193,6 +193,33 @@ class vfsStreamFileTestCase extends PHPUnit_Framework_TestCase
         $this->assertEquals(3, $this->file->write('bar'));
         $this->assertEquals('foofoobar', $this->file->getContent());
         $this->assertEquals(9, $this->file->size());
+    }
+
+    /**
+     * setting and retrieving permissions for a file
+     *
+     * @test
+     * @group  permissions
+     */
+    public function permissions()
+    {
+        $this->assertEquals(0777, $this->file->getPermissions());
+        $this->assertSame($this->file, $this->file->chmod(0644));
+        $this->assertEquals(0644, $this->file->getPermissions());
+    }
+
+    /**
+     * setting and retrieving permissions for a file
+     *
+     * @test
+     * @group  permissions
+     */
+    public function permissionsSet()
+    {
+        $this->file = new vfsStreamFile('foo', 0644);
+        $this->assertEquals(0644, $this->file->getPermissions());
+        $this->assertSame($this->file, $this->file->chmod(0600));
+        $this->assertEquals(0600, $this->file->getPermissions());
     }
 }
 ?>

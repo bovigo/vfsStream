@@ -2,8 +2,8 @@
 /**
  * File container.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
+ * @version     $Id$
  */
 /**
  * @ignore
@@ -33,11 +33,12 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * constructor
      *
      * @param  string  $name
+     * @param  int     $permissions
      */
-    public function __construct($name)
+    public function __construct($name, $permissions = 0777)
     {
         $this->type = vfsStreamContent::TYPE_FILE;
-        parent::__construct($name);
+        parent::__construct($name, $permissions);
     }
 
     /**

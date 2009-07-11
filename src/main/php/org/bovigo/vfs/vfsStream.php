@@ -2,8 +2,8 @@
 /**
  * Some utility methods for vfsStream.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
+ * @version     $Id$
  */
 /**
  * @ignore
@@ -53,11 +53,12 @@ class vfsStream
      * returns a new file with given name
      *
      * @param   string         $name
+     * @param   int            $permissions
      * @return  vfsStreamFile
      */
-    public static function newFile($name)
+    public static function newFile($name, $permissions = 0777)
     {
-        return new vfsStreamFile($name);
+        return new vfsStreamFile($name, $permissions);
     }
 
     /**
@@ -68,9 +69,10 @@ class vfsStream
      * directory structure.
      *
      * @param   string              $name
+     * @param   int                 $permissions
      * @return  vfsStreamDirectory
      */
-    public static function newDirectory($name)
+    public static function newDirectory($name, $permissions = 0777)
     {
         if ('/' === $name{0}) {
             $name = substr($name, 1);
@@ -78,13 +80,13 @@ class vfsStream
         
         $firstSlash = strpos($name, '/');
         if (false === $firstSlash) {
-            return new vfsStreamDirectory($name);
+            return new vfsStreamDirectory($name, $permissions);
         }
         
         $ownName   = substr($name, 0, $firstSlash);
         $subDirs   = substr($name, $firstSlash + 1);
-        $directory = new vfsStreamDirectory($ownName);
-        self::newDirectory($subDirs)->at($directory);
+        $directory = new vfsStreamDirectory($ownName, $permissions);
+        self::newDirectory($subDirs, $permissions)->at($directory);
         return $directory;
     }
 }

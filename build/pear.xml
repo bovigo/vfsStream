@@ -19,10 +19,11 @@
       </dependencies>
       <dirroles key="examples">doc</dirroles>
       <dirroles key="docs">doc</dirroles>
-      <version release="${version}" api="0.3.0"/>
+      <version release="${version}" api="0.4.0"/>
       <stability release="alpha" api="alpha"/>
 
-      <changelog version="0.3.3" api_version="0.3.0">
+      <changelog version="0.4.0" api_version="0.4.0">
+        - initial support for file modes
         - fixed bug #5: vfsStreamDirectory::addChild() does not replace child with same name
         - fixed bug with is_writable() because of missing stat() fields, patch provided by Sergey Galkin
       </changelog>

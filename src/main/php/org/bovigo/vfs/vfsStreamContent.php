@@ -2,8 +2,8 @@
 /**
  * Interface for stream contents.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
+ * @version     $Id$
  */
 /**
  * @ignore
@@ -102,5 +102,20 @@ interface vfsStreamContent
      * @return  vfsStreamContent
      */
     public function at(vfsStreamContainer $container);
+
+    /**
+     * change file mode to given permissions
+     *
+     * @param   int               $permissions
+     * @return  vfsStreamContent
+     */
+    public function chmod($permissions);
+
+    /**
+     * returns permissions
+     *
+     * @return  int
+     */
+    public function getPermissions();
 }
 ?>

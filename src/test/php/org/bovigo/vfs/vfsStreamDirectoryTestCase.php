@@ -198,5 +198,32 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->dir->hasChild('bar'));
         $this->assertSame($mockChild2, $this->dir->getChild('bar'));
     }
+
+    /**
+     * setting and retrieving permissions for a directory
+     *
+     * @test
+     * @group  permissions
+     */
+    public function permissions()
+    {
+        $this->assertEquals(0777, $this->dir->getPermissions());
+        $this->assertSame($this->dir, $this->dir->chmod(0755));
+        $this->assertEquals(0755, $this->dir->getPermissions());
+    }
+
+    /**
+     * setting and retrieving permissions for a directory
+     *
+     * @test
+     * @group  permissions
+     */
+    public function permissionsSet()
+    {
+        $this->dir = new vfsStreamDirectory('foo', 0755);
+        $this->assertEquals(0755, $this->dir->getPermissions());
+        $this->assertSame($this->dir, $this->dir->chmod(0700));
+        $this->assertEquals(0700, $this->dir->getPermissions());
+    }
 }
 ?>

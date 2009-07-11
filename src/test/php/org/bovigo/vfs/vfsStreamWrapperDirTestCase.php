@@ -33,6 +33,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      * assert that mkdir() creates the correct directory structure
      *
      * @test
+     * @group  permissions
      */
     public function mkdirNonRecursively()
     {
@@ -40,25 +41,30 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(2, count($this->foo->getChildren()));
         $this->assertTrue(mkdir($this->fooURL . '/another'));
         $this->assertEquals(3, count($this->foo->getChildren()));
+        $this->assertEquals(0777, $this->foo->getChild('another')->getPermissions());
     }
 
     /**
      * assert that mkdir() creates the correct directory structure
      *
      * @test
+     * @group  permissions
      */
     public function mkdirRecursively()
     {
-        $this->assertTrue(mkdir($this->fooURL . '/another/more', null, true));
+        $this->assertTrue(mkdir($this->fooURL . '/another/more', 0777, true));
         $this->assertEquals(3, count($this->foo->getChildren()));
         $another = $this->foo->getChild('another');
         $this->assertTrue($another->hasChild('more'));
+        $this->assertEquals(0777, $this->foo->getChild('another')->getPermissions());
+        $this->assertEquals(0777, $this->foo->getChild('another')->getChild('more')->getPermissions());
     }
 
     /**
      * no root > new directory becomes root
      *
      * @test
+     * @group  permissions
      */
     public function mkdirWithoutRootCreatesNewRoot()
     {
@@ -66,6 +72,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertTrue(@mkdir(vfsStream::url('foo')));
         $this->assertEquals(vfsStreamContent::TYPE_DIR, vfsStreamWrapper::getRoot()->getType());
         $this->assertEquals('foo', vfsStreamWrapper::getRoot()->getName());
+        $this->assertEquals(0777, vfsStreamWrapper::getRoot()->getPermissions());
     }
 
     /**
@@ -75,7 +82,82 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function mkdirOnFileReturnsFalse()
     {
-        $this->assertFalse(mkdir($this->baz1URL . '/another/more', null, true));
+        $this->assertFalse(mkdir($this->baz1URL . '/another/more', 0777, true));
+    }
+
+    /**
+     * assert that mkdir() creates the correct directory structure
+     *
+     * @test
+     * @group  permissions
+     */
+    public function mkdirNonRecursivelyDifferentPermissions()
+    {
+        $this->assertTrue(mkdir($this->fooURL . '/another', 0755));
+        $this->assertEquals(0755, $this->foo->getChild('another')->getPermissions());
+    }
+
+    /**
+     * assert that mkdir() creates the correct directory structure
+     *
+     * @test
+     * @group  permissions
+     */
+    public function mkdirRecursivelyDifferentPermissions()
+    {
+        $this->assertTrue(mkdir($this->fooURL . '/another/more', 0755, true));
+        $this->assertEquals(3, count($this->foo->getChildren()));
+        $another = $this->foo->getChild('another');
+        $this->assertTrue($another->hasChild('more'));
+        $this->assertEquals(0755, $this->foo->getChild('another')->getPermissions());
+        $this->assertEquals(0755, $this->foo->getChild('another')->getChild('more')->getPermissions());
+    }
+
+    /**
+     * assert that mkdir() creates the correct directory structure
+     *
+     * @test
+     * @group  permissions
+     */
+    public function mkdirUsesParentPermissionsIfNoneGiven()
+    {
+        $this->foo->chmod(0700);
+        $this->assertTrue(mkdir($this->fooURL . '/another/more', null, true));
+        $this->assertEquals(3, count($this->foo->getChildren()));
+        $another = $this->foo->getChild('another');
+        $this->assertTrue($another->hasChild('more'));
+        $this->assertEquals(0700, $this->foo->getChild('another')->getPermissions());
+        $this->assertEquals(0700, $this->foo->getChild('another')->getChild('more')->getPermissions());
+    }
+
+    /**
+     * no root > new directory becomes root
+     *
+     * @test
+     * @group  permissions
+     */
+    public function mkdirWithoutRootCreatesNewRootDifferentPermissions()
+    {
+        vfsStreamWrapper::register();
+        $this->assertTrue(@mkdir(vfsStream::url('foo'), 0755));
+        $this->assertEquals(vfsStreamContent::TYPE_DIR, vfsStreamWrapper::getRoot()->getType());
+        $this->assertEquals('foo', vfsStreamWrapper::getRoot()->getName());
+        $this->assertEquals(0755, vfsStreamWrapper::getRoot()->getPermissions());
+    }
+
+    /**
+     * no root > new directory becomes root
+     *
+     * @test
+     * @group  permissions
+     */
+    public function mkdirWithoutRootCreatesNewRootNoPermissions()
+    {
+        vfsStreamWrapper::register();
+        $this->assertTrue(@mkdir(vfsStream::url('foo'), null));
+        $this->assertEquals(vfsStreamContent::TYPE_DIR, vfsStreamWrapper::getRoot()->getType());
+        $this->assertEquals('foo', vfsStreamWrapper::getRoot()->getName());
+        $this->assertEquals(0777, vfsStreamWrapper::getRoot()->getPermissions());
     }
 
     /**

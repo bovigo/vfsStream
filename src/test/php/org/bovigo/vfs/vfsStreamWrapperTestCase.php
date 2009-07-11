@@ -173,5 +173,39 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(is_executable($this->fooURL . '/another'));
         $this->assertFalse(is_executable(vfsStream::url('another')));
     }
+
+    /**
+     * file permissions
+     *
+     * @test
+     * @group  permissions
+     */
+    public function chmod()
+    {
+        $this->assertEquals(40777, decoct(fileperms($this->fooURL)));
+        $this->assertEquals(40777, decoct(fileperms($this->barURL)));
+        $this->assertEquals(100777, decoct(fileperms($this->baz1URL)));
+        $this->assertEquals(100777, decoct(fileperms($this->baz2URL)));
+        
+        $this->foo->chmod(0755);
+        $this->bar->chmod(0700);
+        $this->baz1->chmod(0644);
+        $this->baz2->chmod(0600);
+        $this->assertEquals(40755, decoct(fileperms($this->fooURL)));
+        $this->assertEquals(40700, decoct(fileperms($this->barURL)));
+        $this->assertEquals(100644, decoct(fileperms($this->baz1URL)));
+        $this->assertEquals(100600, decoct(fileperms($this->baz2URL)));
+        
+        # chmod() only supports real files, there is no way a stream wrapper
+        # can be called to change the file mode of a certain path
+        #chmod($this->fooURL, 0755);
+        #chmod($this->barURL, 0711);
+        #chmod($this->baz1URL, 0644);
+        #chmod($this->baz2URL, 0664);
+        #$this->assertEquals(40755, decoct(fileperms($this->fooURL)));
+        #$this->assertEquals(40711, decoct(fileperms($this->barURL)));
+        #$this->assertEquals(100644, decoct(fileperms($this->baz1URL)));
+        #$this->assertEquals(100664, decoct(fileperms($this->baz2URL)));
+    }
 }
 ?>

@@ -2,8 +2,8 @@
 /**
  * Base stream contents container.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
+ * @version     $Id$
  */
 /**
  * @ignore
@@ -34,16 +34,24 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @var  int
      */
     protected $lastModified;
+    /**
+     * permissions for content
+     *
+     * @var  int
+     */
+    protected $permissions;
 
     /**
      * constructor
      *
      * @param  string  $name
+     * @param  int     $permissions
      */
-    public function __construct($name)
+    public function __construct($name, $permissions = 0777)
     {
         $this->name         = $name;
         $this->lastModified = time();
+        $this->permissions  = $permissions;
     }
 
     /**
@@ -131,6 +139,28 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     {
         $container->addChild($this);
         return $this;
+    }
+
+    /**
+     * change file mode to given permissions
+     *
+     * @param   int               $permissions
+     * @return  vfsStreamContent
+     */
+    public function chmod($permissions)
+    {
+        $this->permissions = $permissions;
+        return $this;
+    }
+
+    /**
+     * returns permissions
+     *
+     * @return  int
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
     }
 }
 ?>

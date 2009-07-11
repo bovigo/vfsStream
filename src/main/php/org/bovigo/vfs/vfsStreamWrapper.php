@@ -260,13 +260,12 @@ class vfsStreamWrapper
      *
      * @return  array
      * @todo    implement correct group and user id handling based on content
-     * @todo    implement correct file mode handling based on content
      */
     public function stream_stat()
     {
         $fileStat = array('dev'     => 0,
                           'ino'     => 0,
-                          'mode'    => $this->content->getType() | 0777,
+                          'mode'    => $this->content->getType() | $this->content->getPermissions(),
                           'nlink'   => 0,
                           'uid'     => function_exists('posix_getuid') ? posix_getuid() : 0,
                           'gid'     => function_exists('posix_getgid') ? posix_getgid() : 0,
@@ -286,6 +285,7 @@ class vfsStreamWrapper
      *
      * @param   string  $path
      * @return  bool
+     * @todo    do not remove path if filemode does not allow this
      */
     public function unlink($path)
     {
@@ -328,13 +328,13 @@ class vfsStreamWrapper
      * @param   int     $mode
      * @param   int     $options
      * @return  bool
-     * @todo    set $mode on new directory
+     * @todo    do not create directory if parent directory does not allow this
      */
     public function mkdir($path, $mode, $options)
     {
         $path = vfsStream::path($path);
         if (null === self::$root) {
-            self::$root = vfsStream::newDirectory($path);
+            self::$root = vfsStream::newDirectory($path, ((null == $mode) ? (0777) : ($mode)));
             return true;
         }
         
@@ -360,7 +360,7 @@ class vfsStreamWrapper
             return false;
         }
 
-        vfsStream::newDirectory($newDirs)->at($dir);
+        vfsStream::newDirectory($newDirs, ((null == $mode) ? ($dir->getPermissions()) : ($mode)))->at($dir);
         return true;
     }
 
@@ -370,6 +370,7 @@ class vfsStreamWrapper
      * @param   string  $path
      * @param   int     $options
      * @return  bool
+     * @todo    do not remove directory if parent directory does not allow this
      */
     public function rmdir($path, $options)
     {
@@ -458,7 +459,6 @@ class vfsStreamWrapper
      * @param   string  $path  path of url to return status for
      * @return  array
      * @todo    implement correct group and user id handling based on content
-     * @todo    implement correct file mode handling based on content
      */
     public function url_stat($path)
     {
@@ -469,7 +469,7 @@ class vfsStreamWrapper
 
         $fileStat = array('dev'     => 0,
                           'ino'     => 0,
-                          'mode'    => $content->getType() | 0777,
+                          'mode'    => $content->getType() | $content->getPermissions(),
                           'nlink'   => 0,
                           'uid'     => function_exists('posix_getuid') ? posix_getuid() : 0,
                           'gid'     => function_exists('posix_getgid') ? posix_getgid() : 0,
