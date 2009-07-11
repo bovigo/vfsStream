@@ -34,6 +34,12 @@
     <exec passthru="true" command="phpunit src_test_AllTests"/>
   </target>
 
+  <target name="test53" description="run test suite">
+    <!-- Use command line to get the metrics and pmd data, code coverage report
+         by PHPUnit is also more beautiful than Phing's. -->
+    <exec passthru="true" command="phpunit53 src_test_AllTests"/>
+  </target>
+
   <target name="create-api-doc" description="Creates API docs">
     <phpdoc title="vfsStream"
             destdir="${build.report.dir}/api"
