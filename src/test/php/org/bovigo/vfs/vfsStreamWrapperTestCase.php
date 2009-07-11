@@ -2,9 +2,9 @@
 /**
  * Test for org::bovigo::vfs::vfsStreamWrapper.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
  * @subpackage  test
+ * @version     $Id$
  */
 require_once 'org/bovigo/vfs/vfsStream.php';
 require_once 'PHPUnit/Framework.php';
@@ -20,7 +20,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * ensure that a call to vfsStreamWrapper::register() resets the stream
      * 
-     * Implemented after a request by David Zülke.
+     * Implemented after a request by David Zï¿½lke.
      *
      * @test
      */
@@ -136,6 +136,42 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertTrue(is_readable($this->baz2URL));
         $this->assertFalse(is_readable($this->fooURL . '/another'));
         $this->assertFalse(is_readable(vfsStream::url('another')));
+    }
+
+    /**
+     * assert is_writable() returns always true for existing pathes
+     *
+     * As long as file mode is not supported, existing pathes will lead to true,
+     * and non-existing pathes to false.
+     *
+     * @test
+     */
+    public function is_writable()
+    {
+        $this->assertTrue(is_writable($this->fooURL));
+        $this->assertTrue(is_writable($this->barURL));
+        $this->assertTrue(is_writable($this->baz1URL));
+        $this->assertTrue(is_writable($this->baz2URL));
+        $this->assertFalse(is_writable($this->fooURL . '/another'));
+        $this->assertFalse(is_writable(vfsStream::url('another')));
+    }
+
+    /**
+     * assert is_executable() returns always true for existing files but not for directories
+     *
+     * As long as file mode is not supported, existing files will lead to true,
+     * and non-existing files to false.
+     *
+     * @test
+     */
+    public function is_executable()
+    {
+        $this->assertFalse(is_executable($this->fooURL));
+        $this->assertFalse(is_executable($this->barURL));
+        $this->assertTrue(is_executable($this->baz1URL));
+        $this->assertTrue(is_executable($this->baz2URL));
+        $this->assertFalse(is_executable($this->fooURL . '/another'));
+        $this->assertFalse(is_executable(vfsStream::url('another')));
     }
 }
 ?>

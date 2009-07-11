@@ -264,27 +264,21 @@ class vfsStreamWrapper
      */
     public function stream_stat()
     {
-        $uid = 0;
-        if (function_exists('posix_getuid') === true) {
-            $uid = posix_getuid();
-        }
-        
-        $gid = 0;
-        if (function_exists('posix_getgid') === true) {
-            $gid = posix_getgid();
-        }
-        
-        return array(2       => $this->content->getType() + octdec(0777),
-                     4       => $uid,
-                     5       => $gid,
-                     7       => $this->content->size(),
-                     9       => $this->content->filemtime(),
-                     'mode'  => $this->content->getType() + octdec(0777),
-                     'uid'   => $uid,
-                     'gid'   => $gid,
-                     'size'  => $this->content->size(),
-                     'mtime' => $this->content->filemtime()
-               );
+        $fileStat = array('dev'     => 0,
+                          'ino'     => 0,
+                          'mode'    => $this->content->getType() | 0777,
+                          'nlink'   => 0,
+                          'uid'     => function_exists('posix_getuid') ? posix_getuid() : 0,
+                          'gid'     => function_exists('posix_getgid') ? posix_getgid() : 0,
+                          'rdev'    => 0,
+                          'size'    => $this->content->size(),
+                          'atime'   => $this->content->filemtime(),
+                          'mtime'   => $this->content->filemtime(),
+                          'ctime'   => $this->content->filemtime(),
+                          'blksize' => 0,
+                          'blocks'  => 0
+                    );
+        return array_merge(array_values($fileStat), $fileStat);
     }
 
     /**
@@ -472,28 +466,22 @@ class vfsStreamWrapper
         if (null === $content) {
             return false;
         }
-        
-        $uid = 0;
-        if (function_exists('posix_getuid') === true) {
-            $uid = posix_getuid();
-        }
-        
-        $gid = 0;
-        if (function_exists('posix_getgid') === true) {
-            $gid = posix_getgid();
-        }
-        
-        return array(2       => $content->getType() + octdec(0777),
-                     4       => $uid,
-                     5       => $gid,
-                     7       => $content->size(),
-                     9       => $content->filemtime(),
-                     'mode'  => $content->getType() + octdec(0777),
-                     'uid'   => $uid,
-                     'gid'   => $gid,
-                     'size'  => $content->size(),
-                     'mtime' => $content->filemtime()
-               );
+
+        $fileStat = array('dev'     => 0,
+                          'ino'     => 0,
+                          'mode'    => $content->getType() | 0777,
+                          'nlink'   => 0,
+                          'uid'     => function_exists('posix_getuid') ? posix_getuid() : 0,
+                          'gid'     => function_exists('posix_getgid') ? posix_getgid() : 0,
+                          'rdev'    => 0,
+                          'size'    => $content->size(),
+                          'atime'   => $content->filemtime(),
+                          'mtime'   => $content->filemtime(),
+                          'ctime'   => $content->filemtime(),
+                          'blksize' => 0,
+                          'blocks'  => 0
+                    );
+        return array_merge(array_values($fileStat), $fileStat);
     }
 }
 ?>
