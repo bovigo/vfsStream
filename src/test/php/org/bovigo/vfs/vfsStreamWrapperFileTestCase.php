@@ -96,8 +96,8 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(is_file($this->barURL));
         $this->assertTrue(is_file($this->baz1URL));
         $this->assertTrue(is_file($this->baz2URL));
-        $this->assertFalse(is_readable($this->fooURL . '/another'));
-        $this->assertFalse(is_readable(vfsStream::url('another')));
+        $this->assertFalse(is_file($this->fooURL . '/another'));
+        $this->assertFalse(is_file(vfsStream::url('another')));
     }
 }
 ?>
