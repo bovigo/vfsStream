@@ -29,15 +29,27 @@
   </target>
 
   <target name="test" description="run test suite">
-    <!-- Use command line to get the metrics and pmd data, code coverage report
-         by PHPUnit is also more beautiful than Phing's. -->
-    <exec passthru="true" command="phpunit src_test_AllTests"/>
+    <if>
+      <isset property="test.group"/>
+      <then>
+        <exec passthru="true" command="phpunit --group &quot;${test.group}&quot; src_test_AllTests"/>
+      </then>
+      <else>
+        <exec passthru="true" command="phpunit src_test_AllTests"/>
+      </else>
+    </if>
   </target>
 
   <target name="test53" description="run test suite">
-    <!-- Use command line to get the metrics and pmd data, code coverage report
-         by PHPUnit is also more beautiful than Phing's. -->
-    <exec passthru="true" command="phpunit53 src_test_AllTests"/>
+    <if>
+      <isset property="test.group"/>
+      <then>
+        <exec passthru="true" command="phpunit53 --group &quot;${test.group}&quot; src_test_AllTests"/>
+      </then>
+      <else>
+        <exec passthru="true" command="phpunit53 src_test_AllTests"/>
+      </else>
+    </if>
   </target>
 
   <target name="create-api-doc" description="Creates API docs">
@@ -53,15 +65,14 @@
   </target>
 
   <target name="versioncheck" unless="version">
-    <echo message="====================================================="/>
-    <echo message="Version not specified. You must enter a version. In"/>
-    <echo message="the future you can add this to build.properties or"/>
-    <echo message="enter it on the command line: "/>
-    <echo message=" "/>
-    <echo message="-Dversion=2.0.0b1"/>
-    <echo message="====================================================="/>
-    <input propertyname="version" promptChar=":">version</input>
-    <property name="pkg.name" value="vfsStream-${version}" override="true"/>
+    <php function="file_get_contents" returnProperty="version">
+      <param value="VERSION"/>
+    </php>
+    <php function="trim" returnProperty="version">
+      <param value="${version}"/>
+    </php>
+    <echo>Version to be build: ${version}</echo>
+    <property name="pkg.name" value="stubbles-${version}" override="true"/>
     <property name="build.src.dir" value="${build.base.dir}/${pkg.name}" override="true"/>
   </target>
 
