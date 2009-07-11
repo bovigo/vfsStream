@@ -22,7 +22,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * list of directory children
      *
-     * @var  array<vfsStreamContent>
+     * @var  array<string,vfsStreamContent>
      */
     protected $children = array();
 
@@ -96,7 +96,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      */
     public function addChild(vfsStreamContent $child)
     {
-        $this->children[] = $child;
+        $this->children[$child->getName()] = $child;
     }
 
     /**
@@ -183,7 +183,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      */
     public function getChildren()
     {
-        return $this->children;
+        return array_values($this->children);
     }
 
     /**

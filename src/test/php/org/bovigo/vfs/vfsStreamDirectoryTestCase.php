@@ -167,5 +167,36 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $this->dir->size());
         $this->assertEquals(0, $this->dir->sizeSummarized());
     }
+    
+    /**
+     * dd
+     *
+     * @test
+     * @group  regression
+     * @group  bug_5
+     */
+    public function addChildReplacesChildWithSameName_Bug_5()
+    {
+        $mockChild1 = $this->getMock('vfsStreamContent');
+        $mockChild1->expects($this->any())
+                   ->method('getType')
+                   ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
+        $mockChild1->expects($this->any())
+                   ->method('getName')
+                   ->will($this->returnValue('bar'));
+        $mockChild2 = $this->getMock('vfsStreamContent');
+        $mockChild2->expects($this->any())
+                   ->method('getType')
+                   ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
+        $mockChild2->expects($this->any())
+                   ->method('getName')
+                   ->will($this->returnValue('bar'));
+        $this->dir->addChild($mockChild1);
+        $this->assertTrue($this->dir->hasChild('bar'));
+        $this->assertSame($mockChild1, $this->dir->getChild('bar'));
+        $this->dir->addChild($mockChild2);
+        $this->assertTrue($this->dir->hasChild('bar'));
+        $this->assertSame($mockChild2, $this->dir->getChild('bar'));
+    }
 }
 ?>

@@ -22,7 +22,8 @@
       <version release="${version}" api="0.3.0"/>
       <stability release="alpha" api="alpha"/>
 
-      <changelog version="${version}">
+      <changelog version="0.3.3" api_version="0.3.0">
+        - fixed bug #5: vfsStreamDirectory::addChild() does not replace child with same name
       </changelog>
 
       <changelog version="0.3.2" api_version="0.3.0" date="2009-02-16">
