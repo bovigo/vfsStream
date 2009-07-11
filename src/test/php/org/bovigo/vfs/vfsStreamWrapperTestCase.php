@@ -20,7 +20,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * ensure that a call to vfsStreamWrapper::register() resets the stream
      * 
-     * Implemented after a request by David Z�lke.
+     * Implemented after a request by David Zülke.
      *
      * @test
      */
