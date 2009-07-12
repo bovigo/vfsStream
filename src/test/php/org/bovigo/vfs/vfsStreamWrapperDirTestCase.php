@@ -119,15 +119,15 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @group  permissions
      */
-    public function mkdirUsesParentPermissionsIfNoneGiven()
+    public function mkdirUsesDefaultPermissionsIfNoneGiven()
     {
         $this->foo->chmod(0700);
         $this->assertTrue(mkdir($this->fooURL . '/another/more', null, true));
         $this->assertEquals(3, count($this->foo->getChildren()));
         $another = $this->foo->getChild('another');
         $this->assertTrue($another->hasChild('more'));
-        $this->assertEquals(0700, $this->foo->getChild('another')->getPermissions());
-        $this->assertEquals(0700, $this->foo->getChild('another')->getChild('more')->getPermissions());
+        $this->assertEquals(0777, $this->foo->getChild('another')->getPermissions());
+        $this->assertEquals(0777, $this->foo->getChild('another')->getChild('more')->getPermissions());
     }
 
     /**
@@ -151,7 +151,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @group  permissions
      */
-    public function mkdirWithoutRootCreatesNewRootNoPermissions()
+    public function mkdirWithoutRootCreatesNewRootWithDefaultPermissions()
     {
         vfsStreamWrapper::register();
         $this->assertTrue(@mkdir(vfsStream::url('foo'), null));

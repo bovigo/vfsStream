@@ -332,9 +332,10 @@ class vfsStreamWrapper
      */
     public function mkdir($path, $mode, $options)
     {
+        $mode = ((null == $mode) ? (0777) : ($mode));
         $path = vfsStream::path($path);
         if (null === self::$root) {
-            self::$root = vfsStream::newDirectory($path, ((null == $mode) ? (0777) : ($mode)));
+            self::$root = vfsStream::newDirectory($path, $mode);
             return true;
         }
         
@@ -360,7 +361,7 @@ class vfsStreamWrapper
             return false;
         }
 
-        vfsStream::newDirectory($newDirs, ((null == $mode) ? ($dir->getPermissions()) : ($mode)))->at($dir);
+        vfsStream::newDirectory($newDirs, $mode)->at($dir);
         return true;
     }
 
@@ -371,6 +372,7 @@ class vfsStreamWrapper
      * @param   int     $options
      * @return  bool
      * @todo    do not remove directory if parent directory does not allow this
+     * @todo    consider $options with STREAM_MKDIR_RECURSIVE
      */
     public function rmdir($path, $options)
     {
