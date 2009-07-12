@@ -203,7 +203,7 @@ class vfsStreamFileTestCase extends PHPUnit_Framework_TestCase
      */
     public function permissions()
     {
-        $this->assertEquals(0777, $this->file->getPermissions());
+        $this->assertEquals(0666, $this->file->getPermissions());
         $this->assertSame($this->file, $this->file->chmod(0644));
         $this->assertEquals(0644, $this->file->getPermissions());
     }

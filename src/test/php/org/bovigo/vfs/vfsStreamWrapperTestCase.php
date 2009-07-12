@@ -121,10 +121,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * assert is_readable() returns always true for existing pathes
-     *
-     * As long as file mode is not supported, existing pathes will lead to true,
-     * and non-existing pathes to false.
+     * assert is_readable() works correct
      *
      * @test
      */
@@ -136,13 +133,16 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertTrue(is_readable($this->baz2URL));
         $this->assertFalse(is_readable($this->fooURL . '/another'));
         $this->assertFalse(is_readable(vfsStream::url('another')));
+        
+        #$this->foo->chmod(0000);
+        #$this->assertFalse(is_readable($this->baz1URL));
+        
+        $this->baz1->chmod(0222);
+        $this->assertFalse(is_readable($this->baz1URL));
     }
 
     /**
-     * assert is_writable() returns always true for existing pathes
-     *
-     * As long as file mode is not supported, existing pathes will lead to true,
-     * and non-existing pathes to false.
+     * assert is_writable() works correct
      *
      * @test
      */
@@ -154,22 +154,36 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertTrue(is_writable($this->baz2URL));
         $this->assertFalse(is_writable($this->fooURL . '/another'));
         $this->assertFalse(is_writable(vfsStream::url('another')));
+        
+        #$this->foo->chmod(0000);
+        #$this->assertFalse(is_writable($this->baz1URL));
+        
+        $this->baz1->chmod(0444);
+        $this->assertFalse(is_writable($this->baz1URL));
     }
 
     /**
-     * assert is_executable() returns always true for existing files but not for directories
-     *
-     * As long as file mode is not supported, existing files will lead to true,
-     * and non-existing files to false.
+     * assert is_executable() works correct
      *
      * @test
      */
     public function is_executable()
     {
+        $this->assertFalse(is_executable($this->baz1URL));
+        $this->baz1->chmod(0766);
+        $this->assertTrue(is_executable($this->baz1URL));
+        $this->assertFalse(is_executable($this->baz2URL));
+    }
+
+    /**
+     * assert is_executable() works correct
+     *
+     * @test
+     */
+    public function directoriesAndNonExistingFilesAreNeverExecutable()
+    {
         $this->assertFalse(is_executable($this->fooURL));
         $this->assertFalse(is_executable($this->barURL));
-        $this->assertTrue(is_executable($this->baz1URL));
-        $this->assertTrue(is_executable($this->baz2URL));
         $this->assertFalse(is_executable($this->fooURL . '/another'));
         $this->assertFalse(is_executable(vfsStream::url('another')));
     }
@@ -184,8 +198,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     {
         $this->assertEquals(40777, decoct(fileperms($this->fooURL)));
         $this->assertEquals(40777, decoct(fileperms($this->barURL)));
-        $this->assertEquals(100777, decoct(fileperms($this->baz1URL)));
-        $this->assertEquals(100777, decoct(fileperms($this->baz2URL)));
+        $this->assertEquals(100666, decoct(fileperms($this->baz1URL)));
+        $this->assertEquals(100666, decoct(fileperms($this->baz2URL)));
         
         $this->foo->chmod(0755);
         $this->bar->chmod(0700);

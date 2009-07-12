@@ -35,7 +35,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @param  string  $name
      * @param  int     $permissions
      */
-    public function __construct($name, $permissions = 0777)
+    public function __construct($name, $permissions = 0666)
     {
         $this->type = vfsStreamContent::TYPE_FILE;
         parent::__construct($name, $permissions);

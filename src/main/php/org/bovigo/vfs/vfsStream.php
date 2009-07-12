@@ -56,7 +56,7 @@ class vfsStream
      * @param   int            $permissions
      * @return  vfsStreamFile
      */
-    public static function newFile($name, $permissions = 0777)
+    public static function newFile($name, $permissions = 0666)
     {
         return new vfsStreamFile($name, $permissions);
     }

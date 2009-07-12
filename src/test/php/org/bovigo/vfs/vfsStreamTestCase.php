@@ -108,7 +108,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $file = vfsStream::newFile('filename.txt');
         $this->assertType('vfsStreamFile', $file);
         $this->assertEquals('filename.txt', $file->getName());
-        $this->assertEquals(0777, $file->getPermissions());
+        $this->assertEquals(0666, $file->getPermissions());
     }
 
     /**
