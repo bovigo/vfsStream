@@ -150,6 +150,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     public function chmod($permissions)
     {
         $this->permissions = $permissions;
+        clearstatcache();
         return $this;
     }
 
