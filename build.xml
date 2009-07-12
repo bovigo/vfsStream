@@ -72,7 +72,7 @@
       <param value="${version}"/>
     </php>
     <echo>Version to be build: ${version}</echo>
-    <property name="pkg.name" value="stubbles-${version}" override="true"/>
+    <property name="pkg.name" value="vfsStream-${version}" override="true"/>
     <property name="build.src.dir" value="${build.base.dir}/${pkg.name}" override="true"/>
   </target>
 
