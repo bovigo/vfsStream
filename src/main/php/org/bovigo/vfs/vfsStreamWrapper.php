@@ -284,7 +284,6 @@ class vfsStreamWrapper
      *
      * @param   string  $path
      * @return  bool
-     * @todo    do not remove path if filemode does not allow this
      */
     public function unlink($path)
     {
@@ -327,7 +326,6 @@ class vfsStreamWrapper
      * @param   int     $mode
      * @param   int     $options
      * @return  bool
-     * @todo    do not create directory if parent directory does not allow this
      */
     public function mkdir($path, $mode, $options)
     {
@@ -370,7 +368,6 @@ class vfsStreamWrapper
      * @param   string  $path
      * @param   int     $options
      * @return  bool
-     * @todo    do not remove directory if parent directory does not allow this
      * @todo    consider $options with STREAM_MKDIR_RECURSIVE
      */
     public function rmdir($path, $options)
