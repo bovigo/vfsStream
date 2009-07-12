@@ -117,5 +117,51 @@ interface vfsStreamContent
      * @return  int
      */
     public function getPermissions();
+
+    /**
+     * change owner of file to given user
+     *
+     * @param   int               $user
+     * @return  vfsStreamContent
+     */
+    public function chown($user);
+
+    /**
+     * checks whether file is owned by given user
+     *
+     * @param   int  $user
+     * @return  bool
+     */
+    public function isOwnedByUser($user);
+
+    /**
+     * returns owner of file
+     *
+     * @return  int
+     */
+    public function getUser();
+
+    /**
+     * change owner group of file to given group
+     *
+     * @param   int               $group
+     * @return  vfsStreamContent
+     */
+    public function chgrp($group);
+
+    /**
+     * checks whether file is owned by group
+     *
+     * @param   int   $group
+     * @return  bool
+     */
+    public function isOwnedByGroup($group);
+
+    /**
+     * returns owner group of file
+     *
+     * @return  int
+     */
+    public function getGroup();
 }
 ?>

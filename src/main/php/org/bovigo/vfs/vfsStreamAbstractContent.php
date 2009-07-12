@@ -40,6 +40,18 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @var  int
      */
     protected $permissions;
+    /**
+     * owner of the file
+     *
+     * @var  int
+     */
+    protected $user;
+    /**
+     * owner group of the file
+     *
+     * @var  int
+     */
+    protected $group;
 
     /**
      * constructor
@@ -52,6 +64,8 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
         $this->name         = $name;
         $this->lastModified = time();
         $this->permissions  = $permissions;
+        $this->user         = vfsStream::getCurrentUser();
+        $this->group        = vfsStream::getCurrentGroup();
     }
 
     /**
@@ -162,6 +176,72 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     public function getPermissions()
     {
         return $this->permissions;
+    }
+
+    /**
+     * change owner of file to given user
+     *
+     * @param   int               $user
+     * @return  vfsStreamContent
+     */
+    public function chown($user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * checks whether file is owned by given user
+     *
+     * @param   int  $user
+     * @return  bool
+     */
+    public function isOwnedByUser($user)
+    {
+        return $this->user === $user;
+    }
+
+    /**
+     * returns owner of file
+     *
+     * @return  int
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * change owner group of file to given group
+     *
+     * @param   int               $group
+     * @return  vfsStreamContent
+     */
+    public function chgrp($group)
+    {
+        $this->group = $group;
+        return $this;
+    }
+
+    /**
+     * checks whether file is owned by group
+     *
+     * @param   int   $group
+     * @return  bool
+     */
+    public function isOwnedByGroup($group)
+    {
+        return $this->group === $group;
+    }
+
+    /**
+     * returns owner group of file
+     *
+     * @return  int
+     */
+    public function getGroup()
+    {
+        return $this->group;
     }
 }
 ?>

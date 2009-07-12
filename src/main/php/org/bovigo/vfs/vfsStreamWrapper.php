@@ -259,7 +259,6 @@ class vfsStreamWrapper
      * returns status of stream
      *
      * @return  array
-     * @todo    implement correct group and user id handling based on content
      */
     public function stream_stat()
     {
@@ -267,8 +266,8 @@ class vfsStreamWrapper
                           'ino'     => 0,
                           'mode'    => $this->content->getType() | $this->content->getPermissions(),
                           'nlink'   => 0,
-                          'uid'     => function_exists('posix_getuid') ? posix_getuid() : 0,
-                          'gid'     => function_exists('posix_getgid') ? posix_getgid() : 0,
+                          'uid'     => $this->content->getUser(),
+                          'gid'     => $this->content->getGroup(),
                           'rdev'    => 0,
                           'size'    => $this->content->size(),
                           'atime'   => $this->content->filemtime(),
@@ -460,7 +459,6 @@ class vfsStreamWrapper
      *
      * @param   string  $path  path of url to return status for
      * @return  array
-     * @todo    implement correct group and user id handling based on content
      */
     public function url_stat($path)
     {
@@ -473,8 +471,8 @@ class vfsStreamWrapper
                           'ino'     => 0,
                           'mode'    => $content->getType() | $content->getPermissions(),
                           'nlink'   => 0,
-                          'uid'     => function_exists('posix_getuid') ? posix_getuid() : 0,
-                          'gid'     => function_exists('posix_getgid') ? posix_getgid() : 0,
+                          'uid'     => $content->getUser(),
+                          'gid'     => $content->getGroup(),
                           'rdev'    => 0,
                           'size'    => $content->size(),
                           'atime'   => $content->filemtime(),

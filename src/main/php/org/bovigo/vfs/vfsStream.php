@@ -19,7 +19,31 @@ class vfsStream
     /**
      * url scheme
      */
-    const SCHEME = 'vfs';
+    const SCHEME       = 'vfs';
+    /**
+     * owner: root
+     */
+    const OWNER_ROOT   = 0;
+    /**
+     * owner: user 1
+     */
+    const OWNER_USER_1 = 1;
+    /**
+     * owner: user 2
+     */
+    const OWNER_USER_2 = 2;
+    /**
+     * group: root
+     */
+    const GROUP_ROOT   = 0;
+    /**
+     * group: user 1
+     */
+    const GROUP_USER_1 = 1;
+    /**
+     * group: user 2
+     */
+    const GROUP_USER_2 = 2;
 
     /**
      * prepends the scheme to the given URL
@@ -88,6 +112,30 @@ class vfsStream
         $directory = new vfsStreamDirectory($ownName, $permissions);
         self::newDirectory($subDirs, $permissions)->at($directory);
         return $directory;
+    }
+
+    /**
+     * returns current user
+     *
+     * If the system does not support posix_getuid() the current user will be root (0).
+     *
+     * @return  int
+     */
+    public static function getCurrentUser()
+    {
+        return function_exists('posix_getuid') ? posix_getuid() : self::OWNER_ROOT;
+    }
+
+    /**
+     * returns current group
+     *
+     * If the system does not support posix_getgid() the current group will be root (0).
+     *
+     * @return  int
+     */
+    public static function getCurrentGroup()
+    {
+        return function_exists('posix_getgid') ? posix_getgid() : self::GROUP_ROOT;
     }
 }
 ?>

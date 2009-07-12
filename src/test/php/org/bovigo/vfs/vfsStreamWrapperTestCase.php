@@ -221,5 +221,76 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         #$this->assertEquals(100644, decoct(fileperms($this->baz1URL)));
         #$this->assertEquals(100664, decoct(fileperms($this->baz2URL)));
     }
+
+    /**
+     * file owner
+     *
+     * @test
+     * @group  permissions
+     */
+    public function chown()
+    {
+        $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->fooURL));
+        $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->barURL));
+        $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->baz1URL));
+        $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->baz2URL));
+        
+        $this->foo->chown(vfsStream::OWNER_USER_1);
+        $this->bar->chown(vfsStream::OWNER_USER_1);
+        $this->baz1->chown(vfsStream::OWNER_USER_2);
+        $this->baz2->chown(vfsStream::OWNER_USER_2);
+        
+        
+        $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->fooURL));
+        $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->barURL));
+        $this->assertEquals(vfsStream::OWNER_USER_2, fileowner($this->baz1URL));
+        $this->assertEquals(vfsStream::OWNER_USER_2, fileowner($this->baz2URL));
+    }
+
+    /**
+     * chown() does not work with vfsStream URLs
+     *
+     * @test
+     */
+    public function chownDoesNotWorkOnVfsStreamUrls()
+    {
+        $this->assertFalse(chown($this->fooURL, vfsStream::OWNER_USER_2));
+        $this->assertEquals(vfsStream::OWNER_ROOT, fileowner($this->fooURL));
+    }
+
+    /**
+     * file group owner
+     *
+     * @test
+     * @group  permissions
+     */
+    public function chgrp()
+    {
+        $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->fooURL));
+        $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->barURL));
+        $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->baz1URL));
+        $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->baz2URL));
+        
+        $this->foo->chgrp(vfsStream::GROUP_USER_1);
+        $this->bar->chgrp(vfsStream::GROUP_USER_1);
+        $this->baz1->chgrp(vfsStream::GROUP_USER_2);
+        $this->baz2->chgrp(vfsStream::GROUP_USER_2);
+        
+        $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->fooURL));
+        $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->barURL));
+        $this->assertEquals(vfsStream::GROUP_USER_2, filegroup($this->baz1URL));
+        $this->assertEquals(vfsStream::GROUP_USER_2, filegroup($this->baz2URL));
+    }
+
+    /**
+     * chgrp() does not work with vfsStream URLs
+     *
+     * @test
+     */
+    public function chgrpDoesNotWorkOnVfsStreamUrls()
+    {
+        $this->assertFalse(chgrp($this->fooURL, vfsStream::GROUP_USER_2));
+        $this->assertEquals(vfsStream::GROUP_ROOT, filegroup($this->fooURL));
+    }
 }
 ?>

@@ -221,5 +221,35 @@ class vfsStreamFileTestCase extends PHPUnit_Framework_TestCase
         $this->assertSame($this->file, $this->file->chmod(0600));
         $this->assertEquals(0600, $this->file->getPermissions());
     }
+
+    /**
+     * setting and retrieving owner of a file
+     *
+     * @test
+     * @group  permissions
+     */
+    public function owner()
+    {
+        $this->assertEquals(vfsStream::getCurrentUser(), $this->file->getUser());
+        $this->assertTrue($this->file->isOwnedByUser(vfsStream::getCurrentUser()));
+        $this->assertSame($this->file, $this->file->chown(vfsStream::OWNER_USER_1));
+        $this->assertEquals(vfsStream::OWNER_USER_1, $this->file->getUser());
+        $this->assertTrue($this->file->isOwnedByUser(vfsStream::OWNER_USER_1));
+    }
+
+    /**
+     * setting and retrieving owner group of a file
+     *
+     * @test
+     * @group  permissions
+     */
+    public function group()
+    {
+        $this->assertEquals(vfsStream::getCurrentGroup(), $this->file->getGroup());
+        $this->assertTrue($this->file->isOwnedByGroup(vfsStream::getCurrentGroup()));
+        $this->assertSame($this->file, $this->file->chgrp(vfsStream::GROUP_USER_1));
+        $this->assertEquals(vfsStream::GROUP_USER_1, $this->file->getGroup());
+        $this->assertTrue($this->file->isOwnedByGroup(vfsStream::GROUP_USER_1));
+    }
 }
 ?>
