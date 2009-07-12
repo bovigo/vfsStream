@@ -23,14 +23,19 @@
       <stability release="alpha" api="alpha"/>
 
       <changelog version="0.4.0" api_version="0.4.0">
-        - initial support for file modes
-        - fixed bug #5: vfsStreamDirectory::addChild() does not replace child with same name
-        - fixed bug with is_writable() because of missing stat() fields, patch provided by Sergey Galkin
+        - added support for file modes, users and groups (with restrictions,
+          see http://code.google.com/p/bovigo/wiki/vfsStreamDocsKnownIssues)
+        - fixed bug #5: vfsStreamDirectory::addChild() does not replace child
+          with same name
+        - fixed bug with is_writable() because of missing stat() fields, patch
+          provided by Sergey Galkin
       </changelog>
 
       <changelog version="0.3.2" api_version="0.3.0" date="2009-02-16">
-        - support trailing slashes on directories in vfsStream urls, patch provided by Gabriel Birke
-        - fixed bug #4: vfsstream can only be read once, reported by Christoph Bloemer
+        - support trailing slashes on directories in vfsStream urls, patch
+          provided by Gabriel Birke
+        - fixed bug #4: vfsstream can only be read once, reported by
+          Christoph Bloemer
         - enabled multiple iterations at the same time over the same directory
       </changelog>
 
