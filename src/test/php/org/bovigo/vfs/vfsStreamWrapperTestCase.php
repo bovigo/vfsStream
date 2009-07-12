@@ -134,8 +134,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(is_readable($this->fooURL . '/another'));
         $this->assertFalse(is_readable(vfsStream::url('another')));
         
-        #$this->foo->chmod(0000);
-        #$this->assertFalse(is_readable($this->baz1URL));
+        $this->foo->chmod(0222);
+        $this->assertFalse(is_readable($this->fooURL));
         
         $this->baz1->chmod(0222);
         $this->assertFalse(is_readable($this->baz1URL));
@@ -155,8 +155,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(is_writable($this->fooURL . '/another'));
         $this->assertFalse(is_writable(vfsStream::url('another')));
         
-        #$this->foo->chmod(0000);
-        #$this->assertFalse(is_writable($this->baz1URL));
+        $this->foo->chmod(0444);
+        $this->assertFalse(is_writable($this->fooURL));
         
         $this->baz1->chmod(0444);
         $this->assertFalse(is_writable($this->baz1URL));
