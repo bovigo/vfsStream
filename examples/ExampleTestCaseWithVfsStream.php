@@ -36,5 +36,15 @@ class ExampleTestCaseWithVfsStream extends PHPUnit_Framework_TestCase
         $example->setDirectory(vfsStream::url('exampleDir'));
         $this->assertTrue(vfsStreamWrapper::getRoot()->hasChild('id'));
     }
+
+    /**
+     * test correct file mode for created directory
+     */
+    public function testDirectoryHasCorrectFilePermissions()
+    {
+        $example = new Example('id');
+        $example->setDirectory(vfsStream::url('exampleDir'));
+        $this->assertEquals(0700, vfsStreamWrapper::getRoot()->getChild('id')->getPermissions());
+    }
 }
 ?>
