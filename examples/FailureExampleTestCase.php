@@ -2,9 +2,9 @@
 /**
  * Test case for class FailureExample.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
  * @subpackage  examples
+ * @version     $Id$
  */
 require_once 'PHPUnit/Framework.php';
 require_once 'vfsStream/vfsStream.php';

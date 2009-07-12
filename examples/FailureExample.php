@@ -2,9 +2,9 @@
 /**
  * Example class to demonstrate testing of failure behaviour with vfsStream.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
  * @subpackage  examples
+ * @version     $Id$
  */
 /**
  * Example class to demonstrate testing of failure behaviour with vfsStream.

@@ -2,9 +2,9 @@
 /**
  * Test case for class Example.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
  * @subpackage  examples
+ * @version     $Id$
  */
 require_once 'PHPUnit/Framework.php';
 require_once 'vfsStream/vfsStream.php';
@@ -35,16 +35,6 @@ class ExampleTestCaseWithVfsStream extends PHPUnit_Framework_TestCase
         $this->assertFalse(vfsStreamWrapper::getRoot()->hasChild('id'));
         $example->setDirectory(vfsStream::url('exampleDir'));
         $this->assertTrue(vfsStreamWrapper::getRoot()->hasChild('id'));
-    }
-
-    /**
-     * test correct file mode for created directory
-     */
-    public function testDirectoryHasCorrectFilePermissions()
-    {
-        $example = new Example('id');
-        $example->setDirectory(vfsStream::url('exampleDir'));
-        $this->assertEquals(0700, vfsStreamWrapper::getRoot()->getChild('id')->getPermissions());
     }
 }
 ?>

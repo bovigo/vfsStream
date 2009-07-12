@@ -2,17 +2,17 @@
 /**
  * Example class.
  *
- * @package     bovigo_vfs
+ * @package     stubbles_vfs
  * @subpackage  examples
  * @version     $Id$
  */
 /**
  * Example class.
  *
- * @package     bovigo_vfs
+ * @package     stubbles_vfs
  * @subpackage  examples
  */
-class Example
+class FilemodeExample
 {
     /**
      * id of the example
@@ -26,15 +26,23 @@ class Example
      * @var  string
      */
     protected $directory;
+    /**
+     * file mode for newly created directories
+     *
+     * @var  int
+     */
+    protected $fileMode;
 
     /**
      * constructor
      *
      * @param  string  $id
+     * @param  int     $fileMode  optional
      */
-    public function __construct($id)
+    public function __construct($id,  $fileMode = 0700)
     {
-        $this->id = $id;
+        $this->id       = $id;
+        $this->fileMode = $fileMode;
     }
 
     /**
@@ -46,7 +54,7 @@ class Example
     {
         $this->directory = $directory . DIRECTORY_SEPARATOR . $this->id;
         if (file_exists($this->directory) === false) {
-            mkdir($this->directory, 0700, true);
+            mkdir($this->directory, $this->fileMode, true);
         }
     }
 
