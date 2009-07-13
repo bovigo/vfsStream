@@ -273,8 +273,8 @@ class vfsStreamWrapper
                           'atime'   => $this->content->filemtime(),
                           'mtime'   => $this->content->filemtime(),
                           'ctime'   => $this->content->filemtime(),
-                          'blksize' => 0,
-                          'blocks'  => 0
+                          'blksize' => -1,
+                          'blocks'  => -1
                     );
         return array_merge(array_values($fileStat), $fileStat);
     }
@@ -475,8 +475,8 @@ class vfsStreamWrapper
                           'atime'   => $content->filemtime(),
                           'mtime'   => $content->filemtime(),
                           'ctime'   => $content->filemtime(),
-                          'blksize' => 0,
-                          'blocks'  => 0
+                          'blksize' => -1,
+                          'blocks'  => -1
                     );
         return array_merge(array_values($fileStat), $fileStat);
     }

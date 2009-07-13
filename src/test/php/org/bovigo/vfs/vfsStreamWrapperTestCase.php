@@ -301,5 +301,57 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(@chgrp($this->fooURL, vfsStream::GROUP_USER_2));
         $this->assertEquals(vfsStream::GROUP_ROOT, filegroup($this->fooURL));
     }
+
+    /**
+     * stat() and fstat() should return the same result
+     *
+     * @test
+     */
+    public function statAndFstatReturnSameResult()
+    {
+        $fp = fopen($this->baz2URL, 'r');
+        $this->assertEquals(stat($this->baz2URL),
+                            fstat($fp)
+        );
+        fclose($fp);
+    }
+
+    /**
+     * stat() returns full data
+     *
+     * @test
+     */
+    public function statReturnsFullData()
+    {
+        $this->assertEquals(array(0         => 0,
+                                  1         => 0,
+                                  2         => 0100666,
+                                  3         => 0,
+                                  4         => vfsStream::getCurrentUser(),
+                                  5         => vfsStream::getCurrentGroup(),
+                                  6         => 0,
+                                  7         => 4,
+                                  8         => 400,
+                                  9         => 400,
+                                  10        => 400,
+                                  11        => -1,
+                                  12        => -1,
+                                  'dev'     => 0,
+                                  'ino'     => 0,
+                                  'mode'    => 0100666,
+                                  'nlink'   => 0,
+                                  'uid'     => vfsStream::getCurrentUser(),
+                                  'gid'     => vfsStream::getCurrentGroup(),
+                                  'rdev'    => 0,
+                                  'size'    => 4,
+                                  'atime'   => 400,
+                                  'mtime'   => 400,
+                                  'ctime'   => 400,
+                                  'blksize' => -1,
+                                  'blocks'  => -1
+                            ),
+                            stat($this->baz2URL)
+        );
+    }
 }
 ?>
