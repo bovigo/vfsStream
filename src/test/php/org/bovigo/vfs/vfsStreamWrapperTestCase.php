@@ -209,17 +209,24 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(40700, decoct(fileperms($this->barURL)));
         $this->assertEquals(100644, decoct(fileperms($this->baz1URL)));
         $this->assertEquals(100600, decoct(fileperms($this->baz2URL)));
-        
-        # chmod() only supports real files, there is no way a stream wrapper
-        # can be called to change the file mode of a certain path
-        #chmod($this->fooURL, 0755);
-        #chmod($this->barURL, 0711);
-        #chmod($this->baz1URL, 0644);
-        #chmod($this->baz2URL, 0664);
-        #$this->assertEquals(40755, decoct(fileperms($this->fooURL)));
-        #$this->assertEquals(40711, decoct(fileperms($this->barURL)));
-        #$this->assertEquals(100644, decoct(fileperms($this->baz1URL)));
-        #$this->assertEquals(100664, decoct(fileperms($this->baz2URL)));
+    }
+
+    /**
+     * chmod() does not work with vfsStream URLs
+     *
+     * @test
+     */
+    public function chmodDoesNotWorkOnVfsStreamUrls()
+    {
+        // silence down chmod() because of error message for invalid url
+        $this->assertFalse(@chmod($this->fooURL, 0755));
+        $this->assertFalse(@chmod($this->barURL, 0711));
+        $this->assertFalse(@chmod($this->baz1URL, 0644));
+        $this->assertFalse(@chmod($this->baz2URL, 0664));
+        $this->assertEquals(40777, decoct(fileperms($this->fooURL)));
+        $this->assertEquals(40777, decoct(fileperms($this->barURL)));
+        $this->assertEquals(100666, decoct(fileperms($this->baz1URL)));
+        $this->assertEquals(100666, decoct(fileperms($this->baz2URL)));
     }
 
     /**
@@ -254,7 +261,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function chownDoesNotWorkOnVfsStreamUrls()
     {
-        $this->assertFalse(chown($this->fooURL, vfsStream::OWNER_USER_2));
+        // silence down chown() because of error message for invalid url
+        $this->assertFalse(@chown($this->fooURL, vfsStream::OWNER_USER_2));
         $this->assertEquals(vfsStream::OWNER_ROOT, fileowner($this->fooURL));
     }
 
@@ -289,7 +297,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function chgrpDoesNotWorkOnVfsStreamUrls()
     {
-        $this->assertFalse(chgrp($this->fooURL, vfsStream::GROUP_USER_2));
+        // silence down chgrp() because of error message for invalid url
+        $this->assertFalse(@chgrp($this->fooURL, vfsStream::GROUP_USER_2));
         $this->assertEquals(vfsStream::GROUP_ROOT, filegroup($this->fooURL));
     }
 }
