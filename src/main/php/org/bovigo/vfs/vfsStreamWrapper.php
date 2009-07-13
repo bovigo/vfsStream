@@ -2,8 +2,8 @@
 /**
  * Stream wrapper to mock file system requests.
  *
- * @package     bovigo_vfs
- * @version     $Id$
+ * @package  bovigo_vfs
+ * @version  $Id$
  */
 /**
  * @ignore
@@ -14,7 +14,7 @@ require_once dirname(__FILE__) . '/vfsStreamException.php';
 /**
  * Stream wrapper to mock file system requests.
  *
- * @package     bovigo_vfs
+ * @package  bovigo_vfs
  */
 class vfsStreamWrapper
 {

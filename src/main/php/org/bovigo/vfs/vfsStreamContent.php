@@ -2,8 +2,8 @@
 /**
  * Interface for stream contents.
  *
- * @package     bovigo_vfs
- * @version     $Id$
+ * @package  bovigo_vfs
+ * @version  $Id$
  */
 /**
  * @ignore
@@ -12,7 +12,7 @@ require_once dirname(__FILE__) . '/vfsStreamContainer.php';
 /**
  * Interface for stream contents.
  *
- * @package     bovigo_vfs
+ * @package  bovigo_vfs
  */
 interface vfsStreamContent
 {

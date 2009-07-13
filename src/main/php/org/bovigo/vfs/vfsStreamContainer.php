@@ -2,13 +2,13 @@
 /**
  * Interface for stream contents that are able to store other stream contents.
  *
- * @package     bovigo_vfs
- * @version     $Id$
+ * @package  bovigo_vfs
+ * @version  $Id$
  */
 /**
  * Interface for stream contents that are able to store other stream contents.
  *
- * @package     bovigo_vfs
+ * @package  bovigo_vfs
  */
 interface vfsStreamContainer extends IteratorAggregate
 {

@@ -2,13 +2,13 @@
 /**
  * Exception for streamwrapper subpackage.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
- * @package     bovigo_vfs
+ * @package  bovigo_vfs
+ * @version  $Id$
  */
 /**
  * Exception for streamwrapper subpackage.
  *
- * @package     bovigo_vfs
+ * @package  bovigo_vfs
  */
 class vfsStreamException extends Exception
 {

@@ -2,8 +2,8 @@
 /**
  * File container.
  *
- * @package     bovigo_vfs
- * @version     $Id$
+ * @package  bovigo_vfs
+ * @version  $Id$
  */
 /**
  * @ignore
@@ -12,7 +12,7 @@ require_once dirname(__FILE__) . '/vfsStreamAbstractContent.php';
 /**
  * File container.
  *
- * @package     bovigo_vfs
+ * @package  bovigo_vfs
  */
 class vfsStreamFile extends vfsStreamAbstractContent
 {
@@ -160,16 +160,19 @@ class vfsStreamFile extends vfsStreamAbstractContent
     public function seek($offset, $whence)
     {
         switch ($whence) {
-            case SEEK_SET:
-                $this->bytes_read = $offset;
-                return true;
-            
             case SEEK_CUR:
                 $this->bytes_read += $offset;
                 return true;
             
             case SEEK_END:
                 $this->bytes_read = strlen($this->content) + $offset;
+                return true;
+            
+            case SEEK_SET:
+                // break omitted
+            
+            default:
+                $this->bytes_read = $offset;
                 return true;
         }
         

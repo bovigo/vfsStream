@@ -2,8 +2,8 @@
 /**
  * Directory container.
  *
- * @package     bovigo_vfs
- * @version     $Id$
+ * @package  bovigo_vfs
+ * @version  $Id$
  */
 /**
  * @ignore
@@ -15,7 +15,7 @@ require_once dirname(__FILE__) . '/vfsStreamException.php';
 /**
  * Directory container.
  *
- * @package     bovigo_vfs
+ * @package  bovigo_vfs
  */
 class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamContainer
 {
@@ -170,6 +170,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      * helper method to calculate the child name
      *
      * @param   string  $name
+     * @param   string  $ownName
      * @return  string
      */
     protected static function getChildName($name, $ownName)

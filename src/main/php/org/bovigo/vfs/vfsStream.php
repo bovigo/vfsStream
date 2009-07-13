@@ -2,8 +2,8 @@
 /**
  * Some utility methods for vfsStream.
  *
- * @package     bovigo_vfs
- * @version     $Id$
+ * @package  bovigo_vfs
+ * @version  $Id$
  */
 /**
  * @ignore
@@ -12,7 +12,7 @@ require_once dirname(__FILE__) . '/vfsStreamWrapper.php';
 /**
  * Some utility methods for vfsStream.
  *
- * @package     bovigo_vfs
+ * @package  bovigo_vfs
  */
 class vfsStream
 {
@@ -65,7 +65,7 @@ class vfsStream
     public static function path($url)
     {
         // remove line feeds and trailing whitespaces
-        $path = trim($url," \t\r\n\0\x0B/");
+        $path = trim($url, " \t\r\n\0\x0B/");
         $path = substr($path, strlen(self::SCHEME . '://'));
         $path = str_replace('\\', '/', $path);
         // replace double slashes with single slashes
