@@ -263,7 +263,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     {
         // silence down chown() because of error message for invalid url
         $this->assertFalse(@chown($this->fooURL, vfsStream::OWNER_USER_2));
-        $this->assertEquals(vfsStream::OWNER_ROOT, fileowner($this->fooURL));
+        $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->fooURL));
     }
 
     /**
@@ -299,7 +299,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     {
         // silence down chgrp() because of error message for invalid url
         $this->assertFalse(@chgrp($this->fooURL, vfsStream::GROUP_USER_2));
-        $this->assertEquals(vfsStream::GROUP_ROOT, filegroup($this->fooURL));
+        $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->fooURL));
     }
 
     /**
