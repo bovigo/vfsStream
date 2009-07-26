@@ -321,7 +321,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      *
      * @test
      */
-    public function statReturnsFullData()
+    public function statReturnsFullDataForFiles()
     {
         $this->assertEquals(array(0         => 0,
                                   1         => 0,
@@ -351,6 +351,44 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
                                   'blocks'  => -1
                             ),
                             stat($this->baz2URL)
+        );
+    }
+
+    /**
+     * stat() returns full data
+     *
+     * @test
+     */
+    public function statReturnsFullDataForDirectories()
+    {
+        $this->assertEquals(array(0         => 0,
+                                  1         => 0,
+                                  2         => 0040777,
+                                  3         => 0,
+                                  4         => vfsStream::getCurrentUser(),
+                                  5         => vfsStream::getCurrentGroup(),
+                                  6         => 0,
+                                  7         => 0,
+                                  8         => 100,
+                                  9         => 100,
+                                  10        => 100,
+                                  11        => -1,
+                                  12        => -1,
+                                  'dev'     => 0,
+                                  'ino'     => 0,
+                                  'mode'    => 0040777,
+                                  'nlink'   => 0,
+                                  'uid'     => vfsStream::getCurrentUser(),
+                                  'gid'     => vfsStream::getCurrentGroup(),
+                                  'rdev'    => 0,
+                                  'size'    => 0,
+                                  'atime'   => 100,
+                                  'mtime'   => 100,
+                                  'ctime'   => 100,
+                                  'blksize' => -1,
+                                  'blocks'  => -1
+                            ),
+                            stat($this->fooURL)
         );
     }
 }
