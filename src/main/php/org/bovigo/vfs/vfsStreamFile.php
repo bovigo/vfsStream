@@ -169,11 +169,11 @@ class vfsStreamFile extends vfsStreamAbstractContent
                 return true;
             
             case SEEK_SET:
-                // break omitted
-            
-            default:
                 $this->bytes_read = $offset;
                 return true;
+            
+            default:
+                return false;
         }
         
         return false;
