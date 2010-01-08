@@ -312,11 +312,37 @@ class vfsStreamWrapper
      * @param   string  $path_from
      * @param   string  $path_to
      * @return  bool
-     * @todo    implement :)
+     * @author  Benoit Aubuchon
      */
     public function rename($path_from, $path_to)
     {
-        return false;
+        $srcRealPath = vfsStream::path($path_from);
+        $dstRealPath = vfsStream::path($path_to);
+        $srcContent  = $this->getContent($srcRealPath);
+        if (null == $srcContent) {
+            trigger_error(' No such file or directory', E_USER_WARNING);
+            return false;
+        }
+
+        $dstContent = clone $srcContent;
+        $dstNames   = $this->splitPath($dstRealPath);
+        // Renaming the filename
+        $dstContent->rename($dstNames['basename']);
+        // Copying to the destination
+        $dstParentContent = $this->getContent($dstNames['dirname']);
+        if (null == $dstParentContent) {
+            trigger_error('No such file or directory', E_USER_WARNING);
+            return false;
+        }
+
+        if ($dstParentContent->getType() !== vfsStreamContent::TYPE_DIR) {
+            trigger_error('Target is not a directory', E_USER_WARNING);
+            return false;
+        }
+
+        $dstParentContent->addChild($dstContent);
+        // Removing the source
+        return $this->unlink($path_from);
     }
 
     /**
@@ -457,11 +483,15 @@ class vfsStreamWrapper
      * @param   string  $path  path of url to return status for
      * @return  array
      */
-    public function url_stat($path)
+    public function url_stat($path, $flags)
     {
         $content = $this->getContent(vfsStream::path($path));
         if (null === $content) {
+            if ( !($flags & STREAM_URL_STAT_QUIET) ) {
+                trigger_error(' No such file or directory', E_USER_WARNING);
+            }
             return false;
+
         }
 
         $fileStat = array('dev'     => 0,

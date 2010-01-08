@@ -303,6 +303,78 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
+     * @test
+     * @author  Benoit Aubuchon
+     */
+    public function renameDirectory()
+    {
+        // move foo/bar to foo/baz3
+        $baz3URL = vfsStream::url('foo/baz3');
+        $this->assertTrue(rename($this->barURL, $baz3URL));
+        $this->assertFileExists($baz3URL);
+        $this->assertFileNotExists($this->barURL);
+    }
+
+    /**
+     * @test
+     * @author  Benoit Aubuchon
+     */
+    public function renameDirectoryOverwritingExistingFile()
+    {
+        // move foo/bar to foo/baz2
+        $this->assertTrue(rename($this->barURL, $this->baz2URL));
+        $this->assertFileExists(vfsStream::url('foo/baz2/baz1'));
+        $this->assertFileNotExists($this->barURL);
+    }
+
+    /**
+     * @test
+     * @expectedException  PHPUnit_Framework_Error
+     */
+    public function renameFileIntoFile()
+    {
+        // foo/baz2 is a file, so it can not be turned into a directory
+        $baz3URL = vfsStream::url('foo/baz2/baz3');
+        $this->assertTrue(rename($this->baz1URL, $baz3URL));
+        $this->assertFileExists($baz3URL);
+        $this->assertFileNotExists($this->baz1URL);
+    }
+
+    /**
+     * @test
+     * @author  Benoit Aubuchon
+     */
+    public function renameFileToDirectory()
+    {
+        // move foo/bar/baz1 to foo/baz3
+        $baz3URL = vfsStream::url('foo/baz3');
+        $this->assertTrue(rename($this->baz1URL, $baz3URL));
+        $this->assertFileExists($this->barURL);
+        $this->assertFileExists($baz3URL);
+        $this->assertFileNotExists($this->baz1URL);
+    }
+
+    /**
+     * assert that trying to rename from a non existing file trigger a warning
+     * 
+     * @expectedException PHPUnit_Framework_Error
+     * @test
+     */    
+    public function renameOnSourceFileNotFound()
+    {
+        rename(vfsStream::url('notfound'), $this->baz1URL);
+    }
+    /**
+     * assert that trying to rename to a directory that is not found trigger a warning
+     
+     * @expectedException PHPUnit_Framework_Error
+     * @test
+     */    
+    public function renameOnDestinationDirectoryFileNotFound()
+    {
+        rename($this->baz1URL, vfsStream::url('foo/notfound/file2'));
+    }
+    /**
      * stat() and fstat() should return the same result
      *
      * @test

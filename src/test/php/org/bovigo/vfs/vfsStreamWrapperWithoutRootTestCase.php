@@ -61,7 +61,7 @@ class vfsStreamWrapperWithoutRootTestCase extends PHPUnit_Framework_TestCase
      */
     public function canNotRename()
     {
-        $this->assertFalse(rename(vfsStream::url('foo'), vfsStream::url('bar')));
+        $this->assertFalse(@rename(vfsStream::url('foo'), vfsStream::url('bar')));
     }
 }
 ?>
