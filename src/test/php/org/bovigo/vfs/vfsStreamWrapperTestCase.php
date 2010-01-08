@@ -39,7 +39,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function filesize()
     {
         $this->assertEquals(0, filesize($this->fooURL));
+        $this->assertEquals(0, filesize($this->fooURL . '/.'));
         $this->assertEquals(0, filesize($this->barURL));
+        $this->assertEquals(0, filesize($this->barURL . '/.'));
         $this->assertEquals(4, filesize($this->baz2URL));
         $this->assertEquals(5, filesize($this->baz1URL));
     }
@@ -52,7 +54,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function file_exists()
     {
         $this->assertTrue(file_exists($this->fooURL));
+        $this->assertTrue(file_exists($this->fooURL . '/.'));
         $this->assertTrue(file_exists($this->barURL));
+        $this->assertTrue(file_exists($this->barURL . '/.'));
         $this->assertTrue(file_exists($this->baz1URL));
         $this->assertTrue(file_exists($this->baz2URL));
         $this->assertFalse(file_exists($this->fooURL . '/another'));
@@ -67,7 +71,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function filemtime()
     {
         $this->assertEquals(100, filemtime($this->fooURL));
+        $this->assertEquals(100, filemtime($this->fooURL . '/.'));
         $this->assertEquals(200, filemtime($this->barURL));
+        $this->assertEquals(200, filemtime($this->barURL . '/.'));
         $this->assertEquals(300, filemtime($this->baz1URL));
         $this->assertEquals(400, filemtime($this->baz2URL));
     }
@@ -88,7 +94,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(unlink($this->fooURL . '/another'));
         $this->assertFalse(unlink(vfsStream::url('another')));
         $this->assertEquals(array(), $this->foo->getChildren());
-        $this->assertTrue(unlink($this->fooURL));
+        $this->assertTrue(unlink($this->fooURL . '/.'));
         $this->assertFalse(file_exists($this->fooURL)); // make sure statcache was cleared
         $this->assertNull(vfsStreamWrapper::getRoot());
     }
@@ -128,7 +134,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function is_readable()
     {
         $this->assertTrue(is_readable($this->fooURL));
+        $this->assertTrue(is_readable($this->fooURL . '/.'));
         $this->assertTrue(is_readable($this->barURL));
+        $this->assertTrue(is_readable($this->barURL . '/.'));
         $this->assertTrue(is_readable($this->baz1URL));
         $this->assertTrue(is_readable($this->baz2URL));
         $this->assertFalse(is_readable($this->fooURL . '/another'));
@@ -149,7 +157,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function is_writable()
     {
         $this->assertTrue(is_writable($this->fooURL));
+        $this->assertTrue(is_writable($this->fooURL . '/.'));
         $this->assertTrue(is_writable($this->barURL));
+        $this->assertTrue(is_writable($this->barURL . '/.'));
         $this->assertTrue(is_writable($this->baz1URL));
         $this->assertTrue(is_writable($this->baz2URL));
         $this->assertFalse(is_writable($this->fooURL . '/another'));
@@ -183,7 +193,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function directoriesAndNonExistingFilesAreNeverExecutable()
     {
         $this->assertFalse(is_executable($this->fooURL));
+        $this->assertFalse(is_executable($this->fooURL . '/.'));
         $this->assertFalse(is_executable($this->barURL));
+        $this->assertFalse(is_executable($this->barURL . '/.'));
         $this->assertFalse(is_executable($this->fooURL . '/another'));
         $this->assertFalse(is_executable(vfsStream::url('another')));
     }
@@ -197,7 +209,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function chmod()
     {
         $this->assertEquals(40777, decoct(fileperms($this->fooURL)));
+        $this->assertEquals(40777, decoct(fileperms($this->fooURL . '/.')));
         $this->assertEquals(40777, decoct(fileperms($this->barURL)));
+        $this->assertEquals(40777, decoct(fileperms($this->barURL . '/.')));
         $this->assertEquals(100666, decoct(fileperms($this->baz1URL)));
         $this->assertEquals(100666, decoct(fileperms($this->baz2URL)));
         
@@ -206,7 +220,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->baz1->chmod(0644);
         $this->baz2->chmod(0600);
         $this->assertEquals(40755, decoct(fileperms($this->fooURL)));
+        $this->assertEquals(40755, decoct(fileperms($this->fooURL . '/.')));
         $this->assertEquals(40700, decoct(fileperms($this->barURL)));
+        $this->assertEquals(40700, decoct(fileperms($this->barURL . '/.')));
         $this->assertEquals(100644, decoct(fileperms($this->baz1URL)));
         $this->assertEquals(100600, decoct(fileperms($this->baz2URL)));
     }
@@ -238,7 +254,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function chown()
     {
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->fooURL));
+        $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->fooURL . '/.'));
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->barURL));
+        $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->barURL . '/.'));
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->baz1URL));
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->baz2URL));
         
@@ -249,7 +267,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         
         
         $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->fooURL));
+        $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->fooURL . '/.'));
         $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->barURL));
+        $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->barURL . '/.'));
         $this->assertEquals(vfsStream::OWNER_USER_2, fileowner($this->baz1URL));
         $this->assertEquals(vfsStream::OWNER_USER_2, fileowner($this->baz2URL));
     }
@@ -275,7 +295,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function chgrp()
     {
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->fooURL));
+        $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->fooURL . '/.'));
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->barURL));
+        $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->barURL . '/.'));
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->baz1URL));
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->baz2URL));
         
@@ -285,7 +307,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->baz2->chgrp(vfsStream::GROUP_USER_2);
         
         $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->fooURL));
+        $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->fooURL . '/.'));
         $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->barURL));
+        $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->barURL . '/.'));
         $this->assertEquals(vfsStream::GROUP_USER_2, filegroup($this->baz1URL));
         $this->assertEquals(vfsStream::GROUP_USER_2, filegroup($this->baz2URL));
     }
@@ -311,6 +335,18 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         // move foo/bar to foo/baz3
         $baz3URL = vfsStream::url('foo/baz3');
         $this->assertTrue(rename($this->barURL, $baz3URL));
+        $this->assertFileExists($baz3URL);
+        $this->assertFileNotExists($this->barURL);
+    }
+
+    /**
+     * @test
+     */
+    public function renameDirectoryWithDots()
+    {
+        // move foo/bar to foo/baz3
+        $baz3URL = vfsStream::url('foo/baz3');
+        $this->assertTrue(rename($this->barURL . '/.', $baz3URL));
         $this->assertFileExists($baz3URL);
         $this->assertFileNotExists($this->barURL);
     }
@@ -427,8 +463,6 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * stat() returns full data
-     *
      * @test
      */
     public function statReturnsFullDataForDirectories()
@@ -461,6 +495,42 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
                                   'blocks'  => -1
                             ),
                             stat($this->fooURL)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function statReturnsFullDataForDirectoriesWithDot()
+    {
+        $this->assertEquals(array(0         => 0,
+                                  1         => 0,
+                                  2         => 0040777,
+                                  3         => 0,
+                                  4         => vfsStream::getCurrentUser(),
+                                  5         => vfsStream::getCurrentGroup(),
+                                  6         => 0,
+                                  7         => 0,
+                                  8         => 100,
+                                  9         => 100,
+                                  10        => 100,
+                                  11        => -1,
+                                  12        => -1,
+                                  'dev'     => 0,
+                                  'ino'     => 0,
+                                  'mode'    => 0040777,
+                                  'nlink'   => 0,
+                                  'uid'     => vfsStream::getCurrentUser(),
+                                  'gid'     => vfsStream::getCurrentGroup(),
+                                  'rdev'    => 0,
+                                  'size'    => 0,
+                                  'atime'   => 100,
+                                  'mtime'   => 100,
+                                  'ctime'   => 100,
+                                  'blksize' => -1,
+                                  'blocks'  => -1
+                            ),
+                            stat($this->fooURL . '/.')
         );
     }
 }

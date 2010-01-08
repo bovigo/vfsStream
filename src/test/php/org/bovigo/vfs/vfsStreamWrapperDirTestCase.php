@@ -161,8 +161,6 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * assure that a directory iteration works as expected
-     *
      * @test
      */
     public function directoryIteration()
@@ -182,6 +180,30 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
             $this->assertTrue('bar' === $entry || 'baz2' === $entry);
         }
         
+        $this->assertEquals(2, $i, 'Directory foo contains two children, but got ' . $i . ' children while iterating over directory contents');
+        $dir->close();
+    }
+
+    /**
+     * @test
+     */
+    public function directoryIterationWithDot()
+    {
+        $dir = dir($this->fooURL . '/.');
+        $i   = 0;
+        while (false !== ($entry = $dir->read())) {
+            $i++;
+            $this->assertTrue('bar' === $entry || 'baz2' === $entry);
+        }
+
+        $this->assertEquals(2, $i, 'Directory foo contains two children, but got ' . $i . ' children while iterating over directory contents');
+        $dir->rewind();
+        $i   = 0;
+        while (false !== ($entry = $dir->read())) {
+            $i++;
+            $this->assertTrue('bar' === $entry || 'baz2' === $entry);
+        }
+
         $this->assertEquals(2, $i, 'Directory foo contains two children, but got ' . $i . ' children while iterating over directory contents');
         $dir->close();
     }
@@ -303,7 +325,9 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     public function is_dir()
     {
         $this->assertTrue(is_dir($this->fooURL));
+        $this->assertTrue(is_dir($this->fooURL . '/.'));
         $this->assertTrue(is_dir($this->barURL));
+        $this->assertTrue(is_dir($this->barURL . '/.'));
         $this->assertFalse(is_dir($this->baz1URL));
         $this->assertFalse(is_dir($this->baz2URL));
         $this->assertFalse(is_dir($this->fooURL . '/another'));
@@ -354,8 +378,6 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * rmdir() can remove empty directories
-     *
      * @test
      */
     public function rmdirCanRemoveEmptyDirectory()
@@ -363,6 +385,17 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         vfsStream::newDirectory('empty')->at($this->foo);
         $this->assertTrue($this->foo->hasChild('empty'));
         $this->assertTrue(rmdir($this->fooURL . '/empty'));
+        $this->assertFalse($this->foo->hasChild('empty'));
+    }
+
+    /**
+     * @test
+     */
+    public function rmdirCanRemoveEmptyDirectoryWithDot()
+    {
+        vfsStream::newDirectory('empty')->at($this->foo);
+        $this->assertTrue($this->foo->hasChild('empty'));
+        $this->assertTrue(rmdir($this->fooURL . '/empty/.'));
         $this->assertFalse($this->foo->hasChild('empty'));
     }
 

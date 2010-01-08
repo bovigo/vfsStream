@@ -153,6 +153,20 @@ class vfsStreamWrapper
     }
 
     /**
+     * helper method to resolve a path from /foo/bar/. to /foo/bar
+     * @param   string  $path
+     * @return  string
+     */
+    protected function resolvePath($path)
+    {
+        if (substr($path, -2) === '/.') {
+            return substr($path, 0, -2);
+        }
+
+        return $path;
+    }
+
+    /**
      * open the stream
      *
      * @param   string  $path         the path to open
@@ -287,7 +301,7 @@ class vfsStreamWrapper
      */
     public function unlink($path)
     {
-        $realPath = vfsStream::path($path);
+        $realPath = $this->resolvePath(vfsStream::path($path));
         $content  = $this->getContent($realPath);
         if (null === $content) {
             return false;
@@ -316,7 +330,7 @@ class vfsStreamWrapper
      */
     public function rename($path_from, $path_to)
     {
-        $srcRealPath = vfsStream::path($path_from);
+        $srcRealPath = $this->resolvePath(vfsStream::path($path_from));
         $dstRealPath = vfsStream::path($path_to);
         $srcContent  = $this->getContent($srcRealPath);
         if (null == $srcContent) {
@@ -398,7 +412,7 @@ class vfsStreamWrapper
      */
     public function rmdir($path, $options)
     {
-        $path  = vfsStream::path($path);
+        $path  = $this->resolvePath(vfsStream::path($path));
         $child = $this->getContentOfType($path, vfsStreamContent::TYPE_DIR);
         if (null === $child) {
             return false;
@@ -431,7 +445,8 @@ class vfsStreamWrapper
      */
     public function dir_opendir($path, $options)
     {
-        $this->dir = $this->getContentOfType(vfsStream::path($path), vfsStreamContent::TYPE_DIR);
+        $path      = $this->resolvePath(vfsStream::path($path));
+        $this->dir = $this->getContentOfType($path, vfsStreamContent::TYPE_DIR);
         if (null === $this->dir) {
             return false;
         }
@@ -485,7 +500,8 @@ class vfsStreamWrapper
      */
     public function url_stat($path, $flags)
     {
-        $content = $this->getContent(vfsStream::path($path));
+        $path    = $this->resolvePath(vfsStream::path($path));
+        $content = $this->getContent($path);
         if (null === $content) {
             if ( !($flags & STREAM_URL_STAT_QUIET) ) {
                 trigger_error(' No such file or directory', E_USER_WARNING);
