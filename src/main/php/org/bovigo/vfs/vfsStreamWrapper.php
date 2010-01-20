@@ -154,6 +154,7 @@ class vfsStreamWrapper
 
     /**
      * helper method to resolve a path from /foo/bar/. to /foo/bar
+     *
      * @param   string  $path
      * @return  string
      */
@@ -495,7 +496,8 @@ class vfsStreamWrapper
     /**
      * returns status of url
      *
-     * @param   string  $path  path of url to return status for
+     * @param   string  $path   path of url to return status for
+     * @param   ?       $flags  flags set by the stream API
      * @return  array
      */
     public function url_stat($path, $flags)
@@ -503,7 +505,7 @@ class vfsStreamWrapper
         $path    = $this->resolvePath(vfsStream::path($path));
         $content = $this->getContent($path);
         if (null === $content) {
-            if ( !($flags & STREAM_URL_STAT_QUIET) ) {
+            if (!($flags & STREAM_URL_STAT_QUIET)) {
                 trigger_error(' No such file or directory', E_USER_WARNING);
             }
             return false;
