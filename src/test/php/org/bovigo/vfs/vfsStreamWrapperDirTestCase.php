@@ -30,6 +30,18 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
+     * mkdir() should not overwrite existing root
+     *
+     * @test
+     */
+    public function mkdirNoNewRootRecursively()
+    {
+        $this->assertFalse(mkdir(vfsStream::url('another/more'), 0777, true));
+        $this->assertEquals(2, count($this->foo->getChildren()));
+        $this->assertSame($this->foo, vfsStreamWrapper::getRoot());
+    }
+
+    /**
      * assert that mkdir() creates the correct directory structure
      *
      * @test
