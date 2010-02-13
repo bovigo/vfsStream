@@ -99,5 +99,60 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(is_file($this->fooURL . '/another'));
         $this->assertFalse(is_file(vfsStream::url('another')));
     }
+
+    /**
+     * @test
+     * @group  issue7
+     * @group  issue13
+     */
+    public function issue13CanNotOverwriteFiles()
+    {
+        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        file_put_contents($vfsFile, 'test');
+        file_put_contents($vfsFile, 'd');
+        $this->assertEquals('d', file_get_contents($vfsFile));
+    }
+
+    /**
+     * @test
+     * @group  issue7
+     * @group  issue13
+     */
+    public function appendContentIfOpenedWithModeA()
+    {
+        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        file_put_contents($vfsFile, 'test');
+        $fp = fopen($vfsFile, 'ab');
+        fwrite($fp, 'd');
+        fclose($fp);
+        $this->assertEquals('testd', file_get_contents($vfsFile));
+    }
+
+    /**
+     * @test
+     * @group  issue7
+     * @group  issue13
+     */
+    public function canOverwriteNonExistingFileWithModeX()
+    {
+        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        $fp = fopen($vfsFile, 'xb');
+        fwrite($fp, 'test');
+        fclose($fp);
+        $this->assertEquals('test', file_get_contents($vfsFile));
+    }
+
+    /**
+     * @test
+     * @group  issue7
+     * @group  issue13
+     */
+    public function canNotOverwriteExistingFileWithModeX()
+    {
+        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        file_put_contents($vfsFile, 'test');
+        $this->assertFalse(@fopen($vfsFile, 'xb'));
+        $this->assertEquals('test', file_get_contents($vfsFile));
+    }
 }
 ?>

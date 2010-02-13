@@ -182,7 +182,17 @@ class vfsStreamWrapper
         $path          = vfsStream::path($path);
         $this->content = $this->getContentOfType($path, vfsStreamContent::TYPE_FILE);
         if (null !== $this->content) {
+            if (strstr($mode, 'x') !== false) {
+                return false;
+            }
+
             $this->content->seek(0, SEEK_SET);
+            if (strstr($mode, 'w') !== false) {
+                $this->content->setContent(''); // truncate
+            } elseif (strstr($mode, 'a') !== false) {
+                $this->content->seek(0, SEEK_END);
+            }
+
             return true;
         }
         
