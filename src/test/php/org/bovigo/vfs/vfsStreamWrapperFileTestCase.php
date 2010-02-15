@@ -182,7 +182,7 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotOpenWithIllegalMode()
     {
-        $this->assertFalse(@fopen($this->baz2URL, 'illegal'));
+        $this->assertFalse(@fopen($this->baz2URL, 'invalid'));
     }
 
     /**

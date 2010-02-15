@@ -25,6 +25,8 @@
       <changelog version="0.6.0" api_version="0.4.0">
         - added support for $mode param when opening files, implements
           enhancement #7 and fixes issue #13
+        - vfsStreamWrapper::stream_open() now evaluates $options
+          for STREAM_REPORT_ERRORS
       </changelog>
 
       <changelog version="0.5.0" api_version="0.4.0" date="2010-01-25">

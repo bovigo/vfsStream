@@ -215,6 +215,10 @@ class vfsStreamWrapper
         $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
         $mode     = str_replace(array('b', '+'), '', $mode);
         if (in_array($mode, array('r', 'w', 'a', 'x')) === false) {
+            if (!($options & STREAM_REPORT_ERRORS)) {
+                trigger_error('Illegal mode ' . $mode . ', use r, w, a  or x, flavoured with b and/or +', E_USER_WARNING);
+            }
+
             return false;
         }
 
@@ -223,6 +227,10 @@ class vfsStreamWrapper
         $this->content = $this->getContentOfType($path, vfsStreamContent::TYPE_FILE);
         if (null !== $this->content) {
             if (self::WRITE === $mode) {
+                if (!($options & STREAM_REPORT_ERRORS)) {
+                    trigger_error('File ' . $path . ' already exist, can not open with mode x', E_USER_WARNING);
+                }
+
                 return false;
             }
 
@@ -238,13 +246,25 @@ class vfsStreamWrapper
         
         $names = $this->splitPath($path);
         $dir   = $this->getContentOfType($names['dirname'], vfsStreamContent::TYPE_DIR);
-        // parent directory does not exist, or it does exist but then already
-        // a directory with the basename exists
-        if (null === $dir  || $dir->hasChild($names['basename']) === true) {
+        if (null === $dir) {
+            if (!($options & STREAM_REPORT_ERRORS)) {
+                trigger_error('Directory ' . $names['dirname'] . ' does not exist', E_USER_WARNING);
+            }
+
+            return false;
+        } elseif ($dir->hasChild($names['basename']) === true) {
+            if (!($options & STREAM_REPORT_ERRORS)) {
+                trigger_error('Directory ' . $names['dirname'] . ' already contains a director named ' . $names['basename'], E_USER_WARNING);
+            }
+
             return false;
         }
 
         if (self::READ === $mode) {
+            if (!($options & STREAM_REPORT_ERRORS)) {
+                trigger_error('Can not open non-existing file ' . $path . ' for reading', E_USER_WARNING);
+            }
+
             return false;
         }
 
