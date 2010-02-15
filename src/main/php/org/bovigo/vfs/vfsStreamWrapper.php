@@ -19,6 +19,34 @@ require_once dirname(__FILE__) . '/vfsStreamException.php';
 class vfsStreamWrapper
 {
     /**
+     * open file for reading
+     */
+    const READ                   = 'r';
+    /**
+     * truncate file
+     */
+    const TRUNCATE               = 'w';
+    /**
+     * set file pointer to end, append new data
+     */
+    const APPEND                 = 'a';
+    /**
+     * set file pointer to start, overwrite existing data
+     */
+    const WRITE                  = 'x';
+    /**
+     * file mode: read only
+     */
+    const READONLY               = 0;
+    /**
+     * file mode: write only
+     */
+    const WRITEONLY              = 1;
+    /**
+     * file mode: read and write
+     */
+    const ALL                    = 2;
+    /**
      * switch whether class has already been registered as stream wrapper or not
      *
      * @var  bool
@@ -30,6 +58,12 @@ class vfsStreamWrapper
      * @var  vfsStreamContent
      */
     protected static $root;
+    /**
+     * file mode: read only, write only, all
+     *
+     * @var  int
+     */
+    protected $mode;
     /**
      * shortcut to file container
      *
@@ -175,21 +209,27 @@ class vfsStreamWrapper
      * @param   string  $options      options for opening
      * @param   string  $opened_path  full path that was actually opened
      * @return  bool
-     * @todo    evaluate $mode and take action regarding to its value
      */
     public function stream_open($path, $mode, $options, $opened_path)
     {
+        $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
+        $mode     = str_replace(array('b', '+'), '', $mode);
+        if (in_array($mode, array('r', 'w', 'a', 'x')) === false) {
+            return false;
+        }
+
+        $this->mode    = $this->calculateMode($mode, $extended);
         $path          = vfsStream::path($path);
         $this->content = $this->getContentOfType($path, vfsStreamContent::TYPE_FILE);
         if (null !== $this->content) {
-            if (strstr($mode, 'x') !== false) {
+            if (self::WRITE === $mode) {
                 return false;
             }
 
             $this->content->seek(0, SEEK_SET);
-            if (strstr($mode, 'w') !== false) {
+            if (self::TRUNCATE === $mode) {
                 $this->content->setContent(''); // truncate
-            } elseif (strstr($mode, 'a') !== false) {
+            } elseif (self::APPEND === $mode) {
                 $this->content->seek(0, SEEK_END);
             }
 
@@ -203,9 +243,33 @@ class vfsStreamWrapper
         if (null === $dir  || $dir->hasChild($names['basename']) === true) {
             return false;
         }
-        
+
+        if (self::READ === $mode) {
+            return false;
+        }
+
         $this->content = vfsStream::newFile($names['basename'])->at($dir);
         return true;
+    }
+
+    /**
+     * calculates the file mode
+     *
+     * @param   string  $mode      opening mode: r, w, a or x
+     * @param   bool    $extended  true if + was set with opening mode
+     * @return  int
+     */
+    protected function calculateMode($mode, $extended)
+    {
+        if (true === $extended) {
+            return self::ALL;
+        }
+
+        if (self::READ === $mode) {
+            return self::READONLY;
+        }
+
+        return self::WRITEONLY;
     }
 
     /**
@@ -224,6 +288,10 @@ class vfsStreamWrapper
      */
     public function stream_read($count)
     {
+        if (self::WRITEONLY === $this->mode) {
+            return '';
+        }
+        
         return $this->content->read($count);
     }
 
@@ -235,6 +303,10 @@ class vfsStreamWrapper
      */
     public function stream_write($data)
     {
+        if (self::READONLY === $this->mode) {
+            return 0;
+        }
+        
         return $this->content->write($data);
     }
 

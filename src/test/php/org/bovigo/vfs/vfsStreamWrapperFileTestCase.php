@@ -154,5 +154,98 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(@fopen($vfsFile, 'xb'));
         $this->assertEquals('test', file_get_contents($vfsFile));
     }
+
+    /**
+     * @test
+     * @group  issue7
+     * @group  issue13
+     */
+    public function canNotOpenNonExistingFileReadonly()
+    {
+        $this->assertFalse(@fopen(vfsStream::url('foo/doesNotExist.txt'), 'rb'));
+    }
+
+    /**
+     * @test
+     * @group  issue7
+     * @group  issue13
+     */
+    public function canNotOpenNonExistingFileReadAndWrite()
+    {
+        $this->assertFalse(@fopen(vfsStream::url('foo/doesNotExist.txt'), 'rb+'));
+    }
+
+    /**
+     * @test
+     * @group  issue7
+     * @group  issue13
+     */
+    public function canNotOpenWithIllegalMode()
+    {
+        $this->assertFalse(@fopen($this->baz2URL, 'illegal'));
+    }
+
+    /**
+     * @test
+     * @group  issue7
+     * @group  issue13
+     */
+    public function canNotWriteToReadOnlyFile()
+    {
+        $fp = fopen($this->baz2URL, 'rb');
+        $this->assertEquals('baz2', fread($fp, 4096));
+        $this->assertEquals(0, fwrite($fp, 'foo'));
+        fclose($fp);
+        $this->assertEquals('baz2', file_get_contents($this->baz2URL));
+    }
+
+    /**
+     * @test
+     * @group  issue7
+     * @group  issue13
+     */
+    public function canNotReadFromWriteOnlyFileWithModeW()
+    {
+        $fp = fopen($this->baz2URL, 'wb');
+        $this->assertEquals('', fread($fp, 4096));
+        $this->assertEquals(3, fwrite($fp, 'foo'));
+        fseek($fp, 0);
+        $this->assertEquals('', fread($fp, 4096));
+        fclose($fp);
+        $this->assertEquals('foo', file_get_contents($this->baz2URL));
+    }
+
+    /**
+     * @test
+     * @group  issue7
+     * @group  issue13
+     */
+    public function canNotReadFromWriteOnlyFileWithModeA()
+    {
+        $fp = fopen($this->baz2URL, 'ab');
+        $this->assertEquals('', fread($fp, 4096));
+        $this->assertEquals(3, fwrite($fp, 'foo'));
+        fseek($fp, 0);
+        $this->assertEquals('', fread($fp, 4096));
+        fclose($fp);
+        $this->assertEquals('baz2foo', file_get_contents($this->baz2URL));
+    }
+
+    /**
+     * @test
+     * @group  issue7
+     * @group  issue13
+     */
+    public function canNotReadFromWriteOnlyFileWithModeX()
+    {
+        $vfsFile = vfsStream::url('foo/modeXtest.txt');
+        $fp = fopen($vfsFile, 'xb');
+        $this->assertEquals('', fread($fp, 4096));
+        $this->assertEquals(3, fwrite($fp, 'foo'));
+        fseek($fp, 0);
+        $this->assertEquals('', fread($fp, 4096));
+        fclose($fp);
+        $this->assertEquals('foo', file_get_contents($vfsFile));
+    }
 }
 ?>
