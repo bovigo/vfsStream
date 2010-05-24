@@ -179,6 +179,66 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     }
 
     /**
+     * checks whether content is readable
+     *
+     * @param   int   id of user to check for
+     * @param   int   id of group to check for
+     * @return  bool
+     */
+    public function isReadable($user, $group)
+    {
+        if ($this->user === $user) {
+            $check = 0400;
+        } elseif ($this->group === $group) {
+            $check = 0040;
+        } else {
+            $check = 0004;
+        }
+
+        return (bool) ($this->permissions & $check);
+    }
+
+    /**
+     * checks whether content is writable
+     *
+     * @param   int   id of user to check for
+     * @param   int   id of group to check for
+     * @return  bool
+     */
+    public function isWritable($user, $group)
+    {
+        if ($this->user === $user) {
+            $check = 0200;
+        } elseif ($this->group === $group) {
+            $check = 0020;
+        } else {
+            $check = 0002;
+        }
+
+        return (bool) ($this->permissions & $check);
+    }
+
+    /**
+     * checks whether content is executable
+     *
+     * @param   int   id of user to check for
+     * @param   int   id of group to check for
+     * @return  bool
+     */
+    public function isExecutable($user, $group)
+    {
+        if ($this->user === $user) {
+            $check = 0100;
+        } elseif ($this->group === $group) {
+            $check = 0010;
+        } else {
+            $check = 0001;
+        }
+
+        return (bool) ($this->permissions & $check);
+    }
+
+    /**
      * change owner of file to given user
      *
      * @param   int               $user

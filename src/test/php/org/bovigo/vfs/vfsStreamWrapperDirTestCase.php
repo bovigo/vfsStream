@@ -174,6 +174,34 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
+     * @group  permissions
+     * @group  bug_15
+     */
+    public function mkdirDirCanNotCreateNewDirInNonWritingDirectory()
+    {
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root'));
+        vfsStreamWrapper::getRoot()->addChild(new vfsStreamDirectory('restrictedFolder', 0000));
+        $this->assertFalse(is_writable(vfsStream::url('root/restrictedFolder/')));
+        $this->assertFalse(mkdir(vfsStream::url('root/restrictedFolder/newFolder')));
+        $this->assertFalse(vfsStreamWrapper::getRoot()->hasChild('restrictedFolder/newFolder'));
+    }
+
+    /**
+     * @test
+     * @group  permissions
+     * @group  bug_15
+     */
+    public function canNotIterateOverNonReadableDirectory()
+    {
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root', 0000));
+        $this->assertFalse(@opendir(vfsStream::url('root')));
+        $this->assertFalse(@dir(vfsStream::url('root')));
+    }
+
+    /**
+     * @test
      */
     public function directoryIteration()
     {
@@ -423,6 +451,21 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertTrue(rmdir($this->fooURL));
         $this->assertFalse(file_exists($this->fooURL)); // make sure statcache was cleared
         $this->assertNull(vfsStreamWrapper::getRoot());
+    }
+
+    /**
+     * @test
+     * @group  permissions
+     * @group  bug_15
+     */
+    public function rmdirDirCanNotRemoveDirFromNonWritingDirectory()
+    {
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root', 0000));
+        vfsStreamWrapper::getRoot()->addChild(new vfsStreamDirectory('nonRemovableFolder'));
+        $this->assertFalse(is_writable(vfsStream::url('root')));
+        $this->assertFalse(rmdir(vfsStream::url('root/nonRemovableFolder')));
+        $this->assertTrue(vfsStreamWrapper::getRoot()->hasChild('nonRemovableFolder'));
     }
 }
 ?>

@@ -41,6 +41,7 @@ class src_test_AllTests extends PHPUnit_Framework_TestSuite
     {
         $suite   = new self();
         $dirname = dirname(__FILE__);
+        $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamAbstractContentTestCase.php');
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamContainerIteratorTestCase.php');
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamDirectoryTestCase.php');
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamFileTestCase.php');

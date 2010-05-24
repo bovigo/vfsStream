@@ -119,6 +119,33 @@ interface vfsStreamContent
     public function getPermissions();
 
     /**
+     * checks whether content is readable
+     *
+     * @param   int   id of user to check for
+     * @param   int   id of group to check for
+     * @return  bool
+     */
+    public function isReadable($user, $group);
+
+    /**
+     * checks whether content is writable
+     *
+     * @param   int   id of user to check for
+     * @param   int   id of group to check for
+     * @return  bool
+     */
+    public function isWritable($user, $group);
+
+    /**
+     * checks whether content is executable
+     *
+     * @param   int   id of user to check for
+     * @param   int   id of group to check for
+     * @return  bool
+     */
+    public function isExecutable($user, $group);
+
+    /**
      * change owner of file to given user
      *
      * @param   int               $user

@@ -228,14 +228,14 @@ class vfsStreamWrapper
         if (null !== $this->content) {
             if (self::WRITE === $mode) {
                 if (!($options & STREAM_REPORT_ERRORS)) {
-                    trigger_error('File ' . $path . ' already exist, can not open with mode x', E_USER_WARNING);
+                    trigger_error('File ' . $path . ' already exists, can not open with mode x', E_USER_WARNING);
                 }
 
                 return false;
             }
 
             $this->content->seek(0, SEEK_SET);
-            if (self::TRUNCATE === $mode) {
+            if (self::TRUNCATE === $mode && $this->content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === true) {
                 $this->content->setContent(''); // truncate
             } elseif (self::APPEND === $mode) {
                 $this->content->seek(0, SEEK_END);
@@ -263,6 +263,14 @@ class vfsStreamWrapper
         if (self::READ === $mode) {
             if (!($options & STREAM_REPORT_ERRORS)) {
                 trigger_error('Can not open non-existing file ' . $path . ' for reading', E_USER_WARNING);
+            }
+
+            return false;
+        }
+
+        if ($dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
+            if (!($options & STREAM_REPORT_ERRORS)) {
+                trigger_error('Can not create new file in non-writable path ' . $path, E_USER_WARNING);
             }
 
             return false;
@@ -311,6 +319,10 @@ class vfsStreamWrapper
         if (self::WRITEONLY === $this->mode) {
             return '';
         }
+
+        if ($this->content->isReadable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
+            return '';
+        }
         
         return $this->content->read($count);
     }
@@ -324,6 +336,10 @@ class vfsStreamWrapper
     public function stream_write($data)
     {
         if (self::READONLY === $this->mode) {
+            return 0;
+        }
+
+        if ($this->content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
             return 0;
         }
         
@@ -406,7 +422,7 @@ class vfsStreamWrapper
     {
         $realPath = $this->resolvePath(vfsStream::path($path));
         $content  = $this->getContent($realPath);
-        if (null === $content) {
+        if (null === $content || $content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
             return false;
         }
         
@@ -419,6 +435,10 @@ class vfsStreamWrapper
         
         $names   = $this->splitPath($realPath);
         $content = $this->getContent($names['dirname']);
+        if ($content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
+            return false;
+        }
+        
         clearstatcache();
         return $content->removeChild($names['basename']);
     }
@@ -491,7 +511,9 @@ class vfsStreamWrapper
             $i++;
         }
         
-        if (null === $dir || $dir->getType() !== vfsStreamContent::TYPE_DIR) {
+        if (null === $dir
+          || $dir->getType() !== vfsStreamContent::TYPE_DIR
+          || $dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
             return false;
         }
         
@@ -535,6 +557,10 @@ class vfsStreamWrapper
         
         $names = $this->splitPath($path);
         $dir   = $this->getContentOfType($names['dirname'], vfsStreamContent::TYPE_DIR);
+        if ($dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
+            return false;
+        }
+        
         clearstatcache();
         return $dir->removeChild($child->getName());
     }
@@ -550,7 +576,7 @@ class vfsStreamWrapper
     {
         $path      = $this->resolvePath(vfsStream::path($path));
         $this->dir = $this->getContentOfType($path, vfsStreamContent::TYPE_DIR);
-        if (null === $this->dir) {
+        if (null === $this->dir || $this->dir->isReadable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
             return false;
         }
         
