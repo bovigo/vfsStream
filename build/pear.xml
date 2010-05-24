@@ -22,6 +22,11 @@
       <version release="${version}" api="0.4.0"/>
       <stability release="alpha" api="alpha"/>
 
+      <changelog version="0.7.0" api_version="0.7.0">
+        - fixed issue #15: mkdir creates a subfolder in a folder without
+          permissions
+      </changelog>
+
       <changelog version="0.6.0" api_version="0.4.0" date="2010-02-15">
         - added support for $mode param when opening files, implements
           enhancement #7 and fixes issue #13
