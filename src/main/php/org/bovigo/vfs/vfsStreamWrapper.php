@@ -270,7 +270,7 @@ class vfsStreamWrapper
 
         if ($dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
             if (!($options & STREAM_REPORT_ERRORS)) {
-                trigger_error('Can not create new file in non-writable path ' . $path, E_USER_WARNING);
+                trigger_error('Can not create new file in non-writable path ' . $names['dirname'], E_USER_WARNING);
             }
 
             return false;
