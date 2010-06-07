@@ -74,6 +74,22 @@ class vfsStream
     }
 
     /**
+     * helper method for setting up vfsStream in unit tests
+     *
+     * @param   string              $rootDirName  optional  name of root directory
+     * @param   int                 $permissions  optional  file permissions of root directory
+     * @return  vfsStreamDirectory
+     * @since   0.7.0
+     */
+    public static function setup($rootDirName = 'root', $permissions = 0777)
+    {
+        vfsStreamWrapper::register();
+        $root = self::newDirectory($rootDirName, $permissions);
+        vfsStreamWrapper::setRoot($root);
+        return $root;
+    }
+
+    /**
      * returns a new file with given name
      *
      * @param   string         $name

@@ -199,5 +199,44 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $baz2 = $foo->getChild('bar/baz');
         $this->assertSame($baz1, $baz2);
     }
+
+    /**
+     * @test
+     * @group  setup
+     * @since  0.7.0
+     */
+    public function setupRegistersStreamWrapperAndCreatesRootDirectoryWithDefaultNameAndPermissions()
+    {
+        $root = vfsStream::setup();
+        $this->assertSame($root, vfsStreamWrapper::getRoot());
+        $this->assertEquals('root', $root->getName());
+        $this->assertEquals(0777, $root->getPermissions());
+    }
+
+    /**
+     * @test
+     * @group  setup
+     * @since  0.7.0
+     */
+    public function setupRegistersStreamWrapperAndCreatesRootDirectoryWithGivenNameAndDefaultPermissions()
+    {
+        $root = vfsStream::setup('foo');
+        $this->assertSame($root, vfsStreamWrapper::getRoot());
+        $this->assertEquals('foo', $root->getName());
+        $this->assertEquals(0777, $root->getPermissions());
+    }
+
+    /**
+     * @test
+     * @group  setup
+     * @since  0.7.0
+     */
+    public function setupRegistersStreamWrapperAndCreatesRootDirectoryWithGivenNameAndPermissions()
+    {
+        $root = vfsStream::setup('foo', 0444);
+        $this->assertSame($root, vfsStreamWrapper::getRoot());
+        $this->assertEquals('foo', $root->getName());
+        $this->assertEquals(0444, $root->getPermissions());
+    }
 }
 ?>
