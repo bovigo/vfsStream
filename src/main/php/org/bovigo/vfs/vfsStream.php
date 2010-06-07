@@ -76,6 +76,13 @@ class vfsStream
     /**
      * helper method for setting up vfsStream in unit tests
      *
+     * Instead of
+     * vfsStreamWrapper::register();
+     * vfsStreamWrapper::setRoot(vfsStream::newDirectory('root'));
+     * you can simply do
+     * vfsStream::setup()
+     * which yields the same result.
+     *
      * @param   string              $rootDirName  optional  name of root directory
      * @param   int                 $permissions  optional  file permissions of root directory
      * @return  vfsStreamDirectory
