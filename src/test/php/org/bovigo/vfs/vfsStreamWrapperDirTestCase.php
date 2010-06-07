@@ -467,5 +467,20 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(rmdir(vfsStream::url('root/nonRemovableFolder')));
         $this->assertTrue(vfsStreamWrapper::getRoot()->hasChild('nonRemovableFolder'));
     }
+
+    /**
+     * @test
+     * @group  permissions
+     * @group  bug_17
+     */
+    public function issue17()
+    {
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root', 0770));
+        vfsStreamWrapper::getRoot()->chgrp(vfsStream::GROUP_USER_1)
+                                   ->chown(vfsStream::OWNER_USER_1);
+        $this->assertFalse(mkdir(vfsStream::url('root/doesNotWork')));
+        $this->assertFalse(vfsStreamWrapper::getRoot()->hasChild('doesNotWork'));
+    }
 }
 ?>
