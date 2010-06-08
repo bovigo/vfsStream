@@ -181,8 +181,8 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * checks whether content is readable
      *
-     * @param   int   id of user to check for
-     * @param   int   id of group to check for
+     * @param   int   $user   id of user to check for
+     * @param   int   $group  id of group to check for
      * @return  bool
      */
     public function isReadable($user, $group)
@@ -201,8 +201,8 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * checks whether content is writable
      *
-     * @param   int   id of user to check for
-     * @param   int   id of group to check for
+     * @param   int   $user   id of user to check for
+     * @param   int   $group  id of group to check for
      * @return  bool
      */
     public function isWritable($user, $group)
@@ -221,8 +221,8 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * checks whether content is executable
      *
-     * @param   int   id of user to check for
-     * @param   int   id of group to check for
+     * @param   int   $user   id of user to check for
+     * @param   int   $group  id of group to check for
      * @return  bool
      */
     public function isExecutable($user, $group)
