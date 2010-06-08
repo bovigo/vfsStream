@@ -22,8 +22,7 @@ class FilemodeExampleTestCaseWithVfsStream extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('exampleDir'));
+        vfsStream::setup('exampleDir');
     }
 
     /**

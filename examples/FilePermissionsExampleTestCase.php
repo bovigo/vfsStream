@@ -18,19 +18,11 @@ require_once 'FilePermissionsExample.php';
 class FilePermissionsExampleTestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * set up test environment
-     */
-    public function setUp()
-    {
-        vfsStreamWrapper::register();
-    }
-
-    /**
      * @test
      */
     public function directoryWritable()
     {
-        vfsStreamWrapper::setRoot(vfsStream::newDirectory('exampleDir'));
+        vfsStream::setup('exampleDir');
         $example = new FilePermissionsExample();
         $example->writeConfig(array('foo' => 'bar'),
                               vfsStream::url('exampleDir/writable.ini')
@@ -44,7 +36,7 @@ class FilePermissionsExampleTestCase extends PHPUnit_Framework_TestCase
      */
     public function directoryNotWritable()
     {
-        vfsStreamWrapper::setRoot(vfsStream::newDirectory('exampleDir', 0444));
+        vfsStream::setup('exampleDir', 0444);
         $example = new FilePermissionsExample();
         $example->writeConfig(array('foo' => 'bar'),
                               vfsStream::url('exampleDir/notWritable.ini')
