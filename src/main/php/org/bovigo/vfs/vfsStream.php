@@ -81,7 +81,9 @@ class vfsStream
      * vfsStreamWrapper::setRoot(vfsStream::newDirectory('root'));
      * you can simply do
      * vfsStream::setup()
-     * which yields the same result.
+     * which yields the same result. Additionally, the method returns the
+     * freshly created root directory which you can use to make further
+     * adjustments to it.
      *
      * @param   string              $rootDirName  optional  name of root directory
      * @param   int                 $permissions  optional  file permissions of root directory
