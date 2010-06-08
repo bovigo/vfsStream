@@ -23,6 +23,7 @@
       <stability release="alpha" api="alpha"/>
 
       <changelog version="0.7.0" api_version="0.7.0">
+        - added new vfsStream::setup() method to simplify vfsStream usage
         - fixed issue #15: mkdir creates a subfolder in a folder without
           permissions
       </changelog>
