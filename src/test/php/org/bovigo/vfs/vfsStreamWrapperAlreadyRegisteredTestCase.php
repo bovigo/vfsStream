@@ -2,12 +2,32 @@
 /**
  * Test for org::bovigo::vfs::vfsStreamWrapper.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
  * @package     bovigo_vfs
  * @subpackage  test
+ * @version     $Id$
  */
 require_once 'org/bovigo/vfs/vfsStream.php';
 require_once 'PHPUnit/Framework.php';
+/**
+ * Helper class for the test.
+ *
+ * @package     bovigo_vfs
+ * @subpackage  test
+ */
+class TestvfsStreamWrapper extends vfsStreamWrapper
+{
+    /**
+     * unregisters vfsStreamWrapper
+     */
+    public static function unregister()
+    {
+        if (in_array(vfsStream::SCHEME, stream_get_wrappers()) === true) {
+            stream_wrapper_unregister(vfsStream::SCHEME);
+        }
+
+        self::$registered = false;
+    }
+}
 /**
  * Test for org::bovigo::vfs::vfsStreamWrapper.
  *
@@ -21,10 +41,7 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends PHPUnit_Framework_TestCa
      */
     public function setUp()
     {
-        if (in_array(vfsStream::SCHEME, stream_get_wrappers()) === true) {
-            stream_wrapper_unregister(vfsStream::SCHEME);
-        }
-        
+        TestvfsStreamWrapper::unregister();
         $mock = $this->getMock('vfsStreamWrapper');
         stream_wrapper_register(vfsStream::SCHEME, get_class($mock));
     }
@@ -34,7 +51,7 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends PHPUnit_Framework_TestCa
      */
     public function tearDown()
     {
-        stream_wrapper_unregister(vfsStream::SCHEME);
+        TestvfsStreamWrapper::unregister();
     }
 
     /**
