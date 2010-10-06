@@ -96,7 +96,11 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      */
     public function appliesTo($name)
     {
-        return (substr($name, 0, strlen($this->name)) === $this->name);
+        if ($name === $this->name) {
+            return true;
+        }
+
+        return (substr($name, 0, strlen($this->name)) === $this->name && strpos($name, '/') !== false);
     }
 
     /**
