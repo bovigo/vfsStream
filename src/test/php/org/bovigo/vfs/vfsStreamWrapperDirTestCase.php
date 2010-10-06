@@ -482,5 +482,16 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(mkdir(vfsStream::url('root/doesNotWork')));
         $this->assertFalse(vfsStreamWrapper::getRoot()->hasChild('doesNotWork'));
     }
+
+    /**
+     * @test
+     * @group  bug_19
+     */
+    public function accessWithDoubleDotReturnsCorrectContent()
+    {
+        $this->assertEquals('baz2',
+                file_get_contents(vfsStream::url('foo/bar/../baz2'))
+        );
+    }
 }
 ?>

@@ -194,11 +194,18 @@ class vfsStreamWrapper
      */
     protected function resolvePath($path)
     {
-        if (substr($path, -2) === '/.') {
-            return substr($path, 0, -2);
+        $newPath  = array();
+        foreach (explode('/', $path) as $pathPart) {
+            if ('.' !== $pathPart) {
+                if ('..' !== $pathPart) {
+                    $newPath[] = $pathPart;
+                } else {
+                    array_pop($newPath);
+                }
+            }
         }
 
-        return $path;
+        return implode('/', $newPath);
     }
 
     /**
@@ -223,7 +230,7 @@ class vfsStreamWrapper
         }
 
         $this->mode    = $this->calculateMode($mode, $extended);
-        $path          = vfsStream::path($path);
+        $path          = $this->resolvePath(vfsStream::path($path));
         $this->content = $this->getContentOfType($path, vfsStreamContent::TYPE_FILE);
         if (null !== $this->content) {
             if (self::WRITE === $mode) {
