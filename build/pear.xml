@@ -19,8 +19,13 @@
       </dependencies>
       <dirroles key="examples">doc</dirroles>
       <dirroles key="docs">doc</dirroles>
-      <version release="${version}" api="0.4.0"/>
+      <version release="${version}" api="0.7.0"/>
       <stability release="alpha" api="alpha"/>
+
+      <changelog version="0.7.1" api_version="0.7.0">
+        - fixed issue #18: getChild() returns NULL when child's name contains
+          parent name
+      </changelog>
 
       <changelog version="0.7.0" api_version="0.7.0">
         - added new vfsStream::setup() method to simplify vfsStream usage
