@@ -33,12 +33,23 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * constructor
      *
      * @param  string  $name
-     * @param  int     $permissions
+     * @param  int     $permissions  optional
      */
-    public function __construct($name, $permissions = 0666)
+    public function __construct($name, $permissions = null)
     {
         $this->type = vfsStreamContent::TYPE_FILE;
         parent::__construct($name, $permissions);
+    }
+
+    /**
+     * returns default permissions for concrete implementation
+     *
+     * @return  int
+     * @since   0.8.0
+     */
+    protected function getDefaultPermissions()
+    {
+        return 0666;
     }
 
     /**

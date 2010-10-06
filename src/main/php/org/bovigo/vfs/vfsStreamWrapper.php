@@ -507,7 +507,7 @@ class vfsStreamWrapper
      */
     public function mkdir($path, $mode, $options)
     {
-        $mode = ((null == $mode) ? (0777) : ($mode));
+        $mode = ((null == $mode) ? (null) : ($mode));
         $path = vfsStream::path($path);
         if (null === self::$root) {
             self::$root = vfsStream::newDirectory($path, $mode);

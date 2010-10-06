@@ -17,6 +17,17 @@ require_once 'PHPUnit/Framework.php';
 class TestvfsStreamAbstractContent extends vfsStreamAbstractContent
 {
     /**
+     * returns default permissions for concrete implementation
+     *
+     * @return  int
+     * @since   0.8.0
+     */
+    protected function getDefaultPermissions()
+    {
+        return 0777;
+    }
+
+    /**
      * returns size of content
      *
      * @return  int

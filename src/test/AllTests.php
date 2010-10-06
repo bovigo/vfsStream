@@ -47,6 +47,7 @@ class src_test_AllTests extends PHPUnit_Framework_TestSuite
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamDirectoryIssue18TestCase.php');
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamFileTestCase.php');
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamTestCase.php');
+        $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamUmaskTestCase.php');
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamWrapperAlreadyRegisteredTestCase.php');
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamWrapperDirTestCase.php');
         $suite->addTestFile($dirname . '/php/org/bovigo/vfs/vfsStreamWrapperFileTestCase.php');

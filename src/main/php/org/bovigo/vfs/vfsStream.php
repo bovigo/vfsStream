@@ -44,6 +44,12 @@ class vfsStream
      * group: user 2
      */
     const GROUP_USER_2 = 2;
+    /**
+     * initial umask setting
+     *
+     * @var  int
+     */
+    protected static $umask = 0000;
 
     /**
      * prepends the scheme to the given URL
@@ -74,6 +80,25 @@ class vfsStream
     }
 
     /**
+     * sets new umask setting and returns previous umask setting
+     *
+     * If no value is given only the current umask setting is returned.
+     *
+     * @param   int  $umask  optional
+     * @return  int
+     * @since   0.8.0
+     */
+    public static function umask($umask = null)
+    {
+        $oldUmask = self::$umask;
+        if (null !== $umask) {
+            self::$umask = $umask;
+        }
+
+        return $oldUmask;
+    }
+
+    /**
      * helper method for setting up vfsStream in unit tests
      *
      * Instead of
@@ -90,7 +115,7 @@ class vfsStream
      * @return  vfsStreamDirectory
      * @since   0.7.0
      */
-    public static function setup($rootDirName = 'root', $permissions = 0777)
+    public static function setup($rootDirName = 'root', $permissions = null)
     {
         vfsStreamWrapper::register();
         $root = self::newDirectory($rootDirName, $permissions);
@@ -102,10 +127,10 @@ class vfsStream
      * returns a new file with given name
      *
      * @param   string         $name
-     * @param   int            $permissions
+     * @param   int            $permissions  optional
      * @return  vfsStreamFile
      */
-    public static function newFile($name, $permissions = 0666)
+    public static function newFile($name, $permissions = null)
     {
         return new vfsStreamFile($name, $permissions);
     }
@@ -118,10 +143,10 @@ class vfsStream
      * directory structure.
      *
      * @param   string              $name
-     * @param   int                 $permissions
+     * @param   int                 $permissions  optional
      * @return  vfsStreamDirectory
      */
-    public static function newDirectory($name, $permissions = 0777)
+    public static function newDirectory($name, $permissions = null)
     {
         if ('/' === $name{0}) {
             $name = substr($name, 1);

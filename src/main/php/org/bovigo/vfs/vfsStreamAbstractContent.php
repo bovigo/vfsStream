@@ -57,16 +57,28 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * constructor
      *
      * @param  string  $name
-     * @param  int     $permissions
+     * @param  int     $permissions  optional
      */
-    public function __construct($name, $permissions = 0777)
+    public function __construct($name, $permissions = null)
     {
         $this->name         = $name;
         $this->lastModified = time();
+        if (null === $permissions) {
+            $permissions = $this->getDefaultPermissions() - vfsStream::umask();
+        }
+
         $this->permissions  = $permissions;
         $this->user         = vfsStream::getCurrentUser();
         $this->group        = vfsStream::getCurrentGroup();
     }
+
+    /**
+     * returns default permissions for concrete implementation
+     *
+     * @return  int
+     * @since   0.8.0
+     */
+    protected abstract function getDefaultPermissions();
 
     /**
      * returns the file name of the content

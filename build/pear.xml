@@ -19,10 +19,12 @@
       </dependencies>
       <dirroles key="examples">doc</dirroles>
       <dirroles key="docs">doc</dirroles>
-      <version release="${version}" api="0.7.0"/>
+      <version release="${version}" api="0.8.0"/>
       <stability release="alpha" api="alpha"/>
 
-      <changelog version="0.8.0" api_version="0.7.0">
+      <changelog version="0.8.0" api_version="0.8.0">
+        - implemented enhancement #6: use vfsStream::umask() to influence
+          initial file mode for files and directories
         - implemented enhancement #19: support of .. in the url
         - fixed issue #18: getChild() returns NULL when child's name contains
           parent name

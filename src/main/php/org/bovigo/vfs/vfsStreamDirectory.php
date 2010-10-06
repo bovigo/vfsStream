@@ -30,17 +30,28 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      * constructor
      *
      * @param   string  $name
-     * @param   int     $permissions
+     * @param   int     $permissions  optional
      * @throws  vfsStreamException
      */
-    public function __construct($name, $permissions = 0777)
+    public function __construct($name, $permissions = null)
     {
         if (strstr($name, '/') !== false) {
             throw new vfsStreamException('Directory name can not contain /.');
         }
-        
+
         $this->type = vfsStreamContent::TYPE_DIR;
         parent::__construct($name, $permissions);
+    }
+
+    /**
+     * returns default permissions for concrete implementation
+     *
+     * @return  int
+     * @since   0.8.0
+     */
+    protected function getDefaultPermissions()
+    {
+        return 0777;
     }
 
     /**
