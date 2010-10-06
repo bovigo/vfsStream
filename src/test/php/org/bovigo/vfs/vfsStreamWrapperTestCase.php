@@ -533,5 +533,27 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
                             stat($this->fooURL . '/.')
         );
     }
+
+    /**
+     * @test
+     * @expectedException PHPUnit_Framework_Error
+     */
+    public function openFileWithoutDirectory()
+    {
+        vfsStreamWrapper::register();
+        $this->assertFalse(file_get_contents(vfsStream::url('file.txt')));
+    }
+
+    /**
+     * @test
+     */
+    public function fileAsRootDirectory()
+    {
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(vfsStream::newFile('file.txt')->withContent('some content'));
+        $this->assertEquals('some content',
+                            file_get_contents(vfsStream::url('file.txt'))
+        );
+    }
 }
 ?>

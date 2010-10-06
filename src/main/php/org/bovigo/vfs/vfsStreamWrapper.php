@@ -245,7 +245,15 @@ class vfsStreamWrapper
         }
         
         $names = $this->splitPath($path);
-        $dir   = $this->getContentOfType($names['dirname'], vfsStreamContent::TYPE_DIR);
+        if (empty($names['dirname']) === true) {
+            if (!($options & STREAM_REPORT_ERRORS)) {
+                trigger_error('File ' . $names['basename'] . ' does not exist', E_USER_WARNING);
+            }
+            
+            return false;
+        }
+
+        $dir = $this->getContentOfType($names['dirname'], vfsStreamContent::TYPE_DIR);
         if (null === $dir) {
             if (!($options & STREAM_REPORT_ERRORS)) {
                 trigger_error('Directory ' . $names['dirname'] . ' does not exist', E_USER_WARNING);

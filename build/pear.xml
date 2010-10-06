@@ -25,6 +25,8 @@
       <changelog version="0.7.1" api_version="0.7.0">
         - fixed issue #18: getChild() returns NULL when child's name contains
           parent name
+        - fixed bug with incomplete error message when accessing non-existing
+          files on root level
       </changelog>
 
       <changelog version="0.7.0" api_version="0.7.0">
