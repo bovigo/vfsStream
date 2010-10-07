@@ -20,7 +20,7 @@
       <dirroles key="examples">doc</dirroles>
       <dirroles key="docs">doc</dirroles>
       <version release="${version}" api="0.8.0"/>
-      <stability release="alpha" api="alpha"/>
+      <stability release="beta" api="beta"/>
 
       <changelog version="0.8.0" api_version="0.8.0">
         - implemented enhancement #6: use vfsStream::umask() to influence
