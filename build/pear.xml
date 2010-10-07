@@ -25,7 +25,8 @@
       <changelog version="0.8.0" api_version="0.8.0">
         - implemented enhancement #6: use vfsStream::umask() to influence
           initial file mode for files and directories
-        - implemented enhancement #19: support of .. in the url
+        - implemented enhancement #19: support of .. in the url, patch provided
+          by Guislain Duthieuw
         - fixed issue #18: getChild() returns NULL when child's name contains
           parent name
         - fixed bug with incomplete error message when accessing non-existing
