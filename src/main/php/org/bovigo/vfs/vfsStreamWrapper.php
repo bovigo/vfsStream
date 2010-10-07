@@ -507,10 +507,16 @@ class vfsStreamWrapper
      */
     public function mkdir($path, $mode, $options)
     {
-        $mode = ((null == $mode) ? (null) : ($mode));
+        $umask = vfsStream::umask();
+        if (0 < $umask) {
+            $permissions = $mode & ~$umask;
+        } else {
+            $permissions = $mode;
+        }
+        
         $path = vfsStream::path($path);
         if (null === self::$root) {
-            self::$root = vfsStream::newDirectory($path, $mode);
+            self::$root = vfsStream::newDirectory($path, $permissions);
             return true;
         }
         
@@ -538,7 +544,7 @@ class vfsStreamWrapper
             return false;
         }
 
-        vfsStream::newDirectory($newDirs, $mode)->at($dir);
+        vfsStream::newDirectory($newDirs, $permissions)->at($dir);
         return true;
     }
 

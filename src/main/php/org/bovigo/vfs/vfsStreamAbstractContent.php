@@ -64,7 +64,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
         $this->name         = $name;
         $this->lastModified = time();
         if (null === $permissions) {
-            $permissions = $this->getDefaultPermissions() - vfsStream::umask();
+            $permissions = $this->getDefaultPermissions() & ~vfsStream::umask();
         }
 
         $this->permissions  = $permissions;

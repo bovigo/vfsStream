@@ -15,6 +15,7 @@ require_once 'PHPUnit/Framework.php';
  *
  * @package     bovigo_vfs
  * @subpackage  test
+ * @group       permissions
  * @group       umask
  * @since       0.8.0
  */
@@ -132,21 +133,7 @@ class vfsStreamUmaskTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * We can not differentiate whether 0777 was just the default value
-     * because $mode was not set in the mkdir() function call or if if the
-     * user explicitly called mkdir($newdir, 0777).
-     * Therefore the vfsStream::umask() setting can not be applied to the new
-     * directory. This in turn makes this test fail, but we don't want test
-     * failures in our test result so we say it is an expected exception here.
-     * In case this is fixed within PHP one day this test will fail with newer
-     * PHP versions then and remember us to change it again.
-     * As a workaround, the mkdir() function can be called with null as value
-     * of the $mode param. See
-     * createDirectoryUsingStreamWithDifferentUmaskSettingWorkaround()
-     * for usage scenario.
-     *
      * @test
-     * @expectedException  PHPUnit_Framework_ExpectationFailedException
      */
     public function createDirectoryUsingStreamWithDifferentUmaskSetting()
     {
@@ -159,12 +146,12 @@ class vfsStreamUmaskTestCase extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function createDirectoryUsingStreamWithDifferentUmaskSettingWorkaround()
+    public function createDirectoryUsingStreamWithExplicit0()
     {
         $root = vfsStream::setup();
         vfsStream::umask(0022);
         mkdir(vfsStream::url('root/newdir'), null);
-        $this->assertEquals(0755, $root->getChild('newdir')->getPermissions());
+        $this->assertEquals(0000, $root->getChild('newdir')->getPermissions());
     }
 
     /**
@@ -176,7 +163,7 @@ class vfsStreamUmaskTestCase extends PHPUnit_Framework_TestCase
         $root = vfsStream::setup();
         vfsStream::umask(0022);
         mkdir(vfsStream::url('root/newdir'), 0777);
-        $this->assertEquals(0777, $root->getChild('newdir')->getPermissions());
+        $this->assertEquals(0755, $root->getChild('newdir')->getPermissions());
     }
 
     /**

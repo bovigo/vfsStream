@@ -131,10 +131,10 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @group  permissions
      */
-    public function mkdirUsesDefaultPermissionsIfNoneGiven()
+    public function mkdirRecursivelyUsesDefaultPermissions()
     {
         $this->foo->chmod(0700);
-        $this->assertTrue(mkdir($this->fooURL . '/another/more', null, true));
+        $this->assertTrue(mkdir($this->fooURL . '/another/more', 0777, true));
         $this->assertEquals(3, count($this->foo->getChildren()));
         $another = $this->foo->getChild('another');
         $this->assertTrue($another->hasChild('more'));
@@ -166,7 +166,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     public function mkdirWithoutRootCreatesNewRootWithDefaultPermissions()
     {
         vfsStreamWrapper::register();
-        $this->assertTrue(@mkdir(vfsStream::url('foo'), null));
+        $this->assertTrue(@mkdir(vfsStream::url('foo')));
         $this->assertEquals(vfsStreamContent::TYPE_DIR, vfsStreamWrapper::getRoot()->getType());
         $this->assertEquals('foo', vfsStreamWrapper::getRoot()->getName());
         $this->assertEquals(0777, vfsStreamWrapper::getRoot()->getPermissions());
