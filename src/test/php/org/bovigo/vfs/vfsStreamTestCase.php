@@ -106,7 +106,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     public function newFile()
     {
         $file = vfsStream::newFile('filename.txt');
-        $this->assertType('vfsStreamFile', $file);
+        $this->assertInstanceOf('vfsStreamFile', $file);
         $this->assertEquals('filename.txt', $file->getName());
         $this->assertEquals(0666, $file->getPermissions());
     }
@@ -120,7 +120,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     public function newFileWithDifferentPermissions()
     {
         $file = vfsStream::newFile('filename.txt', 0644);
-        $this->assertType('vfsStreamFile', $file);
+        $this->assertInstanceOf('vfsStreamFile', $file);
         $this->assertEquals('filename.txt', $file->getName());
         $this->assertEquals(0644, $file->getPermissions());
     }

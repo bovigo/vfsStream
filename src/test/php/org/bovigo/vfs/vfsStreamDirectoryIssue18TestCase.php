@@ -53,8 +53,8 @@ class vfsStreamDirectoryIssue18TestCase extends PHPUnit_Framework_TestCase
     public function shouldContainSubdirectoryFoo()
     {
         $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('foo'));
-        $this->assertType('vfsStreamDirectory',
-                          $this->rootDirectory->getChild('var/log/app')->getChild('foo')
+        $this->assertInstanceOf('vfsStreamDirectory',
+                                $this->rootDirectory->getChild('var/log/app')->getChild('foo')
         );
     }
 
@@ -64,8 +64,8 @@ class vfsStreamDirectoryIssue18TestCase extends PHPUnit_Framework_TestCase
     public function shouldContainSubdirectoryApp1()
     {
         $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app1'));
-        $this->assertType('vfsStreamDirectory',
-                          $this->rootDirectory->getChild('var/log/app')->getChild('app1')
+        $this->assertInstanceOf('vfsStreamDirectory',
+                                $this->rootDirectory->getChild('var/log/app')->getChild('app1')
         );
     }
 
@@ -75,8 +75,8 @@ class vfsStreamDirectoryIssue18TestCase extends PHPUnit_Framework_TestCase
     public function shouldContainSubdirectoryApp2()
     {
         $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app2'));
-        $this->assertType('vfsStreamDirectory',
-                          $this->rootDirectory->getChild('var/log/app')->getChild('app2')
+        $this->assertInstanceOf('vfsStreamDirectory',
+                                $this->rootDirectory->getChild('var/log/app')->getChild('app2')
         );
     }
 }
