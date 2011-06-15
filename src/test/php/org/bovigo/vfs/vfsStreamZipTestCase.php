@@ -34,6 +34,7 @@ class vfsStreamZipTestCase extends PHPUnit_Framework_TestCase
      */
     public function createZipArchive()
     {
+        $this->markTestSkipped('Zip extension can not work with vfsStream urls.');
         $zip = new ZipArchive();
         $this->assertTrue($zip->open(vfsStream::url('root/test.zip'), ZIPARCHIVE::CREATE));
         $this->assertTrue($zip->addFromString("testfile1.txt", "#1 This is a test string added as testfile1.txt.\n"));
