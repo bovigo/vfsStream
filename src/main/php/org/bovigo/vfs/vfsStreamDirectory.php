@@ -109,6 +109,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     public function addChild(vfsStreamContent $child)
     {
         $this->children[$child->getName()] = $child;
+        $this->updateModifications();
     }
 
     /**
@@ -122,11 +123,22 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
         foreach ($this->children as $key => $child) {
             if ($child->appliesTo($name) === true) {
                 unset($this->children[$key]);
+                $this->updateModifications();
                 return true;
             }
         }
         
         return false;
+    }
+
+    /**
+     * updates internal timestamps
+     */
+    protected function updateModifications()
+    {
+        $time = time();
+        $this->lastAttributeModified = $time;
+        $this->lastModified          = $time;
     }
 
     /**

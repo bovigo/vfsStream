@@ -75,14 +75,26 @@ abstract class vfsStreamWrapperBaseTestCase extends PHPUnit_Framework_TestCase
         $this->baz1URL = vfsStream::url('foo/bar/baz1');
         $this->baz2URL = vfsStream::url('foo/baz2');
         $this->foo     = new vfsStreamDirectory('foo');
-        $this->foo->setFilemtime(100);
         $this->bar     = new vfsStreamDirectory('bar');
-        $this->bar->setFilemtime(200);
-        $this->baz1    = vfsStream::newFile('baz1')->lastModified(300)->withContent('baz 1');
-        $this->baz2    = vfsStream::newFile('baz2')->withContent('baz2')->setFilemtime(400);
+        $this->baz1    = vfsStream::newFile('baz1')
+                                  ->lastModified(300)
+                                  ->lastAccessed(300)
+                                  ->lastAttributeModified(300)
+                                  ->withContent('baz 1');
+        $this->baz2    = vfsStream::newFile('baz2')
+                                  ->withContent('baz2')
+                                  ->lastModified(400)
+                                  ->lastAccessed(400)
+                                  ->lastAttributeModified(400);
         $this->bar->addChild($this->baz1);
         $this->foo->addChild($this->bar);
         $this->foo->addChild($this->baz2);
+        $this->foo->lastModified(100)
+                  ->lastAccessed(100)
+                  ->lastAttributeModified(100);
+        $this->bar->lastModified(200)
+                  ->lastAccessed(100)
+                  ->lastAttributeModified(100);
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot($this->foo);
     }

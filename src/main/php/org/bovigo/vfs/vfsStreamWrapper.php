@@ -241,11 +241,12 @@ class vfsStreamWrapper
                 return false;
             }
 
-            $this->content->seek(0, SEEK_SET);
             if (self::TRUNCATE === $mode && $this->content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === true) {
-                $this->content->setContent(''); // truncate
+                $this->content->openWithTruncate();
             } elseif (self::APPEND === $mode) {
-                $this->content->seek(0, SEEK_END);
+                $this->content->openForAppend();
+            } else {
+                $this->content->open();
             }
 
             return true;
@@ -418,9 +419,9 @@ class vfsStreamWrapper
                           'gid'     => $this->content->getGroup(),
                           'rdev'    => 0,
                           'size'    => $this->content->size(),
-                          'atime'   => $this->content->filemtime(),
+                          'atime'   => $this->content->fileatime(),
                           'mtime'   => $this->content->filemtime(),
-                          'ctime'   => $this->content->filemtime(),
+                          'ctime'   => $this->content->filectime(),
                           'blksize' => -1,
                           'blocks'  => -1
                     );
@@ -669,9 +670,9 @@ class vfsStreamWrapper
                           'gid'     => $content->getGroup(),
                           'rdev'    => 0,
                           'size'    => $content->size(),
-                          'atime'   => $content->filemtime(),
+                          'atime'   => $content->fileatime(),
                           'mtime'   => $content->filemtime(),
-                          'ctime'   => $content->filemtime(),
+                          'ctime'   => $content->filectime(),
                           'blksize' => -1,
                           'blocks'  => -1
                     );

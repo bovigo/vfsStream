@@ -94,6 +94,9 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * returns the contents of the file
      *
+     * Getting content does not change the time when the file
+     * was last accessed.
+     *
      * @return  string
      */
     public function getContent()
@@ -102,7 +105,54 @@ class vfsStreamFile extends vfsStreamAbstractContent
     }
 
     /**
+     * simply open the file
+     *
+     * @since  0.9
+     */
+    public function open()
+    {
+        $this->seek(0, SEEK_SET);
+        $this->updateModifications();
+    }
+
+    /**
+     * open file and set pointer to end of file
+     *
+     * @since  0.9
+     */
+    public function openForAppend()
+    {
+        $this->seek(0, SEEK_END);
+        $this->updateModifications();
+    }
+
+    /**
+     * open file and truncate content
+     *
+     * @since  0.9
+     */
+    public function openWithTruncate()
+    {
+        $this->open();
+        $this->content = '';
+    }
+
+    /**
+     * updates internal timestamps
+     *
+     * @since  0.9
+     */
+    protected function updateModifications()
+    {
+        $time = time();
+        $this->lastAccessed = $time;
+        $this->lastModified = $time;
+    }
+
+    /**
      * reads the given amount of bytes from content
+     *
+     * Using this method changes the time when the file was last accessed.
      *
      * @param   int     $count
      * @return  string
@@ -110,17 +160,21 @@ class vfsStreamFile extends vfsStreamAbstractContent
     public function read($count)
     {
         $data = substr($this->content, $this->bytes_read, $count);
-        $this->bytes_read += $count;
+        $this->bytes_read  += $count;
+        $this->lastAccessed = time();
         return $data;
     }
 
     /**
      * returns the content until its end from current offset
      *
+     * Using this method changes the time when the file was last accessed.
+     *
      * @return  string
      */
     public function readUntilEnd()
     {
+        $this->lastAccessed = time();
         return substr($this->content, $this->bytes_read);
     }
 
@@ -134,10 +188,10 @@ class vfsStreamFile extends vfsStreamAbstractContent
      */
     public function write($data)
     {
-        $dataLen           = strlen($data);
-        $this->content     = substr($this->content, 0, $this->bytes_read) . $data . substr($this->content, $this->bytes_read + $dataLen);
-        $this->bytes_read += $dataLen;
-        $this->filemtime   = time();
+        $dataLen            = strlen($data);
+        $this->content      = substr($this->content, 0, $this->bytes_read) . $data . substr($this->content, $this->bytes_read + $dataLen);
+        $this->bytes_read  += $dataLen;
+        $this->lastModified = time();
         return $dataLen;
     }
 
