@@ -19,8 +19,13 @@
       </dependencies>
       <dirroles key="examples">doc</dirroles>
       <dirroles key="docs">doc</dirroles>
-      <version release="${version}" api="0.8.0"/>
+      <version release="${version}" api="0.9.0"/>
       <stability release="beta" api="beta"/>
+
+      <changelog version="0.9.0" api_version="0.9.0">
+        - implemented feature request issue #7: add support for fileatime() and filectime()
+        - fixed issue #3: add support for streamWrapper::stream_cast()
+      </changelog>
 
       <changelog version="0.8.0" api_version="0.8.0">
         - implemented enhancement #6: use vfsStream::umask() to influence
