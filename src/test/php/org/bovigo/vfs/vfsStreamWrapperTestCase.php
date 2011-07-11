@@ -353,6 +353,19 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
+     * @group  issue_9
+     */
+    public function renameDirectoryWithDotsInTarget()
+    {
+        // move foo/bar to foo/baz3
+        $baz3URL = vfsStream::url('foo/../foo/baz3/.');
+        $this->assertTrue(rename($this->barURL . '/.', $baz3URL));
+        $this->assertFileExists($baz3URL);
+        $this->assertFileNotExists($this->barURL);
+    }
+
+    /**
+     * @test
      * @author  Benoit Aubuchon
      */
     public function renameDirectoryOverwritingExistingFile()

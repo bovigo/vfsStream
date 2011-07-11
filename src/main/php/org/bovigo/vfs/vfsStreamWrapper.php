@@ -485,7 +485,7 @@ class vfsStreamWrapper
     public function rename($path_from, $path_to)
     {
         $srcRealPath = $this->resolvePath(vfsStream::path($path_from));
-        $dstRealPath = vfsStream::path($path_to);
+        $dstRealPath = $this->resolvePath(vfsStream::path($path_to));
         $srcContent  = $this->getContent($srcRealPath);
         if (null == $srcContent) {
             trigger_error(' No such file or directory', E_USER_WARNING);
@@ -530,7 +530,7 @@ class vfsStreamWrapper
             $permissions = $mode;
         }
         
-        $path = vfsStream::path($path);
+        $path = $this->resolvePath(vfsStream::path($path));
         if (null === self::$root) {
             self::$root = vfsStream::newDirectory($path, $permissions);
             return true;

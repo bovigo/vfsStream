@@ -73,6 +73,17 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
+     * @test
+     * @group  issue_9
+     */
+    public function mkdirWithDots()
+    {
+        $this->assertTrue(mkdir($this->fooURL . '/another/../more/.', 0777, true));
+        $this->assertEquals(3, count($this->foo->getChildren()));
+        $this->assertTrue($this->foo->hasChild('more'));
+    }
+
+    /**
      * no root > new directory becomes root
      *
      * @test
