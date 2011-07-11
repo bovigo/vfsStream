@@ -25,6 +25,7 @@
       <changelog version="0.9.0" api_version="0.9.0">
         - implemented feature request issue #7: add support for fileatime() and filectime()
         - fixed issue #3: add support for streamWrapper::stream_cast()
+        - fixed issue #9: resolve path not called everywhere its needed
       </changelog>
 
       <changelog version="0.8.0" api_version="0.8.0">
