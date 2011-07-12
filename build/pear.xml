@@ -28,7 +28,7 @@
         - fixed issue #9: resolve path not called everywhere its needed
       </changelog>
 
-      <changelog version="0.8.0" api_version="0.8.0">
+      <changelog version="0.8.0" api_version="0.8.0" date="2010-10-08">
         - implemented enhancement #6: use vfsStream::umask() to influence
           initial file mode for files and directories
         - implemented enhancement #19: support of .. in the url, patch provided
@@ -39,7 +39,7 @@
           files on root level
       </changelog>
 
-      <changelog version="0.7.0" api_version="0.7.0">
+      <changelog version="0.7.0" api_version="0.7.0" date="2010-06-08">
         - added new vfsStream::setup() method to simplify vfsStream usage
         - fixed issue #15: mkdir creates a subfolder in a folder without
           permissions
