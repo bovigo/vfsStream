@@ -3,7 +3,6 @@
  * File container.
  *
  * @package  bovigo_vfs
- * @version  $Id$
  */
 /**
  * @ignore

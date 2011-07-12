@@ -3,7 +3,6 @@
  * Some utility methods for vfsStream.
  *
  * @package  bovigo_vfs
- * @version  $Id$
  */
 /**
  * @ignore

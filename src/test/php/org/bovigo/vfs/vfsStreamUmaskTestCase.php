@@ -4,7 +4,6 @@
  *
  * @package     bovigo_vfs
  * @subpackage  test
- * @version     $Id$
  */
 require_once 'org/bovigo/vfs/vfsStream.php';
 require_once 'org/bovigo/vfs/vfsStreamDirectory.php';

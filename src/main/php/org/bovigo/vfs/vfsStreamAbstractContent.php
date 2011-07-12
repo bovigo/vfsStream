@@ -3,7 +3,6 @@
  * Base stream contents container.
  *
  * @package  bovigo_vfs
- * @version  $Id$
  */
 /**
  * @ignore

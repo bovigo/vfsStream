@@ -3,7 +3,6 @@
  * Interface for stream contents.
  *
  * @package  bovigo_vfs
- * @version  $Id$
  */
 /**
  * @ignore

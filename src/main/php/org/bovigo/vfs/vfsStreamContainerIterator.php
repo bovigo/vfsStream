@@ -3,7 +3,6 @@
  * Iterator for children of a directory container.
  *
  * @package  bovigo_vfs
- * @version  $Id$
  */
 /**
  * Iterator for children of a directory container.

@@ -3,7 +3,6 @@
  * Exception for streamwrapper subpackage.
  *
  * @package  bovigo_vfs
- * @version  $Id$
  */
 /**
  * Exception for streamwrapper subpackage.

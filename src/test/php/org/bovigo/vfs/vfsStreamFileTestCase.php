@@ -4,7 +4,6 @@
  *
  * @package     bovigo_vfs
  * @subpackage  test
- * @version     $Id$
  */
 require_once 'org/bovigo/vfs/vfsStreamFile.php';
 require_once 'PHPUnit/Framework.php';

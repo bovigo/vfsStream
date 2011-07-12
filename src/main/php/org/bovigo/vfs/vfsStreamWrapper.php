@@ -3,7 +3,6 @@
  * Stream wrapper to mock file system requests.
  *
  * @package  bovigo_vfs
- * @version  $Id$
  */
 /**
  * @ignore

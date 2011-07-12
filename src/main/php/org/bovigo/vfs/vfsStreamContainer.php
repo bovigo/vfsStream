@@ -3,7 +3,6 @@
  * Interface for stream contents that are able to store other stream contents.
  *
  * @package  bovigo_vfs
- * @version  $Id$
  */
 /**
  * Interface for stream contents that are able to store other stream contents.

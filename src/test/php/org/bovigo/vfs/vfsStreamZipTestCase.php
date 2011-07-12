@@ -4,7 +4,6 @@
  *
  * @package     bovigo_vfs
  * @subpackage  test
- * @version     $Id$
  */
 /**
  * Test for org::bovigo::vfs::vfsStreamWrapper in conjunction with ext/zip.
