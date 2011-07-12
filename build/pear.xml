@@ -26,6 +26,9 @@
         - implemented feature request issue #7: add support for fileatime() and filectime()
         - fixed issue #3: add support for streamWrapper::stream_cast()
         - fixed issue #9: resolve path not called everywhere its needed
+        - deprecated vfsStreamAbstractContent::setFilemtime(), use
+          vfsStreamAbstractContent::lastModified() instead, will be removed
+          with 0.10.0
       </changelog>
 
       <changelog version="0.8.0" api_version="0.8.0" date="2010-10-08">

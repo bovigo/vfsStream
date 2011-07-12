@@ -145,6 +145,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int               $filemtime
      * @return  vfsStreamContent
      * @see     lastModified()
+     * @deprecated  use lastModified() instead, will be removed with 0.10.0
      */
     public function setFilemtime($filemtime)
     {
