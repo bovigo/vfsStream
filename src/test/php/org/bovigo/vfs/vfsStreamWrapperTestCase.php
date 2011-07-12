@@ -354,6 +354,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @test
      * @group  issue_9
+     * @since  0.9.0
      */
     public function renameDirectoryWithDotsInTarget()
     {

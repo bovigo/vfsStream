@@ -12,8 +12,8 @@ require_once 'PHPUnit/Framework.php';
  *
  * @package     bovigo_vfs
  * @subpackage  test
- * @group       issue_8
  * @since       0.9.0
+ * @group       issue_8
  */
 class vfsStreamWrapperDirSeparatorTestCase extends PHPUnit_Framework_TestCase
 {
