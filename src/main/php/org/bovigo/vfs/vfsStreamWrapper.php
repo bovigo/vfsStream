@@ -433,9 +433,10 @@ class vfsStreamWrapper
      * Please note that this method always returns false as there is no
      * underlaying resource to return.
      *
-     * @param  int  $cast_as
-     * @since  0.9.0
-     * @see    https://github.com/mikey179/vfsStream/issues/3
+     * @param   int  $cast_as
+     * @since   0.9.0
+     * @see     https://github.com/mikey179/vfsStream/issues/3
+     * @return  bool
      */
     public function stream_cast($cast_as)
     {

@@ -30,15 +30,13 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * timestamp of last access
      *
-     * @var    int
-     * @since  0.9
+     * @var  int
      */
     protected $lastAccessed;
     /**
      * timestamp of last attribute modification
      *
-     * @var    int
-     * @since  0.9
+     * @var  int
      */
     protected $lastAttributeModified;
     /**
