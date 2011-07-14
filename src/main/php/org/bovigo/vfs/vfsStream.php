@@ -140,7 +140,7 @@ class vfsStream
      * root
      * \- Core
      *  |- badlocation.php
-     *  |- Abstractfactory
+     *  |- AbstractFactory
      *  | |- test.php
      *  | |- other.php
      *  | \- Invalid.csv
