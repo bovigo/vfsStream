@@ -43,6 +43,14 @@ interface vfsStreamContainer extends IteratorAggregate
     public function getChild($name);
 
     /**
+     * checks whether directory contains any children
+     *
+     * @return  bool
+     * @since   0.10.0
+     */
+    public function hasChildren();
+
+    /**
      * returns a list of children for this directory
      *
      * @return  array<vfsStreamContent>
