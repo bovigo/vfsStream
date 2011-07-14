@@ -82,15 +82,60 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * test checking and retrieving a non existing child
-     *
+     * @test
+     * @since  0.10.0
+     */
+    public function hasNoChildrenByDefault()
+    {
+        $this->assertFalse($this->dir->hasChildren());
+    }
+
+    /**
+     * @test
+     * @since  0.10.0
+     */
+    public function hasChildrenReturnsTrueIfAtLeastOneChildPresent()
+    {
+        $mockChild = $this->getMock('vfsStreamContent');
+        $mockChild->expects($this->any())
+                  ->method('appliesTo')
+                  ->will($this->returnValue(false));
+        $mockChild->expects($this->any())
+                  ->method('getName')
+                  ->will($this->returnValue('baz'));
+        $this->dir->addChild($mockChild);
+        $this->assertTrue($this->dir->hasChildren());
+    }
+
+    /**
+     * @test
+     */
+    public function hasChildReturnsFalseForNonExistingChild()
+    {
+        $this->assertFalse($this->dir->hasChild('bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function getChildReturnsNullForNonExistingChild()
+    {
+        $this->assertNull($this->dir->getChild('bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function removeChildReturnsFalseForNonExistingChild()
+    {
+        $this->assertFalse($this->dir->removeChild('bar'));
+    }
+
+    /**
      * @test
      */
     public function nonExistingChild()
     {
-        $this->assertFalse($this->dir->hasChild('bar'));
-        $this->assertNull($this->dir->getChild('bar'));
-        $this->assertFalse($this->dir->removeChild('bar'));
         $mockChild = $this->getMock('vfsStreamContent');
         $mockChild->expects($this->any())
                   ->method('appliesTo')

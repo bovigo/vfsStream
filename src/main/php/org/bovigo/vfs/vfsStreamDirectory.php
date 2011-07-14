@@ -201,6 +201,17 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     }
 
     /**
+     * checks whether directory contains any children
+     *
+     * @return  bool
+     * @since   0.10.0
+     */
+    public function hasChildren()
+    {
+        return (count($this->children) > 0);
+    }
+
+    /**
      * returns a list of children for this directory
      *
      * @return  array<vfsStreamContent>
