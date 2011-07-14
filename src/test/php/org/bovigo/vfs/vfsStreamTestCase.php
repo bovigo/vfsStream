@@ -237,5 +237,104 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $root->getName());
         $this->assertEquals(0444, $root->getPermissions());
     }
+
+    /**
+     * @test
+     * @group  issue_14
+     * @since  0.10.0
+     */
+    public function createWithEmptyArrayIsEqualToSetup()
+    {
+        $root = vfsStream::create(array(), 'example', 0755);
+        $this->assertEquals('example', $root->getName());
+        $this->assertEquals(0755, $root->getPermissions());
+        $this->assertFalse($root->hasChildren());
+    }
+
+    /**
+     * @test
+     * @group  issue_14
+     * @since  0.10.0
+     */
+    public function createWithoutRootDataResultsInDefaultRoot()
+    {
+        $root = vfsStream::create(array());
+        $this->assertEquals('root', $root->getName());
+        $this->assertEquals(0777, $root->getPermissions());
+        $this->assertFalse($root->hasChildren());
+    }
+
+    /**
+     * @test
+     * @group  issue_14
+     * @since  0.10.0
+     */
+    public function createArraysAreTurnedIntoSubdirectories()
+    {
+        $root = vfsStream::create(array('test' => array()), 'example');
+        $this->assertTrue($root->hasChildren());
+        $this->assertTrue($root->hasChild('test'));
+        $this->assertInstanceOf('vfsStreamDirectory',
+                                $root->getChild('test')
+        );
+        $this->assertFalse($root->getChild('test')->hasChildren());
+    }
+
+    /**
+     * @test
+     * @group  issue_14
+     * @since  0.10.0
+     */
+    public function createStringsAreTurnedIntoFilesWithContent()
+    {
+        $root = vfsStream::create(array('test.txt' => 'some content'), 'example');
+        $this->assertTrue($root->hasChildren());
+        $this->assertTrue($root->hasChild('test.txt'));
+        $this->assertVfsFile($root->getChild('test.txt'), 'some content');
+    }
+
+    /**
+     * @test
+     * @group  issue_14
+     * @since  0.10.0
+     */
+    public function createWorksRecursively()
+    {
+        $root = vfsStream::create(array('test' => array('foo'     => array('test.txt' => 'hello'),
+                                                        'baz.txt' => 'world'
+                                                  )
+                                  ),
+                                  'example');
+        $this->assertTrue($root->hasChildren());
+        $this->assertTrue($root->hasChild('test'));
+        $test = $root->getChild('test');
+        $this->assertInstanceOf('vfsStreamDirectory', $test);
+        $this->assertTrue($test->hasChildren());
+        $this->assertTrue($test->hasChild('baz.txt'));
+        $this->assertVfsFile($test->getChild('baz.txt'), 'world');
+
+        $this->assertTrue($test->hasChild('foo'));
+        $foo = $test->getChild('foo');
+        $this->assertInstanceOf('vfsStreamDirectory', $foo);
+        $this->assertTrue($foo->hasChildren());
+        $this->assertTrue($foo->hasChild('test.txt'));
+        $this->assertVfsFile($foo->getChild('test.txt'), 'hello');
+    }
+
+    /**
+     * helper function for assertions on vfsStreamFile
+     *
+     * @param  vfsStreamFile  $file
+     * @param  string         $content
+     */
+    protected function assertVfsFile(vfsStreamFile $file, $content)
+    {
+        $this->assertInstanceOf('vfsStreamFile',
+                                $file
+        );
+        $this->assertEquals($content,
+                            $file->getContent()
+        );
+    }
 }
 ?>

@@ -25,6 +25,7 @@
       <changelog version="0.10.0" api_version="0.10.0">
         - add new method vfsStreamContainer::hasChildren() and
           vfsStreamDirectory::hasChildren()
+        - implemented issue #14: less verbose way to initialize vfsStream
       </changelog>
 
       <changelog version="0.9.0" api_version="0.9.0" date="2011-07-13">
