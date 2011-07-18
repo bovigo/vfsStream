@@ -71,15 +71,6 @@ interface vfsStreamContent
     public function size();
 
     /**
-     * alias for lastModified()
-     *
-     * @param   int               $filemtime
-     * @return  vfsStreamContent
-     * @see     lastModified()
-     */
-    public function setFilemtime($filemtime);
-
-    /**
      * sets the last modification time of the stream content
      *
      * @param   int               $filemtime

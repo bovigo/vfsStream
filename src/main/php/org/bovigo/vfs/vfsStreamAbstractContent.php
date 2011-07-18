@@ -140,19 +140,6 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     }
 
     /**
-     * alias for lastModified()
-     *
-     * @param   int               $filemtime
-     * @return  vfsStreamContent
-     * @see     lastModified()
-     * @deprecated  use lastModified() instead, will be removed with 0.10.0
-     */
-    public function setFilemtime($filemtime)
-    {
-        return $this->lastModified($filemtime);
-    }
-
-    /**
      * sets the last modification time of the stream content
      *
      * @param   int               $filemtime
