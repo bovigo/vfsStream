@@ -27,6 +27,12 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @var  int
      */
     protected $bytes_read = 0;
+    /**
+     * current lock status of file
+     *
+     * @var  int
+     */
+    protected $lock       = LOCK_UN;
 
     /**
      * constructor
@@ -251,6 +257,77 @@ class vfsStreamFile extends vfsStreamAbstractContent
     public function size()
     {
         return strlen($this->content);
+    }
+
+
+    /**
+     * locks file for
+     *
+     * @param   int            $operation
+     * @return  vfsStreamFile
+     * @since   0.10.0
+     * @see     https://github.com/mikey179/vfsStream/issues/6
+     */
+    public function lock($operation)
+    {
+        if ((LOCK_NB & $operation) == LOCK_NB) {
+            $this->lock = $operation - LOCK_NB;
+        } else {
+            $this->lock = $operation;
+        }
+        
+        return $this;
+    }
+
+    /**
+     * checks whether file is locked
+     *
+     * @return  bool
+     * @since   0.10.0
+     * @see     https://github.com/mikey179/vfsStream/issues/6
+     */
+    public function isLocked()
+    {
+//        if ((LOCK_UN & $this->lock) == LOCK_UN) {
+//            return false;
+//        }
+//
+//        return true;
+        return (LOCK_UN !== $this->lock);
+    }
+
+    /**
+     * checks whether file is locked in shared mode
+     *
+     * @return  bool
+     * @since   0.10.0
+     * @see     https://github.com/mikey179/vfsStream/issues/6
+     */
+    public function hasSharedLock()
+    {
+        #if ((LOCK_SH & $this->lock) == LOCK_SH) {
+        #    return true;
+        #}
+
+        #return false;
+        return (LOCK_SH === $this->lock);
+    }
+
+    /**
+     * checks whether file is locked in exclusive mode
+     *
+     * @return  bool
+     * @since   0.10.0
+     * @see     https://github.com/mikey179/vfsStream/issues/6
+     */
+    public function hasExclusiveLock()
+    {
+        return (LOCK_EX === $this->lock);
+        if ((LOCK_EX & $this->lock) == LOCK_EX) {
+            return true;
+        }
+
+        return false;
     }
 }
 ?>

@@ -444,6 +444,20 @@ class vfsStreamWrapper
     }
 
     /**
+     * set lock status for stream
+     *
+     * @param   int   $operation
+     * @return  bool
+     * @since   0.10.0
+     * @see     https://github.com/mikey179/vfsStream/issues/6
+     */
+    public function stream_lock($operation)
+    {
+        $this->content->lock($operation);
+        return true;
+    }
+
+    /**
      * remove the data under the given path
      *
      * @param   string  $path
