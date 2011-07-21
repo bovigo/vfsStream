@@ -16,6 +16,14 @@ require_once 'PHPUnit/Framework.php';
 class vfsStreamTestCase extends PHPUnit_Framework_TestCase
 {
     /**
+     * set up test environment
+     */
+    public function setUp()
+    {
+        vfsStreamWrapper::register();
+    }
+
+    /**
      * assure that path2url conversion works correct
      *
      * @test
@@ -335,6 +343,54 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $this->assertEquals($content,
                             $file->getContent()
         );
+    }
+
+    /**
+     * @test
+     * @group  issue_10
+     * @since  0.10.0
+     */
+    public function inspectWithContentGivesContentToVisitor()
+    {
+        $mockContent = $this->getMock('vfsStreamContent');
+        $mockVisitor = $this->getMock('vfsStreamVisitor');
+        $mockVisitor->expects($this->once())
+                    ->method('visit')
+                    ->with($this->equalTo($mockContent))
+                    ->will($this->returnValue($mockVisitor));
+        $this->assertSame($mockVisitor, vfsStream::inspect($mockVisitor, $mockContent));
+    }
+
+    /**
+     * @test
+     * @group  issue_10
+     * @since  0.10.0
+     */
+    public function inspectWithoutContentGivesRootToVisitor()
+    {
+        $root = vfsStream::setup();
+        $mockVisitor = $this->getMock('vfsStreamVisitor');
+        $mockVisitor->expects($this->once())
+                    ->method('visitDirectory')
+                    ->with($this->equalTo($root))
+                    ->will($this->returnValue($mockVisitor));
+        $this->assertSame($mockVisitor, vfsStream::inspect($mockVisitor));
+    }
+
+    /**
+     * @test
+     * @group  issue_10
+     * @expectedException  InvalidArgumentException
+     * @since  0.10.0
+     */
+    public function inspectWithoutContentAndWithoutRootThrowsInvalidArgumentException()
+    {
+        $mockVisitor = $this->getMock('vfsStreamVisitor');
+        $mockVisitor->expects($this->never())
+                    ->method('visit');
+        $mockVisitor->expects($this->never())
+                    ->method('visitDirectory');
+        vfsStream::inspect($mockVisitor);
     }
 }
 ?>

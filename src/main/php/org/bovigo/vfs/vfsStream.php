@@ -8,6 +8,7 @@
  * @ignore
  */
 require_once dirname(__FILE__) . '/vfsStreamWrapper.php';
+require_once dirname(__FILE__) . '/visitor/vfsStreamVisitor.php';
 /**
  * Some utility methods for vfsStream.
  *
@@ -245,6 +246,35 @@ class vfsStream
     public static function getCurrentGroup()
     {
         return function_exists('posix_getgid') ? posix_getgid() : self::GROUP_ROOT;
+    }
+
+    /**
+     * use visitor to inspect a content structure
+     *
+     * If the given content is null it will fall back to use the current root
+     * directory of the stream wrapper.
+     *
+     * Returns given visitor for method chaining comfort.
+     *
+     * @param   vfsStreamVisitor  $visitor
+     * @param   vfsStreamContent  $content  optional
+     * @return  vfsStreamVisitor
+     * @throws  InvalidArgumentException
+     * @since   0.10.0
+     * @see     https://github.com/mikey179/vfsStream/issues/10
+     */
+    public static function inspect(vfsStreamVisitor $visitor, vfsStreamContent $content = null)
+    {
+        if (null !== $content) {
+            return $visitor->visit($content);
+        }
+
+        $root = vfsStreamWrapper::getRoot();
+        if (null === $root) {
+            throw new InvalidArgumentException('No content given and no root directory set.');
+        }
+
+        return $visitor->visitDirectory($root);
     }
 }
 ?>
