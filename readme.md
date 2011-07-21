@@ -1,0 +1,1 @@
+For more information have a look in the wiki.
