@@ -29,6 +29,9 @@
         - implemented issue #13: remove deprecated method
           vfsStreamContent::setFilemtime()
         - implemented issue #6: locking meachanism for files
+        - ensured that stream_set_blocking(), stream_set_timeout() and
+          stream_set_write_buffer() on vfsStream urls have the same behaviour
+          with PHP 5.2 and 5.3
       </changelog>
 
       <changelog version="0.9.0" api_version="0.9.0" date="2011-07-13">

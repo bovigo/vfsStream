@@ -458,6 +458,36 @@ class vfsStreamWrapper
     }
 
     /**
+     * sets options on the stream
+     *
+     * @param   int   $option  key of option to set
+     * @param   int   $arg1
+     * @param   int   $arg2
+     * @return  bool
+     * @since   0.10.0
+     * @see     https://github.com/mikey179/vfsStream/issues/15
+     * @see     http://www.php.net/manual/streamwrapper.stream-set-option.php
+     */
+    public function stream_set_option($option, $arg1, $arg2)
+    {
+        switch ($option) {
+            case STREAM_OPTION_BLOCKING:
+                // break omitted
+
+            case STREAM_OPTION_READ_TIMEOUT:
+                // break omitted
+
+            case STREAM_OPTION_WRITE_BUFFER:
+                // break omitted
+
+            default:
+                // nothing to do here
+        }
+
+        return false;
+    }
+
+    /**
      * remove the data under the given path
      *
      * @param   string  $path

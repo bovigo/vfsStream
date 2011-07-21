@@ -150,7 +150,6 @@ class vfsStream
      * strings becomes files with their key as file name and their value as file
      * content.
      *
-     *
      * @param   array<string,array|string>  $structure    directory structure to add under root directory
      * @param   string                      $rootDirName  optional  name of root directory
      * @param   int                         $permissions  optional  file permissions of root directory
@@ -167,7 +166,7 @@ class vfsStream
      * helper method to create subdirectories recursively
      *
      * @param   vfsStreamDirectory          $baseDir    directory to add the structure to
-     * param    array<string,array|string>  $structure  subdirectory structure to add
+     * @param   array<string,array|string>  $structure  subdirectory structure to add
      * @return  vfsStreamDirectory
      */
     protected static function addStructure(vfsStreamDirectory $baseDir, array $structure)
