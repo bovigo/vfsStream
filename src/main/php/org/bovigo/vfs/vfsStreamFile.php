@@ -288,11 +288,6 @@ class vfsStreamFile extends vfsStreamAbstractContent
      */
     public function isLocked()
     {
-//        if ((LOCK_UN & $this->lock) == LOCK_UN) {
-//            return false;
-//        }
-//
-//        return true;
         return (LOCK_UN !== $this->lock);
     }
 
@@ -305,11 +300,6 @@ class vfsStreamFile extends vfsStreamAbstractContent
      */
     public function hasSharedLock()
     {
-        #if ((LOCK_SH & $this->lock) == LOCK_SH) {
-        #    return true;
-        #}
-
-        #return false;
         return (LOCK_SH === $this->lock);
     }
 
@@ -323,11 +313,6 @@ class vfsStreamFile extends vfsStreamAbstractContent
     public function hasExclusiveLock()
     {
         return (LOCK_EX === $this->lock);
-        if ((LOCK_EX & $this->lock) == LOCK_EX) {
-            return true;
-        }
-
-        return false;
     }
 }
 ?>
