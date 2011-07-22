@@ -221,7 +221,7 @@ class vfsStreamWrapper
         $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
         $mode     = str_replace(array('b', '+'), '', $mode);
         if (in_array($mode, array('r', 'w', 'a', 'x')) === false) {
-            if (!($options & STREAM_REPORT_ERRORS)) {
+            if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
                 trigger_error('Illegal mode ' . $mode . ', use r, w, a  or x, flavoured with b and/or +', E_USER_WARNING);
             }
 
@@ -233,7 +233,7 @@ class vfsStreamWrapper
         $this->content = $this->getContentOfType($path, vfsStreamContent::TYPE_FILE);
         if (null !== $this->content) {
             if (self::WRITE === $mode) {
-                if (!($options & STREAM_REPORT_ERRORS)) {
+                if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
                     trigger_error('File ' . $path . ' already exists, can not open with mode x', E_USER_WARNING);
                 }
 
@@ -253,7 +253,7 @@ class vfsStreamWrapper
         
         $names = $this->splitPath($path);
         if (empty($names['dirname']) === true) {
-            if (!($options & STREAM_REPORT_ERRORS)) {
+            if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
                 trigger_error('File ' . $names['basename'] . ' does not exist', E_USER_WARNING);
             }
             
@@ -262,13 +262,13 @@ class vfsStreamWrapper
 
         $dir = $this->getContentOfType($names['dirname'], vfsStreamContent::TYPE_DIR);
         if (null === $dir) {
-            if (!($options & STREAM_REPORT_ERRORS)) {
+            if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
                 trigger_error('Directory ' . $names['dirname'] . ' does not exist', E_USER_WARNING);
             }
 
             return false;
         } elseif ($dir->hasChild($names['basename']) === true) {
-            if (!($options & STREAM_REPORT_ERRORS)) {
+            if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
                 trigger_error('Directory ' . $names['dirname'] . ' already contains a director named ' . $names['basename'], E_USER_WARNING);
             }
 
@@ -276,7 +276,7 @@ class vfsStreamWrapper
         }
 
         if (self::READ === $mode) {
-            if (!($options & STREAM_REPORT_ERRORS)) {
+            if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
                 trigger_error('Can not open non-existing file ' . $path . ' for reading', E_USER_WARNING);
             }
 
@@ -284,7 +284,7 @@ class vfsStreamWrapper
         }
 
         if ($dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
-            if (!($options & STREAM_REPORT_ERRORS)) {
+            if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
                 trigger_error('Can not create new file in non-writable path ' . $names['dirname'], E_USER_WARNING);
             }
 
