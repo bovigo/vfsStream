@@ -711,12 +711,12 @@ class vfsStreamWrapper
      */
     public function url_stat($path, $flags)
     {
-        $path    = $this->resolvePath(vfsStream::path($path));
-        $content = $this->getContent($path);
+        $content = $this->getContent($this->resolvePath(vfsStream::path($path)));
         if (null === $content) {
             if (($flags & STREAM_URL_STAT_QUIET) != STREAM_URL_STAT_QUIET) {
-                trigger_error(' No such file or directory', E_USER_WARNING);
+                trigger_error(' No such file or directory: ' . $path, E_USER_WARNING);
             }
+
             return false;
 
         }
