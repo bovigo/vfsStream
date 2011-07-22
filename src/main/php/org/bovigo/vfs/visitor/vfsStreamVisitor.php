@@ -9,9 +9,6 @@
  * @ignore
  */
 require_once dirname(__FILE__) . '/../vfsStreamDirectory.php';
-/**
- * @ignore
- */
 require_once dirname(__FILE__) . '/../vfsStreamFile.php';
 /**
  * Interface for a visitor to work on a vfsStream content structure.
