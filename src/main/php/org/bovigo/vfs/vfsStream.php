@@ -172,6 +172,7 @@ class vfsStream
     protected static function addStructure(vfsStreamDirectory $baseDir, array $structure)
     {
         foreach ($structure as $name => $data) {
+            $name = (string) $name;
             if (is_array($data) === true) {
                 self::addStructure(self::newDirectory($name)->at($baseDir), $data);
             } elseif (is_string($data) === true) {
