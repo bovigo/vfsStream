@@ -330,6 +330,21 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+    * @test
+    * @group issue_17
+    */
+    public function createCastsNumericDirectoriesToStrings()
+    {
+        $root = vfsStream::create(array('2011' => array ('test.txt' => 'some content')));
+        $this->assertTrue($root->hasChild('2011'));
+
+        $directory = $root->getChild('2011');
+        $this->assertVfsFile($directory->getChild('test.txt'), 'some content');
+
+        $this->assertTrue(file_exists('vfs://2011/test.txt'));
+    }
+
+    /**
      * helper function for assertions on vfsStreamFile
      *
      * @param  vfsStreamFile  $file
