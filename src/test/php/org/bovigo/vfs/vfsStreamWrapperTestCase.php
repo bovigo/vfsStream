@@ -556,17 +556,5 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         vfsStreamWrapper::register();
         $this->assertFalse(file_get_contents(vfsStream::url('file.txt')));
     }
-
-    /**
-     * @test
-     */
-    public function fileAsRootDirectory()
-    {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(vfsStream::newFile('file.txt')->withContent('some content'));
-        $this->assertEquals('some content',
-                            file_get_contents(vfsStream::url('file.txt'))
-        );
-    }
 }
 ?>
