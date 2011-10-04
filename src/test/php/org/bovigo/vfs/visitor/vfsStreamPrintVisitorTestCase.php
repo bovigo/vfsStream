@@ -69,11 +69,11 @@ class vfsStreamPrintVisitorTestCase extends PHPUnit_Framework_TestCase
      */
     public function visitRecursiveDirectoryStructure()
     {
-        $root         = vfsStream::create(array('test' => array('foo'     => array('test.txt' => 'hello'),
-                                                                'baz.txt' => 'world'
-                                                          ),
-                                                'foo.txt' => ''
-                                          )
+        $root         = vfsStream::replace(array('test' => array('foo'     => array('test.txt' => 'hello'),
+                                                                 'baz.txt' => 'world'
+                                                           ),
+                                                 'foo.txt' => ''
+                                           )
                         );
         $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
         $this->assertSame($printVisitor,

@@ -49,11 +49,11 @@ class vfsStreamStructureVisitorTestCase extends PHPUnit_Framework_TestCase
      */
     public function visitRecursiveDirectoryStructure()
     {
-        $root         = vfsStream::create(array('test' => array('foo'     => array('test.txt' => 'hello'),
-                                                                'baz.txt' => 'world'
-                                                          ),
-                                                'foo.txt' => ''
-                                          )
+        $root         = vfsStream::replace(array('test' => array('foo'     => array('test.txt' => 'hello'),
+                                                                 'baz.txt' => 'world'
+                                                           ),
+                                                 'foo.txt' => ''
+                                           )
                         );
         $structureVisitor = new vfsStreamStructureVisitor();
         $this->assertEquals(array('root' => array('test' => array('foo'     => array('test.txt' => 'hello'),

@@ -124,7 +124,7 @@ class vfsStream
     }
 
     /**
-     * creates vfsStream directory structure from an array
+     * creates vfsStream directory structure from an array and replaces existing structure
      *
      * Assumed $structure contains an array like this:
      * <code>
@@ -154,12 +154,52 @@ class vfsStream
      * @param   string                      $rootDirName  optional  name of root directory
      * @param   int                         $permissions  optional  file permissions of root directory
      * @return  vfsStreamDirectory
+     * @since   0.11.0
+     * @see     https://github.com/mikey179/vfsStream/issues/14
+     * @see     https://github.com/mikey179/vfsStream/issues/20
+     */
+    public static function replace(array $structure, $rootDirName = 'root', $permissions = null)
+    {
+        return self::create($structure, self::setup($rootDirName, $permissions));
+    }
+
+    /**
+     * creates vfsStream directory structure from an array
+     *
+     * Assumed $structure contains an array like this:
+     * <code>
+     * array('Core' = array('AbstractFactory' => array('test.php'    => 'some text content',
+     *                                                 'other.php'   => 'Some more text content',
+     *                                                 'Invalid.csv' => 'Something else',
+     *                                           ),
+     *                      'AnEmptyFolder'   => array(),
+     *                      'badlocation.php' => 'some bad content',
+     *                )
+     * )
+     * </code>
+     * the resulting directory tree will look like this:
+     * baseDir
+     * \- Core
+     *  |- badlocation.php
+     *  |- AbstractFactory
+     *  | |- test.php
+     *  | |- other.php
+     *  | \- Invalid.csv
+     *  \- AnEmptyFolder
+     * Arrays will become directories with their key as directory name, and
+     * strings becomes files with their key as file name and their value as file
+     * content.
+     *
+     * @param   array<string,array|string>  $structure  directory structure to add under root directory
+     * @param   vfsStreamDirectory          $baseDir    base directory to add structure to
+     * @return  vfsStreamDirectory
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/14
+     * @see     https://github.com/mikey179/vfsStream/issues/20
      */
-    public static function create(array $structure, $rootDirName = 'root', $permissions = null)
+    public static function create(array $structure, vfsStreamDirectory $baseDir)
     {
-        return self::addStructure(self::setup($rootDirName, $permissions), $structure);
+        return self::addStructure($baseDir, $structure);
     }
 
     /**
