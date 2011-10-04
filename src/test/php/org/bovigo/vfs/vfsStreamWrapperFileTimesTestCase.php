@@ -75,8 +75,8 @@ class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
                          ->lastAccessed(100)
                          ->lastAttributeModified(100);
         fclose(fopen($this->fooUrl, 'rb'));
-        $this->assertGreaterThanOrEqual(time(), filemtime($this->fooUrl));
-        $this->assertGreaterThanOrEqual(time(), fileatime($this->fooUrl));
+        $this->assertLessThanOrEqual(time(), filemtime($this->fooUrl));
+        $this->assertLessThanOrEqual(time(), fileatime($this->fooUrl));
         $this->assertEquals(100, filectime($this->fooUrl));
         $this->assertFileTimesEqualStreamTimes($this->fooUrl, $file);
     }
@@ -98,8 +98,8 @@ class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
         sleep(3);
         fread($fp, 1024);
         fclose($fp);
-        $this->assertGreaterThanOrEqual($openTime, filemtime($this->fooUrl));
-        $this->assertGreaterThanOrEqual($openTime + 3, fileatime($this->fooUrl));
+        $this->assertLessThanOrEqual($openTime, filemtime($this->fooUrl));
+        $this->assertLessThanOrEqual($openTime + 3, fileatime($this->fooUrl));
         $this->assertEquals(100, filectime($this->fooUrl));
         $this->assertFileTimesEqualStreamTimes($this->fooUrl, $file);
     }
@@ -120,8 +120,8 @@ class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
         sleep(3);
         fwrite($fp, 'test');
         fclose($fp);
-        $this->assertGreaterThanOrEqual($openTime + 3, filemtime($this->fooUrl));
-        $this->assertGreaterThanOrEqual($openTime, fileatime($this->fooUrl));
+        $this->assertLessThanOrEqual($openTime + 3, filemtime($this->fooUrl));
+        $this->assertLessThanOrEqual($openTime, fileatime($this->fooUrl));
         $this->assertEquals(100, filectime($this->fooUrl));
         $this->assertFileTimesEqualStreamTimes($this->fooUrl, $file);
 
@@ -134,7 +134,7 @@ class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
     public function createNewFileSetsAllTimesToCurrentTime()
     {
         file_put_contents($this->fooUrl, 'test');
-        $this->assertGreaterThanOrEqual(time(), filemtime($this->fooUrl));
+        $this->assertLessThanOrEqual(time(), filemtime($this->fooUrl));
         $this->assertEquals(fileatime($this->fooUrl), filectime($this->fooUrl));
         $this->assertEquals(fileatime($this->fooUrl), filemtime($this->fooUrl));
         $this->assertFileTimesEqualStreamTimes($this->fooUrl, vfsStreamWrapper::getRoot()->getChild('foo.txt'));
@@ -152,8 +152,8 @@ class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
                         ->lastAccessed(100)
                         ->lastAttributeModified(100);
         file_put_contents($this->bazUrl, 'test');
-        $this->assertGreaterThanOrEqual(time(), filemtime($this->barUrl));
-        $this->assertGreaterThanOrEqual(time(), filectime($this->barUrl));
+        $this->assertLessThanOrEqual(time(), filemtime($this->barUrl));
+        $this->assertLessThanOrEqual(time(), filectime($this->barUrl));
         $this->assertEquals(100, fileatime($this->barUrl));
         $this->assertFileTimesEqualStreamTimes($this->barUrl, $dir);
     }
@@ -193,8 +193,8 @@ class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
             ->lastAccessed(100)
             ->lastAttributeModified(100);
         unlink($this->bazUrl);
-        $this->assertGreaterThanOrEqual(time(), filemtime($this->barUrl));
-        $this->assertGreaterThanOrEqual(time(), filectime($this->barUrl));
+        $this->assertLessThanOrEqual(time(), filemtime($this->barUrl));
+        $this->assertLessThanOrEqual(time(), filectime($this->barUrl));
         $this->assertEquals(100, fileatime($this->barUrl));
         $this->assertFileTimesEqualStreamTimes($this->barUrl, $dir);
     }
@@ -221,12 +221,12 @@ class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
                ->lastAccessed(100)
                ->lastAttributeModified(100);
         rename($this->bazUrl, vfsStream::url('root/target/baz.txt'));
-        $this->assertGreaterThanOrEqual(time(), filemtime($this->barUrl));
-        $this->assertGreaterThanOrEqual(time(), filectime($this->barUrl));
+        $this->assertLessThanOrEqual(time(), filemtime($this->barUrl));
+        $this->assertLessThanOrEqual(time(), filectime($this->barUrl));
         $this->assertEquals(100, fileatime($this->barUrl));
         $this->assertFileTimesEqualStreamTimes($this->barUrl, $source);
-        $this->assertGreaterThanOrEqual(time(), filemtime(vfsStream::url('root/target')));
-        $this->assertGreaterThanOrEqual(time(), filectime(vfsStream::url('root/target')));
+        $this->assertLessThanOrEqual(time(), filemtime(vfsStream::url('root/target')));
+        $this->assertLessThanOrEqual(time(), filectime(vfsStream::url('root/target')));
         $this->assertEquals(200, fileatime(vfsStream::url('root/target')));
         $this->assertFileTimesEqualStreamTimes(vfsStream::url('root/target'), $target);
     }
