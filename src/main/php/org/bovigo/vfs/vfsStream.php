@@ -164,7 +164,7 @@ class vfsStream
     }
 
     /**
-     * creates vfsStream directory structure from an array
+     * creates vfsStream directory structure from an array and adds it to given base dir
      *
      * Assumed $structure contains an array like this:
      * <code>
@@ -190,31 +190,43 @@ class vfsStream
      * strings becomes files with their key as file name and their value as file
      * content.
      *
+     * If no baseDir is given it will try to add the structure to the existing
+     * root directory without replacing existing childs except those with equal
+     * names.
+     *
      * @param   array<string,array|string>  $structure  directory structure to add under root directory
-     * @param   vfsStreamDirectory          $baseDir    base directory to add structure to
+     * @param   vfsStreamDirectory          $baseDir    base directory to add structure to  optional
      * @return  vfsStreamDirectory
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
      */
-    public static function create(array $structure, vfsStreamDirectory $baseDir)
+    public static function create(array $structure, vfsStreamDirectory $baseDir = null)
     {
-        return self::addStructure($baseDir, $structure);
+        if (null === $baseDir) {
+            $baseDir = vfsStreamWrapper::getRoot();
+        }
+
+        if (null === $baseDir) {
+            throw new vfsStreamException('No baseDir given and no root directory existant.');
+        }
+        
+        return self::addStructure($structure, $baseDir);
     }
 
     /**
      * helper method to create subdirectories recursively
      *
-     * @param   vfsStreamDirectory          $baseDir    directory to add the structure to
      * @param   array<string,array|string>  $structure  subdirectory structure to add
+     * @param   vfsStreamDirectory          $baseDir    directory to add the structure to
      * @return  vfsStreamDirectory
      */
-    protected static function addStructure(vfsStreamDirectory $baseDir, array $structure)
+    protected static function addStructure(array $structure, vfsStreamDirectory $baseDir)
     {
         foreach ($structure as $name => $data) {
             $name = (string) $name;
             if (is_array($data) === true) {
-                self::addStructure(self::newDirectory($name)->at($baseDir), $data);
+                self::addStructure($data, self::newDirectory($name)->at($baseDir));
             } elseif (is_string($data) === true) {
                 self::newFile($name)->withContent($data)->at($baseDir);
             }
