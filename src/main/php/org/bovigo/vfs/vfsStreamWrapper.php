@@ -110,11 +110,13 @@ class vfsStreamWrapper
     /**
      * sets the root content
      *
-     * @param  vfsStreamContainer  $root
+     * @param   vfsStreamContainer  $root
+     * @return  vfsStreamContainer
      */
     public static function setRoot(vfsStreamContainer $root)
     {
         self::$root = $root;
+        return self::$root;
     }
 
     /**

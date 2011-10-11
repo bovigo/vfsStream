@@ -31,6 +31,17 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
+     * @test
+     * @since  0.11.0
+     */
+    public function setRootReturnsRoot()
+    {
+        vfsStreamWrapper::register();
+        $root = vfsStream::newDirectory('root');
+        $this->assertSame($root, vfsStreamWrapper::setRoot($root));
+    }
+
+    /**
      * assure that filesize is returned correct
      *
      * @test
