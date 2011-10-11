@@ -609,6 +609,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $baseDir = vfsStream::copyFromFileSystem($this->getFileSystemCopyDir() . '/emptyFolder',
                                                  vfsStream::newDirectory('test')
                    );
+        $baseDir->removeChild('.gitignore');
         $this->assertFalse($baseDir->hasChildren());
     }
 
@@ -623,6 +624,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $this->assertEquals($root,
                             vfsStream::copyFromFileSystem($this->getFileSystemCopyDir() . '/emptyFolder')
         );
+        $root->removeChild('.gitignore');
         $this->assertFalse($root->hasChildren());
     }
 
