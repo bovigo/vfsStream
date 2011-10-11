@@ -110,22 +110,6 @@ class vfsStream
      * freshly created root directory which you can use to make further
      * adjustments to it.
      *
-     * @param   string              $rootDirName  optional  name of root directory
-     * @param   int                 $permissions  optional  file permissions of root directory
-     * @return  vfsStreamDirectory
-     * @since   0.7.0
-     */
-    public static function setup($rootDirName = 'root', $permissions = null)
-    {
-        vfsStreamWrapper::register();
-        $root = self::newDirectory($rootDirName, $permissions);
-        vfsStreamWrapper::setRoot($root);
-        return $root;
-    }
-
-    /**
-     * creates vfsStream directory structure from an array and replaces existing structure
-     *
      * Assumed $structure contains an array like this:
      * <code>
      * array('Core' = array('AbstractFactory' => array('test.php'    => 'some text content',
@@ -150,17 +134,20 @@ class vfsStream
      * strings becomes files with their key as file name and their value as file
      * content.
      *
-     * @param   array<string,array|string>  $structure    directory structure to add under root directory
      * @param   string                      $rootDirName  optional  name of root directory
      * @param   int                         $permissions  optional  file permissions of root directory
+     * @param   array<string,array|string>  $structure    optional  directory structure to add under root directory
      * @return  vfsStreamDirectory
-     * @since   0.11.0
+     * @since   0.7.0
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
      */
-    public static function replace(array $structure, $rootDirName = 'root', $permissions = null)
+    public static function setup($rootDirName = 'root', $permissions = null, array $structure = array())
     {
-        return self::create($structure, self::setup($rootDirName, $permissions));
+        vfsStreamWrapper::register();
+        $root = self::newDirectory($rootDirName, $permissions);
+        vfsStreamWrapper::setRoot($root);
+        return self::create($structure, self::setup($rootDirName, $permissions));;
     }
 
     /**

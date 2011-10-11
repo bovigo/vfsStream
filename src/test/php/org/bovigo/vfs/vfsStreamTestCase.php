@@ -252,9 +252,12 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
      * @group  issue_20
      * @since  0.10.0
      */
-    public function replaceWithEmptyArrayIsEqualToSetup()
+    public function setupWithEmptyArrayIsEqualToSetup()
     {
-        $root = vfsStream::replace(array(), 'example', 0755);
+        $root = vfsStream::setup('example',
+                                 0755,
+                                 array()
+                );
         $this->assertEquals('example', $root->getName());
         $this->assertEquals(0755, $root->getPermissions());
         $this->assertFalse($root->hasChildren());
@@ -266,23 +269,12 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
      * @group  issue_20
      * @since  0.10.0
      */
-    public function replaceWithoutRootDataResultsInDefaultRoot()
+    public function setupArraysAreTurnedIntoSubdirectories()
     {
-        $root = vfsStream::replace(array());
-        $this->assertEquals('root', $root->getName());
-        $this->assertEquals(0777, $root->getPermissions());
-        $this->assertFalse($root->hasChildren());
-    }
-
-    /**
-     * @test
-     * @group  issue_14
-     * @group  issue_20
-     * @since  0.10.0
-     */
-    public function replaceArraysAreTurnedIntoSubdirectories()
-    {
-        $root = vfsStream::replace(array('test' => array()), 'example');
+        $root = vfsStream::setup('root',
+                                 null,
+                                 array('test' => array())
+                );
         $this->assertTrue($root->hasChildren());
         $this->assertTrue($root->hasChild('test'));
         $this->assertInstanceOf('vfsStreamDirectory',
@@ -297,9 +289,12 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
      * @group  issue_20
      * @since  0.10.0
      */
-    public function replaceStringsAreTurnedIntoFilesWithContent()
+    public function setupStringsAreTurnedIntoFilesWithContent()
     {
-        $root = vfsStream::replace(array('test.txt' => 'some content'), 'example');
+        $root = vfsStream::setup('root',
+                                 null,
+                                 array('test.txt' => 'some content')
+                );
         $this->assertTrue($root->hasChildren());
         $this->assertTrue($root->hasChild('test.txt'));
         $this->assertVfsFile($root->getChild('test.txt'), 'some content');
@@ -311,13 +306,15 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
      * @group  issue_20
      * @since  0.10.0
      */
-    public function replaceWorksRecursively()
+    public function setupWorksRecursively()
     {
-        $root = vfsStream::replace(array('test' => array('foo'     => array('test.txt' => 'hello'),
-                                                        'baz.txt' => 'world'
-                                                  )
-                                  ),
-                                  'example');
+        $root = vfsStream::setup('root',
+                                 null,
+                                 array('test' => array('foo'     => array('test.txt' => 'hello'),
+                                                       'baz.txt' => 'world'
+                                                 )
+                                 ),
+                );
         $this->assertTrue($root->hasChildren());
         $this->assertTrue($root->hasChild('test'));
         $test = $root->getChild('test');
@@ -339,9 +336,12 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     * @group  issue_17
     * @group  issue_20
     */
-    public function replaceCastsNumericDirectoriesToStrings()
+    public function setupCastsNumericDirectoriesToStrings()
     {
-        $root = vfsStream::replace(array(2011 => array ('test.txt' => 'some content')));
+        $root = vfsStream::setup('root',
+                                 null,
+                                 array(2011 => array ('test.txt' => 'some content'))
+                );
         $this->assertTrue($root->hasChild('2011'));
 
         $directory = $root->getChild('2011');
