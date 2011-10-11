@@ -182,7 +182,7 @@ class vfsStream
      * @param   array<string,array|string>  $structure  directory structure to add under root directory
      * @param   vfsStreamDirectory          $baseDir    base directory to add structure to  optional
      * @return  vfsStreamDirectory
-     * @throws  vfsStreamException
+     * @throws  InvalidArgumentException
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
@@ -194,7 +194,7 @@ class vfsStream
         }
 
         if (null === $baseDir) {
-            throw new vfsStreamException('No baseDir given and no root directory existant.');
+            throw new InvalidArgumentException('No baseDir given and no root directory set.');
         }
         
         return self::addStructure($structure, $baseDir);
@@ -231,11 +231,11 @@ class vfsStream
      * Please note that file contents will only be copied if their file size
      * does not exceed the given $maxFileSize which is 1024 KB.
      *
-     * @param   string              $path         path to copy the structure from
-     * @param   vfsStreamDirectory  $baseDir      directory to add the structure to  optional
-     * @param   int                 $maxFileSize  maximum file size of files to copy content from  optional
+     * @param   string                    $path         path to copy the structure from
+     * @param   vfsStreamDirectory        $baseDir      directory to add the structure to  optional
+     * @param   int                       $maxFileSize  maximum file size of files to copy content from  optional
      * @return  vfsStreamDirectory
-     * @throws  vfsStreamException
+     * @throws  InvalidArgumentException
      * @since   0.11.0
      * @see     https://github.com/mikey179/vfsStream/issues/4
      */
@@ -246,7 +246,7 @@ class vfsStream
         }
 
         if (null === $baseDir) {
-            throw new vfsStreamException('No baseDir given and no root directory existant.');
+            throw new InvalidArgumentException('No baseDir given and no root directory set.');
         }
 
         $dir = new DirectoryIterator($path);

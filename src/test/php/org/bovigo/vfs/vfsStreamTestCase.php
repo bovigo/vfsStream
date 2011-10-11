@@ -386,7 +386,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  issue_20
-     * @expectedException  vfsStreamException
+     * @expectedException  InvalidArgumentException
      * @since  0.11.0
      */
     public function createThrowsExceptionIfNoBaseDirGivenAndNoRootSet()
@@ -591,7 +591,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  issue_4
-     * @expectedException  vfsStreamException
+     * @expectedException  InvalidArgumentException
      * @since  0.11.0
      */
     public function copyFromFileSystemThrowsExceptionIfNoBaseDirGivenAndNoRootSet()
