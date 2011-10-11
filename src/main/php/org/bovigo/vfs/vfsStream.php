@@ -145,9 +145,7 @@ class vfsStream
     public static function setup($rootDirName = 'root', $permissions = null, array $structure = array())
     {
         vfsStreamWrapper::register();
-        $root = self::newDirectory($rootDirName, $permissions);
-        vfsStreamWrapper::setRoot($root);
-        return self::create($structure, self::setup($rootDirName, $permissions));;
+        return self::create($structure, vfsStreamWrapper::setRoot(self::newDirectory($rootDirName, $permissions)));
     }
 
     /**

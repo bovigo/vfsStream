@@ -313,7 +313,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
                                  array('test' => array('foo'     => array('test.txt' => 'hello'),
                                                        'baz.txt' => 'world'
                                                  )
-                                 ),
+                                 )
                 );
         $this->assertTrue($root->hasChildren());
         $this->assertTrue($root->hasChild('test'));
