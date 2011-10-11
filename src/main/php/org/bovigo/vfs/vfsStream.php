@@ -182,6 +182,7 @@ class vfsStream
      * @param   array<string,array|string>  $structure  directory structure to add under root directory
      * @param   vfsStreamDirectory          $baseDir    base directory to add structure to  optional
      * @return  vfsStreamDirectory
+     * @throws  vfsStreamException
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
@@ -203,7 +204,7 @@ class vfsStream
      * helper method to create subdirectories recursively
      *
      * @param   array<string,array|string>  $structure  subdirectory structure to add
-     * @param   vfsStreamDirectory          $baseDir    directory to add the structure to
+     * @param   vfsStreamDirectory          $baseDir    directory to add the structure to  optional
      * @return  vfsStreamDirectory
      */
     protected static function addStructure(array $structure, vfsStreamDirectory $baseDir)
@@ -214,6 +215,62 @@ class vfsStream
                 self::addStructure($data, self::newDirectory($name)->at($baseDir));
             } elseif (is_string($data) === true) {
                 self::newFile($name)->withContent($data)->at($baseDir);
+            }
+        }
+
+        return $baseDir;
+    }
+
+    /**
+     * copies the file system structure from given path into the base dir
+     *
+     * If no baseDir is given it will try to add the structure to the existing
+     * root directory without replacing existing childs except those with equal
+     * names.
+     * File permissions are copied as well.
+     * Please note that file contents will only be copied if their file size
+     * does not exceed the given $maxFileSize which is 1024 KB.
+     *
+     * @param   string              $path         path to copy the structure from
+     * @param   vfsStreamDirectory  $baseDir      directory to add the structure to  optional
+     * @param   int                 $maxFileSize  maximum file size of files to copy content from  optional
+     * @return  vfsStreamDirectory
+     * @throws  vfsStreamException
+     * @since   0.11.0
+     * @see     https://github.com/mikey179/vfsStream/issues/4
+     */
+    public static function copyFromFileSystem($path, vfsStreamDirectory $baseDir = null, $maxFileSize = 1048576)
+    {
+        if (null === $baseDir) {
+            $baseDir = vfsStreamWrapper::getRoot();
+        }
+
+        if (null === $baseDir) {
+            throw new vfsStreamException('No baseDir given and no root directory existant.');
+        }
+
+        $dir = new DirectoryIterator($path);
+        foreach ($dir as $fileinfo) {
+            if ($fileinfo->isFile() === true) {
+                if ($fileinfo->getSize() <= $maxFileSize) {
+                    $content = file_get_contents($fileinfo->getPathname());
+                } else {
+                    $content = '';
+                }
+
+                self::newFile($fileinfo->getFilename(),
+                              substr(sprintf('%o', $fileinfo->getPerms()), -4)
+                      )
+                    ->withContent($content)
+                    ->at($baseDir);
+            } elseif ($fileinfo->isDir() === true && $fileinfo->isDot() === false) {
+                self::copyFromFileSystem($fileinfo->getPathname(),
+                                         self::newDirectory($fileinfo->getFilename(),
+                                                            substr(sprintf('%o', $fileinfo->getPerms()), -4)
+                                               )
+                                             ->at($baseDir),
+                                         $maxFileSize
+                );
             }
         }
 

@@ -577,5 +577,102 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
                     ->method('visitDirectory');
         vfsStream::inspect($mockVisitor);
     }
+
+    /**
+     * returns path to file system copy resource directory
+     *
+     * @return  string
+     */
+    protected function getFileSystemCopyDir()
+    {
+        return realpath(dirname(__FILE__) . '/../../../../resources/filesystemcopy');
+    }
+
+    /**
+     * @test
+     * @group  issue_4
+     * @expectedException  vfsStreamException
+     * @since  0.11.0
+     */
+    public function copyFromFileSystemThrowsExceptionIfNoBaseDirGivenAndNoRootSet()
+    {
+        vfsStream::copyFromFileSystem($this->getFileSystemCopyDir());
+    }
+
+    /**
+     * @test
+     * @group  issue_4
+     * @since  0.11.0
+     */
+    public function copyFromEmptyFolder()
+    {
+        $baseDir = vfsStream::copyFromFileSystem($this->getFileSystemCopyDir() . '/emptyFolder',
+                                                 vfsStream::newDirectory('test')
+                   );
+        $this->assertFalse($baseDir->hasChildren());
+    }
+
+    /**
+     * @test
+     * @group  issue_4
+     * @since  0.11.0
+     */
+    public function copyFromEmptyFolderWithRoot()
+    {
+        $root = vfsStream::setup();
+        $this->assertEquals($root,
+                            vfsStream::copyFromFileSystem($this->getFileSystemCopyDir() . '/emptyFolder')
+        );
+        $this->assertFalse($root->hasChildren());
+    }
+
+    /**
+     * @test
+     * @group  issue_4
+     * @since  0.11.0
+     */
+    public function copyFromWithSubFolders()
+    {
+        $baseDir = vfsStream::copyFromFileSystem($this->getFileSystemCopyDir(),
+                                                 vfsStream::newDirectory('test'),
+                                                 3
+                   );
+        $this->assertTrue($baseDir->hasChildren());
+        $this->assertTrue($baseDir->hasChild('emptyFolder'));
+        $this->assertTrue($baseDir->hasChild('withSubfolders'));
+        $subfolderDir = $baseDir->getChild('withSubfolders');
+        $this->assertTrue($subfolderDir->hasChild('subfolder1'));
+        $this->assertTrue($subfolderDir->getChild('subfolder1')->hasChild('file1.txt'));
+        $this->assertVfsFile($subfolderDir->getChild('subfolder1/file1.txt'), '');
+        $this->assertTrue($subfolderDir->hasChild('subfolder2'));
+        $this->assertTrue($subfolderDir->hasChild('aFile.txt'));
+        $this->assertVfsFile($subfolderDir->getChild('aFile.txt'), 'foo');
+    }
+
+    /**
+     * @test
+     * @group  issue_4
+     * @since  0.11.0
+     */
+    public function copyFromWithSubFoldersWithRoot()
+    {
+        $root = vfsStream::setup();
+        $this->assertEquals($root,
+                            vfsStream::copyFromFileSystem($this->getFileSystemCopyDir(),
+                                                          null,
+                                                          3
+                            )
+        );
+        $this->assertTrue($root->hasChildren());
+        $this->assertTrue($root->hasChild('emptyFolder'));
+        $this->assertTrue($root->hasChild('withSubfolders'));
+        $subfolderDir = $root->getChild('withSubfolders');
+        $this->assertTrue($subfolderDir->hasChild('subfolder1'));
+        $this->assertTrue($subfolderDir->getChild('subfolder1')->hasChild('file1.txt'));
+        $this->assertVfsFile($subfolderDir->getChild('subfolder1/file1.txt'), '');
+        $this->assertTrue($subfolderDir->hasChild('subfolder2'));
+        $this->assertTrue($subfolderDir->hasChild('aFile.txt'));
+        $this->assertVfsFile($subfolderDir->getChild('aFile.txt'), 'foo');
+    }
 }
 ?>
