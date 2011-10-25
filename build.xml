@@ -85,15 +85,7 @@
   </target>
 
   <target name="create-api-doc" description="Creates API docs">
-    <phpdoc title="vfsStream"
-            destdir="${build.report.dir}/api"
-            sourcecode="yes"
-            output="HTML:frames:DOM/earthli"
-            defaultpackagename="bovigo_vfs">
-      <fileset dir="src/main/php/org/bovigo/vfs">
-        <include name="**/*.php" />
-      </fileset>
-    </phpdoc>
+    <exec command="docblox -d src/main/php/org/bovigo/vfs -t ${build.report.dir}/docblox --title vfsStream API Doc --defaultpackagename bovigo_vfs" passthru="true"/>
   </target>
 
   <target name="versioncheck" unless="version">
