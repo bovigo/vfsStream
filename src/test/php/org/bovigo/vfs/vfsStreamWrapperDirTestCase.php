@@ -504,5 +504,40 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
                 file_get_contents(vfsStream::url('foo/bar/../baz2'))
         );
     }
+
+    /**
+     * @test
+     * @since  0.11.0
+     * @group  issue_23
+     */
+    public function unlinkCanNotRemoveNonEmptyDirectory()
+    {
+        try {
+            $this->assertFalse(unlink($this->barURL));
+        } catch (PHPUnit_Framework_Error $fe) {
+            $this->assertEquals('unlink(vfs://foo/bar): Operation not permitted', $fe->getMessage());
+        }
+        
+        $this->assertTrue($this->foo->hasChild('bar'));
+        $this->assertFileExists($this->barURL);
+    }
+
+    /**
+     * @test
+     * @since  0.11.0
+     * @group  issue_23
+     */
+    public function unlinkCanNotRemoveEmptyDirectory()
+    {
+        vfsStream::newDirectory('empty')->at($this->foo);
+        try {
+            $this->assertTrue(unlink($this->fooURL . '/empty'));
+        } catch (PHPUnit_Framework_Error $fe) {
+            $this->assertEquals('unlink(vfs://foo/empty): Operation not permitted', $fe->getMessage());
+        }
+
+        $this->assertTrue($this->foo->hasChild('empty'));
+        $this->assertFileExists($this->fooURL . '/empty');
+    }
 }
 ?>

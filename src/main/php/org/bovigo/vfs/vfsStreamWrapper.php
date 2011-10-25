@@ -502,20 +502,36 @@ class vfsStreamWrapper
         if (null === $content || $content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
             return false;
         }
+
+        if ($content->getType() !== vfsStreamContent::TYPE_FILE) {
+            trigger_error('unlink(' . $path . '): Operation not permitted', E_USER_WARNING);
+            return false;
+        }
         
-        if (self::$root->getName() === $realPath) {
+        return $this->doUnlink($realPath);
+    }
+
+    /**
+     * removes a path
+     *
+     * @param   string  $path
+     * @return  bool 
+     */
+    protected function doUnlink($path)
+    {
+        if (self::$root->getName() === $path) {
             // delete root? very brave. :)
             self::$root = null;
             clearstatcache();
             return true;
         }
-        
-        $names   = $this->splitPath($realPath);
+
+        $names   = $this->splitPath($path);
         $content = $this->getContent($names['dirname']);
         if ($content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
             return false;
         }
-        
+
         clearstatcache();
         return $content->removeChild($names['basename']);
     }
@@ -556,7 +572,7 @@ class vfsStreamWrapper
 
         $dstParentContent->addChild($dstContent);
         // Removing the source
-        return $this->unlink($path_from);
+        return $this->doUnlink($srcRealPath);
     }
 
     /**

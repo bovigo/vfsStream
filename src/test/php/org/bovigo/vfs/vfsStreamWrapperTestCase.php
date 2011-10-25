@@ -89,24 +89,17 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * assert that unlink() removes files and directories
-     *
      * @test
+     * @group  issue_23
      */
-    public function unlink()
+    public function unlinkRemovesFilesOnly()
     {
         $this->assertTrue(unlink($this->baz2URL));
         $this->assertFalse(file_exists($this->baz2URL)); // make sure statcache was cleared
         $this->assertEquals(array($this->bar), $this->foo->getChildren());
-        $this->assertTrue(unlink($this->barURL));
-        $this->assertFalse(file_exists($this->barURL)); // make sure statcache was cleared
-        $this->assertEquals(array(), $this->foo->getChildren());
         $this->assertFalse(unlink($this->fooURL . '/another'));
         $this->assertFalse(unlink(vfsStream::url('another')));
-        $this->assertEquals(array(), $this->foo->getChildren());
-        $this->assertTrue(unlink($this->fooURL . '/.'));
-        $this->assertFalse(file_exists($this->fooURL)); // make sure statcache was cleared
-        $this->assertNull(vfsStreamWrapper::getRoot());
+        $this->assertEquals(array($this->bar), $this->foo->getChildren());
     }
 
     /**

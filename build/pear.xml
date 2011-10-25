@@ -26,6 +26,7 @@
         - implemented issue #20: vfsStream::create() removes old structure
         - implemented issue #4: possibility to copy structure from existing file
           system
+        - fixed issue #23: unlink should not remove any directory
       </changelog>
 
       <changelog version="0.10.1" api_version="0.10.0" date="2011-08-22">
