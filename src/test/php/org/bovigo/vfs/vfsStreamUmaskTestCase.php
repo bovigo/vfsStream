@@ -8,7 +8,7 @@
 require_once 'org/bovigo/vfs/vfsStream.php';
 require_once 'org/bovigo/vfs/vfsStreamDirectory.php';
 require_once 'org/bovigo/vfs/vfsStreamFile.php';
-require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 /**
  * Test for umask settings.
  *

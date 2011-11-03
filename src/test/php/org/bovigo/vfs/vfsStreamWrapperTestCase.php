@@ -6,7 +6,7 @@
  * @subpackage  test
  */
 require_once 'org/bovigo/vfs/vfsStream.php';
-require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 require_once dirname(__FILE__) . '/vfsStreamWrapperBaseTestCase.php';
 /**
  * Test for org::bovigo::vfs::vfsStreamWrapper.

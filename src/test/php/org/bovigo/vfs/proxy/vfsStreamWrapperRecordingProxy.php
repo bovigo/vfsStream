@@ -4,6 +4,7 @@
  *
  * @package  bovigo_vfs
  */
+require_once 'PHPUnit/Framework/TestCase.php';
 /**
  * Stream wrapper to mock file system requests.
  *

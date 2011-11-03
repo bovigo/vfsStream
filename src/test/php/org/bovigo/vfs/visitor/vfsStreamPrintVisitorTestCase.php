@@ -6,7 +6,7 @@
  * @subpackage  visitor_test
  */
 require_once 'org/bovigo/vfs/visitor/vfsStreamPrintVisitor.php';
-require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 /**
  * Test for org::bovigo::vfs::visitor::vfsStreamPrintVisitor.
  *

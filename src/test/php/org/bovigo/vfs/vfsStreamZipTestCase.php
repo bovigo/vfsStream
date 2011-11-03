@@ -5,6 +5,7 @@
  * @package     bovigo_vfs
  * @subpackage  test
  */
+require_once 'PHPUnit/Framework/TestCase.php';
 /**
  * Test for org::bovigo::vfs::vfsStreamWrapper in conjunction with ext/zip.
  *

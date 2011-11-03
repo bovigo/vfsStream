@@ -6,7 +6,7 @@
  * @subpackage  test
  */
 require_once 'org/bovigo/vfs/vfsStreamAbstractContent.php';
-require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 /**
  * Helper class for the test.
  *
