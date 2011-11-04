@@ -244,6 +244,40 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * When testing for a nested path, verify that directory separators are respected properly
+     * so that subdir1/subdir2 is not considered equal to subdir1Xsubdir2.
+     *
+     * @test
+     * @group bug_24
+     * @group regression
+     */
+    public function explicitTestForSeparatorWithNestedPaths_Bug_24()
+    {
+        $mockChild = $this->getMock('vfsStreamContent');
+        $mockChild->expects($this->any())
+                  ->method('getType')
+                  ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
+        $mockChild->expects($this->any())
+                  ->method('getName')
+                  ->will($this->returnValue('bar'));
+        
+        $subdir1 = new vfsStreamDirectory('subdir1');
+        $this->dir->addChild($subdir1);
+        
+        $subdir2 = new vfsStreamDirectory('subdir2');
+        $subdir1->addChild($subdir2);
+        
+        $subdir2->addChild($mockChild);
+        
+        $this->assertTrue($this->dir->hasChild('subdir1'), "Level 1 path with separator exists");
+        $this->assertTrue($this->dir->hasChild('subdir1/subdir2'), "Level 2 path with separator exists");
+        $this->assertTrue($this->dir->hasChild('subdir1/subdir2/bar'), "Level 3 path with separator exists");
+        $this->assertFalse($this->dir->hasChild('subdir1.subdir2'), "Path with period does not exist");
+        $this->assertFalse($this->dir->hasChild('subdir1.subdir2/bar'), "Nested path with period does not exist");
+    }
+    
+
+    /**
      * setting and retrieving permissions for a directory
      *
      * @test
