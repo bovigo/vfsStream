@@ -515,7 +515,7 @@ class vfsStreamWrapper
      * removes a path
      *
      * @param   string  $path
-     * @return  bool 
+     * @return  bool
      */
     protected function doUnlink($path)
     {
