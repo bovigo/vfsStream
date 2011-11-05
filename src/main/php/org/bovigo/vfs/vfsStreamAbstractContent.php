@@ -126,7 +126,8 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
             return true;
         }
 
-        return (substr($name, 0, strlen($this->name)) === $this->name && strpos($name, '/') !== false);
+        $segment_name = $this->name.'/';
+        return (strncmp($segment_name, $name, strlen($segment_name)) == 0);
     }
 
     /**
