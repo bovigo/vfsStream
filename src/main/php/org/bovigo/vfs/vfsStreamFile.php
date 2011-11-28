@@ -138,8 +138,9 @@ class vfsStreamFile extends vfsStreamAbstractContent
      */
     public function openWithTruncate()
     {
-        $this->open();
+        $this->seek(0, SEEK_SET);
         $this->content = '';
+        $this->updateModifications(true);
     }
 
     /**
@@ -147,11 +148,12 @@ class vfsStreamFile extends vfsStreamAbstractContent
      *
      * @since  0.9
      */
-    protected function updateModifications()
+    protected function updateModifications($written = false)
     {
         $time = time();
         $this->lastAccessed = $time;
-        $this->lastModified = $time;
+        if ($written)
+            $this->lastModified = $time;
     }
 
     /**
