@@ -27,8 +27,11 @@
         - implemented issue #4: possibility to copy structure from existing file
           system
         - fixed issue #23: unlink should not remove any directory
-        - fixed issue #25: vfsStreamDirectory::hasChild() gives false positives for
-          nested paths, patch provided by Andrew Coulton
+        - fixed issue #25: vfsStreamDirectory::hasChild() gives false positives
+          for nested paths, patch provided by Andrew Coulton
+        - fixed issue #26: opening a file for reading only should not update its
+          modification time, reported and initial patch provided by Ludovic
+          Chabant
       </changelog>
 
       <changelog version="0.10.1" api_version="0.10.0" date="2011-08-22">
