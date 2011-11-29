@@ -267,5 +267,24 @@ class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
     {
         $this->markTestSkipped('Changing file attributes via stream wrapper for self-defined streams is not supported by PHP.');
     }
+
+    /**
+     * @test
+     * @group  issue_26
+     */
+    public function filetimeModificationIsPropagatedCorrectly()
+    {
+        $root = vfsStream::setup();
+        vfsStream::newFile('filetimetest.txt')
+                 ->withContent('foo')
+                 ->at($root);
+
+        $mtime = filemtime(vfsStream::url('root/filetimetest.txt'));
+        sleep(2);
+        file_put_contents(vfsStream::url('root/filetimetest.txt'), 'BLAAAAH');
+        $this->assertEquals(filemtime(vfsStream::url('root/filetimetest.txt')),
+                            $root->getChild('root/filetimetest.txt')->filemtime()
+        );
+    }
 }
 ?>

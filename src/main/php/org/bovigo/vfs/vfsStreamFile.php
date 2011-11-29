@@ -152,6 +152,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
         $time = time();
         $this->lastAccessed = $time;
         $this->lastModified = $time;
+        clearstatcache();
     }
 
     /**
