@@ -65,8 +65,9 @@ class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  issue_7
+     * @group  issue_26
      */
-    public function openFileChangesAttributeAndModificationTime()
+    public function openFileChangesAttributeTimeOnly()
     {
         $file = vfsStream::newFile('foo.txt')
                          ->withContent('test')
@@ -75,6 +76,50 @@ class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
                          ->lastAccessed(100)
                          ->lastAttributeModified(100);
         fclose(fopen($this->fooUrl, 'rb'));
+        $this->assertGreaterThan(time() - 2, fileatime($this->fooUrl));
+        $this->assertLessThanOrEqual(time(), fileatime($this->fooUrl));
+        $this->assertLessThanOrEqual(100, filemtime($this->fooUrl));
+        $this->assertEquals(100, filectime($this->fooUrl));
+        $this->assertFileTimesEqualStreamTimes($this->fooUrl, $file);
+    }
+
+    /**
+     * @test
+     * @group  issue_7
+     * @group  issue_26
+     */
+    public function fileGetContentsChangesAttributeTimeOnly()
+    {
+        $file = vfsStream::newFile('foo.txt')
+                         ->withContent('test')
+                         ->at(vfsStreamWrapper::getRoot())
+                         ->lastModified(100)
+                         ->lastAccessed(100)
+                         ->lastAttributeModified(100);
+        file_get_contents($this->fooUrl);
+        $this->assertGreaterThan(time() - 2, fileatime($this->fooUrl));
+        $this->assertLessThanOrEqual(time(), fileatime($this->fooUrl));
+        $this->assertLessThanOrEqual(100, filemtime($this->fooUrl));
+        $this->assertEquals(100, filectime($this->fooUrl));
+        $this->assertFileTimesEqualStreamTimes($this->fooUrl, $file);
+    }
+
+    /**
+     * @test
+     * @group  issue_7
+     * @group  issue_26
+     */
+    public function openFileWithTruncateChangesAttributeAndModificationTime()
+    {
+        $file = vfsStream::newFile('foo.txt')
+                         ->withContent('test')
+                         ->at(vfsStreamWrapper::getRoot())
+                         ->lastModified(100)
+                         ->lastAccessed(100)
+                         ->lastAttributeModified(100);
+        fclose(fopen($this->fooUrl, 'wb'));
+        $this->assertGreaterThan(time() - 2, filemtime($this->fooUrl));
+        $this->assertGreaterThan(time() - 2, fileatime($this->fooUrl));
         $this->assertLessThanOrEqual(time(), filemtime($this->fooUrl));
         $this->assertLessThanOrEqual(time(), fileatime($this->fooUrl));
         $this->assertEquals(100, filectime($this->fooUrl));
@@ -266,25 +311,6 @@ class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
     public function changeFileAttributesChangesAttributeTimeOfFileItself()
     {
         $this->markTestSkipped('Changing file attributes via stream wrapper for self-defined streams is not supported by PHP.');
-    }
-
-    /**
-     * @test
-     * @group  issue_26
-     */
-    public function filetimeModificationIsPropagatedCorrectly()
-    {
-        $root = vfsStream::setup();
-        vfsStream::newFile('filetimetest.txt')
-                 ->withContent('foo')
-                 ->at($root);
-
-        $mtime = filemtime(vfsStream::url('root/filetimetest.txt'));
-        sleep(2);
-        file_put_contents(vfsStream::url('root/filetimetest.txt'), 'BLAAAAH');
-        $this->assertEquals(filemtime(vfsStream::url('root/filetimetest.txt')),
-                            $root->getChild('root/filetimetest.txt')->filemtime()
-        );
     }
 }
 ?>
