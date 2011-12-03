@@ -593,6 +593,11 @@ class vfsStreamWrapper
         }
         
         $path = $this->resolvePath(vfsStream::path($path));
+        if (null !== $this->getContent($path)) {
+            trigger_error('mkdir(): Path vfs://' . $path . ' exists', E_USER_WARNING);
+            return false;
+        }
+
         if (null === self::$root) {
             self::$root = vfsStream::newDirectory($path, $permissions);
             return true;

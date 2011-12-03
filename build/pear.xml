@@ -22,6 +22,10 @@
       <version release="${version}" api="0.11.0"/>
       <stability release="beta" api="beta"/>
 
+      <changelog version="0.11.1" api_version="0.11.0">
+        - fixed issue #28: mkdir overwrites existing directories/files
+      </changelog>
+
       <changelog version="0.11.0" api_version="0.11.0" date="2011-11-29">
         - implemented issue #20: vfsStream::create() removes old structure
         - implemented issue #4: possibility to copy structure from existing file

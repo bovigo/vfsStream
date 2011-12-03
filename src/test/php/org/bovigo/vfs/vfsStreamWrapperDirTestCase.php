@@ -200,6 +200,56 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
+     * @group  issue_28
+     */
+    public function mkDirShouldNotOverwriteExistingDirectories()
+    {
+        vfsStream::setup('root');
+        $dir = vfsStream::url('root/dir');
+        $this->assertTrue(mkdir($dir));
+        $this->assertFalse(@mkdir($dir));
+    }
+
+    /**
+     * @test
+     * @group  issue_28
+     * @expectedException PHPUnit_Framework_Error
+     * @expectedExceptionMessage  mkdir(): Path vfs://root/dir exists
+     */
+    public function mkDirShouldNotOverwriteExistingDirectoriesAndTriggerE_USER_WARNING()
+    {
+        vfsStream::setup('root');
+        $dir = vfsStream::url('root/dir');
+        $this->assertTrue(mkdir($dir));
+        $this->assertFalse(mkdir($dir));
+    }
+
+    /**
+     * @test
+     * @group  issue_28
+     */
+    public function mkDirShouldNotOverwriteExistingFiles()
+    {
+        $root = vfsStream::setup('root');
+        vfsStream::newFile('test.txt')->at($root);
+        $this->assertFalse(@mkdir(vfsStream::url('root/test.txt')));
+    }
+
+    /**
+     * @test
+     * @group  issue_28
+     * @expectedException PHPUnit_Framework_Error
+     * @expectedExceptionMessage  mkdir(): Path vfs://root/test.txt exists
+     */
+    public function mkDirShouldNotOverwriteExistingFilesAndTriggerE_USER_WARNING()
+    {
+        $root = vfsStream::setup('root');
+        vfsStream::newFile('test.txt')->at($root);
+        $this->assertFalse(mkdir(vfsStream::url('root/test.txt')));
+    }
+
+    /**
+     * @test
      * @group  permissions
      * @group  bug_15
      */
