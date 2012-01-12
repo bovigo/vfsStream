@@ -22,6 +22,12 @@
       <version release="${version}" api="0.11.0"/>
       <stability release="beta" api="beta"/>
 
+      <changelog version="0.11.2" api_version="0.11.0">
+        - fixed issue #29: set permissions properly when using
+          vfsStream::copyFromFileSystem(), patch provided by predakanga
+        - fixed failing tests under PHP > 5.3.2
+      </changelog>
+
       <changelog version="0.11.1" api_version="0.11.0" date="2011-12-04">
         - fixed issue #28: mkdir overwrites existing directories/files
       </changelog>
@@ -144,7 +150,7 @@
           on request from David Zuelke)
         - added support for is_readable(), is_dir(),
           is_file()
-        - added vfsStream::newFile() to be able to do 
+        - added vfsStream::newFile() to be able to do
           $file = vfsStream::newFile("foo.txt")->withContent("bar");
       </changelog>
 
