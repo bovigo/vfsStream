@@ -259,14 +259,14 @@ class vfsStream
                 }
 
                 self::newFile($fileinfo->getFilename(),
-                              substr(sprintf('%o', $fileinfo->getPerms()), -4)
+                              octdec(substr(sprintf('%o', $fileinfo->getPerms()), -4))
                       )
                     ->withContent($content)
                     ->at($baseDir);
             } elseif ($fileinfo->isDir() === true && $fileinfo->isDot() === false) {
                 self::copyFromFileSystem($fileinfo->getPathname(),
                                          self::newDirectory($fileinfo->getFilename(),
-                                                            substr(sprintf('%o', $fileinfo->getPerms()), -4)
+                                                            octdec(substr(sprintf('%o', $fileinfo->getPerms()), -4))
                                                )
                                              ->at($baseDir),
                                          $maxFileSize
