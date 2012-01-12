@@ -61,7 +61,7 @@ class vfsStreamResolveIncludePathTestCase extends PHPUnit_Framework_TestCase
      */
     public function unknownFileCanNotBeResolvedYieldsFalse()
     {
-        $this->assertFalse(stream_resolve_include_path('path/unknownFile.php'));
+        $this->assertFalse(@stream_resolve_include_path('path/unknownFile.php'));
     }
 }
 ?>
