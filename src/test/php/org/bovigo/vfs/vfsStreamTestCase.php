@@ -676,5 +676,33 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $this->assertTrue($subfolderDir->hasChild('aFile.txt'));
         $this->assertVfsFile($subfolderDir->getChild('aFile.txt'), 'foo');
     }
+
+    /**
+     * @test
+     * @group  issue_4
+     * @group  issue_29
+     * @since  0.11.2
+     */
+    public function copyFromPreservesFilePermissions()
+    {
+        if (DIRECTORY_SEPARATOR !== '/') {
+            $this->markTestSkipped('Only applicable on Linux style systems.');
+        }
+
+        $root = vfsStream::setup();
+        $this->assertEquals($root,
+                            vfsStream::copyFromFileSystem($this->getFileSystemCopyDir(),
+                                                          null
+                            )
+        );
+        $this->assertEquals(0755,
+                            $root->getChild('withSubfolders')
+                                 ->getPermissions()
+        );
+        $this->assertEquals(0644,
+                            $root->getChild('withSubfolders/aFile.txt')
+                                 ->getPermissions()
+        );
+    }
 }
 ?>
