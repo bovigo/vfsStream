@@ -36,7 +36,7 @@ class vfsStreamResolveIncludePathTestCase extends PHPUnit_Framework_TestCase
         $this->backupIncludePath = get_include_path();
         vfsStream::setup();
         mkdir('vfs://root/a/path', 0777, true);
-        set_include_path('vfs://root/a;' . $this->backupIncludePath);
+        set_include_path('vfs://root/a' . PATH_SEPARATOR . $this->backupIncludePath);
     }
 
     /**
