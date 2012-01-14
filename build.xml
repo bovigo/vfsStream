@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <project name="vfsStream" default="main">
-  <property name="build.report.dir" value="build/reports" override="true"/>
 
   <target name="main" depends="check-style,test,create-api-doc"/>
 
@@ -16,7 +15,7 @@
   </target>
 
   <target name="create-api-doc" description="Creates API docs">
-    <exec command="docblox --force -d src/main/php -t ${build.report.dir}/docblox --title vfsStream API Doc --defaultpackagename org\bovigo\vfs" passthru="true"/>
+    <exec command="docblox --force -d src/main/php -t docs/api --title vfsStream API Doc --defaultpackagename org\bovigo\vfs" passthru="true"/>
   </target>
 
 </project>
