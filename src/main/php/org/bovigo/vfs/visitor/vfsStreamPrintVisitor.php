@@ -37,6 +37,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      *
      * If no file pointer given it will fall back to STDOUT.
      *
+     * @api
      * @param   resource  $out  optional
      * @throws  \InvalidArgumentException
      */

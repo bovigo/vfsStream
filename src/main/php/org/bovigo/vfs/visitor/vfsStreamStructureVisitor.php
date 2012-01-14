@@ -33,6 +33,8 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
 
     /**
      * constructor
+     *
+     * @api
      */
     public function __construct()
     {
@@ -74,6 +76,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      * returns structure of visited contents
      *
      * @return  array
+     * @api
      */
     public function getStructure()
     {
