@@ -54,7 +54,7 @@ class vfsStream
     /**
      * prepends the scheme to the given URL
      *
-     * @param   string  $path
+     * @param   string  $path  path to translate to vfsStream url
      * @return  string
      */
     public static function url($path)
@@ -65,7 +65,7 @@ class vfsStream
     /**
      * restores the path from the url
      *
-     * @param   string  $url
+     * @param   string  $url  vfsStream url to translate into path
      * @return  string
      */
     public static function path($url)
@@ -84,7 +84,7 @@ class vfsStream
      *
      * If no value is given only the current umask setting is returned.
      *
-     * @param   int  $umask  optional
+     * @param   int  $umask  new umask setting
      * @return  int
      * @since   0.8.0
      */
@@ -136,9 +136,9 @@ class vfsStream
      * strings becomes files with their key as file name and their value as file
      * content.
      *
-     * @param   string  $rootDirName  optional  name of root directory
-     * @param   int     $permissions  optional  file permissions of root directory
-     * @param   array   $structure    optional  directory structure to add under root directory
+     * @param   string  $rootDirName  name of root directory
+     * @param   int     $permissions  file permissions of root directory
+     * @param   array   $structure    directory structure to add under root directory
      * @return  \org\bovigo\vfs\vfsStreamDirectory
      * @since   0.7.0
      * @see     https://github.com/mikey179/vfsStream/issues/14
@@ -183,8 +183,8 @@ class vfsStream
      * root directory without replacing existing childs except those with equal
      * names.
      *
-     * @param   array                               $structure  directory structure to add under root directory
-     * @param   vfsStreamDirectory  $baseDir    base directory to add structure to  optional
+     * @param   array               $structure  directory structure to add under root directory
+     * @param   vfsStreamDirectory  $baseDir    base directory to add structure to
      * @return  vfsStreamDirectory
      * @throws  \InvalidArgumentException
      * @since   0.10.0
@@ -207,8 +207,8 @@ class vfsStream
     /**
      * helper method to create subdirectories recursively
      *
-     * @param   array                               $structure  subdirectory structure to add
-     * @param   vfsStreamDirectory  $baseDir    directory to add the structure to  optional
+     * @param   array               $structure  subdirectory structure to add
+     * @param   vfsStreamDirectory  $baseDir    directory to add the structure to
      * @return  vfsStreamDirectory
      */
     protected static function addStructure(array $structure, vfsStreamDirectory $baseDir)
@@ -235,9 +235,9 @@ class vfsStream
      * Please note that file contents will only be copied if their file size
      * does not exceed the given $maxFileSize which is 1024 KB.
      *
-     * @param   string                              $path         path to copy the structure from
-     * @param   vfsStreamDirectory  $baseDir      directory to add the structure to  optional
-     * @param   int                                 $maxFileSize  maximum file size of files to copy content from  optional
+     * @param   string              $path         path to copy the structure from
+     * @param   vfsStreamDirectory  $baseDir      directory to add the structure to
+     * @param   int                 $maxFileSize  maximum file size of files to copy content from
      * @return  vfsStreamDirectory
      * @throws  \InvalidArgumentException
      * @since   0.11.0
@@ -284,8 +284,8 @@ class vfsStream
     /**
      * returns a new file with given name
      *
-     * @param   string  $name
-     * @param   int     $permissions  optional
+     * @param   string  $name         name of file to create
+     * @param   int     $permissions  permissions of file to create
      * @return  vfsStreamFile
      */
     public static function newFile($name, $permissions = null)
@@ -300,8 +300,8 @@ class vfsStream
      * The returned directory will always be the parent directory of this
      * directory structure.
      *
-     * @param   string  $name
-     * @param   int     $permissions  optional
+     * @param   string  $name         name of directory to create
+     * @param   int     $permissions  permissions of directory to create
      * @return  vfsStreamDirectory
      */
     public static function newDirectory($name, $permissions = null)
@@ -354,8 +354,8 @@ class vfsStream
      *
      * Returns given visitor for method chaining comfort.
      *
-     * @param   vfsStreamVisitor  $visitor
-     * @param   vfsStreamContent  $content  optional
+     * @param   vfsStreamVisitor  $visitor  the visitor who inspects
+     * @param   vfsStreamContent  $content  directory structure to inspect
      * @return  vfsStreamVisitor
      * @throws  \InvalidArgumentException
      * @since   0.10.0
