@@ -2,7 +2,7 @@
 <project name="vfsStream" default="main">
   <property name="build.report.dir" value="build/reports" override="true"/>
 
-  <target name="main" if="version" depends="check-style,test,create-api-doc"/>
+  <target name="main" depends="check-style,test,create-api-doc"/>
 
   <target name="check-style" description="check coding standards">
     <echo>----------------------------------</echo>
