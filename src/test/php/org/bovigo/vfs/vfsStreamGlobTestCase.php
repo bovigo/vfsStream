@@ -1,21 +1,20 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStream.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStream.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
- * Test for org::bovigo::vfs::vfsStream.
+ * Test for org\bovigo\vfs\vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
  * @since       0.9.0
  * @group       issue_2
  */
-class vfsStreamGlobTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamGlobTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

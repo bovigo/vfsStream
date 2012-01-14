@@ -1,21 +1,20 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStream.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStream.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
- * Test for org::bovigo::vfs::vfsStream.
+ * Test for org\bovigo\vfs\vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
- * @since       0.9.0
- * @group       issue_5
+ * @since  0.9.0
+ * @group  issue_5
  */
-class vfsStreamResolveIncludePathTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamResolveIncludePathTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * include path to restore after test run
@@ -29,10 +28,6 @@ class vfsStreamResolveIncludePathTestCase extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        if (version_compare('5.3.2', PHP_VERSION, '>')) {
-            $this->markTestSkipped('Test only applies to PHP 5.3.2 or greater.');
-        }
-
         $this->backupIncludePath = get_include_path();
         vfsStream::setup();
         mkdir('vfs://root/a/path', 0777, true);

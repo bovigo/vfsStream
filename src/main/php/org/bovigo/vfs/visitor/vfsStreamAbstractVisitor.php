@@ -1,21 +1,19 @@
 <?php
 /**
+ * This file is part of vfsStream.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
+ */
+namespace org\bovigo\vfs\visitor;
+use org\bovigo\vfs\vfsStreamContent;
+/**
  * Abstract base class providing an implementation for the visit() method.
  *
- * @package     bovigo_vfs
- * @subpackage  visitor
- */
-/**
- * @ignore
- */
-require_once dirname(__FILE__) . '/vfsStreamVisitor.php';
-/**
- * Abstract base class providing an implementation for the visit() method.
- *
- * @package     bovigo_vfs
- * @subpackage  visitor
- * @since       0.10.0
- * @see         https://github.com/mikey179/vfsStream/issues/10
+ * @since  0.10.0
+ * @see    https://github.com/mikey179/vfsStream/issues/10
  */
 abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
 {
@@ -24,7 +22,7 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
      *
      * @param   vfsStreamContent  $content
      * @return  vfsStreamVisitor
-     * @throws  InvalidArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function visit(vfsStreamContent $content)
     {
@@ -38,7 +36,7 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
                 break;
 
             default:
-                throw new InvalidArgumentException('Unknown content type');
+                throw new \InvalidArgumentException('Unknown content type ' . $content->getType() . ' for ' . $content->getName());
         }
 
         return $this;

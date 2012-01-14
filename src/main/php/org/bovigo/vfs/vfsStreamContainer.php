@@ -1,15 +1,17 @@
 <?php
 /**
- * Interface for stream contents that are able to store other stream contents.
+ * This file is part of vfsStream.
  *
- * @package  bovigo_vfs
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
+namespace org\bovigo\vfs;
 /**
  * Interface for stream contents that are able to store other stream contents.
- *
- * @package  bovigo_vfs
  */
-interface vfsStreamContainer extends IteratorAggregate
+interface vfsStreamContainer extends \IteratorAggregate
 {
     /**
      * adds child to the directory
@@ -53,7 +55,7 @@ interface vfsStreamContainer extends IteratorAggregate
     /**
      * returns a list of children for this directory
      *
-     * @return  array<vfsStreamContent>
+     * @return  vfsStreamContent[]
      */
     public function getChildren();
 }

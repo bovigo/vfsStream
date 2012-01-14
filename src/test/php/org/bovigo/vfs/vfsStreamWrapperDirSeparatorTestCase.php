@@ -1,21 +1,20 @@
 <?php
 /**
- * Test that using windows directory separator works correct.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStream.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
  * Test that using windows directory separator works correct.
  *
- * @package     bovigo_vfs
- * @subpackage  test
- * @since       0.9.0
- * @group       issue_8
+ * @since  0.9.0
+ * @group  issue_8
  */
-class vfsStreamWrapperDirSeparatorTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamWrapperDirSeparatorTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * root diretory

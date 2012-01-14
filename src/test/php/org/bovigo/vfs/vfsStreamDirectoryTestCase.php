@@ -1,19 +1,17 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStreamDirectory.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStreamDirectory.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
- * Test for org::bovigo::vfs::vfsStreamDirectory.
- *
- * @package     bovigo_vfs
- * @subpackage  test
+ * Test for org\bovigo\vfs\vfsStreamDirectory.
  */
-class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
@@ -34,7 +32,7 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
      * assure that a directory seperator inside the name throws an exception
      *
      * @test
-     * @expectedException  vfsStreamException
+     * @expectedException  org\bovigo\vfs\vfsStreamException
      */
     public function invalidCharacterInName()
     {
@@ -74,7 +72,7 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
      * renaming the directory to an invalid name throws a vfsStreamException
      *
      * @test
-     * @expectedException  vfsStreamException
+     * @expectedException  org\bovigo\vfs\vfsStreamException
      */
     public function renameToInvalidNameThrowsvfsStreamException()
     {
@@ -96,7 +94,7 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
      */
     public function hasChildrenReturnsTrueIfAtLeastOneChildPresent()
     {
-        $mockChild = $this->getMock('vfsStreamContent');
+        $mockChild = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild->expects($this->any())
                   ->method('appliesTo')
                   ->will($this->returnValue(false));
@@ -136,7 +134,7 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
      */
     public function nonExistingChild()
     {
-        $mockChild = $this->getMock('vfsStreamContent');
+        $mockChild = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild->expects($this->any())
                   ->method('appliesTo')
                   ->will($this->returnValue(false));
@@ -154,7 +152,7 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
      */
     public function childHandling()
     {
-        $mockChild = $this->getMock('vfsStreamContent');
+        $mockChild = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild->expects($this->any())
                   ->method('getType')
                   ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
@@ -188,7 +186,7 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
      */
     public function childHandlingWithSubdirectory()
     {
-        $mockChild = $this->getMock('vfsStreamContent');
+        $mockChild = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild->expects($this->any())
                   ->method('getType')
                   ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
@@ -211,7 +209,7 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $this->dir->size());
         $this->assertEquals(0, $this->dir->sizeSummarized());
     }
-    
+
     /**
      * dd
      *
@@ -221,14 +219,14 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
      */
     public function addChildReplacesChildWithSameName_Bug_5()
     {
-        $mockChild1 = $this->getMock('vfsStreamContent');
+        $mockChild1 = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild1->expects($this->any())
                    ->method('getType')
                    ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
         $mockChild1->expects($this->any())
                    ->method('getName')
                    ->will($this->returnValue('bar'));
-        $mockChild2 = $this->getMock('vfsStreamContent');
+        $mockChild2 = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild2->expects($this->any())
                    ->method('getType')
                    ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
@@ -253,29 +251,29 @@ class vfsStreamDirectoryTestCase extends PHPUnit_Framework_TestCase
      */
     public function explicitTestForSeparatorWithNestedPaths_Bug_24()
     {
-        $mockChild = $this->getMock('vfsStreamContent');
+        $mockChild = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild->expects($this->any())
                   ->method('getType')
                   ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
         $mockChild->expects($this->any())
                   ->method('getName')
                   ->will($this->returnValue('bar'));
-        
+
         $subdir1 = new vfsStreamDirectory('subdir1');
         $this->dir->addChild($subdir1);
-        
+
         $subdir2 = new vfsStreamDirectory('subdir2');
         $subdir1->addChild($subdir2);
-        
+
         $subdir2->addChild($mockChild);
-        
+
         $this->assertTrue($this->dir->hasChild('subdir1'), "Level 1 path with separator exists");
         $this->assertTrue($this->dir->hasChild('subdir1/subdir2'), "Level 2 path with separator exists");
         $this->assertTrue($this->dir->hasChild('subdir1/subdir2/bar'), "Level 3 path with separator exists");
         $this->assertFalse($this->dir->hasChild('subdir1.subdir2'), "Path with period does not exist");
         $this->assertFalse($this->dir->hasChild('subdir1.subdir2/bar'), "Nested path with period does not exist");
     }
-    
+
 
     /**
      * setting and retrieving permissions for a directory

@@ -1,27 +1,22 @@
 <?php
 /**
- * Directory container.
+ * This file is part of vfsStream.
  *
- * @package  bovigo_vfs
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-/**
- * @ignore
- */
-require_once dirname(__FILE__) . '/vfsStreamAbstractContent.php';
-require_once dirname(__FILE__) . '/vfsStreamContainer.php';
-require_once dirname(__FILE__) . '/vfsStreamContainerIterator.php';
-require_once dirname(__FILE__) . '/vfsStreamException.php';
+namespace org\bovigo\vfs;
 /**
  * Directory container.
- *
- * @package  bovigo_vfs
  */
 class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamContainer
 {
     /**
      * list of directory children
      *
-     * @var  array<string,vfsStreamContent>
+     * @type  vfsStreamContent[]
      */
     protected $children = array();
 
@@ -81,7 +76,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
                 $size += $child->size();
             }
         }
-        
+
         return $size;
     }
 
@@ -96,7 +91,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
         if (strstr($newName, '/') !== false) {
             throw new vfsStreamException('Directory name can not contain /.');
         }
-        
+
         parent::rename($newName);
     }
 
@@ -126,7 +121,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -164,12 +159,12 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
             if ($child->getName() === $childName) {
                 return $child;
             }
-            
+
             if ($child->appliesTo($childName) === true && $child->hasChild($childName) === true) {
                 return $child->getChild($childName);
             }
         }
-        
+
         return null;
     }
 
@@ -184,7 +179,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
         if ($this->appliesTo($name) === true) {
             return self::getChildName($name, $this->name);
         }
-        
+
         return $name;
     }
 
@@ -214,7 +209,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * returns a list of children for this directory
      *
-     * @return  array<vfsStreamContent>
+     * @return  vfsStreamContent[]
      */
     public function getChildren()
     {

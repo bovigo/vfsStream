@@ -1,26 +1,28 @@
 <?php
 /**
- * Test for org::bovigo::vfs::visitor::vfsStreamPrintVisitor.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  visitor_test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/visitor/vfsStreamPrintVisitor.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs\visitor;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamFile;
 /**
- * Test for org::bovigo::vfs::visitor::vfsStreamPrintVisitor.
+ * Test for org\bovigo\vfs\visitor\vfsStreamPrintVisitor.
  *
- * @package     bovigo_vfs
- * @subpackage  visitor_test
- * @since       0.10.0
- * @see         https://github.com/mikey179/vfsStream/issues/10
- * @group       issue_10
+ * @since  0.10.0
+ * @see    https://github.com/mikey179/vfsStream/issues/10
+ * @group  issue_10
  */
-class vfsStreamPrintVisitorTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @expectedException  InvalidArgumentException
+     * @expectedException  \InvalidArgumentException
      */
     public function constructWithNonResourceThrowsInvalidArgumentException()
     {
@@ -29,7 +31,7 @@ class vfsStreamPrintVisitorTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
+     * @expectedException  \InvalidArgumentException
      */
     public function constructWithNonStreamResourceThrowsInvalidArgumentException()
     {

@@ -1,19 +1,17 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStream.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStream.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
- * Test for org::bovigo::vfs::vfsStream.
- *
- * @package     bovigo_vfs
- * @subpackage  test
+ * Test for org\bovigo\vfs\vfsStream.
  */
-class vfsStreamTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * set up test environment
@@ -113,7 +111,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     public function newFile()
     {
         $file = vfsStream::newFile('filename.txt');
-        $this->assertInstanceOf('vfsStreamFile', $file);
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamFile', $file);
         $this->assertEquals('filename.txt', $file->getName());
         $this->assertEquals(0666, $file->getPermissions());
     }
@@ -127,7 +125,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     public function newFileWithDifferentPermissions()
     {
         $file = vfsStream::newFile('filename.txt', 0644);
-        $this->assertInstanceOf('vfsStreamFile', $file);
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamFile', $file);
         $this->assertEquals('filename.txt', $file->getName());
         $this->assertEquals(0644, $file->getPermissions());
     }
@@ -277,7 +275,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
                 );
         $this->assertTrue($root->hasChildren());
         $this->assertTrue($root->hasChild('test'));
-        $this->assertInstanceOf('vfsStreamDirectory',
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
                                 $root->getChild('test')
         );
         $this->assertFalse($root->getChild('test')->hasChildren());
@@ -318,14 +316,14 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $this->assertTrue($root->hasChildren());
         $this->assertTrue($root->hasChild('test'));
         $test = $root->getChild('test');
-        $this->assertInstanceOf('vfsStreamDirectory', $test);
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory', $test);
         $this->assertTrue($test->hasChildren());
         $this->assertTrue($test->hasChild('baz.txt'));
         $this->assertVfsFile($test->getChild('baz.txt'), 'world');
 
         $this->assertTrue($test->hasChild('foo'));
         $foo = $test->getChild('foo');
-        $this->assertInstanceOf('vfsStreamDirectory', $foo);
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory', $foo);
         $this->assertTrue($foo->hasChildren());
         $this->assertTrue($foo->hasChild('test.txt'));
         $this->assertVfsFile($foo->getChild('test.txt'), 'hello');
@@ -360,7 +358,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $baseDir = vfsStream::create(array('test' => array()), new vfsStreamDirectory('baseDir'));
         $this->assertTrue($baseDir->hasChildren());
         $this->assertTrue($baseDir->hasChild('test'));
-        $this->assertInstanceOf('vfsStreamDirectory',
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
                                 $baseDir->getChild('test')
         );
         $this->assertFalse($baseDir->getChild('test')->hasChildren());
@@ -377,7 +375,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $this->assertSame($root, vfsStream::create(array('test' => array())));
         $this->assertTrue($root->hasChildren());
         $this->assertTrue($root->hasChild('test'));
-        $this->assertInstanceOf('vfsStreamDirectory',
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
                                 $root->getChild('test')
         );
         $this->assertFalse($root->getChild('test')->hasChildren());
@@ -386,7 +384,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  issue_20
-     * @expectedException  InvalidArgumentException
+     * @expectedException  \InvalidArgumentException
      * @since  0.11.0
      */
     public function createThrowsExceptionIfNoBaseDirGivenAndNoRootSet()
@@ -410,14 +408,14 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $this->assertTrue($baseDir->hasChildren());
         $this->assertTrue($baseDir->hasChild('test'));
         $test = $baseDir->getChild('test');
-        $this->assertInstanceOf('vfsStreamDirectory', $test);
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory', $test);
         $this->assertTrue($test->hasChildren());
         $this->assertTrue($test->hasChild('baz.txt'));
         $this->assertVfsFile($test->getChild('baz.txt'), 'world');
 
         $this->assertTrue($test->hasChild('foo'));
         $foo = $test->getChild('foo');
-        $this->assertInstanceOf('vfsStreamDirectory', $foo);
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory', $foo);
         $this->assertTrue($foo->hasChildren());
         $this->assertTrue($foo->hasChild('test.txt'));
         $this->assertVfsFile($foo->getChild('test.txt'), 'hello');
@@ -441,14 +439,14 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
         $this->assertTrue($root->hasChildren());
         $this->assertTrue($root->hasChild('test'));
         $test = $root->getChild('test');
-        $this->assertInstanceOf('vfsStreamDirectory', $test);
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory', $test);
         $this->assertTrue($test->hasChildren());
         $this->assertTrue($test->hasChild('baz.txt'));
         $this->assertVfsFile($test->getChild('baz.txt'), 'world');
 
         $this->assertTrue($test->hasChild('foo'));
         $foo = $test->getChild('foo');
-        $this->assertInstanceOf('vfsStreamDirectory', $foo);
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory', $foo);
         $this->assertTrue($foo->hasChildren());
         $this->assertTrue($foo->hasChild('test.txt'));
         $this->assertVfsFile($foo->getChild('test.txt'), 'hello');
@@ -522,7 +520,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
      */
     protected function assertVfsFile(vfsStreamFile $file, $content)
     {
-        $this->assertInstanceOf('vfsStreamFile',
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamFile',
                                 $file
         );
         $this->assertEquals($content,
@@ -537,8 +535,8 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
      */
     public function inspectWithContentGivesContentToVisitor()
     {
-        $mockContent = $this->getMock('vfsStreamContent');
-        $mockVisitor = $this->getMock('vfsStreamVisitor');
+        $mockContent = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockVisitor = $this->getMock('org\\bovigo\\vfs\\visitor\\vfsStreamVisitor');
         $mockVisitor->expects($this->once())
                     ->method('visit')
                     ->with($this->equalTo($mockContent))
@@ -554,7 +552,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     public function inspectWithoutContentGivesRootToVisitor()
     {
         $root = vfsStream::setup();
-        $mockVisitor = $this->getMock('vfsStreamVisitor');
+        $mockVisitor = $this->getMock('org\\bovigo\\vfs\\visitor\\vfsStreamVisitor');
         $mockVisitor->expects($this->once())
                     ->method('visitDirectory')
                     ->with($this->equalTo($root))
@@ -565,12 +563,12 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  issue_10
-     * @expectedException  InvalidArgumentException
+     * @expectedException  \InvalidArgumentException
      * @since  0.10.0
      */
     public function inspectWithoutContentAndWithoutRootThrowsInvalidArgumentException()
     {
-        $mockVisitor = $this->getMock('vfsStreamVisitor');
+        $mockVisitor = $this->getMock('org\\bovigo\\vfs\\visitor\\vfsStreamVisitor');
         $mockVisitor->expects($this->never())
                     ->method('visit');
         $mockVisitor->expects($this->never())
@@ -591,7 +589,7 @@ class vfsStreamTestCase extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  issue_4
-     * @expectedException  InvalidArgumentException
+     * @expectedException  \InvalidArgumentException
      * @since  0.11.0
      */
     public function copyFromFileSystemThrowsExceptionIfNoBaseDirGivenAndNoRootSet()

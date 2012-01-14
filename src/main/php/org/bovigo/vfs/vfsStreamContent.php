@@ -1,17 +1,15 @@
 <?php
 /**
- * Interface for stream contents.
+ * This file is part of vfsStream.
  *
- * @package  bovigo_vfs
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-/**
- * @ignore
- */
-require_once dirname(__FILE__) . '/vfsStreamContainer.php';
+namespace org\bovigo\vfs;
 /**
  * Interface for stream contents.
- *
- * @package  bovigo_vfs
  */
 interface vfsStreamContent
 {
@@ -73,7 +71,7 @@ interface vfsStreamContent
     /**
      * sets the last modification time of the stream content
      *
-     * @param   int               $filemtime
+     * @param   int  $filemtime
      * @return  vfsStreamContent
      */
     public function lastModified($filemtime);
@@ -96,7 +94,7 @@ interface vfsStreamContent
     /**
      * change file mode to given permissions
      *
-     * @param   int               $permissions
+     * @param   int  $permissions
      * @return  vfsStreamContent
      */
     public function chmod($permissions);
@@ -138,7 +136,7 @@ interface vfsStreamContent
     /**
      * change owner of file to given user
      *
-     * @param   int               $user
+     * @param   int  $user
      * @return  vfsStreamContent
      */
     public function chown($user);
@@ -161,7 +159,7 @@ interface vfsStreamContent
     /**
      * change owner group of file to given group
      *
-     * @param   int               $group
+     * @param   int  $group
      * @return  vfsStreamContent
      */
     public function chgrp($group);

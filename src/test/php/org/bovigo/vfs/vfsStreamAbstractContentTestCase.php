@@ -1,17 +1,15 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStreamAbstractContent.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStreamAbstractContent.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
  * Helper class for the test.
- *
- * @package     bovigo_vfs
- * @subpackage  test
  */
 class TestvfsStreamAbstractContent extends vfsStreamAbstractContent
 {
@@ -37,12 +35,9 @@ class TestvfsStreamAbstractContent extends vfsStreamAbstractContent
     }
 }
 /**
- * Test for org::bovigo::vfs::vfsStreamAbstractContent.
- *
- * @package     bovigo_vfs
- * @subpackage  test
+ * Test for org\bovigo\vfs\vfsStreamAbstractContent.
  */
-class vfsStreamAbstractContentTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamAbstractContentTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

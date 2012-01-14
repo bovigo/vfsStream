@@ -1,15 +1,17 @@
 <?php
 /**
- * Exception for streamwrapper subpackage.
+ * This file is part of vfsStream.
  *
- * @package  bovigo_vfs
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
+namespace org\bovigo\vfs;
 /**
  * Exception for streamwrapper subpackage.
- *
- * @package  bovigo_vfs
  */
-class vfsStreamException extends Exception
+class vfsStreamException extends \Exception
 {
     // intentionally empty
 }

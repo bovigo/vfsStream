@@ -1,27 +1,29 @@
 <?php
 /**
- * Iterator for children of a directory container.
+ * This file is part of vfsStream.
  *
- * @package  bovigo_vfs
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
+namespace org\bovigo\vfs;
 /**
  * Iterator for children of a directory container.
- *
- * @package  bovigo_vfs
  */
-class vfsStreamContainerIterator implements Iterator
+class vfsStreamContainerIterator implements \Iterator
 {
     /**
      * list of children from container to iterate over
      *
-     * @var  array<vfsStreamContent>
+     * @type  vfsStreamContent[]
      */
-    protected $children = array();
+    protected $children;
 
     /**
      * constructor
      *
-     * @param  array<vfsStreamContent>  $children
+     * @param  vfsStreamContent[]  $children
      */
     public function __construct(array $children)
     {
@@ -48,7 +50,7 @@ class vfsStreamContainerIterator implements Iterator
         if (false === $child) {
             return null;
         }
-        
+
         return $child;
     }
 
@@ -63,7 +65,7 @@ class vfsStreamContainerIterator implements Iterator
         if (false === $child) {
             return null;
         }
-        
+
         return $child->getName();
     }
 

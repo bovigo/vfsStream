@@ -1,22 +1,22 @@
 <?php
 /**
- * Test for org::bovigo::vfs::visitor::vfsStreamStructureVisitor.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  visitor_test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/visitor/vfsStreamStructureVisitor.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs\visitor;
+use org\bovigo\vfs\vfsStream;
 /**
- * Test for org::bovigo::vfs::visitor::vfsStreamStructureVisitor.
+ * Test for org\bovigo\vfs\visitor\vfsStreamStructureVisitor.
  *
- * @package     bovigo_vfs
- * @subpackage  visitor_test
- * @since       0.10.0
- * @see         https://github.com/mikey179/vfsStream/issues/10
- * @group       issue_10
+ * @since  0.10.0
+ * @see    https://github.com/mikey179/vfsStream/issues/10
+ * @group  issue_10
  */
-class vfsStreamStructureVisitorTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamStructureVisitorTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

@@ -1,66 +1,64 @@
 <?php
 /**
- * Base stream contents container.
+ * This file is part of vfsStream.
  *
- * @package  bovigo_vfs
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-/**
- * @ignore
- */
-require_once dirname(__FILE__) . '/vfsStreamContent.php';
+namespace org\bovigo\vfs;
 /**
  * Base stream contents container.
- *
- * @package  bovigo_vfs
  */
 abstract class vfsStreamAbstractContent implements vfsStreamContent
 {
     /**
      * name of the container
      *
-     * @var  string
+     * @type  string
      */
     protected $name;
     /**
      * type of the container
      *
-     * @var  string
+     * @type  string
      */
     protected $type;
     /**
      * timestamp of last access
      *
-     * @var  int
+     * @type  int
      */
     protected $lastAccessed;
     /**
      * timestamp of last attribute modification
      *
-     * @var  int
+     * @type  int
      */
     protected $lastAttributeModified;
     /**
      * timestamp of last modification
      *
-     * @var  int
+     * @type  int
      */
     protected $lastModified;
     /**
      * permissions for content
      *
-     * @var  int
+     * @type  int
      */
     protected $permissions;
     /**
      * owner of the file
      *
-     * @var  int
+     * @type  int
      */
     protected $user;
     /**
      * owner group of the file
      *
-     * @var  int
+     * @type  int
      */
     protected $group;
 
@@ -143,7 +141,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * sets the last modification time of the stream content
      *
-     * @param   int               $filemtime
+     * @param   int  $filemtime
      * @return  vfsStreamContent
      */
     public function lastModified($filemtime)
@@ -165,7 +163,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * sets last access time of the stream content
      *
-     * @param   int               $fileatime
+     * @param   int  $fileatime
      * @return  vfsStreamContent
      * @since   0.9
      */
@@ -189,7 +187,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * sets the last attribute modification time of the stream content
      *
-     * @param   int               $filectime
+     * @param   int  $filectime
      * @return  vfsStreamContent
      * @since   0.9
      */
@@ -225,7 +223,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * change file mode to given permissions
      *
-     * @param   int               $permissions
+     * @param   int  $permissions
      * @return  vfsStreamContent
      */
     public function chmod($permissions)
@@ -309,7 +307,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * change owner of file to given user
      *
-     * @param   int               $user
+     * @param   int  $user
      * @return  vfsStreamContent
      */
     public function chown($user)
@@ -343,7 +341,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * change owner group of file to given group
      *
-     * @param   int               $group
+     * @param   int  $group
      * @return  vfsStreamContent
      */
     public function chgrp($group)

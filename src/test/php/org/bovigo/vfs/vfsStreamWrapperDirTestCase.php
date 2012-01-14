@@ -1,15 +1,16 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper around mkdir().
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStream.php';
-require_once 'PHPUnit/Framework/TestCase.php';
-require_once dirname(__FILE__) . '/vfsStreamWrapperBaseTestCase.php';
+namespace org\bovigo\vfs;
+require_once __DIR__ . '/vfsStreamWrapperBaseTestCase.php';
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper around mkdir().
+ * Test for org\bovigo\vfs\vfsStreamWrapper around mkdir().
  *
  * @package     bovigo_vfs
  * @subpackage  test
@@ -272,7 +273,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
             $i++;
             $this->assertTrue('bar' === $entry || 'baz2' === $entry);
         }
-        
+
         $this->assertEquals(2, $i, 'Directory foo contains two children, but got ' . $i . ' children while iterating over directory contents');
         $dir->rewind();
         $i   = 0;
@@ -280,7 +281,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
             $i++;
             $this->assertTrue('bar' === $entry || 'baz2' === $entry);
         }
-        
+
         $this->assertEquals(2, $i, 'Directory foo contains two children, but got ' . $i . ' children while iterating over directory contents');
         $dir->close();
     }
@@ -324,16 +325,16 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
             $i++;
             $this->assertTrue('bar' === $entry || 'baz2' === $entry);
         }
-        
+
         $this->assertEquals(2, $i, 'Directory foo contains two children, but got ' . $i . ' children while iterating over directory contents');
-        
+
         rewind($handle);
         $i   = 0;
         while (false !== ($entry = readdir($handle))) {
             $i++;
             $this->assertTrue('bar' === $entry || 'baz2' === $entry);
         }
-        
+
         $this->assertEquals(2, $i, 'Directory foo contains two children, but got ' . $i . ' children while iterating over directory contents');
         closedir($handle);
     }
@@ -341,11 +342,11 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * assure that a directory iteration works as expected
      *
-     * @author  Christoph Bloemer 
+     * @author  Christoph Bloemer
      * @test
      * @group  regression
      * @group  bug_4
-     */         
+     */
     public function directoryIteration_Bug_4()
     {
         $dir   = $this->fooURL;
@@ -360,10 +361,10 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
                     }
                 }
             }
-            
+
             closedir($handle);
         }
-        
+
         $list2 = array();
         if ($handle = opendir($dir)) {
             while (false !== ($listItem = readdir($handle))) {
@@ -375,10 +376,10 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
                     }
                 }
             }
-            
+
             closedir($handle);
         }
-        
+
         $this->assertEquals($list1, $list2);
         $this->assertEquals(2, count($list1));
         $this->assertEquals(2, count($list2));
@@ -388,7 +389,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      * assure that a directory iteration works as expected
      *
      * @test
-     */         
+     */
     public function directoryIterationShouldBeIndependent()
     {
         $list1   = array();
@@ -397,20 +398,20 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         if (false !== ($listItem = readdir($handle1))) {
             $list1[] = $listItem;
         }
-        
+
         $handle2 = opendir($this->fooURL);
         if (false !== ($listItem = readdir($handle2))) {
             $list2[] = $listItem;
         }
-        
+
         if (false !== ($listItem = readdir($handle1))) {
             $list1[] = $listItem;
         }
-        
+
         if (false !== ($listItem = readdir($handle2))) {
             $list2[] = $listItem;
         }
-        
+
         closedir($handle1);
         closedir($handle2);
         $this->assertEquals($list1, $list2);
@@ -564,10 +565,10 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     {
         try {
             $this->assertFalse(unlink($this->barURL));
-        } catch (PHPUnit_Framework_Error $fe) {
+        } catch (\PHPUnit_Framework_Error $fe) {
             $this->assertEquals('unlink(vfs://foo/bar): Operation not permitted', $fe->getMessage());
         }
-        
+
         $this->assertTrue($this->foo->hasChild('bar'));
         $this->assertFileExists($this->barURL);
     }
@@ -582,7 +583,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         vfsStream::newDirectory('empty')->at($this->foo);
         try {
             $this->assertTrue(unlink($this->fooURL . '/empty'));
-        } catch (PHPUnit_Framework_Error $fe) {
+        } catch (\PHPUnit_Framework_Error $fe) {
             $this->assertEquals('unlink(vfs://foo/empty): Operation not permitted', $fe->getMessage());
         }
 

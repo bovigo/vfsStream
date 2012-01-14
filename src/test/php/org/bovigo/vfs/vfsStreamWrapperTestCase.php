@@ -1,24 +1,22 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStream.php';
-require_once 'PHPUnit/Framework/TestCase.php';
-require_once dirname(__FILE__) . '/vfsStreamWrapperBaseTestCase.php';
+namespace org\bovigo\vfs;
+require_once __DIR__ . '/vfsStreamWrapperBaseTestCase.php';
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper.
- *
- * @package     bovigo_vfs
- * @subpackage  test
+ * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
 class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 {
     /**
      * ensure that a call to vfsStreamWrapper::register() resets the stream
-     * 
+     *
      * Implemented after a request by David Zülke.
      *
      * @test
@@ -144,10 +142,10 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertTrue(is_readable($this->baz2URL));
         $this->assertFalse(is_readable($this->fooURL . '/another'));
         $this->assertFalse(is_readable(vfsStream::url('another')));
-        
+
         $this->foo->chmod(0222);
         $this->assertFalse(is_readable($this->fooURL));
-        
+
         $this->baz1->chmod(0222);
         $this->assertFalse(is_readable($this->baz1URL));
     }
@@ -167,10 +165,10 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertTrue(is_writable($this->baz2URL));
         $this->assertFalse(is_writable($this->fooURL . '/another'));
         $this->assertFalse(is_writable(vfsStream::url('another')));
-        
+
         $this->foo->chmod(0444);
         $this->assertFalse(is_writable($this->fooURL));
-        
+
         $this->baz1->chmod(0444);
         $this->assertFalse(is_writable($this->baz1URL));
     }
@@ -217,7 +215,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(40777, decoct(fileperms($this->barURL . '/.')));
         $this->assertEquals(100666, decoct(fileperms($this->baz1URL)));
         $this->assertEquals(100666, decoct(fileperms($this->baz2URL)));
-        
+
         $this->foo->chmod(0755);
         $this->bar->chmod(0700);
         $this->baz1->chmod(0644);
@@ -262,13 +260,13 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->barURL . '/.'));
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->baz1URL));
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->baz2URL));
-        
+
         $this->foo->chown(vfsStream::OWNER_USER_1);
         $this->bar->chown(vfsStream::OWNER_USER_1);
         $this->baz1->chown(vfsStream::OWNER_USER_2);
         $this->baz2->chown(vfsStream::OWNER_USER_2);
-        
-        
+
+
         $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->fooURL));
         $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->fooURL . '/.'));
         $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->barURL));
@@ -303,12 +301,12 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->barURL . '/.'));
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->baz1URL));
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->baz2URL));
-        
+
         $this->foo->chgrp(vfsStream::GROUP_USER_1);
         $this->bar->chgrp(vfsStream::GROUP_USER_1);
         $this->baz1->chgrp(vfsStream::GROUP_USER_2);
         $this->baz2->chgrp(vfsStream::GROUP_USER_2);
-        
+
         $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->fooURL));
         $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->fooURL . '/.'));
         $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->barURL));
@@ -409,20 +407,20 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * assert that trying to rename from a non existing file trigger a warning
-     * 
+     *
      * @expectedException PHPUnit_Framework_Error
      * @test
-     */    
+     */
     public function renameOnSourceFileNotFound()
     {
         rename(vfsStream::url('notfound'), $this->baz1URL);
     }
     /**
      * assert that trying to rename to a directory that is not found trigger a warning
-     
+
      * @expectedException PHPUnit_Framework_Error
      * @test
-     */    
+     */
     public function renameOnDestinationDirectoryFileNotFound()
     {
         rename($this->baz1URL, vfsStream::url('foo/notfound/file2'));

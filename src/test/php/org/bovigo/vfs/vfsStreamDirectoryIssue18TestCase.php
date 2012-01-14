@@ -1,20 +1,19 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStreamDirectory.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStreamDirectory.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
- * Test for org::bovigo::vfs::vfsStreamDirectory.
+ * Test for org\bovigo\vfs\vfsStreamDirectory.
  *
- * @package     bovigo_vfs
- * @subpackage  test
- * @group       bug_18
+ * @group  bug_18
  */
-class vfsStreamDirectoryIssue18TestCase extends PHPUnit_Framework_TestCase
+class vfsStreamDirectoryIssue18TestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * access to root directory
@@ -52,7 +51,7 @@ class vfsStreamDirectoryIssue18TestCase extends PHPUnit_Framework_TestCase
     public function shouldContainSubdirectoryFoo()
     {
         $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('foo'));
-        $this->assertInstanceOf('vfsStreamDirectory',
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
                                 $this->rootDirectory->getChild('var/log/app')->getChild('foo')
         );
     }
@@ -63,7 +62,7 @@ class vfsStreamDirectoryIssue18TestCase extends PHPUnit_Framework_TestCase
     public function shouldContainSubdirectoryApp1()
     {
         $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app1'));
-        $this->assertInstanceOf('vfsStreamDirectory',
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
                                 $this->rootDirectory->getChild('var/log/app')->getChild('app1')
         );
     }
@@ -74,7 +73,7 @@ class vfsStreamDirectoryIssue18TestCase extends PHPUnit_Framework_TestCase
     public function shouldContainSubdirectoryApp2()
     {
         $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app2'));
-        $this->assertInstanceOf('vfsStreamDirectory',
+        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
                                 $this->rootDirectory->getChild('var/log/app')->getChild('app2')
         );
     }

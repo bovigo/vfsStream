@@ -1,34 +1,34 @@
 <?php
 /**
+ * This file is part of vfsStream.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
+ */
+namespace org\bovigo\vfs\visitor;
+use org\bovigo\vfs\vfsStreamContent;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamFile;
+/**
  * Visitor which traverses a content structure recursively to print it to an output stream.
  *
- * @package     bovigo_vfs
- * @subpackage  visitor
- */
-/**
- * @ignore
- */
-require_once dirname(__FILE__) . '/vfsStreamAbstractVisitor.php';
-/**
- * Visitor which traverses a content structure recursively to print it to an output stream.
- *
- * @package     bovigo_vfs
- * @subpackage  visitor
- * @since       0.10.0
- * @see         https://github.com/mikey179/vfsStream/issues/10
+ * @since  0.10.0
+ * @see    https://github.com/mikey179/vfsStream/issues/10
  */
 class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
 {
     /**
      * target to write output to
      *
-     * @var  resource
+     * @type  resource
      */
     protected $out;
     /**
      * current depth in directory tree
      *
-     * @var  int
+     * @type  int
      */
     protected $depth;
 
@@ -38,12 +38,12 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      * If no file pointer given it will fall back to STDOUT.
      *
      * @param   resource  $out  optional
-     * @throws  InvalidArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function __construct($out = STDOUT)
     {
         if (is_resource($out) === false || get_resource_type($out) !== 'stream') {
-            throw new InvalidArgumentException('Given filepointer is not a resource of type stream');
+            throw new \InvalidArgumentException('Given filepointer is not a resource of type stream');
         }
 
         $this->out = $out;
@@ -52,7 +52,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a file and process it
      *
-     * @param   vfsStreamFile          $file
+     * @param   vfsStreamFile  $file
      * @return  vfsStreamPrintVisitor
      */
     public function visitFile(vfsStreamFile $file)
@@ -64,7 +64,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a directory and process it
      *
-     * @param   vfsStreamDirectory     $dir
+     * @param   vfsStreamDirectory  $dir
      * @return  vfsStreamPrintVisitor
      */
     public function visitDirectory(vfsStreamDirectory $dir)

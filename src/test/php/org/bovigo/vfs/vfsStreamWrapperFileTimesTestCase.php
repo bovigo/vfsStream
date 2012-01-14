@@ -1,20 +1,19 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStreamAbstractContent.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper.
+ * Test for org\bovigo\vfs\vfsStreamWrapper.
  *
- * @package     bovigo_vfs
- * @subpackage  test
- * @since       0.9.0
+ * @since  0.9.0
  */
-class vfsStreamWrapperFileTimesTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamWrapperFileTimesTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * URL of foo.txt file

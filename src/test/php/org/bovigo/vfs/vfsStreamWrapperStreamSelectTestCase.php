@@ -1,32 +1,27 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStream.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper.
+ * Test for org\bovigo\vfs\vfsStreamWrapper.
  *
- * @package     bovigo_vfs
- * @subpackage  test
- * @since       0.9.0
- * @group       issue_3
+ * @since  0.9.0
+ * @group  issue_3
  */
-class vfsStreamWrapperSelectStreamTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamWrapperSelectStreamTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \PHPUnit_Framework_Error
      */
     public function selectStream()
     {
-        if (version_compare('5.3.0', PHP_VERSION, '>')) {
-            $this->markTestSkipped('Test only applies to PHP 5.3.0 or greater.');
-        }
-        
         $root = vfsStream::setup();
         $file = vfsStream::newFile('foo.txt')->at($root)->withContent('testContent');
 

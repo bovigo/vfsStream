@@ -1,18 +1,16 @@
 <?php
 /**
- * Some utility methods for vfsStream.
+ * This file is part of vfsStream.
  *
- * @package  bovigo_vfs
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-/**
- * @ignore
- */
-require_once dirname(__FILE__) . '/vfsStreamWrapper.php';
-require_once dirname(__FILE__) . '/visitor/vfsStreamVisitor.php';
+namespace org\bovigo\vfs;
+use org\bovigo\vfs\visitor\vfsStreamVisitor;
 /**
  * Some utility methods for vfsStream.
- *
- * @package  bovigo_vfs
  */
 class vfsStream
 {
@@ -47,7 +45,7 @@ class vfsStream
     /**
      * initial umask setting
      *
-     * @var  int
+     * @type  int
      */
     protected static $umask = 0000;
 
@@ -134,10 +132,10 @@ class vfsStream
      * strings becomes files with their key as file name and their value as file
      * content.
      *
-     * @param   string                      $rootDirName  optional  name of root directory
-     * @param   int                         $permissions  optional  file permissions of root directory
-     * @param   array<string,array|string>  $structure    optional  directory structure to add under root directory
-     * @return  vfsStreamDirectory
+     * @param   string  $rootDirName  optional  name of root directory
+     * @param   int     $permissions  optional  file permissions of root directory
+     * @param   array   $structure    optional  directory structure to add under root directory
+     * @return  \org\bovigo\vfs\vfsStreamDirectory
      * @since   0.7.0
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
@@ -179,10 +177,10 @@ class vfsStream
      * root directory without replacing existing childs except those with equal
      * names.
      *
-     * @param   array<string,array|string>  $structure  directory structure to add under root directory
-     * @param   vfsStreamDirectory          $baseDir    base directory to add structure to  optional
+     * @param   array                               $structure  directory structure to add under root directory
+     * @param   vfsStreamDirectory  $baseDir    base directory to add structure to  optional
      * @return  vfsStreamDirectory
-     * @throws  InvalidArgumentException
+     * @throws  \InvalidArgumentException
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
@@ -194,17 +192,17 @@ class vfsStream
         }
 
         if (null === $baseDir) {
-            throw new InvalidArgumentException('No baseDir given and no root directory set.');
+            throw new \InvalidArgumentException('No baseDir given and no root directory set.');
         }
-        
+
         return self::addStructure($structure, $baseDir);
     }
 
     /**
      * helper method to create subdirectories recursively
      *
-     * @param   array<string,array|string>  $structure  subdirectory structure to add
-     * @param   vfsStreamDirectory          $baseDir    directory to add the structure to  optional
+     * @param   array                               $structure  subdirectory structure to add
+     * @param   vfsStreamDirectory  $baseDir    directory to add the structure to  optional
      * @return  vfsStreamDirectory
      */
     protected static function addStructure(array $structure, vfsStreamDirectory $baseDir)
@@ -231,11 +229,11 @@ class vfsStream
      * Please note that file contents will only be copied if their file size
      * does not exceed the given $maxFileSize which is 1024 KB.
      *
-     * @param   string                    $path         path to copy the structure from
-     * @param   vfsStreamDirectory        $baseDir      directory to add the structure to  optional
-     * @param   int                       $maxFileSize  maximum file size of files to copy content from  optional
+     * @param   string                              $path         path to copy the structure from
+     * @param   vfsStreamDirectory  $baseDir      directory to add the structure to  optional
+     * @param   int                                 $maxFileSize  maximum file size of files to copy content from  optional
      * @return  vfsStreamDirectory
-     * @throws  InvalidArgumentException
+     * @throws  \InvalidArgumentException
      * @since   0.11.0
      * @see     https://github.com/mikey179/vfsStream/issues/4
      */
@@ -246,10 +244,10 @@ class vfsStream
         }
 
         if (null === $baseDir) {
-            throw new InvalidArgumentException('No baseDir given and no root directory set.');
+            throw new \InvalidArgumentException('No baseDir given and no root directory set.');
         }
 
-        $dir = new DirectoryIterator($path);
+        $dir = new \DirectoryIterator($path);
         foreach ($dir as $fileinfo) {
             if ($fileinfo->isFile() === true) {
                 if ($fileinfo->getSize() <= $maxFileSize) {
@@ -280,8 +278,8 @@ class vfsStream
     /**
      * returns a new file with given name
      *
-     * @param   string         $name
-     * @param   int            $permissions  optional
+     * @param   string  $name
+     * @param   int     $permissions  optional
      * @return  vfsStreamFile
      */
     public static function newFile($name, $permissions = null)
@@ -296,8 +294,8 @@ class vfsStream
      * The returned directory will always be the parent directory of this
      * directory structure.
      *
-     * @param   string              $name
-     * @param   int                 $permissions  optional
+     * @param   string  $name
+     * @param   int     $permissions  optional
      * @return  vfsStreamDirectory
      */
     public static function newDirectory($name, $permissions = null)
@@ -305,12 +303,12 @@ class vfsStream
         if ('/' === $name{0}) {
             $name = substr($name, 1);
         }
-        
+
         $firstSlash = strpos($name, '/');
         if (false === $firstSlash) {
             return new vfsStreamDirectory($name, $permissions);
         }
-        
+
         $ownName   = substr($name, 0, $firstSlash);
         $subDirs   = substr($name, $firstSlash + 1);
         $directory = new vfsStreamDirectory($ownName, $permissions);
@@ -353,7 +351,7 @@ class vfsStream
      * @param   vfsStreamVisitor  $visitor
      * @param   vfsStreamContent  $content  optional
      * @return  vfsStreamVisitor
-     * @throws  InvalidArgumentException
+     * @throws  \InvalidArgumentException
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/10
      */
@@ -365,7 +363,7 @@ class vfsStream
 
         $root = vfsStreamWrapper::getRoot();
         if (null === $root) {
-            throw new InvalidArgumentException('No content given and no root directory set.');
+            throw new \InvalidArgumentException('No content given and no root directory set.');
         }
 
         return $visitor->visitDirectory($root);

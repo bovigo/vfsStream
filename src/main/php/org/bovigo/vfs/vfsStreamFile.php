@@ -1,36 +1,34 @@
 <?php
 /**
- * File container.
+ * This file is part of vfsStream.
  *
- * @package  bovigo_vfs
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-/**
- * @ignore
- */
-require_once dirname(__FILE__) . '/vfsStreamAbstractContent.php';
+namespace org\bovigo\vfs;
 /**
  * File container.
- *
- * @package  bovigo_vfs
  */
 class vfsStreamFile extends vfsStreamAbstractContent
 {
     /**
      * the real content of the file
      *
-     * @var  string
+     * @type  string
      */
     protected $content;
     /**
      * amount of read bytes
      *
-     * @var  int
+     * @type  int
      */
     protected $bytes_read = 0;
     /**
      * current lock status of file
      *
-     * @var  int
+     * @type  int
      */
     protected $lock       = LOCK_UN;
 
@@ -88,7 +86,6 @@ class vfsStreamFile extends vfsStreamAbstractContent
      *
      * @param   string  $content
      * @return  vfsStreamFile
-     * @see     setContent()
      */
     public function withContent($content)
     {
@@ -224,19 +221,19 @@ class vfsStreamFile extends vfsStreamAbstractContent
             case SEEK_CUR:
                 $this->bytes_read += $offset;
                 return true;
-            
+
             case SEEK_END:
                 $this->bytes_read = strlen($this->content) + $offset;
                 return true;
-            
+
             case SEEK_SET:
                 $this->bytes_read = $offset;
                 return true;
-            
+
             default:
                 return false;
         }
-        
+
         return false;
     }
 
@@ -254,7 +251,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * locks file for
      *
-     * @param   int            $operation
+     * @param   int  $operation
      * @return  vfsStreamFile
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
@@ -266,7 +263,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
         } else {
             $this->lock = $operation;
         }
-        
+
         return $this;
     }
 

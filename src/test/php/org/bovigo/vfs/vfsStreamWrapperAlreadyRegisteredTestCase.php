@@ -1,17 +1,15 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStream.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
  * Helper class for the test.
- *
- * @package     bovigo_vfs
- * @subpackage  test
  */
 class TestvfsStreamWrapper extends vfsStreamWrapper
 {
@@ -28,12 +26,9 @@ class TestvfsStreamWrapper extends vfsStreamWrapper
     }
 }
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper.
- *
- * @package     bovigo_vfs
- * @subpackage  test
+ * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
-class vfsStreamWrapperAlreadyRegisteredTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamWrapperAlreadyRegisteredTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * set up test environment
@@ -41,7 +36,7 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends PHPUnit_Framework_TestCa
     public function setUp()
     {
         TestvfsStreamWrapper::unregister();
-        $mock = $this->getMock('vfsStreamWrapper');
+        $mock = $this->getMock('org\\bovigo\\vfs\\vfsStreamWrapper');
         stream_wrapper_register(vfsStream::SCHEME, get_class($mock));
     }
 
@@ -58,7 +53,7 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends PHPUnit_Framework_TestCa
      * registered for the vfs scheme should throw an exception
      *
      * @test
-     * @expectedException  vfsStreamException
+     * @expectedException  org\bovigo\vfs\vfsStreamException
      */
     public function registerOverAnotherStreamWrapper()
     {

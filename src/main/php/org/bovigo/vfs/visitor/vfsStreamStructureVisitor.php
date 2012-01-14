@@ -1,34 +1,33 @@
 <?php
 /**
+ * This file is part of vfsStream.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
+ */
+namespace org\bovigo\vfs\visitor;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamFile;
+/**
  * Visitor which traverses a content structure recursively to create an array structure from it.
  *
- * @package     bovigo_vfs
- * @subpackage  visitor
- */
-/**
- * @ignore
- */
-require_once dirname(__FILE__) . '/vfsStreamAbstractVisitor.php';
-/**
- * Visitor which traverses a content structure recursively to create an array structure from it.
- *
- * @package     bovigo_vfs
- * @subpackage  visitor
- * @since       0.10.0
- * @see         https://github.com/mikey179/vfsStream/issues/10
+ * @since  0.10.0
+ * @see    https://github.com/mikey179/vfsStream/issues/10
  */
 class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
 {
     /**
      * collected structure
      *
-     * @var  array<string,array|string>
+     * @type  array
      */
     protected $structure = array();
     /**
      * poiting to currently iterated directory
      *
-     * @var  array<string,array|string>
+     * @type  array
      */
     protected $current;
 
@@ -43,7 +42,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a file and process it
      *
-     * @param   vfsStreamFile              $file
+     * @param   vfsStreamFile  $file
      * @return  vfsStreamStructureVisitor
      */
     public function visitFile(vfsStreamFile $file)
@@ -55,7 +54,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a directory and process it
      *
-     * @param   vfsStreamDirectory         $dir
+     * @param   vfsStreamDirectory  $dir
      * @return  vfsStreamStructureVisitor
      */
     public function visitDirectory(vfsStreamDirectory $dir)
@@ -74,7 +73,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * returns structure of visited contents
      *
-     * @return  array<string,array|string>
+     * @return  array
      */
     public function getStructure()
     {

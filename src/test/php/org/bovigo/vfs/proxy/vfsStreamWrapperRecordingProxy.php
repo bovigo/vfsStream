@@ -1,22 +1,24 @@
 <?php
 /**
- * Stream wrapper to mock file system requests.
+ * This file is part of vfsStream.
  *
- * @package  bovigo_vfs
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
  * Stream wrapper to mock file system requests.
  *
- * @package  bovigo_vfs
- * @since    0.10.0
+ * @since  0.10.0
  */
 class vfsStreamWrapperRecordingProxy extends vfsStreamWrapper
 {
     /**
      * list of called methods for a stream
      *
-     * @var  array<string,array<string>>
+     * @var  array
      */
     protected static $calledMethods = array();
     /**
@@ -37,7 +39,7 @@ class vfsStreamWrapperRecordingProxy extends vfsStreamWrapper
         if (isset(self::$calledMethods[$path]) === false) {
             self::$calledMethods[$path] = array();
         }
-        
+
         self::$calledMethods[$path][] = $method;
     }
 

@@ -1,20 +1,17 @@
 <?php
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper.
+ * This file is part of vfsStream.
  *
- * @author      Frank Kleine <mikey@bovigo.org>
- * @package     bovigo_vfs
- * @subpackage  test
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'org/bovigo/vfs/vfsStream.php';
-require_once 'PHPUnit/Framework/TestCase.php';
+namespace org\bovigo\vfs;
 /**
- * Test for org::bovigo::vfs::vfsStreamWrapper.
- *
- * @package     bovigo_vfs
- * @subpackage  test
+ * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
-class vfsStreamWrapperWithoutRootTestCase extends PHPUnit_Framework_TestCase
+class vfsStreamWrapperWithoutRootTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * set up test environment
