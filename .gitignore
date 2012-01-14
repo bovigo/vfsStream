@@ -1,15 +1,8 @@
 
-# /
 /nbproject
-
-# /build/build/
 /build/build/*
-
-# /build/reports/
 /build/reports/*
-
-# /build/reports/api/
 /build/reports/api/*
-
-# /build/reports/coverage/
 /build/reports/coverage/*
+/vendor/**
+composer.lock
