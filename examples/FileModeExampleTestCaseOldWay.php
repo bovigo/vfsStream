@@ -1,28 +1,26 @@
 <?php
 /**
- * Test case for class FilemodeExample.
+ * This file is part of vfsStream.
  *
- * @package     stubbles_vfs
- * @subpackage  examples
- * @version     $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'PHPUnit/Framework.php';
+namespace org\bovigo\vfs\example;
 require_once 'FilemodeExample.php';
 /**
  * Test case for class FilemodeExample.
- *
- * @package     stubbles_vfs
- * @subpackage  examples
  */
-class FileModeExampleTestCaseOldWay extends PHPUnit_Framework_TestCase
+class FilemodeExampleTestCaseOldWay extends \PHPUnit_Framework_TestCase
 {
     /**
      * set up test environmemt
      */
     public function setUp()
     {
-        if (file_exists(dirname(__FILE__) . '/id') === true) {
-            rmdir(dirname(__FILE__) . '/id');
+        if (file_exists(__DIR__ . '/id') === true) {
+            rmdir(__DIR__ . '/id');
         }
     }
 
@@ -31,8 +29,8 @@ class FileModeExampleTestCaseOldWay extends PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        if (file_exists(dirname(__FILE__) . '/id') === true) {
-            rmdir(dirname(__FILE__) . '/id');
+        if (file_exists(__DIR__ . '/id') === true) {
+            rmdir(__DIR__ . '/id');
         }
     }
 
@@ -42,12 +40,12 @@ class FileModeExampleTestCaseOldWay extends PHPUnit_Framework_TestCase
     public function testDirectoryHasCorrectDefaultFilePermissions()
     {
         $example = new FilemodeExample('id');
-        $example->setDirectory(dirname(__FILE__));
+        $example->setDirectory(__DIR__);
         if (DIRECTORY_SEPARATOR === '\\') {
             // can not really test on windows, filemode from mkdir() is ignored
-            $this->assertEquals(40777, decoct(fileperms(dirname(__FILE__) . '/id')));
+            $this->assertEquals(40777, decoct(fileperms(__DIR__ . '/id')));
         } else {
-            $this->assertEquals(40700, decoct(fileperms(dirname(__FILE__) . '/id')));
+            $this->assertEquals(40700, decoct(fileperms(__DIR__ . '/id')));
         }
     }
 
@@ -57,12 +55,12 @@ class FileModeExampleTestCaseOldWay extends PHPUnit_Framework_TestCase
     public function testDirectoryHasCorrectDifferentFilePermissions()
     {
         $example = new FilemodeExample('id', 0755);
-        $example->setDirectory(dirname(__FILE__));
+        $example->setDirectory(__DIR__);
         if (DIRECTORY_SEPARATOR === '\\') {
             // can not really test on windows, filemode from mkdir() is ignored
-            $this->assertEquals(40777, decoct(fileperms(dirname(__FILE__) . '/id')));
+            $this->assertEquals(40777, decoct(fileperms(__DIR__ . '/id')));
         } else {
-            $this->assertEquals(40755, decoct(fileperms(dirname(__FILE__) . '/id')));
+            $this->assertEquals(40755, decoct(fileperms(__DIR__ . '/id')));
         }
     }
 }

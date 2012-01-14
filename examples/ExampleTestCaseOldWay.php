@@ -1,28 +1,26 @@
 <?php
 /**
- * Test case for class Example.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  examples
- * @version     $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'PHPUnit/Framework.php';
+namespace org\bovigo\vfs\example;
 require_once 'Example.php';
 /**
  * Test case for class Example.
- *
- * @package     bovigo_vfs
- * @subpackage  examples
  */
-class ExampleTestCaseOldWay extends PHPUnit_Framework_TestCase
+class ExampleTestCaseOldWay extends \PHPUnit_Framework_TestCase
 {
     /**
      * set up test environmemt
      */
     public function setUp()
     {
-        if (file_exists(dirname(__FILE__) . '/id') === true) {
-            rmdir(dirname(__FILE__) . '/id');
+        if (file_exists(__DIR__ . '/id') === true) {
+            rmdir(__DIR__ . '/id');
         }
     }
 
@@ -31,20 +29,20 @@ class ExampleTestCaseOldWay extends PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        if (file_exists(dirname(__FILE__) . '/id') === true) {
-            rmdir(dirname(__FILE__) . '/id');
+        if (file_exists(__DIR__ . '/id') === true) {
+            rmdir(__DIR__ . '/id');
         }
     }
 
     /**
-     * test that the directory is created
+     * @test
      */
-    public function testDirectoryIsCreated()
+    public function directoryIsCreated()
     {
         $example = new Example('id');
-        $this->assertFalse(file_exists(dirname(__FILE__) . '/id'));
-        $example->setDirectory(dirname(__FILE__));
-        $this->assertTrue(file_exists(dirname(__FILE__) . '/id'));
+        $this->assertFalse(file_exists(__DIR__ . '/id'));
+        $example->setDirectory(__DIR__);
+        $this->assertTrue(file_exists(__DIR__ . '/id'));
     }
 }
 ?>

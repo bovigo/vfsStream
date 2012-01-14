@@ -1,13 +1,14 @@
 <?php
 /**
- * Test case for class Example.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  examples
- * @version     $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'PHPUnit/Framework.php';
-require_once 'vfsStream/vfsStream.php';
+namespace org\bovigo\vfs\example;
+use org\bovigo\vfs\vfsStream;
 require_once 'Example.php';
 /**
  * Test case for class Example.
@@ -15,25 +16,32 @@ require_once 'Example.php';
  * @package     bovigo_vfs
  * @subpackage  examples
  */
-class ExampleTestCaseWithVfsStream extends PHPUnit_Framework_TestCase
+class ExampleTestCaseWithVfsStream extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * root directory
+     *
+     * @type  vfsStreamDirectory
+     */
+    protected $root;
+
     /**
      * set up test environmemt
      */
     public function setUp()
     {
-        vfsStream::setup('exampleDir');
+        $this->root = vfsStream::setup('exampleDir');
     }
 
     /**
-     * test that the directory is created
+     * @test
      */
-    public function testDirectoryIsCreated()
+    public function directoryIsCreated()
     {
         $example = new Example('id');
-        $this->assertFalse(vfsStreamWrapper::getRoot()->hasChild('id'));
+        $this->assertFalse($this->root->hasChild('id'));
         $example->setDirectory(vfsStream::url('exampleDir'));
-        $this->assertTrue(vfsStreamWrapper::getRoot()->hasChild('id'));
+        $this->assertTrue($this->root->hasChild('id'));
     }
 }
 ?>

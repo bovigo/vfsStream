@@ -1,16 +1,15 @@
 <?php
 /**
- * Example showing correct file permission support introduced with 0.7.0.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  examples
- * @version     $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
+namespace org\bovigo\vfs\example;
 /**
  * Example showing correct file permission support introduced with 0.7.0.
- *
- * @package     bovigo_vfs
- * @subpackage  examples
  */
 class FilePermissionsExample
 {
@@ -22,7 +21,7 @@ class FilePermissionsExample
      */
     public function writeConfig($config, $configFile)
     {
-        file_put_contents($configFile, serialize($config));
+        @file_put_contents($configFile, serialize($config));
     }
 
     // more methods here

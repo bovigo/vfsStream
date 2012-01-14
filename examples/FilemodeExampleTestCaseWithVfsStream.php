@@ -1,28 +1,33 @@
 <?php
 /**
- * Test case for class FilemodeExample.
+ * This file is part of vfsStream.
  *
- * @package     stubbles_vfs
- * @subpackage  examples
- * @version     $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'PHPUnit/Framework.php';
-require_once 'vfsStream/vfsStream.php';
+namespace org\bovigo\vfs\example;
+use org\bovigo\vfs\vfsStream;
 require_once 'FilemodeExample.php';
 /**
- * Test case for class Example.
- *
- * @package     stubbles_vfs
- * @subpackage  examples
+ * Test case for class FilemodeExample.
  */
-class FilemodeExampleTestCaseWithVfsStream extends PHPUnit_Framework_TestCase
+class FilemodeExampleTestCaseWithVfsStream extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * root directory
+     *
+     * @type  vfsStreamDirectory
+     */
+    protected $root;
+
     /**
      * set up test environmemt
      */
     public function setUp()
     {
-        vfsStream::setup('exampleDir');
+        $this->root = vfsStream::setup('exampleDir');
     }
 
     /**
@@ -32,7 +37,7 @@ class FilemodeExampleTestCaseWithVfsStream extends PHPUnit_Framework_TestCase
     {
         $example = new FilemodeExample('id');
         $example->setDirectory(vfsStream::url('exampleDir'));
-        $this->assertEquals(0700, vfsStreamWrapper::getRoot()->getChild('id')->getPermissions());
+        $this->assertEquals(0700, $this->root->getChild('id')->getPermissions());
     }
 
     /**
@@ -42,7 +47,7 @@ class FilemodeExampleTestCaseWithVfsStream extends PHPUnit_Framework_TestCase
     {
         $example = new FilemodeExample('id', 0755);
         $example->setDirectory(vfsStream::url('exampleDir'));
-        $this->assertEquals(0755, vfsStreamWrapper::getRoot()->getChild('id')->getPermissions());
+        $this->assertEquals(0755, $this->root->getChild('id')->getPermissions());
     }
 }
 ?>

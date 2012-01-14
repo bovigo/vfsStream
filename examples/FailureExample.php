@@ -1,23 +1,22 @@
 <?php
 /**
- * Example class to demonstrate testing of failure behaviour with vfsStream.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  examples
- * @version     $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
+namespace org\bovigo\vfs\example;
 /**
  * Example class to demonstrate testing of failure behaviour with vfsStream.
- *
- * @package     bovigo_vfs
- * @subpackage  examples
  */
 class FailureExample
 {
     /**
      * filename to write data
      *
-     * @var  string
+     * @type  string
      */
     protected $filename;
 
@@ -42,7 +41,7 @@ class FailureExample
         if (false === $bytes) {
             return 'could not write data';
         }
-        
+
         return 'ok';
     }
 

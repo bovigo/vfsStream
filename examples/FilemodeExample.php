@@ -1,35 +1,34 @@
 <?php
 /**
- * Example class.
+ * This file is part of vfsStream.
  *
- * @package     stubbles_vfs
- * @subpackage  examples
- * @version     $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
+namespace org\bovigo\vfs\example;
 /**
  * Example class.
- *
- * @package     stubbles_vfs
- * @subpackage  examples
  */
 class FilemodeExample
 {
     /**
      * id of the example
      *
-     * @var  string
+     * @type  string
      */
     protected $id;
     /**
      * a directory where we do something..
      *
-     * @var  string
+     * @type  string
      */
     protected $directory;
     /**
      * file mode for newly created directories
      *
-     * @var  int
+     * @type  int
      */
     protected $fileMode;
 

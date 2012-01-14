@@ -1,60 +1,58 @@
 <?php
 /**
- * Test case for class FailureExample.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  examples
- * @version     $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'PHPUnit/Framework.php';
-require_once 'vfsStream/vfsStream.php';
+namespace org\bovigo\vfs\example;
+use org\bovigo\vfs\vfsStream;
 require_once 'FailureExample.php';
 /**
  * Test case for class FailureExample.
- *
- * @package     bovigo_vfs
- * @subpackage  examples
  */
-class FailureExampleTestCase extends PHPUnit_Framework_TestCase
+class FailureExampleTestCase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * root directory
+     *
+     * @type  vfsStreamDirectory
+     */
+    protected $root;
+
     /**
      * set up test environmemt
      */
     public function setUp()
     {
-        vfsStreamWrapper::register();
+        $this->root = vfsStream::setup('exampleDir');
     }
 
     /**
-     * no failure case
+     * @test
      */
-    public function testNoFailure()
+    public function returnsOkOnNoFailure()
     {
-        $root = new vfsStreamDirectory('exampleDir');
-        vfsStreamWrapper::setRoot($root);
         $example = new FailureExample(vfsStream::url('exampleDir/test.txt'));
         $this->assertSame('ok', $example->writeData('testdata'));
-        $this->assertTrue($root->hasChild('test.txt'));
-        $this->assertSame('testdata', $root->getChild('test.txt')->getContent());
+        $this->assertTrue($this->root->hasChild('test.txt'));
+        $this->assertSame('testdata', $this->root->getChild('test.txt')->getContent());
     }
 
     /**
-     * can't write to file
+     * @test
      */
-    public function testNoWrite()
+    public function returnsErrorMessageIfWritingToFileFails()
     {
-        $root = new vfsStreamDirectory('exampleDir');
-        $file = $this->getMock('vfsStreamFile', array('write'), array('test.txt'));
-        $file->setContent('notoverwritten');
-        $file->expects($this->once())
-             ->method('write')
-             ->will($this->returnValue(false));
-        $root->addChild($file);
-        vfsStreamWrapper::setRoot($root);
+        $file = vfsStream::newFile('test.txt', 0000)
+                         ->withContent('notoverwritten')
+                         ->at($this->root);
         $example = new FailureExample(vfsStream::url('exampleDir/test.txt'));
         $this->assertSame('could not write data', $example->writeData('testdata'));
-        $this->assertTrue($root->hasChild('test.txt'));
-        $this->assertSame('notoverwritten', $root->getChild('test.txt')->getContent());
+        $this->assertTrue($this->root->hasChild('test.txt'));
+        $this->assertSame('notoverwritten', $this->root->getChild('test.txt')->getContent());
     }
 }
 ?>

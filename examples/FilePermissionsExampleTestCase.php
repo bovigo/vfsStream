@@ -1,21 +1,19 @@
 <?php
 /**
- * Test for FilePermissionsExample.
+ * This file is part of vfsStream.
  *
- * @package     bovigo_vfs
- * @subpackage  examples
- * @version     $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-require_once 'PHPUnit/Framework.php';
-require_once 'vfsStream/vfsStream.php';
+namespace org\bovigo\vfs\example;
+use org\bovigo\vfs\vfsStream;
 require_once 'FilePermissionsExample.php';
 /**
  * Test for FilePermissionsExample.
- *
- * @package     bovigo_vfs
- * @subpackage  examples
  */
-class FilePermissionsExampleTestCase extends PHPUnit_Framework_TestCase
+class FilePermissionsExampleTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
