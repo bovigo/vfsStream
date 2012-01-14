@@ -13,11 +13,6 @@
     <include name="**/*.php"/>
   </fileset>
 
-  <fileset id="testfiles" dir="${project.basedir}/src/test/php">
-    <include name="**/*TestCase*.php"/>
-    <include name="**/*Test.php"/>
-  </fileset>
-  
   <target name="main" if="version" depends="check-style,test,create-api-doc,versioncheck,copy-files"/>
 
   <target name="release" depends="main,package"/>
@@ -30,62 +25,11 @@
   </target>
 
   <target name="test" description="Run tests.">
-    <delete>
-      <fileset dir="${build.report.dir}">
-        <include name="**/*"/>
-        <!-- check-style target is running before test in test-all so we have to exclude this file -->
-        <exclude name="**/checkstyle.xml"/>
-        <exclude name="**/coverage"/>
-        <exclude name="**/phpunit"/>
-        <exclude name="**/api"/>
-      </fileset>
-    </delete>
-    <echo message="'phpunit.test.groups' is set to '${phpunit.test.groups}' ('' = all)"/>
-    <echo message="'phpunit.test.excludeGroups' is set to '${phpunit.test.excludeGroups}' ('' = none)"/>
-    <php expression="define('SOURCE_DIR', '${project.basedir}/src/main/php');"/>
-    <php expression="ini_set('include_path', SOURCE_DIR . PATH_SEPARATOR . ini_get('include_path'));"/>
-    <php expression="extension_loaded('xdebug');" returnProperty="xdebug"/>
-    <if>
-      <and>
-        <istrue value="${xdebug}"/>
-        <istrue value="${phpunit.test.coverage}"/>
-      </and>
-      <then>
-        <coverage-setup database="${build.report.dir}/coverage/coverage.db">
-          <fileset refid="srcfiles"/>
-        </coverage-setup>
-        <phpunit codecoverage="true"
-                 groups="${phpunit.test.groups}"
-                 excludeGroups="${phpunit.test.excludeGroups}">
-          <formatter type="plain" usefile="false"/>
-          <formatter type="summary" usefile="false"/>
-          <formatter todir="${build.report.dir}/phpunit" type="xml"/>
-          <batchtest>
-            <fileset refid="testfiles"/>
-          </batchtest>
-        </phpunit>
-        <coverage-report outfile="${build.report.dir}/coverage/coverage.xml">
-          <report todir="${build.report.dir}/coverage"/>
-        </coverage-report>
-      </then>
-      <else>
-        <phpunit codecoverage="false"
-                 groups="${phpunit.test.groups}"
-                 excludeGroups="${phpunit.test.excludeGroups}">
-          <formatter type="plain" usefile="false"/>
-          <formatter type="summary" usefile="false"/>
-          <formatter todir="${build.report.dir}/phpunit" type="xml"/>
-          <batchtest>
-            <fileset refid="testfiles"/>
-          </batchtest>
-        </phpunit>
-      </else>
-    </if>
-    <phpunitreport infile="${build.report.dir}/phpunit/testsuites.xml" todir="${build.report.dir}/phpunit"/>
+    <exec command="phpunit" passthru="true"/>
   </target>
 
   <target name="create-api-doc" description="Creates API docs">
-    <exec command="docblox -d src/main/php/org/bovigo/vfs -t ${build.report.dir}/docblox --title vfsStream API Doc --defaultpackagename bovigo_vfs" passthru="true"/>
+    <exec command="docblox --force -d src/main/php -t ${build.report.dir}/docblox --title vfsStream API Doc --defaultpackagename bovigo_vfs" passthru="true"/>
   </target>
 
   <target name="versioncheck" unless="version">
