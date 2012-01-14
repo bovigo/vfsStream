@@ -9,10 +9,6 @@
   <property name="phpunit.test.groups" value=" "/>
   <property name="phpunit.test.excludeGroups" value=" "/>
 
-  <fileset id="srcfiles" dir="${project.basedir}/src/main/php">
-    <include name="**/*.php"/>
-  </fileset>
-
   <target name="main" if="version" depends="check-style,test,create-api-doc,versioncheck,copy-files"/>
 
   <target name="release" depends="main,package"/>
