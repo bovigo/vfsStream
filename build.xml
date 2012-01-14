@@ -15,7 +15,7 @@
   </target>
 
   <target name="create-api-doc" description="Creates API docs">
-    <exec command="docblox --force -d src/main/php -t docs/api --title vfsStream API Doc --defaultpackagename org\bovigo\vfs" passthru="true"/>
+    <exec command="docblox" passthru="true"/>
   </target>
 
 </project>
