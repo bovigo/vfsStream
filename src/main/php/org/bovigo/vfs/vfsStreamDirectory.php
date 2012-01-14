@@ -10,6 +10,8 @@
 namespace org\bovigo\vfs;
 /**
  * Directory container.
+ *
+ * @api
  */
 class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamContainer
 {

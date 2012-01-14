@@ -9,7 +9,9 @@
  */
 namespace org\bovigo\vfs;
 /**
- * Exception for streamwrapper subpackage.
+ * Exception for vfsStream errors.
+ *
+ * @api
  */
 class vfsStreamException extends \Exception
 {

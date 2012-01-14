@@ -11,6 +11,8 @@ namespace org\bovigo\vfs;
 use org\bovigo\vfs\visitor\vfsStreamVisitor;
 /**
  * Some utility methods for vfsStream.
+ *
+ * @api
  */
 class vfsStream
 {
@@ -120,6 +122,7 @@ class vfsStream
      * )
      * </code>
      * the resulting directory tree will look like this:
+     * <pre>
      * root
      * \- Core
      *  |- badlocation.php
@@ -128,6 +131,7 @@ class vfsStream
      *  | |- other.php
      *  | \- Invalid.csv
      *  \- AnEmptyFolder
+     * </pre>
      * Arrays will become directories with their key as directory name, and
      * strings becomes files with their key as file name and their value as file
      * content.
@@ -161,6 +165,7 @@ class vfsStream
      * )
      * </code>
      * the resulting directory tree will look like this:
+     * <pre>
      * baseDir
      * \- Core
      *  |- badlocation.php
@@ -169,6 +174,7 @@ class vfsStream
      *  | |- other.php
      *  | \- Invalid.csv
      *  \- AnEmptyFolder
+     * </pre>
      * Arrays will become directories with their key as directory name, and
      * strings becomes files with their key as file name and their value as file
      * content.
