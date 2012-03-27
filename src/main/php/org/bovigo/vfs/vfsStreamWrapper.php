@@ -30,6 +30,11 @@ class vfsStreamWrapper
      */
     const WRITE                  = 'x';
     /**
+     * set file pointer to start, overwrite existing data; or create file if
+     * does not exist
+     */
+    const WRITE_NEW              = 'c';
+    /**
      * file mode: read only
      */
     const READONLY               = 0;
@@ -218,9 +223,9 @@ class vfsStreamWrapper
     {
         $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
         $mode     = str_replace(array('b', '+'), '', $mode);
-        if (in_array($mode, array('r', 'w', 'a', 'x')) === false) {
+        if (in_array($mode, array('r', 'w', 'a', 'x', 'c')) === false) {
             if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
-                trigger_error('Illegal mode ' . $mode . ', use r, w, a  or x, flavoured with b and/or +', E_USER_WARNING);
+                trigger_error('Illegal mode ' . $mode . ', use r, w, a, x  or c, flavoured with b and/or +', E_USER_WARNING);
             }
 
             return false;

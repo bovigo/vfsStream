@@ -3,6 +3,7 @@
 - raised requirement for PHP version to 5.3.0
 - migrated codebase to use namespaces
 - changed distribution from PEAR to Composer
+- implemented issue #30: support "c" mode for fopen()
 - fixed issue #31: prohibit aquiring locks when already locked / release lock on
   fclose()
 

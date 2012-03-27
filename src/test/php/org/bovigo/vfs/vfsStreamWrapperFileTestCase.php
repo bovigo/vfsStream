@@ -328,5 +328,98 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(unlink(vfsStream::url('root/new.txt')));
         $this->assertTrue(file_exists(vfsStream::url('root/new.txt')));
     }
+
+    /**
+     * @test
+     * @group  issue_30
+     */
+    public function truncatesFileWhenOpenedWithModeW()
+    {
+        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        file_put_contents($vfsFile, 'test');
+        $fp = fopen($vfsFile, 'wb');
+        $this->assertEquals('', file_get_contents($vfsFile));
+        fclose($fp);
+    }
+
+    /**
+     * @test
+     * @group  issue_30
+     */
+    public function createsNonExistingFileWhenOpenedWithModeC()
+    {
+        $vfsFile = vfsStream::url('foo/tobecreated.txt');
+        $fp = fopen($vfsFile, 'cb');
+        fwrite($fp, 'some content');
+        $this->assertTrue($this->foo->hasChild('tobecreated.txt'));
+        fclose($fp);
+        $this->assertEquals('some content', file_get_contents($vfsFile));
+    }
+
+    /**
+     * @test
+     * @group  issue_30
+     */
+    public function createsNonExistingFileWhenOpenedWithModeCplus()
+    {
+        $vfsFile = vfsStream::url('foo/tobecreated.txt');
+        $fp = fopen($vfsFile, 'cb+');
+        fwrite($fp, 'some content');
+        $this->assertTrue($this->foo->hasChild('tobecreated.txt'));
+        fclose($fp);
+        $this->assertEquals('some content', file_get_contents($vfsFile));
+    }
+
+    /**
+     * @test
+     * @group  issue_30
+     */
+    public function doesNotTruncateFileWhenOpenedWithModeC()
+    {
+        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        file_put_contents($vfsFile, 'test');
+        $fp = fopen($vfsFile, 'cb');
+        $this->assertEquals('test', file_get_contents($vfsFile));
+        fclose($fp);
+    }
+
+    /**
+     * @test
+     * @group  issue_30
+     */
+    public function setsPointerToStartWhenOpenedWithModeC()
+    {
+        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        file_put_contents($vfsFile, 'test');
+        $fp = fopen($vfsFile, 'cb');
+        $this->assertEquals(0, ftell($fp));
+        fclose($fp);
+    }
+
+    /**
+     * @test
+     * @group  issue_30
+     */
+    public function doesNotTruncateFileWhenOpenedWithModeCplus()
+    {
+        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        file_put_contents($vfsFile, 'test');
+        $fp = fopen($vfsFile, 'cb+');
+        $this->assertEquals('test', file_get_contents($vfsFile));
+        fclose($fp);
+    }
+
+    /**
+     * @test
+     * @group  issue_30
+     */
+    public function setsPointerToStartWhenOpenedWithModeCplus()
+    {
+        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        file_put_contents($vfsFile, 'test');
+        $fp = fopen($vfsFile, 'cb+');
+        $this->assertEquals(0, ftell($fp));
+        fclose($fp);
+    }
 }
 ?>
