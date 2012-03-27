@@ -448,6 +448,7 @@ class vfsStreamWrapper
      * @return  bool
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
+     * @see     https://github.com/mikey179/vfsStream/issues/31
      */
     public function stream_lock($operation)
     {
