@@ -318,7 +318,7 @@ class vfsStreamWrapper
      */
     public function stream_close()
     {
-        // nothing to do
+        $this->content->lock(LOCK_UN);
     }
 
     /**
@@ -451,6 +451,16 @@ class vfsStreamWrapper
      */
     public function stream_lock($operation)
     {
+        if ((LOCK_NB & $operation) == LOCK_NB) {
+            $operation = $operation - LOCK_NB;
+        }
+
+        if (LOCK_EX === $operation && $this->content->isLocked()) {
+            return false;
+        } elseif (LOCK_SH === $operation && $this->content->hasExclusiveLock()) {
+            return false;
+        }
+
         $this->content->lock($operation);
         return true;
     }
