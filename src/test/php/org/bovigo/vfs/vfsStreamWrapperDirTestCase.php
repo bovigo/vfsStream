@@ -590,5 +590,16 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertTrue($this->foo->hasChild('empty'));
         $this->assertFileExists($this->fooURL . '/empty');
     }
+
+    /**
+     * @test
+     * @group  issue_32
+     */
+    public function duplicatedFolderName()
+    {
+        vfsStream::setup('testFolder');
+        mkdir(vfsStream::url('testFolder') . '/testFolder/subTestFolder', 0777, true);
+        $this->assertTrue(file_exists(vfsStream::url('testFolder/testFolder/subTestFolder/.')));
+    }
 }
 ?>

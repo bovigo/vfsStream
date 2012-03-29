@@ -623,7 +623,10 @@ class vfsStreamWrapper
         while ($dir === null && $i < $maxDepth) {
             $dir     = $this->getContent($names['dirname']);
             $names   = $this->splitPath($names['dirname']);
-            $newDirs = $names['basename'] . '/' . $newDirs;
+            if (null == $dir) {
+                $newDirs = $names['basename'] . '/' . $newDirs;
+            }
+
             $i++;
         }
 
@@ -633,7 +636,6 @@ class vfsStreamWrapper
             return false;
         }
 
-        $newDirs = str_replace($dir->getName() . '/', '', $newDirs);
         $recursive = ((STREAM_MKDIR_RECURSIVE & $options) !== 0) ? (true) : (false);
         if (strpos($newDirs, '/') !== false && false === $recursive) {
             return false;
