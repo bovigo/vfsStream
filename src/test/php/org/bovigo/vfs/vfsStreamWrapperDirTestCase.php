@@ -595,11 +595,23 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @group  issue_32
      */
-    public function duplicatedFolderName()
+    public function canCreateFolderOfSameNameAsParentFolder()
     {
-        vfsStream::setup('testFolder');
+        $root = vfsStream::setup('testFolder');
         mkdir(vfsStream::url('testFolder') . '/testFolder/subTestFolder', 0777, true);
         $this->assertTrue(file_exists(vfsStream::url('testFolder/testFolder/subTestFolder/.')));
+    }
+
+    /**
+     * @test
+     * @group  issue_32
+     */
+    public function canRetrieveFolderOfSameNameAsParentFolder()
+    {
+        $root = vfsStream::setup('testFolder');
+        mkdir(vfsStream::url('testFolder') . '/testFolder/subTestFolder', 0777, true);
+        $this->assertTrue($root->hasChild('testFolder'));
+        $this->assertNotNull($root->getChild('testFolder'));
     }
 }
 ?>

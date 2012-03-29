@@ -194,6 +194,10 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      */
     protected static function getChildName($name, $ownName)
     {
+        if ($name === $ownName) {
+            return $name;
+        }
+
         return substr($name, strlen($ownName) + 1);
     }
 

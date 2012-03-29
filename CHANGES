@@ -6,7 +6,7 @@
 - implemented issue #30: support "c" mode for fopen()
 - fixed issue #31: prohibit aquiring locks when already locked / release lock on
   fclose()
-- fixed issue #32: create subfolder of same name in existing folder fails
+- fixed issue #32: problems when subfolder has same name as folder
 
 
 0.11.2, 2012-01-14
