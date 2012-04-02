@@ -2,7 +2,7 @@
     "name": "mikey179/vfsStream",
     "type": "library",
     "homepage": "http://vfs.bovigo.org/",
-    "version": "1.0.0-beta3",
+    "version": "1.0.0-beta4",
     "license": "BSD",
     "require": {
         "php": ">=5.3.0"
