@@ -191,6 +191,25 @@ class vfsStreamFile extends vfsStreamAbstractContent
     }
 
     /**
+     * Truncates a file to a given length
+     *
+     * @param int $size length to truncate file to
+     * @return bool
+     */
+    public function truncate($size) {
+        if ($size > $this->size()) {
+            // Pad with null-chars if we're "truncating up"
+            $this->setContent($this->getContent() . str_repeat("\0", $this->size() - $size));
+        } else {
+            $this->setContent(substr($this->getContent(), 0, $size));
+        }
+
+        $this->lastModified = time();
+
+        return true;
+    }
+
+    /**
      * checks whether pointer is at end of file
      *
      * @return  bool
