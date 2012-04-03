@@ -199,7 +199,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     public function truncate($size) {
         if ($size > $this->size()) {
             // Pad with null-chars if we're "truncating up"
-            $this->setContent($this->getContent() . str_repeat("\0", $this->size() - $size));
+            $this->setContent($this->getContent() . str_repeat("\0", $size - $this->size()));
         } else {
             $this->setContent(substr($this->getContent(), 0, $size));
         }

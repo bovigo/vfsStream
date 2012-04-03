@@ -365,6 +365,28 @@ class vfsStreamWrapper
     }
 
     /**
+     * Truncates a file to a given length
+     *
+     * @param int $size length to truncate file to
+     * @return bool
+     */
+    public function stream_truncate($size) {
+        if (self::READONLY === $this->mode) {
+            return false;
+        }
+
+        if ($this->content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
+            return false;
+        }
+
+        if ($this->content->getType() !== vfsStreamContent::TYPE_FILE) {
+            return false;
+        }
+
+        return $this->content->truncate($size);
+    }
+
+    /**
      * checks whether stream is at end of file
      *
      * @return  bool
