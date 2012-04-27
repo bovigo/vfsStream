@@ -243,7 +243,14 @@ class vfsStreamWrapper
                 return false;
             }
 
-            if (self::TRUNCATE === $mode && $this->content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === true) {
+            if (
+                (self::TRUNCATE === $mode || self::APPEND === $mode) &&
+                $this->content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false
+            ) {
+                return false;
+            }
+            
+            if (self::TRUNCATE === $mode) {
                 $this->content->openWithTruncate();
             } elseif (self::APPEND === $mode) {
                 $this->content->openForAppend();
