@@ -421,16 +421,23 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(0, ftell($fp));
         fclose($fp);
     }
-    
+
     /**
      * @test
      */
-    public function cannotOpenExistingNonwritableFileWithMode_a_or_w()
+    public function cannotOpenExistingNonwritableFileWithModeA()
     {
         $this->baz1->chmod(0400);
-        
-        $this->assertFalse(@fopen($this->baz1URL, "a"));
-        $this->assertFalse(@fopen($this->baz1URL, "w"));
+        $this->assertFalse(@fopen($this->baz1URL, 'a'));
+    }
+
+    /**
+     * @test
+     */
+    public function cannotOpenExistingNonwritableFileWithModeW()
+    {
+        $this->baz1->chmod(0400);
+        $this->assertFalse(@fopen($this->baz1URL, 'w'));
     }
 }
 ?>
