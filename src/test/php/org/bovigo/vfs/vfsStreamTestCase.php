@@ -687,17 +687,18 @@ class vfsStreamTestCase extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Only applicable on Linux style systems.');
         }
 
-        $root = vfsStream::setup();
+        $copyDir = $this->getFileSystemCopyDir();
+        $root    = vfsStream::setup();
         $this->assertEquals($root,
-                            vfsStream::copyFromFileSystem($this->getFileSystemCopyDir(),
+                            vfsStream::copyFromFileSystem($copyDir,
                                                           null
                             )
         );
-        $this->assertEquals(0755,
+        $this->assertEquals(fileperms($copyDir . '/withSubfolders') - vfsStreamContent::TYPE_DIR,
                             $root->getChild('withSubfolders')
                                  ->getPermissions()
         );
-        $this->assertEquals(0644,
+        $this->assertEquals(fileperms($copyDir . '/withSubfolders/aFile.txt') - vfsStreamContent::TYPE_FILE,
                             $root->getChild('withSubfolders/aFile.txt')
                                  ->getPermissions()
         );
