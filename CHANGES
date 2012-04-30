@@ -7,6 +7,8 @@
 - fixed issue #31: prohibit aquiring locks when already locked / release lock on
   fclose()
 - fixed issue #32: problems when subfolder has same name as folder
+- fixed issue #36: vfsStreamWrapper::stream_open should return false while
+  trying to open existing non-writable file, patch provided by Alexander Peresypkin
 
 
 0.11.2, 2012-01-14
