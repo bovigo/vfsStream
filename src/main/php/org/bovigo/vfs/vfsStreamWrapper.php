@@ -249,12 +249,18 @@ class vfsStreamWrapper
             ) {
                 return false;
             }
-            
+
             if (self::TRUNCATE === $mode) {
                 $this->content->openWithTruncate();
             } elseif (self::APPEND === $mode) {
                 $this->content->openForAppend();
             } else {
+                if (!$this->content->isReadable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
+                    if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
+                        trigger_error('Permission denied', E_USER_WARNING);
+                    }
+                    return false;
+                }
                 $this->content->open();
             }
 
@@ -572,23 +578,25 @@ class vfsStreamWrapper
             trigger_error(' No such file or directory', E_USER_WARNING);
             return false;
         }
-
-        $dstContent = clone $srcContent;
-        $dstNames   = $this->splitPath($dstRealPath);
-        // Renaming the filename
-        $dstContent->rename($dstNames['basename']);
-        // Copying to the destination
+        $dstNames = $this->splitPath($dstRealPath);
         $dstParentContent = $this->getContent($dstNames['dirname']);
         if (null == $dstParentContent) {
             trigger_error('No such file or directory', E_USER_WARNING);
             return false;
         }
-
+        if (!$dstParentContent->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
+            trigger_error('Permission denied', E_USER_WARNING);
+            return false;
+        }
         if ($dstParentContent->getType() !== vfsStreamContent::TYPE_DIR) {
             trigger_error('Target is not a directory', E_USER_WARNING);
             return false;
         }
 
+        $dstContent = clone $srcContent;
+        // Renaming the filename
+        $dstContent->rename($dstNames['basename']);
+        // Copying to the destination
         $dstParentContent->addChild($dstContent);
         // Removing the source
         return $this->doUnlink($srcRealPath);
