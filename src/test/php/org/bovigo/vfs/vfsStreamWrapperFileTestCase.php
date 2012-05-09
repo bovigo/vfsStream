@@ -439,5 +439,34 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         $this->baz1->chmod(0400);
         $this->assertFalse(@fopen($this->baz1URL, 'w'));
     }
+
+    /**
+     * @test
+     */
+    public function cannotOpenNonReadableFileWithModeR()
+    {
+        $this->baz1->chmod(0);
+        $this->assertFalse(@fopen($this->baz1URL, 'r'));
+    }
+
+    /**
+     * @test
+     */
+    public function cannotRenameToNonWritableDir()
+    {
+        $this->bar->chmod(0);
+        $this->assertFalse(@rename($this->baz2URL, vfsStream::url('foo/bar/baz3')));
+    }
+
+    /**
+     * @test
+     * @group issue_38
+     */
+    public function cannotReadFileFromNonReadableDir()
+    {
+        $this->markTestSkipped("Issue #38.");
+        $this->bar->chmod(0);
+        $this->assertFalse(@file_get_contents($this->baz1URL));
+    }
 }
 ?>
