@@ -460,9 +460,11 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
+     * @group issue_38
      */
     public function cannotReadFileFromNonReadableDir()
     {
+        $this->markTestSkipped("Issue #38.");
         $this->bar->chmod(0);
         $this->assertFalse(@file_get_contents($this->baz1URL));
     }
