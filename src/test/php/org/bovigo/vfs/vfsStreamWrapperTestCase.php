@@ -229,30 +229,38 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * chmod() does not work with vfsStream URLs
-     *
      * @test
+     * @group  issue_11
+     * @group  permissions
      */
-    public function chmodDoesNotWorkOnVfsStreamUrls()
+    public function chmodModifiesPermissions()
     {
-        // silence down chmod() because of error message for invalid url
-        $this->assertFalse(@chmod($this->fooURL, 0755));
-        $this->assertFalse(@chmod($this->barURL, 0711));
-        $this->assertFalse(@chmod($this->baz1URL, 0644));
-        $this->assertFalse(@chmod($this->baz2URL, 0664));
-        $this->assertEquals(40777, decoct(fileperms($this->fooURL)));
-        $this->assertEquals(40777, decoct(fileperms($this->barURL)));
-        $this->assertEquals(100666, decoct(fileperms($this->baz1URL)));
-        $this->assertEquals(100666, decoct(fileperms($this->baz2URL)));
+        if (version_compare(phpversion(), '5.4.0', '<')) {
+            $this->assertFalse(@chmod($this->fooURL, 0755));
+            $this->assertFalse(@chmod($this->barURL, 0711));
+            $this->assertFalse(@chmod($this->baz1URL, 0644));
+            $this->assertFalse(@chmod($this->baz2URL, 0664));
+            $this->assertEquals(40777, decoct(fileperms($this->fooURL)));
+            $this->assertEquals(40777, decoct(fileperms($this->barURL)));
+            $this->assertEquals(100666, decoct(fileperms($this->baz1URL)));
+            $this->assertEquals(100666, decoct(fileperms($this->baz2URL)));
+        } else {
+            $this->assertTrue(chmod($this->fooURL, 0755));
+            $this->assertTrue(chmod($this->barURL, 0711));
+            $this->assertTrue(chmod($this->baz1URL, 0644));
+            $this->assertTrue(chmod($this->baz2URL, 0664));
+            $this->assertEquals(40755, decoct(fileperms($this->fooURL)));
+            $this->assertEquals(40711, decoct(fileperms($this->barURL)));
+            $this->assertEquals(100644, decoct(fileperms($this->baz1URL)));
+            $this->assertEquals(100664, decoct(fileperms($this->baz2URL)));
+        }
     }
 
     /**
-     * file owner
-     *
      * @test
      * @group  permissions
      */
-    public function chown()
+    public function fileownerIsCurrentUserByDefault()
     {
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->fooURL));
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->fooURL . '/.'));
@@ -260,12 +268,26 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->barURL . '/.'));
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->baz1URL));
         $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->baz2URL));
+    }
 
-        $this->foo->chown(vfsStream::OWNER_USER_1);
-        $this->bar->chown(vfsStream::OWNER_USER_1);
-        $this->baz1->chown(vfsStream::OWNER_USER_2);
-        $this->baz2->chown(vfsStream::OWNER_USER_2);
-
+    /**
+     * @test
+     * @group  issue_11
+     * @group  permissions
+     */
+    public function chownChangesUser()
+    {
+        if (version_compare(phpversion(), '5.4.0', '<')) {
+            $this->foo->chown(vfsStream::OWNER_USER_1);
+            $this->bar->chown(vfsStream::OWNER_USER_1);
+            $this->baz1->chown(vfsStream::OWNER_USER_2);
+            $this->baz2->chown(vfsStream::OWNER_USER_2);
+        } else {
+            chown($this->fooURL, vfsStream::OWNER_USER_1);
+            chown($this->barURL, vfsStream::OWNER_USER_1);
+            chown($this->baz1URL, vfsStream::OWNER_USER_2);
+            chown($this->baz2URL, vfsStream::OWNER_USER_2);
+        }
 
         $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->fooURL));
         $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->fooURL . '/.'));
@@ -276,24 +298,24 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * chown() does not work with vfsStream URLs
-     *
      * @test
+     * @group  issue_11
+     * @group  permissions
      */
     public function chownDoesNotWorkOnVfsStreamUrls()
     {
-        // silence down chown() because of error message for invalid url
-        $this->assertFalse(@chown($this->fooURL, vfsStream::OWNER_USER_2));
-        $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->fooURL));
+        if (version_compare(phpversion(), '5.4.0', '<')) {
+            $this->assertFalse(@chown($this->fooURL, vfsStream::OWNER_USER_2));
+            $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->fooURL));
+        }
     }
 
     /**
-     * file group owner
-     *
      * @test
+     * @group  issue_11
      * @group  permissions
      */
-    public function chgrp()
+    public function groupIsCurrentGroupByDefault()
     {
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->fooURL));
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->fooURL . '/.'));
@@ -301,11 +323,26 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->barURL . '/.'));
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->baz1URL));
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->baz2URL));
+    }
 
-        $this->foo->chgrp(vfsStream::GROUP_USER_1);
-        $this->bar->chgrp(vfsStream::GROUP_USER_1);
-        $this->baz1->chgrp(vfsStream::GROUP_USER_2);
-        $this->baz2->chgrp(vfsStream::GROUP_USER_2);
+    /**
+     * @test
+     * @group  issue_11
+     * @group  permissions
+     */
+    public function chgrp()
+    {
+        if (version_compare(phpversion(), '5.4.0', '<')) {
+            $this->foo->chgrp(vfsStream::GROUP_USER_1);
+            $this->bar->chgrp(vfsStream::GROUP_USER_1);
+            $this->baz1->chgrp(vfsStream::GROUP_USER_2);
+            $this->baz2->chgrp(vfsStream::GROUP_USER_2);
+        } else {
+            chgrp($this->fooURL, vfsStream::GROUP_USER_1);
+            chgrp($this->barURL, vfsStream::GROUP_USER_1);
+            chgrp($this->baz1URL, vfsStream::GROUP_USER_2);
+            chgrp($this->baz2URL, vfsStream::GROUP_USER_2);
+        }
 
         $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->fooURL));
         $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->fooURL . '/.'));
@@ -316,15 +353,16 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * chgrp() does not work with vfsStream URLs
-     *
      * @test
+     * @group  issue_11
+     * @group  permissions
      */
     public function chgrpDoesNotWorkOnVfsStreamUrls()
     {
-        // silence down chgrp() because of error message for invalid url
-        $this->assertFalse(@chgrp($this->fooURL, vfsStream::GROUP_USER_2));
-        $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->fooURL));
+        if (version_compare(phpversion(), '5.4.0', '<')) {
+            $this->assertFalse(@chgrp($this->fooURL, vfsStream::GROUP_USER_2));
+            $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->fooURL));
+        }
     }
 
     /**
@@ -594,6 +632,80 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals("baz 1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
                             file_get_contents($this->baz1URL));
         fclose($handle);
+    }
+
+    /**
+     * @test
+     * @group  issue_11
+     */
+    public function touchCreatesNonExistingFile()
+    {
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+            $this->markTestSkipped('Requires PHP 5.4');
+        }
+
+        $this->assertTrue(touch($this->fooURL . '/new.txt'));
+        $this->assertTrue($this->foo->hasChild('new.txt'));
+    }
+
+    /**
+     * @test
+     * @group  issue_11
+     */
+    public function touchChangesAccessAndModificationTimeForFile()
+    {
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+            $this->markTestSkipped('Requires PHP 5.4');
+        }
+
+        $this->assertTrue(touch($this->baz1URL, 303, 313));
+        $this->assertEquals(303, $this->baz1->filemtime());
+        $this->assertEquals(313, $this->baz1->fileatime());
+    }
+
+    /**
+     * @test
+     * @group  issue_11
+     */
+    public function touchDoesNotChangeTimesWhenNoTimesGiven()
+    {
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+            $this->markTestSkipped('Requires PHP 5.4');
+        }
+
+        $this->assertTrue(touch($this->baz1URL));
+        $this->assertEquals(300, $this->baz1->filemtime());
+        $this->assertEquals(300, $this->baz1->fileatime());
+    }
+
+    /**
+     * @test
+     * @group  issue_11
+     */
+    public function touchWithModifiedTimeChangesAccessAndModifiedTime()
+    {
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+            $this->markTestSkipped('Requires PHP 5.4');
+        }
+
+        $this->assertTrue(touch($this->baz1URL, 303));
+        $this->assertEquals(303, $this->baz1->filemtime());
+        $this->assertEquals(303, $this->baz1->fileatime());
+    }
+
+    /**
+     * @test
+     * @group  issue_11
+     */
+    public function touchChangesAccessAndModificationTimeForDirectory()
+    {
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+            $this->markTestSkipped('Requires PHP 5.4');
+        }
+
+        $this->assertTrue(touch($this->fooURL, 303, 313));
+        $this->assertEquals(303, $this->foo->filemtime());
+        $this->assertEquals(313, $this->foo->fileatime());
     }
 }
 ?>

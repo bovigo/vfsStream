@@ -267,6 +267,23 @@ class vfsStreamWrapper
             return true;
         }
 
+        $content = $this->createFile($path, $mode, $options);
+        if (false === $content) {
+            return false;
+        }
+
+        $this->content = $content;
+        return true;
+    }
+
+    /**
+     * creates a file at given path
+     *
+     * @param   string  $path
+     * @return  bool
+     */
+    private function createFile($path, $mode = null, $options = null)
+    {
         $names = $this->splitPath($path);
         if (empty($names['dirname']) === true) {
             if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
@@ -307,8 +324,7 @@ class vfsStreamWrapper
             return false;
         }
 
-        $this->content = vfsStream::newFile($names['basename'])->at($dir);
-        return true;
+        return vfsStream::newFile($names['basename'])->at($dir);
     }
 
     /**
@@ -378,13 +394,14 @@ class vfsStreamWrapper
     }
 
     /**
-     * Truncates a file to a given length
+     * truncates a file to a given length
      *
-     * @param  int  $size  length to truncate file to
-     * @return bool
-     * @since  1.1.0
+     * @param   int  $size  length to truncate file to
+     * @return  bool
+     * @since   1.1.0
      */
-    public function stream_truncate($size) {
+    public function stream_truncate($size)
+    {
         if (self::READONLY === $this->mode) {
             return false;
         }
@@ -398,6 +415,70 @@ class vfsStreamWrapper
         }
 
         return $this->content->truncate($size);
+    }
+
+    /**
+     * sets metadata like owner, user or permissions
+     *
+     * @param   string  $path
+     * @param   int     $option
+     * @param   mixed   $var
+     * @return  bool
+     * @since   1.1.0
+     */
+    public function stream_metadata($path, $option, $var)
+    {
+        $path    = $this->resolvePath(vfsStream::path($path));
+        $content = $this->getContent($path);
+        switch ($option) {
+            case STREAM_META_TOUCH:
+                if (null === $content) {
+                    $content = $this->createFile($path);
+                }
+
+                if (isset($var[0])) {
+                    $content->lastModified($var[0]);
+                }
+
+                if (isset($var[1])) {
+                    $content->lastAccessed($var[1]);
+                }
+
+                return true;
+
+            case STREAM_META_OWNER_NAME:
+                return false;
+
+            case STREAM_META_OWNER:
+                if (null === $content) {
+                    return false;
+                }
+
+                $content->chown($var);
+                return true;
+
+            case STREAM_META_GROUP_NAME:
+                return false;
+
+            case STREAM_META_GROUP:
+                if (null === $content) {
+                    return false;
+                }
+
+                $content->chgrp($var);
+                return true;
+
+            case STREAM_META_ACCESS:
+                if (null === $content) {
+                    return false;
+                }
+
+                $content->chmod($var);
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     /**
