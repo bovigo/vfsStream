@@ -566,6 +566,10 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function truncateRemovesSuperflouosContent()
     {
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+            $this->markTestSkipped('Requires PHP 5.4');
+        }
+
         $handle = fopen($this->baz1URL, "r+");
         $this->assertTrue(ftruncate($handle, 0));
         $this->assertEquals(0, filesize($this->baz1URL));
@@ -580,6 +584,10 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function truncateToGreaterSizeAddsZeroBytes()
     {
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+            $this->markTestSkipped('Requires PHP 5.4');
+        }
+
         $handle = fopen($this->baz1URL, "r+");
         $this->assertTrue(ftruncate($handle, 25));
         $this->assertEquals(25, filesize($this->baz1URL));
