@@ -561,18 +561,31 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
+     * @group  issue_33
+     * @since  1.1.0
      */
-    public function truncateFile() {
-        $this->isType(\PHPUnit_Framework_Constraint_IsType::TYPE_RESOURCE, $handle = fopen($this->baz1URL, "r+"));
-        $this->assertTrue(filesize($this->baz1URL) > 0);
-        clearstatcache();
+    public function truncateRemovesSuperflouosContent()
+    {
+        $handle = fopen($this->baz1URL, "r+");
         $this->assertTrue(ftruncate($handle, 0));
         $this->assertEquals(0, filesize($this->baz1URL));
-        clearstatcache();
+        $this->assertEquals('', file_get_contents($this->baz1URL));
+        fclose($handle);
+    }
+
+    /**
+     * @test
+     * @group  issue_33
+     * @since  1.1.0
+     */
+    public function truncateToGreaterSizeAddsZeroBytes()
+    {
+        $handle = fopen($this->baz1URL, "r+");
         $this->assertTrue(ftruncate($handle, 25));
         $this->assertEquals(25, filesize($this->baz1URL));
-        clearstatcache();
-        $this->assertTrue(fclose($handle));
+        $this->assertEquals("baz 1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                            file_get_contents($this->baz1URL));
+        fclose($handle);
     }
 }
 ?>

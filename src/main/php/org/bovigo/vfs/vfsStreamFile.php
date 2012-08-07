@@ -193,8 +193,9 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * Truncates a file to a given length
      *
-     * @param int $size length to truncate file to
-     * @return bool
+     * @param   int  $size length to truncate file to
+     * @return  bool
+     * @since   1.1.0
      */
     public function truncate($size) {
         if ($size > $this->size()) {
@@ -205,7 +206,6 @@ class vfsStreamFile extends vfsStreamAbstractContent
         }
 
         $this->lastModified = time();
-
         return true;
     }
 

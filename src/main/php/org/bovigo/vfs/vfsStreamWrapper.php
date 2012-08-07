@@ -380,8 +380,9 @@ class vfsStreamWrapper
     /**
      * Truncates a file to a given length
      *
-     * @param int $size length to truncate file to
+     * @param  int  $size  length to truncate file to
      * @return bool
+     * @since  1.1.0
      */
     public function stream_truncate($size) {
         if (self::READONLY === $this->mode) {

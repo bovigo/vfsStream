@@ -250,15 +250,29 @@ class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * truncating and padding a file
      * @test
+     * @group  issue_33
+     * @since  1.1.0
      */
-    public function truncate() {
+    public function truncateRemovesSuperflouosContent()
+    {
         $this->assertEquals(11, $this->file->write("lorem ipsum"));
         $this->assertTrue($this->file->truncate(5));
         $this->assertEquals(5, $this->file->size());
+        $this->assertEquals('lorem', $this->file->getContent());
+    }
+
+    /**
+     * @test
+     * @group  issue_33
+     * @since  1.1.0
+     */
+    public function truncateToGreaterSizeAddsZeroBytes()
+    {
+        $this->assertEquals(11, $this->file->write("lorem ipsum"));
         $this->assertTrue($this->file->truncate(25));
         $this->assertEquals(25, $this->file->size());
+        $this->assertEquals("lorem ipsum\0\0\0\0\0\0\0\0\0\0\0\0\0\0", $this->file->getContent());
     }
 }
 ?>
