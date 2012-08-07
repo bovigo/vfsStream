@@ -248,5 +248,17 @@ class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals(vfsStream::GROUP_USER_1, $this->file->getGroup());
         $this->assertTrue($this->file->isOwnedByGroup(vfsStream::GROUP_USER_1));
     }
+
+    /**
+     * truncating and padding a file
+     * @test
+     */
+    public function truncate() {
+        $this->assertEquals(11, $this->file->write("lorem ipsum"));
+        $this->assertTrue($this->file->truncate(5));
+        $this->assertEquals(5, $this->file->size());
+        $this->assertTrue($this->file->truncate(25));
+        $this->assertEquals(25, $this->file->size());
+    }
 }
 ?>
