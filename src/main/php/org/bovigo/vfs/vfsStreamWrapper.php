@@ -59,6 +59,12 @@ class vfsStreamWrapper
      */
     protected static $root;
     /**
+     * disk space quota
+     *
+     * @type  Quota
+     */
+    private static $quota;
+    /**
      * file mode: read only, write only, all
      *
      * @type  int
@@ -96,7 +102,8 @@ class vfsStreamWrapper
      */
     public static function register()
     {
-        self::$root = null;
+        self::$root  = null;
+        self::$quota = Quota::unlimited();
         if (true === self::$registered) {
             return;
         }
@@ -128,6 +135,17 @@ class vfsStreamWrapper
     public static function getRoot()
     {
         return self::$root;
+    }
+
+    /**
+     * sets quota for disk space
+     *
+     * @param  Quota  $quota
+     * @since  1.1.0
+     */
+    public static function setQuota(Quota $quota)
+    {
+        self::$quota = $quota;
     }
 
     /**
@@ -390,6 +408,10 @@ class vfsStreamWrapper
             return 0;
         }
 
+        if (self::$quota->isLimited()) {
+            $data = substr($data, 0, self::$quota->spaceLeft(self::$root->sizeSummarized()));
+        }
+
         return $this->content->write($data);
     }
 
@@ -412,6 +434,17 @@ class vfsStreamWrapper
 
         if ($this->content->getType() !== vfsStreamContent::TYPE_FILE) {
             return false;
+        }
+
+        if (self::$quota->isLimited() && $this->content->size() < $size) {
+            $maxSize = self::$quota->spaceLeft(self::$root->sizeSummarized());
+            if (0 === $maxSize) {
+                return false;
+            }
+
+            if ($size > $maxSize) {
+                $size = $maxSize;
+            }
         }
 
         return $this->content->truncate($size);

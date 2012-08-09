@@ -19,31 +19,31 @@ class vfsStream
     /**
      * url scheme
      */
-    const SCHEME       = 'vfs';
+    const SCHEME           = 'vfs';
     /**
      * owner: root
      */
-    const OWNER_ROOT   = 0;
+    const OWNER_ROOT       = 0;
     /**
      * owner: user 1
      */
-    const OWNER_USER_1 = 1;
+    const OWNER_USER_1      = 1;
     /**
      * owner: user 2
      */
-    const OWNER_USER_2 = 2;
+    const OWNER_USER_2      = 2;
     /**
      * group: root
      */
-    const GROUP_ROOT   = 0;
+    const GROUP_ROOT        = 0;
     /**
      * group: user 1
      */
-    const GROUP_USER_1 = 1;
+    const GROUP_USER_1      = 1;
     /**
      * group: user 2
      */
-    const GROUP_USER_2 = 2;
+    const GROUP_USER_2      = 2;
     /**
      * initial umask setting
      *
@@ -373,6 +373,17 @@ class vfsStream
         }
 
         return $visitor->visitDirectory($root);
+    }
+
+    /**
+     * sets quota to given amount of bytes
+     *
+     * @param  int  $bytes
+     * @since  1.1.0
+     */
+    public static function setQuota($bytes)
+    {
+        vfsStreamWrapper::setQuota(new Quota($bytes));
     }
 }
 ?>

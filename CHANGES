@@ -4,6 +4,7 @@
   vfsStream now supports touch(), chown(), chgrp() and chmod()
 - implemented issue #33: add support for stream_truncate
   (provided by https://github.com/nikcorg)
+- implemented issue #35: size limit (quota) for VFS
 
 
 1.0.0, 2012-05-15
