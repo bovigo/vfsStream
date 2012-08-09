@@ -2,6 +2,8 @@
 ==================
 - implemented issue #11: add support for streamWrapper::stream_metadata()
   vfsStream now supports touch(), chown(), chgrp() and chmod()
+- implemented issue #33: add support for stream_truncate
+  (provided by https://github.com/nikcorg)
 
 
 1.0.0, 2012-05-15
