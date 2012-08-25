@@ -297,7 +297,9 @@ class vfsStreamWrapper
     /**
      * creates a file at given path
      *
-     * @param   string  $path
+     * @param   string  $path     the path to open
+     * @param   string  $mode     mode for opening
+     * @param   string  $options  options for opening
      * @return  bool
      */
     private function createFile($path, $mode = null, $options = null)
