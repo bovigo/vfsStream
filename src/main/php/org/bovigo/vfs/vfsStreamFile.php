@@ -28,11 +28,17 @@ class vfsStreamFile extends vfsStreamAbstractContent
      */
     protected $bytes_read = 0;
     /**
-     * current lock status of file
+     * Stream id which exclusively locked this file
      *
-     * @type  int
+     * @type  string
      */
-    protected $lock       = LOCK_UN;
+    protected $exclusiveLock;
+    /**
+     * Stream ids which currently holds shared lock to this file
+     *
+     * @type  bool[string]
+     */
+    protected $sharedLock = array();
 
     /**
      * constructor
@@ -276,16 +282,38 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  vfsStreamFile
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
+     * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function lock($operation)
+    public function lock($operation, $streamId)
     {
+
         if ((LOCK_NB & $operation) == LOCK_NB) {
-            $this->lock = $operation - LOCK_NB;
-        } else {
-            $this->lock = $operation;
+            $operation = $operation - LOCK_NB;
         }
 
-        return $this;
+        // call to lock file on the same file handler firstyl releases the lock
+        if ($this->hasExclusiveLock($streamId)) {
+            $this->exclusiveLock = null;
+        }
+        if ($this->hasSharedLock($streamId)) {
+            unset($this->sharedLock[$streamId]);
+        }
+
+        if (LOCK_EX === $operation) {
+            if ($this->isLocked()) {
+                return false;
+            }
+
+            $this->exclusiveLock = $streamId;
+        } elseif(LOCK_SH === $operation) {
+            if ($this->hasExclusiveLock()) {
+                return false;
+            }
+            
+            $this->sharedLock[$streamId] = true;
+        }
+
+        return true;
     }
 
     /**
@@ -294,10 +322,11 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  bool
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
+     * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function isLocked()
+    public function isLocked($streamId = null)
     {
-        return (LOCK_UN !== $this->lock);
+        return $this->hasSharedLock($streamId) || $this->hasExclusiveLock($streamId);
     }
 
     /**
@@ -306,10 +335,15 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  bool
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
+     * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function hasSharedLock()
+    public function hasSharedLock($streamId = null)
     {
-        return (LOCK_SH === $this->lock);
+        if (null !== $streamId) {
+            return isset($this->sharedLock[$streamId]);
+        }
+
+        return !empty($this->sharedLock);
     }
 
     /**
@@ -318,10 +352,15 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  bool
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
+     * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function hasExclusiveLock()
+    public function hasExclusiveLock($streamId = null)
     {
-        return (LOCK_EX === $this->lock);
+        if (null !== $streamId) {
+            return $this->exclusiveLock === $streamId;
+        }
+
+        return null !== $this->exclusiveLock;
     }
 }
 ?>

@@ -90,6 +90,13 @@ class vfsStreamWrapper
     protected $dirIterator;
 
     /**
+     * Uniq identifier for this file handler
+     *
+     * @type string
+     */
+    protected $streamId;
+
+    /**
      * method to register the stream wrapper
      *
      * Please be aware that a call to this method will reset the root element
@@ -239,6 +246,7 @@ class vfsStreamWrapper
      */
     public function stream_open($path, $mode, $options, $opened_path)
     {
+        $this->streamId = spl_object_hash($this);
         $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
         $mode     = str_replace(array('b', '+'), '', $mode);
         if (in_array($mode, array('r', 'w', 'a', 'x', 'c')) === false) {
@@ -367,10 +375,12 @@ class vfsStreamWrapper
 
     /**
      * closes the stream
+     *
+     * @see     https://github.com/mikey179/vfsStream/issues/40
      */
     public function stream_close()
     {
-        $this->content->lock(LOCK_UN);
+        $this->content->lock(LOCK_UN, $this->streamId);
     }
 
     /**
@@ -604,6 +614,7 @@ class vfsStreamWrapper
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/31
+     * @see     https://github.com/mikey179/vfsStream/issues/40
      */
     public function stream_lock($operation)
     {
@@ -611,14 +622,7 @@ class vfsStreamWrapper
             $operation = $operation - LOCK_NB;
         }
 
-        if (LOCK_EX === $operation && $this->content->isLocked()) {
-            return false;
-        } elseif (LOCK_SH === $operation && $this->content->hasExclusiveLock()) {
-            return false;
-        }
-
-        $this->content->lock($operation);
-        return true;
+        return $this->content->lock($operation, $this->streamId);
     }
 
     /**
