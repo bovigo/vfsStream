@@ -129,6 +129,44 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      * @test
      * @group  issue_40
      */
+    public function canRemoveLockWhenNotLocked()
+    {
+        $file = vfsStream::newFile('foo.txt')->at($this->root);
+        $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
+        $this->assertTrue(flock($fp, LOCK_UN));
+        $this->assertFalse($file->isLocked());
+        $this->assertFalse($file->hasSharedLock());
+        $this->assertFalse($file->hasSharedLock($fp));
+        $this->assertFalse($file->hasExclusiveLock());
+        $this->assertFalse($file->hasExclusiveLock($fp));
+        fclose($fp);
+    }
+
+    /**
+     * @see    https://github.com/mikey179/vfsStream/issues/40
+     * @test
+     * @group  issue_40
+     */
+    public function canRemoveSharedLockWithoutRemovingSharedLockOnOtherFileHandler()
+    {
+        $file = vfsStream::newFile('foo.txt')->at($this->root);
+        $fp1   = fopen(vfsStream::url('root/foo.txt'), 'rb');
+        $fp2   = fopen(vfsStream::url('root/foo.txt'), 'rb');
+        $file->lock($fp1, LOCK_SH);
+        $file->lock($fp2, LOCK_SH);
+        $this->assertTrue(flock($fp1, LOCK_UN));
+        $this->assertTrue($file->hasSharedLock());
+        $this->assertFalse($file->hasSharedLock($fp1));
+        $this->assertTrue($file->hasSharedLock($fp2));
+        fclose($fp1);
+        fclose($fp2);
+    }
+
+    /**
+     * @see    https://github.com/mikey179/vfsStream/issues/40
+     * @test
+     * @group  issue_40
+     */
     public function canNotRemoveSharedLockAcquiredOnOtherFileHandler()
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
