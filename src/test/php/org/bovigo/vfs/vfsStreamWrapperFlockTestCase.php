@@ -192,6 +192,8 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
         $this->assertTrue($file->hasExclusiveLock());
+        $this->assertTrue($file->hasExclusiveLock($fp1));
+        $this->assertFalse($file->hasExclusiveLock($fp2));
         fclose($fp1);
         fclose($fp2);
     }
@@ -316,6 +318,8 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue(flock($fp2, LOCK_SH));
         $this->assertTrue($file->isLocked());
         $this->assertTrue($file->hasSharedLock());
+        $this->assertTrue($file->hasSharedLock($fp1));
+        $this->assertTrue($file->hasSharedLock($fp2));
         $this->assertFalse($file->hasExclusiveLock());
         fclose($fp1);
         fclose($fp2);
@@ -372,6 +376,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
         $this->assertTrue($file->hasExclusiveLock());
+        $this->assertTrue($file->hasExclusiveLock($fp2));
         fclose($fp2);
     }
 
@@ -389,6 +394,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         fclose($fp1);
         $this->assertTrue($file->isLocked());
         $this->assertTrue($file->hasSharedLock());
+        $this->assertTrue($file->hasSharedLock($fp2));
         $this->assertFalse($file->hasExclusiveLock());
         fclose($fp2);
     }
