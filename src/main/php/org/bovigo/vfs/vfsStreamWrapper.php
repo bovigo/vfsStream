@@ -145,6 +145,15 @@ class vfsStreamWrapper
     }
 
     /**
+     * returns unique stream id
+     *
+     * @return  int
+     */
+    public function getStreamId() {
+        return $this->streamId;
+    }
+
+    /**
      * sets quota for disk space
      *
      * @param  Quota  $quota
@@ -382,7 +391,7 @@ class vfsStreamWrapper
      */
     public function stream_close()
     {
-        $this->content->lock(LOCK_UN, $this->streamId);
+        $this->content->lock(LOCK_UN, $this);
     }
 
     /**
@@ -624,7 +633,7 @@ class vfsStreamWrapper
             $operation = $operation - LOCK_NB;
         }
 
-        return $this->content->lock($operation, $this->streamId);
+        return $this->content->lock($operation, $this);
     }
 
     /**
