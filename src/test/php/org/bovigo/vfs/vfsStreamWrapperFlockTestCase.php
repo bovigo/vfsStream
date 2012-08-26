@@ -116,7 +116,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_EX, $fp);
+        $file->lock($fp, LOCK_EX);
         $this->assertTrue(flock($fp, LOCK_UN));
         $this->assertFalse($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
@@ -134,7 +134,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_SH, $fp1);
+        $file->lock($fp1, LOCK_SH);
         $this->assertTrue(flock($fp2, LOCK_UN));
         $this->assertTrue($file->isLocked());
         $this->assertTrue($file->hasSharedLock());
@@ -153,7 +153,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_EX, $fp1);
+        $file->lock($fp1, LOCK_EX);
         $this->assertTrue(flock($fp2, LOCK_UN));
         $this->assertTrue($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
@@ -169,7 +169,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_EX, $fp);
+        $file->lock($fp, LOCK_EX);
         $this->assertTrue(flock($fp, LOCK_UN | LOCK_NB));
         $this->assertFalse($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
@@ -187,7 +187,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_EX, $fp1);
+        $file->lock($fp1, LOCK_EX);
         $this->assertFalse(flock($fp2, LOCK_EX + LOCK_NB));
         $this->assertTrue($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
@@ -205,7 +205,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_EX, $fp);
+        $file->lock($fp, LOCK_EX);
         $this->assertTrue(flock($fp, LOCK_EX + LOCK_NB));
         $this->assertTrue($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
@@ -223,7 +223,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_SH, $fp1);
+        $file->lock($fp1, LOCK_SH);
         $this->assertFalse(flock($fp2, LOCK_EX));
         $this->assertTrue($file->isLocked());
         $this->assertTrue($file->hasSharedLock());
@@ -241,7 +241,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_SH, $fp);
+        $file->lock($fp, LOCK_SH);
         $this->assertTrue(flock($fp, LOCK_EX));
         $this->assertTrue($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
@@ -259,7 +259,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_EX, $fp1);
+        $file->lock($fp1, LOCK_EX);
         $this->assertFalse(flock($fp2, LOCK_SH + LOCK_NB));
         $this->assertTrue($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
@@ -277,7 +277,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_EX, $fp);
+        $file->lock($fp, LOCK_EX);
         $this->assertTrue(flock($fp, LOCK_SH + LOCK_NB));
         $this->assertTrue($file->isLocked());
         $this->assertTrue($file->hasSharedLock());
@@ -294,7 +294,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_SH, $fp);
+        $file->lock($fp, LOCK_SH);
         $this->assertTrue(flock($fp, LOCK_SH));
         $this->assertTrue($file->isLocked());
         $this->assertTrue($file->hasSharedLock());
@@ -312,7 +312,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2   = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_SH, $fp1);
+        $file->lock($fp1, LOCK_SH);
         $this->assertTrue(flock($fp2, LOCK_SH));
         $this->assertTrue($file->isLocked());
         $this->assertTrue($file->hasSharedLock());
@@ -332,7 +332,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_EX, $fp);
+        $file->lock($fp, LOCK_EX);
         fclose($fp);
         $this->assertFalse($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
@@ -350,7 +350,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_SH, $fp);
+        $file->lock($fp, LOCK_SH);
         fclose($fp);
         $this->assertFalse($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
@@ -367,7 +367,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1 = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2 = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_EX, $fp2);
+        $file->lock($fp2, LOCK_EX);
         fclose($fp1);
         $this->assertTrue($file->isLocked());
         $this->assertFalse($file->hasSharedLock());
@@ -385,7 +385,7 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1 = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2 = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $file->lock(LOCK_SH, $fp2);
+        $file->lock($fp2, LOCK_SH);
         fclose($fp1);
         $this->assertTrue($file->isLocked());
         $this->assertTrue($file->hasSharedLock());

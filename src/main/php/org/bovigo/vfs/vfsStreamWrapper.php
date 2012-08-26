@@ -391,7 +391,7 @@ class vfsStreamWrapper
      */
     public function stream_close()
     {
-        $this->content->lock(LOCK_UN, $this);
+        $this->content->lock($this, LOCK_UN);
     }
 
     /**
@@ -633,7 +633,7 @@ class vfsStreamWrapper
             $operation = $operation - LOCK_NB;
         }
 
-        return $this->content->lock($operation, $this);
+        return $this->content->lock($this, $operation);
     }
 
     /**

@@ -278,14 +278,14 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * locks file for
      *
-     * @param   int  $operation
      * @param   resource|vfsStreamWrapper $stream
+     * @param   int  $operation
      * @return  vfsStreamFile
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function lock($operation, $stream)
+    public function lock($stream, $operation)
     {
         if (is_resource($stream)) {
             $data = stream_get_meta_data($stream);
