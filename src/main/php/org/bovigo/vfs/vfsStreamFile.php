@@ -28,13 +28,13 @@ class vfsStreamFile extends vfsStreamAbstractContent
      */
     protected $bytes_read = 0;
     /**
-     * Stream id which exclusively locked this file
+     * Resource id which exclusively locked this file
      *
      * @type  string
      */
     protected $exclusiveLock;
     /**
-     * Stream ids which currently holds shared lock to this file
+     * Resources ids which currently holds shared lock to this file
      *
      * @type  bool[string]
      */
@@ -278,134 +278,135 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * locks file for
      *
-     * @param   resource|vfsStreamWrapper $stream
+     * @param   resource|vfsStreamWrapper $resource
      * @param   int  $operation
-     * @return  vfsStreamFile
+     * @return  bool
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function lock($stream, $operation)
+    public function lock($resource, $operation)
     {
         if ((LOCK_NB & $operation) == LOCK_NB) {
             $operation = $operation - LOCK_NB;
         }
 
         // call to lock file on the same file handler firstly releases the lock
-        $this->unlock($stream);
+        $this->unlock($resource);
 
         if (LOCK_EX === $operation) {
             if ($this->isLocked()) {
                 return false;
             }
 
-            $this->setExclusiveLock($stream);
+            $this->setExclusiveLock($resource);
         } elseif(LOCK_SH === $operation) {
             if ($this->hasExclusiveLock()) {
                 return false;
             }
             
-            $this->addSharedLock($stream);
+            $this->addSharedLock($resource);
         }
 
         return true;
     }
 
     /**
-     * Removes lock from file acquired by given stream
+     * Removes lock from file acquired by given resource
      * 
-     * @param   resource|vfsStreamWrapper $stream
+     * @param   resource|vfsStreamWrapper $resource
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function unlock($stream) {
-        if ($this->hasExclusiveLock($stream)) {
+    public function unlock($resource) {
+        if ($this->hasExclusiveLock($resource)) {
             $this->exclusiveLock = null;
         }
-        if ($this->hasSharedLock($stream)) {
-            unset($this->sharedLock[$this->getStreamId($stream)]);
+        if ($this->hasSharedLock($resource)) {
+            unset($this->sharedLock[$this->getResourceId($resource)]);
         }
     }
 
     /**
-     * Set exlusive lock on file by given stream
+     * Set exlusive lock on file by given resource
      *
-     * @param   resource|vfsStreamWrapper $stream
+     * @param   resource|vfsStreamWrapper $resource
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    protected function setExclusiveLock($stream) {
-        $this->exclusiveLock = $this->getStreamId($stream);
+    protected function setExclusiveLock($resource) {
+        $this->exclusiveLock = $this->getResourceId($resource);
     }
 
     /**
-     * Add shared lock on file by given stream
+     * Add shared lock on file by given resource
      *
-     * @param   resource|vfsStreamWrapper $stream
+     * @param   resource|vfsStreamWrapper $resource
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    protected function addSharedLock($stream) {
-        $this->sharedLock[$this->getStreamId($stream)] = true;
+    protected function addSharedLock($resource) {
+        $this->sharedLock[$this->getResourceId($resource)] = true;
     }
 
     /**
      * checks whether file is locked
      *
-     * @param   resource|vfsStreamWrapper $stream
+     * @param   resource|vfsStreamWrapper $resource
      * @return  bool
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function isLocked($stream = null)
+    public function isLocked($resource = null)
     {
-        return $this->hasSharedLock($stream) || $this->hasExclusiveLock($stream);
+        return $this->hasSharedLock($resource) || $this->hasExclusiveLock($resource);
     }
 
     /**
      * checks whether file is locked in shared mode
      *
-     * @param   resource|vfsStreamWrapper $stream
+     * @param   resource|vfsStreamWrapper $resource
      * @return  bool
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function hasSharedLock($stream = null)
+    public function hasSharedLock($resource = null)
     {
-        if (null !== $stream) {
-            return isset($this->sharedLock[$this->getStreamId($stream)]);
+        if (null !== $resource) {
+            return isset($this->sharedLock[$this->getResourceId($resource)]);
         }
 
         return !empty($this->sharedLock);
     }
 
     /**
-     * Returns unique streamId
+     * Returns unique resource id
      *
-     * @param   resource|vfsStreamWrapper $stream
+     * @param   resource|vfsStreamWrapper $resource
+     * @return  string
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function getStreamId($stream) {
-        if (is_resource($stream)) {
-            $data = stream_get_meta_data($stream);
-            $stream = $data['wrapper_data'];
+    public function getResourceId($resource) {
+        if (is_resource($resource)) {
+            $data = stream_get_meta_data($resource);
+            $resource = $data['wrapper_data'];
         }
 
-        return $stream->getStreamId();
+        return spl_object_hash($resource);
     }
 
     /**
      * checks whether file is locked in exclusive mode
      *
-     * @param   resource|vfsStreamWrapper $stream
+     * @param   resource|vfsStreamWrapper $resource
      * @return  bool
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function hasExclusiveLock($stream = null)
+    public function hasExclusiveLock($resource = null)
     {
-        if (null !== $stream) {
-            return $this->exclusiveLock === $this->getStreamId($stream);
+        if (null !== $resource) {
+            return $this->exclusiveLock === $this->getResourceId($resource);
         }
 
         return null !== $this->exclusiveLock;

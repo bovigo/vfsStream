@@ -90,13 +90,6 @@ class vfsStreamWrapper
     protected $dirIterator;
 
     /**
-     * Uniq identifier for this file handler
-     *
-     * @type string
-     */
-    protected $streamId;
-
-    /**
      * method to register the stream wrapper
      *
      * Please be aware that a call to this method will reset the root element
@@ -142,15 +135,6 @@ class vfsStreamWrapper
     public static function getRoot()
     {
         return self::$root;
-    }
-
-    /**
-     * returns unique stream id
-     *
-     * @return  int
-     */
-    public function getStreamId() {
-        return $this->streamId;
     }
 
     /**
@@ -255,7 +239,6 @@ class vfsStreamWrapper
      */
     public function stream_open($path, $mode, $options, $opened_path)
     {
-        $this->streamId = spl_object_hash($this);
         $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
         $mode     = str_replace(array('b', '+'), '', $mode);
         if (in_array($mode, array('r', 'w', 'a', 'x', 'c')) === false) {
