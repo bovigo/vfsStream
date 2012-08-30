@@ -369,10 +369,12 @@ class vfsStreamWrapper
 
     /**
      * closes the stream
+     *
+     * @see     https://github.com/mikey179/vfsStream/issues/40
      */
     public function stream_close()
     {
-        $this->content->lock(LOCK_UN);
+        $this->content->lock($this, LOCK_UN);
     }
 
     /**
@@ -606,6 +608,7 @@ class vfsStreamWrapper
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/31
+     * @see     https://github.com/mikey179/vfsStream/issues/40
      */
     public function stream_lock($operation)
     {
@@ -613,14 +616,7 @@ class vfsStreamWrapper
             $operation = $operation - LOCK_NB;
         }
 
-        if (LOCK_EX === $operation && $this->content->isLocked()) {
-            return false;
-        } elseif (LOCK_SH === $operation && $this->content->hasExclusiveLock()) {
-            return false;
-        }
-
-        $this->content->lock($operation);
-        return true;
+        return $this->content->lock($this, $operation);
     }
 
     /**
