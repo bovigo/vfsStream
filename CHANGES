@@ -1,3 +1,9 @@
+1.2.0, ???
+==================
+- fixed issue #40: flock implementation doesn't work correctly, patch provided
+  by Kamil Dziedzic
+
+
 1.1.0, 2012-08-25
 ==================
 - implemented issue #11: add support for streamWrapper::stream_metadata()
