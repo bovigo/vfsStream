@@ -5,15 +5,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamDirectory.
  *
  * @group  bug_18
  */
-class vfsStreamDirectoryIssue18TestCase extends \PHPUnit_Framework_TestCase
+class DirectoryIssue18Test extends \PHPUnit_Framework_TestCase
 {
     /**
      * access to root directory
@@ -51,7 +53,7 @@ class vfsStreamDirectoryIssue18TestCase extends \PHPUnit_Framework_TestCase
     public function shouldContainSubdirectoryFoo()
     {
         $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('foo'));
-        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
+        $this->assertInstanceOf('Vfs\Directory',
                                 $this->rootDirectory->getChild('var/log/app')->getChild('foo')
         );
     }
@@ -62,7 +64,7 @@ class vfsStreamDirectoryIssue18TestCase extends \PHPUnit_Framework_TestCase
     public function shouldContainSubdirectoryApp1()
     {
         $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app1'));
-        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
+        $this->assertInstanceOf('Vfs\Directory',
                                 $this->rootDirectory->getChild('var/log/app')->getChild('app1')
         );
     }
@@ -73,9 +75,8 @@ class vfsStreamDirectoryIssue18TestCase extends \PHPUnit_Framework_TestCase
     public function shouldContainSubdirectoryApp2()
     {
         $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app2'));
-        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
+        $this->assertInstanceOf('Vfs\Directory',
                                 $this->rootDirectory->getChild('var/log/app')->getChild('app2')
         );
     }
 }
-?>
