@@ -5,9 +5,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+namespace Vfs;
+
 /**
  * Represents a quota for disk space.
  *
@@ -84,4 +85,3 @@ class Quota
         return $spaceLeft;
     }
 }
-?>
