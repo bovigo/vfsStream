@@ -9,7 +9,7 @@
  */
 namespace Vfs;
 
-use Vfs\Exception\VfsStreamException as vfsStreamException;
+use Vfs\Exception\Exception as vfsStreamException;
 use Vfs\Container as vfsStreamContainer;
 use Vfs\VfsStream as vfsStream;
 use Vfs\Content as vfsStreamContent;

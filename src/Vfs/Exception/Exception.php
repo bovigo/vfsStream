@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  Vfs\Exception
+ * @package  Vfs
  */
 namespace Vfs\Exception;
 
@@ -14,7 +14,7 @@ namespace Vfs\Exception;
  *
  * @api
  */
-class VfsStreamException extends \Exception
+class Exception extends \Exception
 {
     // intentionally empty
 }
