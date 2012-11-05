@@ -5,13 +5,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+use Vfs\Content as VfsStreamContent;
+use Vfs\File as vfsStreamFile;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamFile.
  */
-class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
+class FileTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
