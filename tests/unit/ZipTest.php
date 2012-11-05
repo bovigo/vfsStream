@@ -5,15 +5,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\Wrapper as vfsStreamWrapper;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper in conjunction with ext/zip.
  *
  * @group  zip
  */
-class vfsStreamZipTestCase extends \PHPUnit_Framework_TestCase
+class ZipTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * set up test environment
