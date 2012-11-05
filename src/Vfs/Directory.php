@@ -11,7 +11,7 @@ namespace Vfs;
 
 use Content as vfsStreamContent;
 use ContentIterator as vfsStreamContainerIterator;
-use Exception\vfsStreamException as vfsStreamException;
+use Vfs\Exception\VfsStreamException as vfsStreamException;
 
 /**
  * Directory container.

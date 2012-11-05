@@ -5,16 +5,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs\Exception
  */
-namespace org\bovigo\vfs;
+namespace Vfs\Exception;
+
 /**
  * Exception for vfsStream errors.
  *
  * @api
  */
-class vfsStreamException extends \Exception
+class VfsStreamException extends \Exception
 {
     // intentionally empty
 }
-?>
