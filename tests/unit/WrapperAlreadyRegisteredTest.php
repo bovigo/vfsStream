@@ -56,7 +56,7 @@ class WrapperAlreadyRegisteredTest extends \PHPUnit_Framework_TestCase
      * registered for the vfs scheme should throw an exception
      *
      * @test
-     * @expectedException  \Vfs\Exception\vfsStreamException
+     * @expectedException  \Vfs\Exception\Exception
      */
     public function registerOverAnotherStreamWrapper()
     {
