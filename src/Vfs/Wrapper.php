@@ -5,13 +5,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+namespace Vfs;
+
+use Vfs\Exception\VfsStreamException as vfsStreamException;
+use Vfs\Container as vfsStreamContainer;
+use Vfs\VfsStream as vfsStream;
+
 /**
  * Stream wrapper to mock file system requests.
  */
-class vfsStreamWrapper
+class Wrapper
 {
     /**
      * open file for reading
@@ -925,4 +930,3 @@ class vfsStreamWrapper
         return array_merge(array_values($fileStat), $fileStat);
     }
 }
-?>
