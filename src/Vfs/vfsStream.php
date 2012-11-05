@@ -9,14 +9,14 @@
  */
 namespace Vfs;
 
-use Vfs\Visitor\VfsStreamVisitor;
+use Vfs\Visitor\Visitor;
 
 /**
  * Some utility methods for vfsStream.
  *
  * @api
  */
-class vfsStream
+class VfsStream
 {
     /**
      * url scheme
