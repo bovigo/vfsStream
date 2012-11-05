@@ -5,15 +5,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+use Vfs\Quota;
+
 /**
  * Test for org\bovigo\vfs\Quota.
  *
  * @group  issue_35
  */
-class QuotaTestCase extends \PHPUnit_Framework_TestCase
+class QuotaTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
@@ -78,4 +79,3 @@ class QuotaTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->quota->spaceLeft(9));
     }
 }
-?>

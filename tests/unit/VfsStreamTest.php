@@ -1,5 +1,4 @@
 <?php
-
 use Vfs\VfsStream as vfsStream;
 use Vfs\Wrapper as vfsStreamWrapper;
 use Vfs\Content as vfsStreamContent;
@@ -7,7 +6,7 @@ use Vfs\Directory as vfsStreamDirectory;
 use Vfs\File as vfsStreamFile;
 
 /**
- * Test for org\bovigo\vfs\vfsStream.
+ * Test for Vfs\Stream.
  */
 class VfsStreamTest extends \PHPUnit_Framework_TestCase
 {
