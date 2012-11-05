@@ -9,7 +9,11 @@
  */
 namespace Vfs;
 
-use Vfs\Visitor\Visitor;
+use Vfs\Directory as vfsStreamDirectory;
+use Vfs\File as vfsStreamFile;
+use Vfs\Wrapper as vfsStreamWrapper;
+use Vfs\Content as vfsStreamContent;
+use Vfs\Visitor\Visitor as vfsStreamVisitor;
 
 /**
  * Some utility methods for vfsStream.
