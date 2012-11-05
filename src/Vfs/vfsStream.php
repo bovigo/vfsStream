@@ -5,10 +5,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
-use org\bovigo\vfs\visitor\vfsStreamVisitor;
+namespace Vfs;
+
+use Vfs\Visitor\VfsStreamVisitor;
+
 /**
  * Some utility methods for vfsStream.
  *
@@ -386,4 +388,3 @@ class vfsStream
         vfsStreamWrapper::setQuota(new Quota($bytes));
     }
 }
-?>
