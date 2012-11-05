@@ -7,8 +7,9 @@
  *
  * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\example;
+
 require_once 'FilemodeExample.php';
+
 /**
  * Test case for class FilemodeExample.
  */
@@ -64,4 +65,3 @@ class FilemodeExampleTestCaseOldWay extends \PHPUnit_Framework_TestCase
         }
     }
 }
-?>

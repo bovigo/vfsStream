@@ -7,9 +7,11 @@
  *
  * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\example;
-use org\bovigo\vfs\vfsStream;
+
+use Vfs\VfsStream as vfsStream;
+
 require_once 'FailureExample.php';
+
 /**
  * Test case for class FailureExample.
  */
@@ -55,4 +57,3 @@ class FailureExampleTestCase extends \PHPUnit_Framework_TestCase
         $this->assertSame('notoverwritten', $this->root->getChild('test.txt')->getContent());
     }
 }
-?>
