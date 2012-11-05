@@ -9,6 +9,7 @@
  */
 namespace Vfs;
 
+use Vfs\VfsStream as vfsStream;
 use Vfs\Container as vfsStreamContainer;
 
 /**
