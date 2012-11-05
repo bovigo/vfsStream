@@ -9,7 +9,7 @@
  */
 namespace Vfs;
 
-use Content as vfsStreamContent;
+use Vfs\Content as vfsStreamContent;
 
 /**
  * Interface for stream contents that are able to store other stream contents.

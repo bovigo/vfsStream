@@ -9,8 +9,8 @@
  */
 namespace Vfs;
 
-use Content as vfsStreamContent;
-use ContentIterator as vfsStreamContainerIterator;
+use Vfs\Content as vfsStreamContent;
+use Vfs\ContainerIterator as vfsStreamContainerIterator;
 use Vfs\Exception\VfsStreamException as vfsStreamException;
 
 /**

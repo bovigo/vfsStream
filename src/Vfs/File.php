@@ -9,7 +9,7 @@
  */
 namespace Vfs;
 
-use Content as vfsStreamContent;
+use Vfs\Content as vfsStreamContent;
 
 /**
  * File container.
