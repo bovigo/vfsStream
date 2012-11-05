@@ -36,7 +36,7 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
      * assure that a directory seperator inside the name throws an exception
      *
      * @test
-     * @expectedException  Vfs\Exception\VfsStreamException
+     * @expectedException  Vfs\Exception\Exception
      */
     public function invalidCharacterInName()
     {
@@ -76,7 +76,7 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
      * renaming the directory to an invalid name throws a vfsStreamException
      *
      * @test
-     * @expectedException  Vfs\Exception\VfsStreamException
+     * @expectedException  Vfs\Exception\Exception
      */
     public function renameToInvalidNameThrowsvfsStreamException()
     {

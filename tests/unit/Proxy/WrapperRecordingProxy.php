@@ -9,7 +9,7 @@
  */
 
 use Vfs\VfsStream as vfsStream;
-use Vfs\Exception\VfsStreamException as vfsStreamException;
+use Vfs\Exception\Exception as vfsStreamException;
 
 /**
  * Stream wrapper to mock file system requests.
