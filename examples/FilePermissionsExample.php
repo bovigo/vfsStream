@@ -7,7 +7,7 @@
  *
  * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\example;
+
 /**
  * Example showing correct file permission support introduced with 0.7.0.
  */
@@ -26,4 +26,3 @@ class FilePermissionsExample
 
     // more methods here
 }
-?>

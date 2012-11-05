@@ -1,4 +1,6 @@
 /composer.lock
-/docs
-/nbproject
-/vendor
+/composer.phar
+/docs/
+/nbproject/
+/vendor/
+/.idea/
