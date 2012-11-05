@@ -9,7 +9,7 @@
  */
 namespace Vfs\Visitor;
 
-use Vfs\StreamContent as vfsStreamContent;
+use Vfs\Content as vfsStreamContent;
 
 /**
  * Abstract base class providing an implementation for the visit() method.

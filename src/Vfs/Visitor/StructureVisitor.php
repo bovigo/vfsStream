@@ -9,8 +9,8 @@
  */
 namespace Vfs\Visitor;
 
-use Vfs\StreamDirectory as vfsStreamDirectory;
-use Vfs\StreamFile as vfsStreamFile;
+use Vfs\Directory as vfsStreamDirectory;
+use Vfs\File as vfsStreamFile;
 
 /**
  * Visitor which traverses a content structure recursively to create an array structure from it.

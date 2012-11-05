@@ -9,9 +9,9 @@
  */
 namespace Vfs\Visitor;
 
-use Vfs\vfsStreamContent as vfsStreamContent;
-use Vfs\StreamDirectory as vfsStreamDirectory;
-use Vfs\StreamFile as vfsStreamFile;
+use Vfs\Content as vfsStreamContent;
+use Vfs\Directory as vfsStreamDirectory;
+use Vfs\File as vfsStreamFile;
 
 /**
  * Interface for a visitor to work on a vfsStream content structure.

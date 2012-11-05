@@ -5,15 +5,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+namespace Vfs;
+
+use Content as vfsStreamContent;
+use ContentIterator as vfsStreamContainerIterator;
+use Exception\vfsStreamException as vfsStreamException;
+
 /**
  * Directory container.
  *
  * @api
  */
-class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamContainer
+class Directory extends AbstractContent implements Container
 {
     /**
      * list of directory children
@@ -232,4 +237,3 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
         return new vfsStreamContainerIterator($this->children);
     }
 }
-?>

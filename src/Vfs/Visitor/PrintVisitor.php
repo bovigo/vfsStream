@@ -9,9 +9,9 @@
  */
 namespace Vfs\Visitor;
 
-use Vfs\StreamContent as vfsStreamContent;
-use Vfs\StreamDirectory as vfsStreamDirectory;
-use Vfs\VfsStreamFile as vfsStreamFile;
+use Vfs\Content as vfsStreamContent;
+use Vfs\Directory as vfsStreamDirectory;
+use Vfs\File as vfsStreamFile;
 
 /**
  * Visitor which traverses a content structure recursively to print it to an output stream.
