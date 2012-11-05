@@ -7,8 +7,8 @@
  *
  * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\example;
-use org\bovigo\vfs\vfsStream;
+use Vfs\VfsStream as vfsStream;
+
 require_once 'Example.php';
 /**
  * Test case for class Example.
@@ -44,4 +44,3 @@ class ExampleTestCaseWithVfsStream extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->root->hasChild('id'));
     }
 }
-?>

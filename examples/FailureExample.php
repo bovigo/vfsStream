@@ -7,7 +7,7 @@
  *
  * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\example;
+
 /**
  * Example class to demonstrate testing of failure behaviour with vfsStream.
  */
@@ -47,4 +47,3 @@ class FailureExample
 
     // more source code here...
 }
-?>
