@@ -5,13 +5,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+namespace Vfs;
+
 /**
  * Iterator for children of a directory container.
  */
-class vfsStreamContainerIterator implements \Iterator
+class ContainerIterator implements \Iterator
 {
     /**
      * list of children from container to iterate over
@@ -87,4 +88,3 @@ class vfsStreamContainerIterator implements \Iterator
         return (false !== current($this->children));
     }
 }
-?>

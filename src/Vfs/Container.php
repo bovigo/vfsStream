@@ -5,13 +5,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+namespace Vfs;
+
+use Content as vfsStreamContent;
+
 /**
  * Interface for stream contents that are able to store other stream contents.
  */
-interface vfsStreamContainer extends \IteratorAggregate
+interface Container extends \IteratorAggregate
 {
     /**
      * adds child to the directory
@@ -59,4 +62,3 @@ interface vfsStreamContainer extends \IteratorAggregate
      */
     public function getChildren();
 }
-?>
