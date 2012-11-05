@@ -5,16 +5,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+
 /**
  * Test for org\bovigo\vfs\vfsStream.
  *
  * @since  0.9.0
  * @group  issue_5
  */
-class vfsStreamResolveIncludePathTestCase extends \PHPUnit_Framework_TestCase
+class ResolveIncludePathTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * include path to restore after test run
@@ -59,4 +61,3 @@ class vfsStreamResolveIncludePathTestCase extends \PHPUnit_Framework_TestCase
         $this->assertFalse(@stream_resolve_include_path('path/unknownFile.php'));
     }
 }
-?>

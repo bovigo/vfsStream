@@ -5,11 +5,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  o Vfs
  */
-namespace org\bovigo\vfs\visitor;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
+
+use Vfs\Directory as vfsStreamDirectory;
+use Vfs\File as vfsStreamFile;
+
 /**
  * Test for org\bovigo\vfs\visitor\vfsStreamAbstractVisitor.
  *
@@ -17,7 +18,7 @@ use org\bovigo\vfs\vfsStreamFile;
  * @see    https://github.com/mikey179/vfsStream/issues/10
  * @group  issue_10
  */
-class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
+class AbstractVisitorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
@@ -31,9 +32,7 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->abstractVisitor = $this->getMock('org\\bovigo\\vfs\\visitor\\vfsStreamAbstractVisitor',
-                                                array('visitFile', 'visitDirectory')
-                                 );
+        $this->abstractVisitor = $this->getMock('Vfs\Visitor\AbstractVisitor', array('visitFile', 'visitDirectory'));
     }
 
     /**
@@ -42,13 +41,12 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function visitThrowsInvalidArgumentExceptionOnUnknownContentType()
     {
-        $mockContent = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockContent = $this->getMock('Vfs\Content');
         $mockContent->expects($this->any())
                     ->method('getType')
                     ->will($this->returnValue('invalid'));
-        $this->assertSame($this->abstractVisitor,
-                          $this->abstractVisitor->visit($mockContent)
-        );
+
+        $this->assertSame($this->abstractVisitor, $this->abstractVisitor->visit($mockContent));
     }
 
     /**
@@ -60,9 +58,8 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
         $this->abstractVisitor->expects($this->once())
                               ->method('visitFile')
                               ->with($this->equalTo($file));
-        $this->assertSame($this->abstractVisitor,
-                          $this->abstractVisitor->visit($file)
-        );
+
+        $this->assertSame($this->abstractVisitor, $this->abstractVisitor->visit($file));
     }
 
     /**
@@ -74,9 +71,7 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
         $this->abstractVisitor->expects($this->once())
                               ->method('visitDirectory')
                               ->with($this->equalTo($dir));
-        $this->assertSame($this->abstractVisitor,
-                          $this->abstractVisitor->visit($dir)
-        );
+
+        $this->assertSame($this->abstractVisitor, $this->abstractVisitor->visit($dir));
     }
 }
-?>

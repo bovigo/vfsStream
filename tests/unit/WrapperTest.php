@@ -5,14 +5,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
-require_once __DIR__ . '/vfsStreamWrapperBaseTestCase.php';
+
+use Vfs\VfsStream as vfsStream;
+use Vfs\Wrapper as vfsStreamWrapper;
+use Vfs\Directory as vfsStreamDirectory;
+
+require_once __DIR__ . '/WrapperBaseTest.php';
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
-class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
+class WrapperTest extends WrapperBaseTest
 {
     /**
      * ensure that a call to vfsStreamWrapper::register() resets the stream
@@ -708,4 +713,3 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(313, $this->foo->fileatime());
     }
 }
-?>

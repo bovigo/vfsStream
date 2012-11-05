@@ -5,15 +5,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  VFS
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+use Vfs\Wrapper as vfsStreamWrapper;
+use Vfs\Content as vfsStreamContent;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  *
  * @since  0.9.0
  */
-class vfsStreamWrapperFileTimesTestCase extends \PHPUnit_Framework_TestCase
+class WrapperFileTimesTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * URL of foo.txt file
@@ -312,4 +316,3 @@ class vfsStreamWrapperFileTimesTestCase extends \PHPUnit_Framework_TestCase
         $this->markTestSkipped('Changing file attributes via stream wrapper for self-defined streams is not supported by PHP.');
     }
 }
-?>

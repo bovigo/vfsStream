@@ -5,9 +5,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsSTream;
+
 /**
  * Test for flock() implementation.
  *
@@ -17,7 +19,7 @@ namespace org\bovigo\vfs;
  * @see         https://github.com/mikey179/vfsStream/issues/6
  * @group       issue_6
  */
-class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
+class WrapperFlockTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * root directory
@@ -437,4 +439,3 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
         fclose($fp2);
     }
 }
-?>

@@ -5,15 +5,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+use Vfs\Exception\VfsStreamException as vfsStreamException;
+
 /**
  * Stream wrapper to mock file system requests.
  *
  * @since  0.10.0
  */
-class vfsStreamWrapperRecordingProxy extends vfsStreamWrapper
+class WrapperRecordingProxy extends \Vfs\Wrapper
 {
     /**
      * list of called methods for a stream
@@ -323,4 +326,3 @@ class vfsStreamWrapperRecordingProxy extends vfsStreamWrapper
         return parent::url_stat($path, $flags);
     }
 }
-?>

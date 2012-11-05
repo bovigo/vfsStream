@@ -5,9 +5,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+use Vfs\AbstractContent as vfsStreamAbstractContent;
+
 /**
  * Helper class for the test.
  */
@@ -37,7 +40,7 @@ class TestvfsStreamAbstractContent extends vfsStreamAbstractContent
 /**
  * Test for org\bovigo\vfs\vfsStreamAbstractContent.
  */
-class vfsStreamAbstractContentTestCase extends \PHPUnit_Framework_TestCase
+class AbstractContentTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

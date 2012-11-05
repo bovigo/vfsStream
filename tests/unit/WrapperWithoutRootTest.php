@@ -5,13 +5,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+use Vfs\Wrapper as vfsStreamWrapper;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
-class vfsStreamWrapperWithoutRootTestCase extends \PHPUnit_Framework_TestCase
+class WrapperWithoutRootTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * set up test environment
@@ -61,4 +64,4 @@ class vfsStreamWrapperWithoutRootTestCase extends \PHPUnit_Framework_TestCase
         $this->assertFalse(@rename(vfsStream::url('foo'), vfsStream::url('bar')));
     }
 }
-?>
+

@@ -5,9 +5,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+
 /**
  * Test for stream_set_option() implementation.
  *
@@ -15,7 +17,7 @@ namespace org\bovigo\vfs;
  * @see    https://github.com/mikey179/vfsStream/issues/15
  * @group  issue_15
  */
-class vfsStreamWrapperSetOptionTestCase extends \PHPUnit_Framework_TestCase
+class WrapperSetOptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * root directory
@@ -73,4 +75,3 @@ class vfsStreamWrapperSetOptionTestCase extends \PHPUnit_Framework_TestCase
         fclose($fp);
     }
 }
-?>

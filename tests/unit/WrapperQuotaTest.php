@@ -5,15 +5,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+
 /**
  * Test for quota related functionality of org\bovigo\vfs\vfsStreamWrapper.
  *
  * @group  issue_35
  */
-class vfsStreamWrapperQuotaTestCase extends \PHPUnit_Framework_TestCase
+class WrapperQuotaTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * access to root
@@ -201,4 +203,3 @@ class vfsStreamWrapperQuotaTestCase extends \PHPUnit_Framework_TestCase
         );
     }
 }
-?>

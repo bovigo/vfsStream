@@ -5,16 +5,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+
 /**
  * Test that using windows directory separator works correct.
  *
  * @since  0.9.0
  * @group  issue_8
  */
-class vfsStreamWrapperDirSeparatorTestCase extends \PHPUnit_Framework_TestCase
+class WrapperDirSeparatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * root diretory
@@ -54,4 +56,3 @@ class vfsStreamWrapperDirSeparatorTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->root->getChild('dir/bar')->hasChild('foo'));
     }
 }
-?>

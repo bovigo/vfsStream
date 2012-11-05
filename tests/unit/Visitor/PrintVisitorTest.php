@@ -5,12 +5,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs\visitor;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
+
+use Vfs\VfsStream as vfsStream;
+use Vfs\Directory as vfsStreamDirectory;
+use Vfs\File as vfsStreamFile;
+use Vfs\Visitor\PrintVisitor as vfsStreamPrintVisitor;
+
 /**
  * Test for org\bovigo\vfs\visitor\vfsStreamPrintVisitor.
  *
@@ -18,7 +20,7 @@ use org\bovigo\vfs\vfsStreamFile;
  * @see    https://github.com/mikey179/vfsStream/issues/10
  * @group  issue_10
  */
-class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
+class PrintVisitorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -43,12 +45,10 @@ class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function visitFileWritesFileNameToStream()
     {
-        $output       = vfsStream::newFile('foo.txt')
-                                       ->at(vfsStream::setup());
+        $output = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
         $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
-        $this->assertSame($printVisitor,
-                          $printVisitor->visitFile(vfsStream::newFile('bar.txt'))
-        );
+
+        $this->assertSame($printVisitor, $printVisitor->visitFile(vfsStream::newFile('bar.txt')));
         $this->assertEquals("- bar.txt\n", $output->getContent());
     }
 
@@ -57,12 +57,10 @@ class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function visitDirectoryWritesDirectoryNameToStream()
     {
-        $output       = vfsStream::newFile('foo.txt')
-                                       ->at(vfsStream::setup());
+        $output = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
         $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
-        $this->assertSame($printVisitor,
-                          $printVisitor->visitDirectory(vfsStream::newDirectory('baz'))
-        );
+
+        $this->assertSame($printVisitor, $printVisitor->visitDirectory(vfsStream::newDirectory('baz')));
         $this->assertEquals("- baz\n", $output->getContent());
     }
 
@@ -71,19 +69,18 @@ class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function visitRecursiveDirectoryStructure()
     {
-        $root         = vfsStream::setup('root',
-                                         null,
-                                         array('test' => array('foo'     => array('test.txt' => 'hello'),
-                                                               'baz.txt' => 'world'
-                                                           ),
-                                               'foo.txt' => ''
-                                         )
-                        );
-        $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
-        $this->assertSame($printVisitor,
-                          $printVisitor->visitDirectory($root)
+        $root = vfsStream::setup('root', null, array(
+                'test' => array(
+                    'foo' => array('test.txt' => 'hello'),
+                    'baz.txt' => 'world'
+                ),
+                'foo.txt' => ''
+            )
         );
+        $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
+        $this->assertSame($printVisitor, $printVisitor->visitDirectory($root)
+        );
+
         $this->assertEquals("- root\n  - test\n    - foo\n      - test.txt\n    - baz.txt\n  - foo.txt\n", file_get_contents('vfs://root/foo.txt'));
     }
 }
-?>

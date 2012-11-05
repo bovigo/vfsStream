@@ -5,9 +5,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+use Vfs\Wrapper as vfsStreamWrapper;
+
 /**
  * Helper class for the test.
  */
@@ -28,7 +31,7 @@ class TestvfsStreamWrapper extends vfsStreamWrapper
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
-class vfsStreamWrapperAlreadyRegisteredTestCase extends \PHPUnit_Framework_TestCase
+class WrapperAlreadyRegisteredTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * set up test environment
@@ -53,11 +56,10 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends \PHPUnit_Framework_TestC
      * registered for the vfs scheme should throw an exception
      *
      * @test
-     * @expectedException  org\bovigo\vfs\vfsStreamException
+     * @expectedException  \Vfs\Exception\vfsStreamException
      */
     public function registerOverAnotherStreamWrapper()
     {
         vfsStreamWrapper::register();
     }
 }
-?>

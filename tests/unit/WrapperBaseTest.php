@@ -5,13 +5,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\VfsStream as vfsStream;
+use Vfs\Wrapper as vfsStreamWrapper;
+use Vfs\Directory as vfsStreamDirectory;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
-abstract class vfsStreamWrapperBaseTestCase extends \PHPUnit_Framework_TestCase
+abstract class WrapperBaseTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * root directory
@@ -96,4 +100,3 @@ abstract class vfsStreamWrapperBaseTestCase extends \PHPUnit_Framework_TestCase
         vfsStreamWrapper::setRoot($this->foo);
     }
 }
-?>

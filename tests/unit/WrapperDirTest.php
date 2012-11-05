@@ -5,17 +5,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
-require_once __DIR__ . '/vfsStreamWrapperBaseTestCase.php';
+
+require_once __DIR__ . '/WrapperBaseTest.php';
+
+use Vfs\VfsStream as vfsStream;
+use Vfs\Wrapper as vfsStreamWrapper;
+use Vfs\Content as vfsStreamContent;
+use Vfs\Directory as vfsStreamDirectory;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper around mkdir().
  *
  * @package     bovigo_vfs
  * @subpackage  test
  */
-class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
+class WrapperMkDirTest extends WrapperBaseTest
 {
     /**
      * mkdir() should not overwrite existing root
@@ -614,4 +620,3 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertNotNull($root->getChild('testFolder'));
     }
 }
-?>

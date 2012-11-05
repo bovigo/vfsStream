@@ -5,14 +5,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
-require_once __DIR__ . '/vfsStreamWrapperBaseTestCase.php';
+
+require_once __DIR__ . '/WrapperBaseTest.php';
+
+use Vfs\VfsStream as vfsStream;
+use Vfs\Wrapper as vfsStreamWrapper;
+use Vfs\Directory as vfsStreamDirectory;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
-class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
+class WrapperFileTest extends WrapperBaseTest
 {
     /**
      * assert that file_get_contents() delivers correct file contents
@@ -469,4 +474,3 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(@file_get_contents($this->baz1URL));
     }
 }
-?>

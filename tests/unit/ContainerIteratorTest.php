@@ -5,13 +5,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs;
+
+use Vfs\Directory as vfsStreamDirectory;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamContainerIterator.
  */
-class vfsStreamContainerIteratorTestCase extends \PHPUnit_Framework_TestCase
+class ContainerIteratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * test method to be used for iterating
@@ -21,12 +23,12 @@ class vfsStreamContainerIteratorTestCase extends \PHPUnit_Framework_TestCase
     public function iteration()
     {
         $dir = new vfsStreamDirectory('foo');
-        $mockChild1 = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockChild1 = $this->getMock('Vfs\Content');
         $mockChild1->expects($this->any())
                    ->method('getName')
                    ->will($this->returnValue('bar'));
         $dir->addChild($mockChild1);
-        $mockChild2 = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockChild2 = $this->getMock('Vfs\Content');
         $mockChild2->expects($this->any())
                    ->method('getName')
                    ->will($this->returnValue('baz'));
@@ -52,4 +54,3 @@ class vfsStreamContainerIteratorTestCase extends \PHPUnit_Framework_TestCase
         $this->assertSame($mockChild1, $bar2);
     }
 }
-?>
