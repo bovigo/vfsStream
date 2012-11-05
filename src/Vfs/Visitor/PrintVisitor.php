@@ -5,19 +5,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs\visitor;
-use org\bovigo\vfs\vfsStreamContent;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
+namespace Vfs\Visitor;
+
+use Vfs\StreamContent as vfsStreamContent;
+use Vfs\StreamDirectory as vfsStreamDirectory;
+use Vfs\VfsStreamFile as vfsStreamFile;
+
 /**
  * Visitor which traverses a content structure recursively to print it to an output stream.
  *
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  */
-class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
+class PrintVisitor extends AbstractVisitor
 {
     /**
      * target to write output to
@@ -90,4 +92,3 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
         fwrite($this->out, str_repeat('  ', $this->depth) . '- ' . $content->getName() . "\n");
     }
 }
-?>

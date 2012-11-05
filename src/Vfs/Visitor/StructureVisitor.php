@@ -5,18 +5,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs\visitor;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
+namespace Vfs\Visitor;
+
+use Vfs\StreamDirectory as vfsStreamDirectory;
+use Vfs\StreamFile as vfsStreamFile;
+
 /**
  * Visitor which traverses a content structure recursively to create an array structure from it.
  *
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  */
-class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
+class StructureVisitor extends AbstractVisitor
 {
     /**
      * collected structure
@@ -95,4 +97,3 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
         return $this;
     }
 }
-?>

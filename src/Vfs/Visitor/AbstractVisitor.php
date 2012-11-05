@@ -5,17 +5,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs\visitor;
-use org\bovigo\vfs\vfsStreamContent;
+namespace Vfs\Visitor;
+
+use Vfs\StreamContent as vfsStreamContent;
+
 /**
  * Abstract base class providing an implementation for the visit() method.
  *
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  */
-abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
+abstract class AbstractVisitor implements Visitor
 {
     /**
      * visit a content and process it
@@ -42,4 +44,3 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
         return $this;
     }
 }
-?>

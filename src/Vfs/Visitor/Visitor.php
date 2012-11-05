@@ -5,19 +5,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  Vfs
  */
-namespace org\bovigo\vfs\visitor;
-use org\bovigo\vfs\vfsStreamContent;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
+namespace Vfs\Visitor;
+
+use Vfs\vfsStreamContent as vfsStreamContent;
+use Vfs\StreamDirectory as vfsStreamDirectory;
+use Vfs\StreamFile as vfsStreamFile;
+
 /**
  * Interface for a visitor to work on a vfsStream content structure.
  *
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  */
-interface vfsStreamVisitor
+interface Visitor
 {
     /**
      * visit a content and process it
@@ -43,4 +45,3 @@ interface vfsStreamVisitor
      */
     public function visitDirectory(vfsStreamDirectory $dir);
 }
-?>
