@@ -279,4 +279,3 @@ class FileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("lorem ipsum\0\0\0\0\0\0\0\0\0\0\0\0\0\0", $this->file->getContent());
     }
 }
-?>

@@ -52,4 +52,3 @@ class ZipTest extends \PHPUnit_Framework_TestCase
         var_dump(file_exists(vfsStream::url('root/test.zip')));
     }
 }
-?>
