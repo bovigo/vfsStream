@@ -2,6 +2,7 @@
 
 use Vfs\VfsStream as vfsStream;
 use Vfs\Wrapper as vfsStreamWrapper;
+use Vfs\Content as vfsStreamContent;
 use Vfs\Directory as vfsStreamDirectory;
 use Vfs\File as vfsStreamFile;
 
@@ -580,7 +581,7 @@ class VfsStreamTest extends \PHPUnit_Framework_TestCase
      */
     protected function getFileSystemCopyDir()
     {
-        return realpath(dirname(__FILE__) . '/../../../../resources/filesystemcopy');
+        return realpath(dirname(__FILE__) . '/../resources/filesystemcopy');
     }
 
     /**
