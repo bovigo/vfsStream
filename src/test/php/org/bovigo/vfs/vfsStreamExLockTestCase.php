@@ -11,7 +11,8 @@ namespace org\bovigo\vfs;
 /**
  * Test for LOCK_EX behaviour related to file_put_contents().
  *
- * @group  lock_fpc
+ * @group   lock_fpc
+ * @author  https://github.com/iwyg
  */
 class vfsStreamExLockTestCase extends \PHPUnit_Framework_TestCase
 {
