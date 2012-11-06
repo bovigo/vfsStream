@@ -7,9 +7,11 @@
  *
  * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\example;
-use org\bovigo\vfs\vfsStream;
+
+use Vfs\VfsStream as vfsStream;
+
 require_once 'FilemodeExample.php';
+
 /**
  * Test case for class FilemodeExample.
  */
@@ -50,4 +52,3 @@ class FilemodeExampleTestCaseWithVfsStream extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0755, $this->root->getChild('id')->getPermissions());
     }
 }
-?>

@@ -7,7 +7,7 @@
  *
  * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\example;
+
 /**
  * Example class.
  */
@@ -59,4 +59,3 @@ class FilemodeExample
 
     // more source code here...
 }
-?>

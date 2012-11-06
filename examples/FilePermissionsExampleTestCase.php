@@ -7,9 +7,11 @@
  *
  * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\example;
-use org\bovigo\vfs\vfsStream;
+
+use Vfs\VfsStream as vfsStream;
+
 require_once 'FilePermissionsExample.php';
+
 /**
  * Test for FilePermissionsExample.
  */
@@ -41,4 +43,3 @@ class FilePermissionsExampleTestCase extends \PHPUnit_Framework_TestCase
         );
     }
 }
-?>
