@@ -164,11 +164,22 @@ class vfsStreamWrapper
             return self::$root;
         }
 
-        if (self::$root->hasChild($path) === true) {
+        if ($this->isInRoot($path) && self::$root->hasChild($path) === true) {
             return self::$root->getChild($path);
         }
 
         return null;
+    }
+
+    /**
+     * helper method to detect whether given path is in root path
+     *
+     * @param   string  $path
+     * @return  bool
+     */
+    private function isInRoot($path)
+    {
+        return substr($path, 0, strlen(self::$root->getName())) === self::$root->getName();
     }
 
     /**

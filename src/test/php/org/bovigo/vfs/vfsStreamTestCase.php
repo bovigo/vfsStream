@@ -345,7 +345,7 @@ class vfsStreamTestCase extends \PHPUnit_Framework_TestCase
         $directory = $root->getChild('2011');
         $this->assertVfsFile($directory->getChild('test.txt'), 'some content');
 
-        $this->assertTrue(file_exists('vfs://2011/test.txt'));
+        $this->assertTrue(file_exists('vfs://root/2011/test.txt'));
     }
 
     /**

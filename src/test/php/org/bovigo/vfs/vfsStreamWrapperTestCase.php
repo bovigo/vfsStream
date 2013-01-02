@@ -101,6 +101,26 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
+     * @test
+     * @group  issue_49
+     */
+    public function unlinkReturnsFalseWhenFileDoesNotExist()
+    {
+        vfsStream::setup()->addChild(vfsStream::newFile('foo.blubb'));
+        $this->assertFalse(unlink(vfsStream::url('foo.blubb2')));
+    }
+
+    /**
+     * @test
+     * @group  issue_49
+     */
+    public function unlinkReturnsFalseWhenFileDoesNotExistAndFileWithSameNameExistsInRoot()
+    {
+        vfsStream::setup()->addChild(vfsStream::newFile('foo.blubb'));
+        $this->assertFalse(unlink(vfsStream::url('foo.blubb')));
+    }
+
+    /**
      * assert dirname() returns correct directory name
      *
      * @test
