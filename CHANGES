@@ -2,6 +2,8 @@
 ==================
 - fixed issue #40: flock implementation doesn't work correctly, patch provided
   by Kamil Dziedzic
+- fixed issue #49: call to member function on a non-object when trying to delete
+  a file one above root where a file with same name in root exists
 
 
 1.1.0, 2012-08-25
