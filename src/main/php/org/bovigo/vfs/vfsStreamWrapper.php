@@ -739,13 +739,18 @@ class vfsStreamWrapper
             return false;
         }
 
-        $dstContent = clone $srcContent;
+        // remove old source first, so we can rename later
+        // (renaming first would lead to not being able to remove the old path)
+        if (!$this->doUnlink($srcRealPath)) {
+            return false;
+        }
+
+        $dstContent = $srcContent;
         // Renaming the filename
         $dstContent->rename($dstNames['basename']);
         // Copying to the destination
         $dstParentContent->addChild($dstContent);
-        // Removing the source
-        return $this->doUnlink($srcRealPath);
+        return true;
     }
 
     /**

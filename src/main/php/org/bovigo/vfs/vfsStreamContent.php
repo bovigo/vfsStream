@@ -178,5 +178,30 @@ interface vfsStreamContent
      * @return  int
      */
     public function getGroup();
+
+    /**
+     * sets parent path
+     *
+     * @param  string  $parentPath
+     * @internal  only to be set by parent
+     * @since   1.2.0
+     */
+    public function setParentPath($parentPath);
+
+    /**
+     * returns path to this content
+     *
+     * @return  string
+     * @since   1.2.0
+     */
+    public function path();
+
+    /**
+     * returns complete vfsStream url for this content
+     *
+     * @return  string
+     * @since   1.2.0
+     */
+    public function url();
 }
 ?>

@@ -1,5 +1,8 @@
 1.2.0, ???
 ==================
+- implemented issue #34: provide url() method on all vfsStreamContent instances
+    - added org\bovigo\vfs\vfsStreamContent::url()
+    - added org\bovigo\vfs\vfsStreamContent::path()
 - fixed issue #40: flock implementation doesn't work correctly, patch provided
   by Kamil Dziedzic
 - fixed issue #49: call to member function on a non-object when trying to delete

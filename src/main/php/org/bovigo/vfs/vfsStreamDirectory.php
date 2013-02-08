@@ -97,6 +97,22 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
         parent::rename($newName);
     }
 
+
+    /**
+     * sets parent path
+     *
+     * @param  string  $parentPath
+     * @internal  only to be set by parent
+     * @since   1.2.0
+     */
+    public function setParentPath($parentPath)
+    {
+        parent::setParentPath($parentPath);
+        foreach ($this->children as $child) {
+            $child->setParentPath($this->path());
+        }
+    }
+
     /**
      * adds child to the directory
      *
@@ -104,6 +120,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      */
     public function addChild(vfsStreamContent $child)
     {
+        $child->setParentPath($this->path());
         $this->children[$child->getName()] = $child;
         $this->updateModifications();
     }
@@ -117,7 +134,8 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     public function removeChild($name)
     {
         foreach ($this->children as $key => $child) {
-            if ($child->appliesTo($name) === true) {
+            if ($child->appliesTo($name)) {
+                $child->setParentPath(null);
                 unset($this->children[$key]);
                 $this->updateModifications();
                 return true;

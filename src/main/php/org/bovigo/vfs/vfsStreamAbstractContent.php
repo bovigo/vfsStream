@@ -61,6 +61,12 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @type  int
      */
     protected $group;
+    /**
+     * path to to this content
+     *
+     * @type  string
+     */
+    private $parentPath;
 
     /**
      * constructor
@@ -370,6 +376,44 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     public function getGroup()
     {
         return $this->group;
+    }
+
+    /**
+     * sets parent path
+     *
+     * @param  string  $parentPath
+     * @internal  only to be set by parent
+     * @since   1.2.0
+     */
+    public function setParentPath($parentPath)
+    {
+        $this->parentPath = $parentPath;
+    }
+
+    /**
+     * returns path to this content
+     *
+     * @return  string
+     * @since   1.2.0
+     */
+    public function path()
+    {
+        if (null === $this->parentPath) {
+            return $this->name;
+        }
+
+        return $this->parentPath . '/' . $this->name;
+    }
+
+    /**
+     * returns complete vfsStream url for this content
+     *
+     * @return  string
+     * @since   1.2.0
+     */
+    public function url()
+    {
+        return vfsStream::url($this->path());
     }
 }
 ?>

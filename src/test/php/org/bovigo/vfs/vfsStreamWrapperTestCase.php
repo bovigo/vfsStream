@@ -727,5 +727,57 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(303, $this->foo->filemtime());
         $this->assertEquals(313, $this->foo->fileatime());
     }
+
+    /**
+     * @test
+     * @group  issue_34
+     * @since  1.2.0
+     */
+    public function pathesAreCorrectlySet()
+    {
+        $this->assertEquals(vfsStream::path($this->fooURL), $this->foo->path());
+        $this->assertEquals(vfsStream::path($this->barURL), $this->bar->path());
+        $this->assertEquals(vfsStream::path($this->baz1URL), $this->baz1->path());
+        $this->assertEquals(vfsStream::path($this->baz2URL), $this->baz2->path());
+    }
+
+    /**
+     * @test
+     * @group  issue_34
+     * @since  1.2.0
+     */
+    public function urlsAreCorrectlySet()
+    {
+        $this->assertEquals($this->fooURL, $this->foo->url());
+        $this->assertEquals($this->barURL, $this->bar->url());
+        $this->assertEquals($this->baz1URL, $this->baz1->url());
+        $this->assertEquals($this->baz2URL, $this->baz2->url());
+    }
+
+    /**
+     * @test
+     * @group  issue_34
+     * @since  1.2.0
+     */
+    public function pathIsUpdatedAfterMove()
+    {
+        // move foo/bar/baz1 to foo/baz3
+        $baz3URL = vfsStream::url('foo/baz3');
+        $this->assertTrue(rename($this->baz1URL, $baz3URL));
+        $this->assertEquals(vfsStream::path($baz3URL), $this->baz1->path());
+    }
+
+    /**
+     * @test
+     * @group  issue_34
+     * @since  1.2.0
+     */
+    public function urlIsUpdatedAfterMove()
+    {
+        // move foo/bar/baz1 to foo/baz3
+        $baz3URL = vfsStream::url('foo/baz3');
+        $this->assertTrue(rename($this->baz1URL, $baz3URL));
+        $this->assertEquals($baz3URL, $this->baz1->url());
+    }
 }
 ?>
