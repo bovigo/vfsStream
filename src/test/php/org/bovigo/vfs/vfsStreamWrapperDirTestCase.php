@@ -613,5 +613,21 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertTrue($root->hasChild('testFolder'));
         $this->assertNotNull($root->getChild('testFolder'));
     }
+
+    /**
+     * is_dir() should return true after a root directory has been made using mkdir()
+     *
+     * @test
+     */
+    public function isDirShouldBeAbleToCheckForExistenceOfRootDir()
+    {
+        vfsStreamWrapper::register();
+
+        $url = vfsStream::url('/foobar');
+
+        $this->assertFalse(is_dir($url), "Directory '$url' should not exist");
+        $this->assertTrue(mkdir($url), "Directory '$url' should have been created");
+        $this->assertTrue(is_dir($url), "Directory '$url' should exist");
+    }
 }
 ?>

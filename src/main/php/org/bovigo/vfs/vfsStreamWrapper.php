@@ -160,7 +160,8 @@ class vfsStreamWrapper
             return null;
         }
 
-        if (self::$root->getName() === $path) {
+        $name = self::$root->getName();
+        if ($name === $path || '/' . $name === $path) {
             return self::$root;
         }
 
