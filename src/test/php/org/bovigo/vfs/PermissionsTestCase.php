@@ -46,7 +46,7 @@ class PermissionsTestCase extends \PHPUnit_Framework_TestCase
     public function canNotChangeOwnerWhenDirectoryNotWriteable()
     {
         $this->root->getChild('test_directory')->chmod(0444);
-        $this->assertFalse(@chown(vfsStream::url('root/test_directory/test.file'), 0777), vfsStream::OWNER_USER_2);
+        $this->assertFalse(@chown(vfsStream::url('root/test_directory/test.file'), vfsStream::OWNER_USER_2));
     }
 
     /**
@@ -56,7 +56,7 @@ class PermissionsTestCase extends \PHPUnit_Framework_TestCase
     public function canNotChangeGroupWhenDirectoryNotWriteable()
     {
         $this->root->getChild('test_directory')->chmod(0444);
-        $this->assertFalse(@chgrp(vfsStream::url('root/test_directory/test.file'), 0777), vfsStream::GROUP_USER_2);
+        $this->assertFalse(@chgrp(vfsStream::url('root/test_directory/test.file'), vfsStream::GROUP_USER_2));
     }
 }
 ?>
