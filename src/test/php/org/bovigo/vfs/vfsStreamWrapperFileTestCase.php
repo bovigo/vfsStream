@@ -306,20 +306,6 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function canNotRemoveFileWithoutWritePermissions()
-    {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root'));
-        vfsStream::newFile('new.txt', 0000)->at(vfsStreamWrapper::getRoot());
-        $this->assertFalse(unlink(vfsStream::url('root/new.txt')));
-        $this->assertTrue(file_exists(vfsStream::url('root/new.txt')));
-    }
-
-    /**
-     * @test
-     * @group  permissions
-     * @group  bug_15
-     */
     public function canNotRemoveFileFromDirectoryWithoutWritePermissions()
     {
         vfsStreamWrapper::register();

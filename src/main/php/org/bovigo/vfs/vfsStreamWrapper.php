@@ -670,7 +670,7 @@ class vfsStreamWrapper
     {
         $realPath = $this->resolvePath(vfsStream::path($path));
         $content  = $this->getContent($realPath);
-        if (null === $content || $content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
+        if (null === $content) {
             return false;
         }
 
@@ -699,7 +699,7 @@ class vfsStreamWrapper
 
         $names   = $this->splitPath($path);
         $content = $this->getContent($names['dirname']);
-        if ($content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
+        if (!$content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
             return false;
         }
 

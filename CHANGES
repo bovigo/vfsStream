@@ -7,6 +7,8 @@
   by Kamil Dziedzic
 - fixed issue #49: call to member function on a non-object when trying to delete
   a file one above root where a file with same name in root exists
+- fixed issue #51: unlink() must consider permissions of directory where file is
+  inside, not of the file to unlink itself
 
 
 1.1.0, 2012-08-25
