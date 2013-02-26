@@ -11,6 +11,8 @@
   inside, not of the file to unlink itself
 - fixed issue #52: chmod(), chown() and chgrp() must consider permissions of
   directory where file/directory is inside
+- fixed issue #53: chmod(), chown() and chgrp() must consider current user and
+  current owner of file/directoy to change
 
 
 1.1.0, 2012-08-25

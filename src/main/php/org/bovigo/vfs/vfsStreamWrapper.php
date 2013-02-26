@@ -503,6 +503,7 @@ class vfsStreamWrapper
                 }
 
                 return $this->doPermChange($path,
+                                           $content,
                                            function() use ($content, $var)
                                            {
                                                $content->chown($var);
@@ -518,6 +519,7 @@ class vfsStreamWrapper
                 }
 
                 return $this->doPermChange($path,
+                                           $content,
                                            function() use ($content, $var)
                                            {
                                                $content->chgrp($var);
@@ -530,6 +532,7 @@ class vfsStreamWrapper
                 }
 
                 return $this->doPermChange($path,
+                                           $content,
                                            function() use ($content, $var)
                                            {
                                                $content->chmod($var);
@@ -544,16 +547,21 @@ class vfsStreamWrapper
     /**
      * executes given permission change when necessary rights allow such a change
      *
-     * @param   string   $path
-     * @param   Closure  $change
+     * @param   string                    $path
+     * @param   vfsStreamAbstractContent  $content
+     * @param   Closure                   $change
      * @return  bool
      */
-    private function doPermChange($path, \Closure $change)
+    private function doPermChange($path, vfsStreamAbstractContent $content, \Closure $change)
     {
+        if (!$content->isOwnedByUser(vfsStream::getCurrentUser())) {
+            return false;
+        }
+
         if (self::$root->getName() !== $path) {
             $names   = $this->splitPath($path);
-            $content = $this->getContent($names['dirname']);
-            if (!$content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
+            $parent = $this->getContent($names['dirname']);
+            if (!$parent->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
                 return false;
             }
         }
