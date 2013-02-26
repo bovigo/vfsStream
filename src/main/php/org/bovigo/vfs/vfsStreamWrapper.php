@@ -502,8 +502,12 @@ class vfsStreamWrapper
                     return false;
                 }
 
-                $content->chown($var);
-                return true;
+                return $this->doPermChange($path,
+                                           function() use ($content, $var)
+                                           {
+                                               $content->chown($var);
+                                           }
+                );
 
             case STREAM_META_GROUP_NAME:
                 return false;
@@ -513,20 +517,49 @@ class vfsStreamWrapper
                     return false;
                 }
 
-                $content->chgrp($var);
-                return true;
+                return $this->doPermChange($path,
+                                           function() use ($content, $var)
+                                           {
+                                               $content->chgrp($var);
+                                           }
+                );
 
             case STREAM_META_ACCESS:
                 if (null === $content) {
                     return false;
                 }
 
-                $content->chmod($var);
-                return true;
+                return $this->doPermChange($path,
+                                           function() use ($content, $var)
+                                           {
+                                               $content->chmod($var);
+                                           }
+                );
 
             default:
                 return false;
         }
+    }
+
+    /**
+     * executes given permission change when necessary rights allow such a change
+     *
+     * @param   string   $path
+     * @param   Closure  $change
+     * @return  bool
+     */
+    private function doPermChange($path, \Closure $change)
+    {
+        if (self::$root->getName() !== $path) {
+            $names   = $this->splitPath($path);
+            $content = $this->getContent($names['dirname']);
+            if (!$content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
+                return false;
+            }
+        }
+
+        $change();
+        return true;
     }
 
     /**
