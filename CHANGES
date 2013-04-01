@@ -1,4 +1,4 @@
-1.2.0, ???
+1.2.0, 2013-04-01
 ==================
 - implemented issue #34: provide url() method on all vfsStreamContent instances
     - added org\bovigo\vfs\vfsStreamContent::url()
