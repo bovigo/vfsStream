@@ -18,15 +18,9 @@
          verbose="true">
   <testsuites>
     <testsuite>
-      <directory suffix="TestCase.php">./pear/src/test/</directory>
+      <directory suffix="TestCase.php">./pear/test/</directory>
     </testsuite>
   </testsuites>
-
-  <filter>
-    <whitelist>
-      <directory>src</directory>
-    </whitelist>
-  </filter>
 
   <logging>
     <log type="coverage-html" target="docs/coverage" charset="UTF-8"
