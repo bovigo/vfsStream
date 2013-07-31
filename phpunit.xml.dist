@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         bootstrap="vendor/autoload.php"
+         bootstrap="pear/bootstrap/default.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -18,15 +18,9 @@
          verbose="true">
   <testsuites>
     <testsuite>
-      <directory suffix="TestCase.php">./src/test/php</directory>
+      <directory suffix="TestCase.php">./pear/test/</directory>
     </testsuite>
   </testsuites>
-
-  <filter>
-    <whitelist>
-      <directory>src/main/php</directory>
-    </whitelist>
-  </filter>
 
   <logging>
     <log type="coverage-html" target="docs/coverage" charset="UTF-8"
