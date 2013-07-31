@@ -13,7 +13,7 @@
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  */
-class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
+class vfsStream_Visitor_Structure extends vfsStream_Abstract_Visitor
 {
     /**
      * collected structure
@@ -41,10 +41,10 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a file and process it
      *
-     * @param   vfsStreamFile  $file
-     * @return  vfsStreamStructureVisitor
+     * @param   vfsStream_File  $file
+     * @return  vfsStream_Visitor_Structure
      */
-    public function visitFile(vfsStreamFile $file)
+    public function visitFile(vfsStream_File $file)
     {
         $this->current[$file->getName()] = $file->getContent();
         return $this;
@@ -53,10 +53,10 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a directory and process it
      *
-     * @param   vfsStreamDirectory  $dir
-     * @return  vfsStreamStructureVisitor
+     * @param   vfsStream_Directory  $dir
+     * @return  vfsStream_Visitor_Structure
      */
-    public function visitDirectory(vfsStreamDirectory $dir)
+    public function visitDirectory(vfsStream_Directory $dir)
     {
         $this->current[$dir->getName()] = array();
         $tmp           =& $this->current;
@@ -83,7 +83,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * resets structure so visitor could be reused
      *
-     * @return  vfsStreamStructureVisitor
+     * @return  vfsStream_Visitor_Structure
      */
     public function reset()
     {

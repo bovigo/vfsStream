@@ -13,7 +13,7 @@
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  */
-class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
+class vfsStream_Visitor_Print extends vfsStream_Abstract_Visitor
 {
     /**
      * target to write output to
@@ -49,10 +49,10 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a file and process it
      *
-     * @param   vfsStreamFile  $file
-     * @return  vfsStreamPrintVisitor
+     * @param   vfsStream_File  $file
+     * @return  vfsStream_Visitor_Print
      */
-    public function visitFile(vfsStreamFile $file)
+    public function visitFile(vfsStream_File $file)
     {
         $this->printContent($file);
         return $this;
@@ -61,10 +61,10 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a directory and process it
      *
-     * @param   vfsStreamDirectory  $dir
-     * @return  vfsStreamPrintVisitor
+     * @param   vfsStream_Directory  $dir
+     * @return  vfsStream_Visitor_Print
      */
-    public function visitDirectory(vfsStreamDirectory $dir)
+    public function visitDirectory(vfsStream_Directory $dir)
     {
         $this->printContent($dir);
         $this->depth++;
@@ -79,9 +79,9 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     /**
      * helper method to print the content
      *
-     * @param  vfsStreamContent  $content
+     * @param  vfsStream_Interface_Content  $content
      */
-    protected function printContent(vfsStreamContent $content)
+    protected function printContent(vfsStream_Interface_Content $content)
     {
         fwrite($this->out, str_repeat('  ', $this->depth) . '- ' . $content->getName() . "\n");
     }

@@ -7,18 +7,15 @@
  *
  * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\visitor;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
+require_once __DIR__ . '/../../bootstrap/default.php';
 /**
- * Test for org\bovigo\vfs\visitor\vfsStreamPrintVisitor.
+ * Test for vfsStream_Visitor_Print.
  *
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  * @group  issue_10
  */
-class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamVisitorPrintTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -26,7 +23,7 @@ class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function constructWithNonResourceThrowsInvalidArgumentException()
     {
-        new vfsStreamPrintVisitor('invalid');
+        new vfsStream_Visitor_Print('invalid');
     }
 
     /**
@@ -35,7 +32,7 @@ class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function constructWithNonStreamResourceThrowsInvalidArgumentException()
     {
-        new vfsStreamPrintVisitor(xml_parser_create());
+        new vfsStream_Visitor_Print(xml_parser_create());
     }
 
     /**
@@ -45,7 +42,7 @@ class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
     {
         $output       = vfsStream::newFile('foo.txt')
                                        ->at(vfsStream::setup());
-        $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
+        $printVisitor = new vfsStream_Visitor_Print(fopen('vfs://root/foo.txt', 'wb'));
         $this->assertSame($printVisitor,
                           $printVisitor->visitFile(vfsStream::newFile('bar.txt'))
         );
@@ -59,7 +56,7 @@ class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
     {
         $output       = vfsStream::newFile('foo.txt')
                                        ->at(vfsStream::setup());
-        $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
+        $printVisitor = new vfsStream_Visitor_Print(fopen('vfs://root/foo.txt', 'wb'));
         $this->assertSame($printVisitor,
                           $printVisitor->visitDirectory(vfsStream::newDirectory('baz'))
         );
@@ -79,7 +76,7 @@ class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
                                                'foo.txt' => ''
                                          )
                         );
-        $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
+        $printVisitor = new vfsStream_Visitor_Print(fopen('vfs://root/foo.txt', 'wb'));
         $this->assertSame($printVisitor,
                           $printVisitor->visitDirectory($root)
         );

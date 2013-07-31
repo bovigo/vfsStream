@@ -7,22 +7,20 @@
  *
  * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\visitor;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
+require_once __DIR__ . '/../../bootstrap/default.php';
 /**
- * Test for org\bovigo\vfs\visitor\vfsStreamAbstractVisitor.
+ * Test for vfsStream_Abstract_Visitor.
  *
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  * @group  issue_10
  */
-class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamAbstractVisitorTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @var  vfsStreamAbstractVisitor
+     * @var  vfsStream_Abstract_Visitor
      */
     protected $abstractVisitor;
 
@@ -31,7 +29,7 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->abstractVisitor = $this->getMock('org\\bovigo\\vfs\\visitor\\vfsStreamAbstractVisitor',
+        $this->abstractVisitor = $this->getMock('vfsStream_Abstract_Visitor',
                                                 array('visitFile', 'visitDirectory')
                                  );
     }
@@ -42,7 +40,7 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function visitThrowsInvalidArgumentExceptionOnUnknownContentType()
     {
-        $mockContent = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockContent = $this->getMock('vfsStream_Interface_Content');
         $mockContent->expects($this->any())
                     ->method('getType')
                     ->will($this->returnValue('invalid'));
@@ -56,7 +54,7 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function visitWithFileCallsVisitFile()
     {
-        $file = new vfsStreamFile('foo.txt');
+        $file = new vfsStream_File('foo.txt');
         $this->abstractVisitor->expects($this->once())
                               ->method('visitFile')
                               ->with($this->equalTo($file));
@@ -70,7 +68,7 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function visitWithDirectoryCallsVisitDirectory()
     {
-        $dir = new vfsStreamDirectory('bar');
+        $dir = new vfsStream_Directory('bar');
         $this->abstractVisitor->expects($this->once())
                               ->method('visitDirectory')
                               ->with($this->equalTo($dir));

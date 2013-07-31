@@ -7,23 +7,22 @@
  *
  * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\visitor;
-use org\bovigo\vfs\vfsStream;
+require_once __DIR__ . '/../../bootstrap/default.php';
 /**
- * Test for org\bovigo\vfs\visitor\vfsStreamStructureVisitor.
+ * Test for vfsStream_Visitor_Structure.
  *
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  * @group  issue_10
  */
-class vfsStreamStructureVisitorTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamStructureVisitorTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
     public function visitFileCreatesStructureForFile()
     {
-        $structureVisitor = new vfsStreamStructureVisitor();
+        $structureVisitor = new vfsStream_Visitor_Structure();
         $this->assertEquals(array('foo.txt' => 'test'),
                             $structureVisitor->visitFile(vfsStream::newFile('foo.txt')
                                                                   ->withContent('test')
@@ -37,7 +36,7 @@ class vfsStreamStructureVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function visitDirectoryCreatesStructureForDirectory()
     {
-        $structureVisitor = new vfsStreamStructureVisitor();
+        $structureVisitor = new vfsStream_Visitor_Structure();
         $this->assertEquals(array('baz' => array()),
                             $structureVisitor->visitDirectory(vfsStream::newDirectory('baz'))
                                              ->getStructure()
@@ -57,7 +56,7 @@ class vfsStreamStructureVisitorTestCase extends \PHPUnit_Framework_TestCase
                                                'foo.txt' => ''
                                          )
                         );
-        $structureVisitor = new vfsStreamStructureVisitor();
+        $structureVisitor = new vfsStream_Visitor_Structure();
         $this->assertEquals(array('root' => array('test' => array('foo'     => array('test.txt' => 'hello'),
                                                                   'baz.txt' => 'world'
                                                                                ),
