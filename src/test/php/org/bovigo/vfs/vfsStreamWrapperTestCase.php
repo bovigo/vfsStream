@@ -628,6 +628,10 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
             $this->markTestSkipped('Requires PHP 5.4');
         }
 
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('Not supported on hhvm');
+        }
+
         $handle = fopen($this->baz1URL, "r+");
         $this->assertTrue(ftruncate($handle, 0));
         $this->assertEquals(0, filesize($this->baz1URL));
@@ -644,6 +648,10 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     {
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {
             $this->markTestSkipped('Requires PHP 5.4');
+        }
+
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('Not supported on hhvm');
         }
 
         $handle = fopen($this->baz1URL, "r+");
