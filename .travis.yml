@@ -8,4 +8,8 @@ php:
 before_script:
   - composer install --dev
 
-script: phpunit --coverage-text
+script:
+  - vendor/bin/phpunit --coverage-text
+
+after_script:
+  - vendor/bin/coveralls
