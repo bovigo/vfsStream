@@ -6,7 +6,10 @@ php:
   - 5.5
 
 before_script:
-  - composer install --dev
+  - "mkdir -p ~/.composer"
+  - composer self-update
+  - composer install
+  - composer require satooshi/php-coveralls:dev-master
 
 script:
   - vendor/bin/phpunit --coverage-text
