@@ -225,5 +225,94 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(2, count($list1));
         $this->assertEquals(2, count($list2));
     }
+
+    /**
+     * @test
+     * @group  issue_50
+     */
+    public function recursiveDirectoryIterationWithDotsEnabled()
+    {
+        vfsStream::enableDotfiles();
+        vfsStream::setup();
+        $structure = array(
+          'Core' => array(
+            'AbstractFactory' => array(
+              'test.php'    => 'some text content',
+              'other.php'   => 'Some more text content',
+              'Invalid.csv' => 'Something else',
+             ),
+            'AnEmptyFolder'   => array(),
+            'badlocation.php' => 'some bad content',
+          )
+        );
+        $root     = vfsStream::create($structure);
+        $rootPath = vfsStream::url($root->getName());
+
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($rootPath),
+                                                   \RecursiveIteratorIterator::CHILD_FIRST);
+        $pathes = array();
+        foreach ($iterator as $path) {
+            $pathes[] = $path;
+        }
+
+        $this->assertEquals(array('vfs://root/.',
+                                  'vfs://root/..',
+                                  'vfs://root/Core/.',
+                                  'vfs://root/Core/..',
+                                  'vfs://root/Core/AbstractFactory/.',
+                                  'vfs://root/Core/AbstractFactory/..',
+                                  'vfs://root/Core/AbstractFactory/test.php',
+                                  'vfs://root/Core/AbstractFactory/other.php',
+                                  'vfs://root/Core/AbstractFactory/Invalid.csv',
+                                  'vfs://root/Core/AbstractFactory',
+                                  'vfs://root/Core/AnEmptyFolder/.',
+                                  'vfs://root/Core/AnEmptyFolder/..',
+                                  'vfs://root/Core/AnEmptyFolder',
+                                  'vfs://root/Core/badlocation.php',
+                                  'vfs://root/Core'
+                            ),
+                            $pathes
+        );
+    }
+
+    /**
+     * @test
+     * @group  issue_50
+     */
+    public function recursiveDirectoryIterationWithDotsDisabled()
+    {
+        vfsStream::disableDotfiles();
+        vfsStream::setup();
+        $structure = array(
+          'Core' => array(
+            'AbstractFactory' => array(
+              'test.php'    => 'some text content',
+              'other.php'   => 'Some more text content',
+              'Invalid.csv' => 'Something else',
+             ),
+            'AnEmptyFolder'   => array(),
+            'badlocation.php' => 'some bad content',
+          )
+        );
+        $root     = vfsStream::create($structure);
+        $rootPath = vfsStream::url($root->getName());
+
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($rootPath),
+                                                   \RecursiveIteratorIterator::CHILD_FIRST);
+        $pathes = array();
+        foreach ($iterator as $path) {
+            $pathes[] = $path;
+        }
+
+        $this->assertEquals(array('vfs://root/Core/AbstractFactory/test.php',
+                                  'vfs://root/Core/AbstractFactory/other.php',
+                                  'vfs://root/Core/AbstractFactory/Invalid.csv',
+                                  'vfs://root/Core/AbstractFactory',
+                                  'vfs://root/Core/AnEmptyFolder',
+                                  'vfs://root/Core/badlocation.php',
+                                  'vfs://root/Core'
+                            ),
+                            $pathes
+        );
+    }
 }
-?>
