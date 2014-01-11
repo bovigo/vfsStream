@@ -127,7 +127,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
 
         $this->assertDirectoryCount(count($expectedDirectories), $i);
 
-        rewind($handle);
+        rewinddir($handle);
         $i   = 0;
         while (false !== ($entry = readdir($handle))) {
             $i++;
