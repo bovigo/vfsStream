@@ -2,3 +2,7 @@
 /docs
 /nbproject
 /vendor
+
+# ignore idea files created by phpstorm
+.idea/*
+atlassian-ide-plugin.xml
