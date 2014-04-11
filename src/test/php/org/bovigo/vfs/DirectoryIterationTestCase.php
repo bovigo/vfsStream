@@ -251,25 +251,25 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
         $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($rootPath),
                                                    \RecursiveIteratorIterator::CHILD_FIRST);
         $pathes = array();
-        foreach ($iterator as $path) {
-            $pathes[] = $path;
+        foreach ($iterator as $fullFileName => $fileSPLObject) {
+            $pathes[] = $fullFileName;
         }
 
-        $this->assertEquals(array('vfs://root/.',
-                                  'vfs://root/..',
-                                  'vfs://root/Core/.',
-                                  'vfs://root/Core/..',
-                                  'vfs://root/Core/AbstractFactory/.',
-                                  'vfs://root/Core/AbstractFactory/..',
-                                  'vfs://root/Core/AbstractFactory/test.php',
-                                  'vfs://root/Core/AbstractFactory/other.php',
-                                  'vfs://root/Core/AbstractFactory/Invalid.csv',
-                                  'vfs://root/Core/AbstractFactory',
-                                  'vfs://root/Core/AnEmptyFolder/.',
-                                  'vfs://root/Core/AnEmptyFolder/..',
-                                  'vfs://root/Core/AnEmptyFolder',
-                                  'vfs://root/Core/badlocation.php',
-                                  'vfs://root/Core'
+        $this->assertEquals(array('vfs://root'.DIRECTORY_SEPARATOR.'.',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'..',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'.',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'..',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory'.DIRECTORY_SEPARATOR.'.',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory'.DIRECTORY_SEPARATOR.'..',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory'.DIRECTORY_SEPARATOR.'test.php',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory'.DIRECTORY_SEPARATOR.'other.php',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory'.DIRECTORY_SEPARATOR.'Invalid.csv',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AnEmptyFolder'.DIRECTORY_SEPARATOR.'.',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AnEmptyFolder'.DIRECTORY_SEPARATOR.'..',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AnEmptyFolder',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'badlocation.php',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'
                             ),
                             $pathes
         );
@@ -300,17 +300,17 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
         $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($rootPath),
                                                    \RecursiveIteratorIterator::CHILD_FIRST);
         $pathes = array();
-        foreach ($iterator as $path) {
-            $pathes[] = $path;
+        foreach ($iterator as $fullFileName => $fileSPLObject) {
+            $pathes[] = $fullFileName;
         }
 
-        $this->assertEquals(array('vfs://root/Core/AbstractFactory/test.php',
-                                  'vfs://root/Core/AbstractFactory/other.php',
-                                  'vfs://root/Core/AbstractFactory/Invalid.csv',
-                                  'vfs://root/Core/AbstractFactory',
-                                  'vfs://root/Core/AnEmptyFolder',
-                                  'vfs://root/Core/badlocation.php',
-                                  'vfs://root/Core'
+        $this->assertEquals(array('vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory'.DIRECTORY_SEPARATOR.'test.php',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory'.DIRECTORY_SEPARATOR.'other.php',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory'.DIRECTORY_SEPARATOR.'Invalid.csv',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AnEmptyFolder',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'badlocation.php',
+                                  'vfs://root'.DIRECTORY_SEPARATOR.'Core'
                             ),
                             $pathes
         );
