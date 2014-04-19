@@ -251,10 +251,10 @@ class vfsStreamWrapper
     public function stream_open($path, $mode, $options, $opened_path)
     {
         $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
-        $mode     = str_replace(array('b', '+'), '', $mode);
+        $mode     = str_replace(array('t', 'b', '+'), '', $mode);
         if (in_array($mode, array('r', 'w', 'a', 'x', 'c')) === false) {
             if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
-                trigger_error('Illegal mode ' . $mode . ', use r, w, a, x  or c, flavoured with b and/or +', E_USER_WARNING);
+                trigger_error('Illegal mode ' . $mode . ', use r, w, a, x  or c, flavoured with t, b and/or +', E_USER_WARNING);
             }
 
             return false;
