@@ -682,13 +682,14 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @test
      * @group     issue_11
+     * @group     issue_80
      * @requires  PHP 5.4.0
      */
-    public function touchDoesNotChangeTimesWhenNoTimesGiven()
+    public function touchChangesTimesToCurrentTimestampWhenNoTimesGiven()
     {
         $this->assertTrue(touch($this->baz1URL));
-        $this->assertEquals(300, $this->baz1->filemtime());
-        $this->assertEquals(300, $this->baz1->fileatime());
+        $this->assertEquals(time(), $this->baz1->filemtime(), '', 1);
+        $this->assertEquals(time(), $this->baz1->fileatime(), '', 1);
     }
 
     /**

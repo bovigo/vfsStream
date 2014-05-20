@@ -3,6 +3,7 @@
 
    * fixed issue #50: difference between real file system and vfs with `RecursiveDirectoryIterator`
    * issue #67: added partial support for text-mode translation flag (i.e., no actual translation of line endings takes place) so it no longer throws an exception
+   * fixed issue #80: touch with no arguments for modification and access time behave incorrect
 
 
 1.2.0 (2013-04-01)
