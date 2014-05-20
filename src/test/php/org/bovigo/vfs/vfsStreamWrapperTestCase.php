@@ -619,15 +619,12 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
-     * @group  issue_33
-     * @since  1.1.0
+     * @group     issue_33
+     * @since     1.1.0
+     * @requires  PHP 5.4.0
      */
     public function truncateRemovesSuperflouosContent()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
         if (strstr(PHP_VERSION, 'hiphop') !== false) {
             $this->markTestSkipped('Not supported on hhvm');
         }
@@ -641,15 +638,12 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
-     * @group  issue_33
-     * @since  1.1.0
+     * @group     issue_33
+     * @since     1.1.0
+     * @requires  PHP 5.4.0
      */
     public function truncateToGreaterSizeAddsZeroBytes()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
         if (strstr(PHP_VERSION, 'hiphop') !== false) {
             $this->markTestSkipped('Not supported on hhvm');
         }
@@ -664,28 +658,22 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
-     * @group  issue_11
+     * @group     issue_11
+     * @requires  PHP 5.4.0
      */
     public function touchCreatesNonExistingFile()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
         $this->assertTrue(touch($this->fooURL . '/new.txt'));
         $this->assertTrue($this->foo->hasChild('new.txt'));
     }
 
     /**
      * @test
-     * @group  issue_11
+     * @group     issue_11
+     * @requires  PHP 5.4.0
      */
     public function touchChangesAccessAndModificationTimeForFile()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
         $this->assertTrue(touch($this->baz1URL, 303, 313));
         $this->assertEquals(303, $this->baz1->filemtime());
         $this->assertEquals(313, $this->baz1->fileatime());
@@ -693,14 +681,11 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
-     * @group  issue_11
+     * @group     issue_11
+     * @requires  PHP 5.4.0
      */
     public function touchDoesNotChangeTimesWhenNoTimesGiven()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
         $this->assertTrue(touch($this->baz1URL));
         $this->assertEquals(300, $this->baz1->filemtime());
         $this->assertEquals(300, $this->baz1->fileatime());
@@ -708,14 +693,11 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
-     * @group  issue_11
+     * @group     issue_11
+     * @requires  PHP 5.4.0
      */
     public function touchWithModifiedTimeChangesAccessAndModifiedTime()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
         $this->assertTrue(touch($this->baz1URL, 303));
         $this->assertEquals(303, $this->baz1->filemtime());
         $this->assertEquals(303, $this->baz1->fileatime());
@@ -723,14 +705,11 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
-     * @group  issue_11
+     * @group     issue_11
+     * @requires  PHP 5.4.0
      */
     public function touchChangesAccessAndModificationTimeForDirectory()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
         $this->assertTrue(touch($this->fooURL, 303, 313));
         $this->assertEquals(303, $this->foo->filemtime());
         $this->assertEquals(313, $this->foo->fileatime());
