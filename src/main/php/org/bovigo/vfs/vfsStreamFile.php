@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use org\bovigo\vfs\content\FileContent;
 use org\bovigo\vfs\content\StringBasedFileContent;
 /**
  * File container.
@@ -88,12 +89,20 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * Setting content with this method does not change the time when the file
      * was last modified.
      *
-     * @param   string  $content
+     * @param   string]FileContent  $content
      * @return  vfsStreamFile
+     * @throws  \InvalidArgumentException
      */
     public function withContent($content)
     {
-        $this->content = new StringBasedFileContent($content);
+        if (is_string($content)) {
+            $this->content = new StringBasedFileContent($content);
+        } elseif ($content instanceof FileContent) {
+            $this->content = $content;
+        } else {
+            throw new \InvalidArgumentException('Given content must either be a string or an instance of org\bovigo\vfs\content\FileContent');
+        }
+
         return $this;
     }
 
@@ -383,4 +392,3 @@ class vfsStreamFile extends vfsStreamAbstractContent
         return null !== $this->exclusiveLock;
     }
 }
-?>
