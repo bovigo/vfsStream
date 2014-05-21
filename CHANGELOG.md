@@ -1,9 +1,12 @@
 1.3.0 (????-??-??)
 ------------------
 
+   * implemented #79: possibility to mock large files without large memory footprint
+   * implemented #67: added partial support for text-mode translation flag (i.e., no actual translation of line endings takes place) so it no longer throws an exception (provided by Anthon Pang)
    * fixed issue #50: difference between real file system and vfs with `RecursiveDirectoryIterator`
-   * issue #67: added partial support for text-mode translation flag (i.e., no actual translation of line endings takes place) so it no longer throws an exception
    * fixed issue #80: touch with no arguments for modification and access time behave incorrect
+   * deprecated `org\bovigo\vfs\vfsStreamFile::readUntilEnd()`
+   * deprecated `org\bovigo\vfs\vfsStreamFile::getBytesRead()`
 
 
 1.2.0 (2013-04-01)
