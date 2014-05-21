@@ -154,9 +154,9 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     {
         $this->size = $size;
         foreach (array_filter(array_keys($this->content),
-                              function($pos)
+                              function($pos) use ($size)
                               {
-                                  return $pos >= $this->size;
+                                  return $pos >= $size;
                               }
                 ) as $removePos) {
             unset($this->content[$removePos]);
