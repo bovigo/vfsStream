@@ -13,7 +13,7 @@ namespace org\bovigo\vfs\content;
  *
  * @since  1.3.0
  */
-class StringBasedFileContent implements FileContent
+class StringBasedFileContent extends SeekableFileContent implements FileContent
 {
     /**
      * actual content
@@ -21,12 +21,6 @@ class StringBasedFileContent implements FileContent
      * @type  string
      */
     private $content;
-    /**
-     * current position within content
-     *
-     * @type  int
-     */
-    private $offset = 0;
 
     /**
      * constructor
@@ -59,71 +53,28 @@ class StringBasedFileContent implements FileContent
     }
 
     /**
-     * reads the given amount of bytes from content
+     * actual reading of length starting at given offset
      *
-     * @param   int     $count
-     * @return  string
+     * @param  int  $offset
+     * @param  int  $count
      */
-    public function read($count)
+    protected function doRead($offset, $count)
     {
-        $data = substr($this->content, $this->offset, $count);
-        $this->offset += $count;
-        return $data;
+        return substr($this->content, $offset, $count);
     }
 
     /**
-     * seeks to the given offset
-     *
-     * @param   int   $offset
-     * @param   int   $whence
-     * @return  bool
-     */
-    public function seek($offset, $whence)
-    {
-        switch ($whence) {
-            case SEEK_CUR:
-                $this->offset += $offset;
-                return true;
-
-            case SEEK_END:
-                $this->offset = strlen($this->content) + $offset;
-                return true;
-
-            case SEEK_SET:
-                $this->offset = $offset;
-                return true;
-
-            default:
-                return false;
-        }
-
-        return false;
-    }
-
-    /**
-     * checks whether pointer is at end of file
-     *
-     * @return  bool
-     */
-    public function eof()
-    {
-        return $this->offset >= strlen($this->content);
-    }
-
-    /**
-     * writes an amount of data
+     * actual writing of data with specified length at given offset
      *
      * @param   string  $data
-     * @return  amount of written bytes
+     * @param   int     $offset
+     * @param   int     $length
      */
-    public function write($data)
+    protected function doWrite($data, $offset, $length)
     {
-        $dataLength        = strlen($data);
-        $this->content     = substr($this->content, 0, $this->offset)
-                           . $data
-                           . substr($this->content, $this->offset + $dataLength);
-        $this->offset += $dataLength;
-        return $dataLength;
+        $this->content = substr($this->content, 0, $offset)
+                       . $data
+                       . substr($this->content, $offset + $length);
     }
 
     /**
@@ -142,15 +93,5 @@ class StringBasedFileContent implements FileContent
         }
 
         return true;
-    }
-
-    public function bytesRead()
-    {
-        return $this->offset;
-    }
-
-    public function readUntilEnd()
-    {
-        return substr($this->content, $this->offset);
     }
 }
