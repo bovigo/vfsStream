@@ -35,6 +35,10 @@ class vfsStreamExLockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function filePutContentsLockShouldReportError()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in hhvm.');
+        }
         @file_put_contents(vfsStream::url('root/testfile'), "some string\n", LOCK_EX);
         $php_error = error_get_last();
         $this->assertEquals("file_put_contents(): Exclusive locks may only be set for regular files", $php_error['message']);

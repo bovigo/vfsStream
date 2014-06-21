@@ -114,6 +114,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canRemoveLock()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $file->lock($fp, LOCK_EX);
@@ -149,6 +153,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canRemoveSharedLockWithoutRemovingSharedLockOnOtherFileHandler()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2   = fopen(vfsStream::url('root/foo.txt'), 'rb');
@@ -205,6 +213,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canRemoveLockWithNonBlockingFlockCall()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $file->lock($fp, LOCK_EX);
@@ -222,6 +234,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canNotAquireExclusiveLockIfAlreadyExclusivelyLockedOnOtherFileHandler()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2   = fopen(vfsStream::url('root/foo.txt'), 'rb');
@@ -243,6 +259,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canAquireExclusiveLockIfAlreadySelfExclusivelyLocked()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $file->lock($fp, LOCK_EX);
@@ -260,6 +280,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canNotAquireExclusiveLockIfAlreadySharedLockedOnOtherFileHandler()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2   = fopen(vfsStream::url('root/foo.txt'), 'rb');
@@ -279,6 +303,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canAquireExclusiveLockIfAlreadySelfSharedLocked()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $file->lock($fp, LOCK_SH);
@@ -315,6 +343,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canAquireSharedLockIfAlreadySelfExclusivelyLocked()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $file->lock($fp, LOCK_EX);
@@ -349,6 +381,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canAquireSharedLockIfAlreadySharedLockedOnOtherFileHandler()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1   = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2   = fopen(vfsStream::url('root/foo.txt'), 'rb');
@@ -372,6 +408,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function removesExclusiveLockOnStreamClose()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $file->lock($fp, LOCK_EX);
@@ -390,6 +430,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function removesSharedLockOnStreamClose()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $file->lock($fp, LOCK_SH);
@@ -406,6 +450,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function notRemovesExclusiveLockOnStreamCloseIfExclusiveLockAcquiredOnOtherFileHandler()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1 = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2 = fopen(vfsStream::url('root/foo.txt'), 'rb');
@@ -425,6 +473,10 @@ class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
      */
     public function notRemovesSharedLockOnStreamCloseIfSharedLockAcquiredOnOtherFileHandler()
     {
+        // http://docs.hhvm.com/manual/en/streamwrapper.stream-lock.php
+        if (strstr(PHP_VERSION, 'hiphop') !== false) {
+            $this->markTestSkipped('streamWrapper::stream_lock is not supported in HHVM.');
+        }
         $file = vfsStream::newFile('foo.txt')->at($this->root);
         $fp1 = fopen(vfsStream::url('root/foo.txt'), 'rb');
         $fp2 = fopen(vfsStream::url('root/foo.txt'), 'rb');
