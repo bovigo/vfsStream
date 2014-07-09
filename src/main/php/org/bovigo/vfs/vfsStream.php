@@ -329,6 +329,18 @@ class vfsStream
     }
 
     /**
+     * returns a new block with the given name
+     *
+     * @param   string  $name           name of the block device
+     * @param   int     $permissions    permissions of block to create
+     * @return vfsStreamBlock
+     */
+    public static function newBlock($name, $permissions = null)
+    {
+        return new vfsStreamBlock($name, $permissions);
+    }
+
+    /**
      * returns current user
      *
      * If the system does not support posix_getuid() the current user will be root (0).
