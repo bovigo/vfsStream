@@ -27,6 +27,7 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
     public function visit(vfsStreamContent $content)
     {
         switch ($content->getType()) {
+            case vfsStreamContent::TYPE_BLOCK:
             case vfsStreamContent::TYPE_FILE:
                 $this->visitFile($content);
                 break;
