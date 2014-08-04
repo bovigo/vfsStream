@@ -34,6 +34,9 @@ class vfsStreamBlockTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(vfsStreamContent::TYPE_BLOCK, $this->block->getType());
         $this->assertEquals('foo', $this->block->getName());
+        $this->assertTrue($this->block->appliesTo('foo'));
+        $this->assertFalse($this->block->appliesTo('foo/bar'));
+        $this->assertFalse($this->block->appliesTo('bar'));
     }
 
     /**
