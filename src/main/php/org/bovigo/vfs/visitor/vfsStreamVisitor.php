@@ -42,5 +42,13 @@ interface vfsStreamVisitor
      * @return  vfsStreamVisitor
      */
     public function visitDirectory(vfsStreamDirectory $dir);
+
+    /**
+     * visit a block device and process it
+     *
+     * @param   vfsStreamBlock  $block
+     * @return  vfsStreamVisitor
+     */
+    public function visitBlockDevice(vfsStreamBlock $block);
 }
 ?>
