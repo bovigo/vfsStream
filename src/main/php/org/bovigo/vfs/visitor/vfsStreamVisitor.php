@@ -11,6 +11,8 @@ namespace org\bovigo\vfs\visitor;
 use org\bovigo\vfs\vfsStreamContent;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
+use org\bovigo\vfs\vfsStreamBlock;
+
 /**
  * Interface for a visitor to work on a vfsStream content structure.
  *
