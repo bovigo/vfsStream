@@ -544,7 +544,7 @@ class vfsStreamWrapper
      *
      * @param   string                    $path
      * @param   vfsStreamAbstractContent  $content
-     * @param   Closure                   $change
+     * @param   \Closure                  $change
      * @return  bool
      */
     private function doPermChange($path, vfsStreamAbstractContent $content, \Closure $change)

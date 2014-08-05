@@ -1,8 +1,9 @@
-1.3.0 (????-??-??)
+1.3.0 (2014-07-21)
 ------------------
 
-   * implemented #79: possibility to mock large files without large memory footprint
+   * implemented #79: possibility to mock large files without large memory footprint, see https://github.com/mikey179/vfsStream/wiki/MockingLargeFiles
    * implemented #67: added partial support for text-mode translation flag (i.e., no actual translation of line endings takes place) so it no longer throws an exception (provided by Anthon Pang)
+   * fixed issue #74: issue with trailing windows path separators (provided by Sebastian Krüger)
    * fixed issue #50: difference between real file system and vfs with `RecursiveDirectoryIterator`
    * fixed issue #80: touch with no arguments for modification and access time behave incorrect
    * deprecated `org\bovigo\vfs\vfsStreamFile::readUntilEnd()`
