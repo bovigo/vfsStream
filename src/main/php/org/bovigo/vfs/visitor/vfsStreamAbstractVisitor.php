@@ -28,6 +28,9 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
     {
         switch ($content->getType()) {
             case vfsStreamContent::TYPE_BLOCK:
+                $this->visitBlockDevice($content);
+                break;
+
             case vfsStreamContent::TYPE_FILE:
                 $this->visitFile($content);
                 break;
@@ -44,6 +47,17 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
         }
 
         return $this;
+    }
+
+    /**
+     * visit a block device and process it
+     *
+     * @param   vfsStreamBlock $block
+     * @return  vfsStreamVisitor
+     */
+    public function visitBlockDevice(vfsStreamBlock $block)
+    {
+        return $this->visitFile($block);
     }
 }
 ?>
