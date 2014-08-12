@@ -74,7 +74,6 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     {
         $name = $block->getName();
         $block->rename('[' . $name . ']');
-        echo $block->getName();
         $this->printContent($block);
         $block->rename($name);
         return $this;
