@@ -11,6 +11,8 @@ namespace org\bovigo\vfs\visitor;
 use org\bovigo\vfs\vfsStreamContent;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
+use org\bovigo\vfs\vfsStreamBlock;
+
 /**
  * Visitor which traverses a content structure recursively to print it to an output stream.
  *
@@ -59,6 +61,22 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     public function visitFile(vfsStreamFile $file)
     {
         $this->printContent($file);
+        return $this;
+    }
+
+    /**
+     * visit a block device and process it
+     *
+     * @param   vfsStreamBlock  $block
+     * @return  vfsStreamPrintVisitor
+     */
+    public function visitBlockDevice(vfsStreamBlock $block)
+    {
+        $name = $block->getName();
+        $block->rename('[' . $name . ']');
+        echo $block->getName();
+        $this->printContent($block);
+        $block->rename($name);
         return $this;
     }
 
