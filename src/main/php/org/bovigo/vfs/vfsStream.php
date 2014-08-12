@@ -224,7 +224,13 @@ class vfsStream
             if (is_array($data) === true) {
                 self::addStructure($data, self::newDirectory($name)->at($baseDir));
             } elseif (is_string($data) === true) {
-                self::newFile($name)->withContent($data)->at($baseDir);
+                $matches = null;
+                preg_match('/^\[(.*)\]$/', $name, $matches);
+                if ($matches !== array()) {
+                    self::newBlock($matches[1])->withContent($data)->at($baseDir);
+                } else {
+                    self::newFile($name)->withContent($data)->at($baseDir);
+                }
             }
         }
 

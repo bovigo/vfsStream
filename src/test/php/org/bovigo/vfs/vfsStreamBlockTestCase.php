@@ -50,4 +50,23 @@ class vfsStreamBlockTestCase extends \PHPUnit_Framework_TestCase
         $root->addChild(vfsStream::newBlock('foo'));
         $this->assertEquals('block', filetype(vfsStream::url('root/foo')));
     }
+
+    /**
+     * tests adding a complex structure
+     *
+     * @test
+     */
+    public function addStructure()
+    {
+        $structure = array(
+            'topLevel' => array(
+                'thisIsAFile' => 'file contents',
+                '[blockDevice]' => 'block contents'
+            )
+        );
+
+        $root = vfsStream::create($structure);
+
+        $this->assertSame('block', filetype(vfsStream::url('root/topLevel/blockDevice')));
+    }
 }
