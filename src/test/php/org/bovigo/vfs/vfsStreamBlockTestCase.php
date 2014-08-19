@@ -69,4 +69,21 @@ class vfsStreamBlockTestCase extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('block', filetype(vfsStream::url('root/topLevel/blockDevice')));
     }
+
+    /**
+     * tests that a blank name for a block device throws an exception
+     * @test
+     * @expectedException org\bovigo\vfs\vfsStreamException
+     */
+    public function createWithEmptyName()
+    {
+        $structure = array(
+            'topLevel' => array(
+                'thisIsAFile' => 'file contents',
+                '[]' => 'block contents'
+            )
+        );
+
+        $root = vfsStream::create($structure);
+    }
 }
