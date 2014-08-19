@@ -60,7 +60,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      */
     public function visitFile(vfsStreamFile $file)
     {
-        $this->printContent($file);
+        $this->printContent($file->getName());
         return $this;
     }
 
@@ -72,10 +72,8 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      */
     public function visitBlockDevice(vfsStreamBlock $block)
     {
-        $name = $block->getName();
-        $block->rename('[' . $name . ']');
-        $this->printContent($block);
-        $block->rename($name);
+        $name = '[' . $block->getName() . ']';
+        $this->printContent($name);
         return $this;
     }
 
@@ -87,7 +85,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      */
     public function visitDirectory(vfsStreamDirectory $dir)
     {
-        $this->printContent($dir);
+        $this->printContent($dir->getName());
         $this->depth++;
         foreach ($dir as $child) {
             $this->visit($child);
@@ -100,11 +98,11 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     /**
      * helper method to print the content
      *
-     * @param  vfsStreamContent  $content
+     * @param  string   $name
      */
-    protected function printContent(vfsStreamContent $content)
+    protected function printContent($name)
     {
-        fwrite($this->out, str_repeat('  ', $this->depth) . '- ' . $content->getName() . "\n");
+        fwrite($this->out, str_repeat('  ', $this->depth) . '- ' . $name . "\n");
     }
 }
 ?>
