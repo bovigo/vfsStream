@@ -2,6 +2,7 @@ language: php
 
 php:
   - hhvm
+  - hhvm-nightly
   - 5.6
   - 5.3
   - 5.4
@@ -10,6 +11,7 @@ php:
 matrix:
   allow_failures:
     - php: hhvm
+    - php: hhvm-nightly
 
 before_script:
   - "mkdir -p ~/.composer"
