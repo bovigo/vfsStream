@@ -2,6 +2,7 @@
 ------------------
 
    * implemented #85: Added support for emulating block devices in the virtual filesystem, feature provided by Harris Borawski
+   * fixed #68: Unlink a non-existing file now triggers a PHP warning
 
 
 1.3.0 (2014-07-21)
