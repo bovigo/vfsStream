@@ -1,4 +1,4 @@
-1.4.0 (2014-??-??)
+1.4.0 (2014-09-14)
 ------------------
 
    * implemented #85: Added support for emulating block devices in the virtual filesystem, feature provided by Harris Borawski
