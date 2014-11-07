@@ -316,23 +316,32 @@ class vfsStream
      * @param   int     $permissions  permissions of directory to create
      * @return  vfsStreamDirectory
      */
-    public static function newDirectory($name, $permissions = null)
-    {
-        if ('/' === $name{0}) {
-            $name = substr($name, 1);
-        }
+	public static function newDirectory($name, $permissions = null)
+	{
+		$atRoot = ('/' === $name{0});
+		if ($atRoot) {
+			$name = substr($name, 1);
+		}
 
-        $firstSlash = strpos($name, '/');
-        if (false === $firstSlash) {
-            return new vfsStreamDirectory($name, $permissions);
-        }
+		$firstSlash = strpos($name, '/');
+		if (false === $firstSlash) {
+			return new vfsStreamDirectory($name, $permissions);
+		}
 
-        $ownName   = substr($name, 0, $firstSlash);
-        $subDirs   = substr($name, $firstSlash + 1);
-        $directory = new vfsStreamDirectory($ownName, $permissions);
-        self::newDirectory($subDirs, $permissions)->at($directory);
-        return $directory;
-    }
+		$ownName   = substr($name, 0, $firstSlash);
+		$subDirs   = substr($name, $firstSlash + 1);
+		$directory = new vfsStreamDirectory($ownName, $permissions);
+
+		if($atRoot){
+			$root = vfsStreamWrapper::getRoot();
+			if(!is_null($root)){
+				$directory->at($root);
+			}
+		}
+
+		self::newDirectory($subDirs, $permissions)->at($directory);
+		return $directory;
+	}
 
     /**
      * returns a new block with the given name
