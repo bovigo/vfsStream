@@ -28,10 +28,6 @@ class vfsStreamResolveIncludePathTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        if (defined('HPHP_VERSION')) {
-            $this->markTestSkipped('Requires https://github.com/facebook/hhvm/issues/1476 to be fixed');
-        }
-
         $this->backupIncludePath = get_include_path();
         vfsStream::setup();
         mkdir('vfs://root/a/path', 0777, true);
