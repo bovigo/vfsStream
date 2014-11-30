@@ -996,7 +996,7 @@ class vfsStreamWrapper
     {
         $content = $this->getContent($this->resolvePath(vfsStream::path($path)));
         if (null === $content) {
-            trigger_error(' Does not exist: ' . $path, E_USER_WARNING);
+            trigger_error(' No such link: ' . $path, E_USER_WARNING);
             return false;
         }
 
