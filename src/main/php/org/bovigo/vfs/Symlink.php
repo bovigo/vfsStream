@@ -11,6 +11,7 @@ namespace org\bovigo\vfs;
 /**
  * Represents a symbolic link.
  *
+ * @todo   symlink should not know about target when target was (re)moved
  * @since  1.?.0
  */
 class Symlink implements vfsStreamContent
@@ -56,6 +57,12 @@ class Symlink implements vfsStreamContent
         return $this->target;
     }
 
+    /**
+     * returns name of target
+     *
+     * @todo  should return the link path
+     * @return  string
+     */
     public function targetName()
     {
         return $this->target->getName();
