@@ -339,11 +339,24 @@ class vfsStream
      *
      * @param   string  $name           name of the block device
      * @param   int     $permissions    permissions of block to create
-     * @return vfsStreamBlock
+     * @return  \org\bovigo\vfs\vfsStreamBlock
      */
     public static function newBlock($name, $permissions = null)
     {
         return new vfsStreamBlock($name, $permissions);
+    }
+
+    /**
+     * returns a new symbolic link with given name pointing to target
+     *
+     * @param   string  $name
+     * @param   \org\bovigo\vfs\vfsStreamContent $target
+     * @return  \org\bovigo\vfs\Symlink
+     * @since   1.?.0
+     */
+    public static function newSymlink($name, vfsStreamContent $target)
+    {
+        return new Symlink($name, $target);
     }
 
     /**

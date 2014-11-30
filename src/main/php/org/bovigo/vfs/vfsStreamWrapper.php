@@ -977,5 +977,20 @@ class vfsStreamWrapper
                     );
         return array_merge(array_values($fileStat), $fileStat);
     }
+
+    public function url_readlink($path)
+    {
+        $content = $this->getContent($this->resolvePath(vfsStream::path($path)));
+        if (null === $content) {
+            trigger_error(' Does not exist: ' . $path, E_USER_WARNING);
+            return false;
+        }
+
+        if ($content->getType() !== vfsStreamContent::TYPE_LINK) {
+            trigger_error(' Not a link: ' . $path, E_USER_WARNING);
+            return false;
+        }
+
+        return $content->targetName();
+    }
 }
-?>

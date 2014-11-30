@@ -30,8 +30,7 @@ interface vfsStreamContent
      *
      * @see  getType();
      */
-    #const TYPE_LINK = 0120000;
-
+    const TYPE_LINK = 0120000;
     /**
      * stream content type: block
      *
@@ -211,4 +210,4 @@ interface vfsStreamContent
      */
     public function url();
 }
-?>
+
