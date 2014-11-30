@@ -58,14 +58,13 @@ class Symlink implements vfsStreamContent
     }
 
     /**
-     * returns name of target
+     * returns url of target
      *
-     * @todo  should return the link path
      * @return  string
      */
-    public function targetName()
+    public function targetUrl()
     {
-        return $this->target->getName();
+        return $this->target->url();
     }
 
     /**

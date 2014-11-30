@@ -961,6 +961,7 @@ class vfsStreamWrapper
         } elseif ($content->getType() === vfsStreamContent::TYPE_LINK
                 && (($flags & STREAM_URL_STAT_LINK) !== STREAM_URL_STAT_LINK)) {
             $content = $content->resolve();
+            // todo check if null === content, might have been (re)moved
         }
 
 
@@ -1005,6 +1006,6 @@ class vfsStreamWrapper
             return false;
         }
 
-        return $content->targetName();
+        return $content->targetUrl();
     }
 }
