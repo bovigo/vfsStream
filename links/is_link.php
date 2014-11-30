@@ -11,13 +11,6 @@ namespace org\bovigo\vfs\linking;
 
 require 'bootstrap.php';
 
-use org\bovigo\vfs\vfsStream;
-
-$root = vfsStream::setup();
-$dir  = vfsStream::newDirectory('some')->at($root);
-$file = vfsStream::newFile('target.txt')->withContent('hello, world!')->at($dir);
-$link = vfsStream::newSymlink('link', $file)->at($dir);
-
 var_dump(is_link($link->url()));
 
 var_dump(is_link($file->url()));

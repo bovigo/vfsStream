@@ -11,9 +11,4 @@ namespace org\bovigo\vfs\linking;
 
 require 'bootstrap.php';
 
-use org\bovigo\vfs\vfsStream;
-
-$root = vfsStream::setup();
-vfsStream::newDirectory('some')->at($root);
-
-var_dump(linkinfo('vfs://root/some/link'));
+var_dump(linkinfo($link->url()));
