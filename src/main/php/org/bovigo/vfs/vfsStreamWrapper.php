@@ -978,6 +978,16 @@ class vfsStreamWrapper
         return array_merge(array_values($fileStat), $fileStat);
     }
 
+    /**
+     * returns target of a link
+     *
+     * In case the target does not exist an E_USER_WARNING is triggered. Also,
+     * if the target is not a link an E_USER_WARNING is triggered.
+     *
+     * @param   string  $path  path of url to return status for
+     * @return  bool|string
+     * @since   1.?.0
+     */
     public function url_readlink($path)
     {
         $content = $this->getContent($this->resolvePath(vfsStream::path($path)));
