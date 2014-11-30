@@ -90,6 +90,20 @@ interface vfsStreamContent
     public function filemtime();
 
     /**
+     * returns the last access time of the stream content
+     *
+     * @return  int
+     */
+    public function fileatime();
+
+    /**
+     * returns the last attribute modification time of the stream content
+     *
+     * @return  int
+     */
+    public function filectime();
+
+    /**
      * adds content to given container
      *
      * @param   vfsStreamContainer  $container

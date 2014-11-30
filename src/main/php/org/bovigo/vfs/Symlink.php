@@ -140,6 +140,26 @@ class Symlink implements vfsStreamContent
     }
 
     /**
+     * returns the last access time of the stream content
+     *
+     * @return  int
+     */
+    public function fileatime()
+    {
+        return $this->target->fileatime();
+    }
+
+    /**
+     * returns the last attribute modification time of the stream content
+     *
+     * @return  int
+     */
+    public function filectime()
+    {
+        return $this->target->filectime();
+    }
+
+    /**
      * adds content to given container
      *
      * @param   vfsStreamContainer  $container

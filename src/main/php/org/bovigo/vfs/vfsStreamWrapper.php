@@ -958,8 +958,12 @@ class vfsStreamWrapper
             }
 
             return false;
-
+        } elseif ($content->getType() === vfsStreamContent::TYPE_LINK
+                && (($flags & STREAM_URL_STAT_LINK) !== STREAM_URL_STAT_LINK)) {
+            $content = $content->resolve();
         }
+
+
 
         $fileStat = array('dev'     => 0,
                           'ino'     => 0,
