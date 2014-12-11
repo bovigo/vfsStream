@@ -48,7 +48,7 @@ class vfsStreamWrapperWithoutRootTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canNotOpen()
     {
-        $this->assertFalse(@fopen(vfsStream::url('foo')));
+        $this->assertFalse(@fopen(vfsStream::url('foo'), 'r'));
     }
 
     /**
