@@ -59,4 +59,3 @@ class FilemodeExample
 
     // more source code here...
 }
-?>

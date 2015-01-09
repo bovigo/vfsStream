@@ -26,4 +26,3 @@ class FilePermissionsExample
 
     // more methods here
 }
-?>

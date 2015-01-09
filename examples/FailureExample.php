@@ -47,4 +47,3 @@ class FailureExample
 
     // more source code here...
 }
-?>

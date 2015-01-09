@@ -55,4 +55,3 @@ class FailureExampleTestCase extends \PHPUnit_Framework_TestCase
         $this->assertSame('notoverwritten', $this->root->getChild('test.txt')->getContent());
     }
 }
-?>

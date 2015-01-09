@@ -51,4 +51,3 @@ class Example
 
     // more source code here...
 }
-?>
