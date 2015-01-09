@@ -44,4 +44,3 @@ class ExampleTestCaseWithVfsStream extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->root->hasChild('id'));
     }
 }
-?>

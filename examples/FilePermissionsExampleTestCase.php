@@ -41,4 +41,3 @@ class FilePermissionsExampleTestCase extends \PHPUnit_Framework_TestCase
         );
     }
 }
-?>

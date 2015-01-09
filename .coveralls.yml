@@ -1,3 +1,3 @@
-src_dir: src/main/php
+src_dir: src
 coverage_clover: docs/phpunit/clover.xml
 json_path: docs/phpunit/coveralls-upload.json
