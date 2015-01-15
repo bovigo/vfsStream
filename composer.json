@@ -3,7 +3,7 @@
     "type": "library",
     "homepage": "http://vfs.bovigo.org/",
     "description": "Virtual file system to mock the real file system in unit tests.",
-    "license": "BSD",
+    "license": "BSD-3-Clause",
     "require": {
         "php": ">=5.3.0"
     },
