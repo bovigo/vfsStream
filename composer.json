@@ -11,8 +11,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/sndsgd/sndsgd-util/issues",
-        "source": "https://github.com/sndsgd/sndsgd-util/tree/master"
+        "issues": "https://github.com/mikey179/vfsStream/issues",
+        "source": "https://github.com/mikey179/vfsStream/tree/master"
     },
     "require": {
         "php": ">=5.3.0"
