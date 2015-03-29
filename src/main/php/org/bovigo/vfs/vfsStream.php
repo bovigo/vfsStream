@@ -82,7 +82,7 @@ class vfsStream
         $path = str_replace('\\', '/', $path);
         // replace double slashes with single slashes
         $path = str_replace('//', '/', $path);
-        return $path;
+        return urldecode($path);
     }
 
     /**
