@@ -88,5 +88,27 @@ class PermissionsTestCase extends \PHPUnit_Framework_TestCase
         $this->root->getChild('test_directory')->getChild('test.file')->chown(vfsStream::OWNER_USER_1);
         $this->assertFalse(@chgrp(vfsStream::url('root/test_directory/test.file'), vfsStream::GROUP_USER_2));
     }
+
+    /**
+     * @test
+     * @group  issue_107
+     * @expectedException  PHPUnit_Framework_Error
+     * @expectedExceptionMessage  Can not create new file in non-writable path root
+     */
+    public function touchOnNonWriteableDirectoryTriggersError()
+    {
+        $this->root->chmod(0555);
+        touch($this->root->url() . '/touch.txt');
+    }
+
+    /**
+     * @test
+     * @group  issue_107
+     */
+    public function touchOnNonWriteableDirectoryDoesNotCreateFile()
+    {
+        $this->root->chmod(0555);
+        $this->assertFalse(@touch($this->root->url() . '/touch.txt'));
+        $this->assertFalse($this->root->hasChild('touch.txt'));
+    }
 }
-?>
