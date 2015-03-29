@@ -1,4 +1,4 @@
-1.5.0 (2015-??-??)
+1.5.0 (2015-03-29)
 ------------------
 
    * implemented #91: vfsStream::copyFromFileSystem() should create large file instances
