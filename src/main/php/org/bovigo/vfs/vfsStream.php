@@ -267,26 +267,34 @@ class vfsStream
 
         $dir = new \DirectoryIterator($path);
         foreach ($dir as $fileinfo) {
-            if ($fileinfo->isFile() === true) {
-                if ($fileinfo->getSize() <= $maxFileSize) {
-                    $content = file_get_contents($fileinfo->getPathname());
-                } else {
-                    $content = '';
-                }
+            switch (filetype($fileinfo->getPathname())) {
+                case 'file':
+                    if ($fileinfo->getSize() <= $maxFileSize) {
+                        $content = file_get_contents($fileinfo->getPathname());
+                    } else {
+                        $content = '';
+                    }
 
-                self::newFile($fileinfo->getFilename(),
-                              octdec(substr(sprintf('%o', $fileinfo->getPerms()), -4))
-                      )
-                    ->withContent($content)
-                    ->at($baseDir);
-            } elseif ($fileinfo->isDir() === true && $fileinfo->isDot() === false) {
-                self::copyFromFileSystem($fileinfo->getPathname(),
-                                         self::newDirectory($fileinfo->getFilename(),
-                                                            octdec(substr(sprintf('%o', $fileinfo->getPerms()), -4))
-                                               )
-                                             ->at($baseDir),
-                                         $maxFileSize
-                );
+                    self::newFile(
+                            $fileinfo->getFilename(),
+                            octdec(substr(sprintf('%o', $fileinfo->getPerms()), -4))
+                        )
+                        ->withContent($content)
+                        ->at($baseDir);
+                    break;
+                case 'dir':
+                    if (!$fileinfo->isDot()) {
+                        self::copyFromFileSystem(
+                                $fileinfo->getPathname(),
+                                self::newDirectory(
+                                        $fileinfo->getFilename(),
+                                        octdec(substr(sprintf('%o', $fileinfo->getPerms()), -4))
+                                )->at($baseDir),
+                                $maxFileSize
+                        );
+                    }
+
+                    break;
             }
         }
 
