@@ -285,6 +285,7 @@ class vfsStream
                         ->withContent($content)
                         ->at($baseDir);
                     break;
+
                 case 'dir':
                     if (!$fileinfo->isDot()) {
                         self::copyFromFileSystem(
@@ -297,6 +298,13 @@ class vfsStream
                         );
                     }
 
+                    break;
+
+                case 'block':
+                    self::newBlock(
+                            $fileinfo->getFilename(),
+                            octdec(substr(sprintf('%o', $fileinfo->getPerms()), -4))
+                        )->at($baseDir);
                     break;
             }
         }
@@ -452,4 +460,3 @@ class vfsStream
         self::$dotFiles = true;
     }
 }
-?>
