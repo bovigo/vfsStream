@@ -10,6 +10,7 @@
 namespace org\bovigo\vfs;
 /**
  * @group  issue_104
+ * @since  1.5.0
  */
 class Issue104TestCase extends \PHPUnit_Framework_TestCase
 {
