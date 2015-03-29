@@ -139,7 +139,7 @@ class vfsStreamWrapperFileTimesTestCase extends \PHPUnit_Framework_TestCase
                          ->lastAttributeModified(100);
         $fp = fopen($this->fooUrl, 'rb');
         $openTime = time();
-        sleep(3);
+        sleep(2);
         fread($fp, 1024);
         fclose($fp);
         $this->assertLessThanOrEqual($openTime, filemtime($this->fooUrl));
@@ -161,7 +161,7 @@ class vfsStreamWrapperFileTimesTestCase extends \PHPUnit_Framework_TestCase
                          ->lastAttributeModified(100);
         $fp = fopen($this->fooUrl, 'wb');
         $openTime = time();
-        sleep(3);
+        sleep(2);
         fwrite($fp, 'test');
         fclose($fp);
         $this->assertLessThanOrEqual($openTime + 3, filemtime($this->fooUrl));
