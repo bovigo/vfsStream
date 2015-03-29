@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use org\bovigo\vfs\content\LargeFileContent;
 use org\bovigo\vfs\visitor\vfsStreamVisitor;
 /**
  * Some utility methods for vfsStream.
@@ -245,7 +246,9 @@ class vfsStream
      * names.
      * File permissions are copied as well.
      * Please note that file contents will only be copied if their file size
-     * does not exceed the given $maxFileSize which is 1024 KB.
+     * does not exceed the given $maxFileSize which defaults to 1024 KB. In case
+     * the file is larger file content will be mocked, see
+     * https://github.com/mikey179/vfsStream/wiki/MockingLargeFiles.
      *
      * @param   string              $path         path to copy the structure from
      * @param   vfsStreamDirectory  $baseDir      directory to add the structure to
@@ -272,7 +275,7 @@ class vfsStream
                     if ($fileinfo->getSize() <= $maxFileSize) {
                         $content = file_get_contents($fileinfo->getPathname());
                     } else {
-                        $content = '';
+                        $content = new LargeFileContent($fileinfo->getSize());
                     }
 
                     self::newFile(
