@@ -2,6 +2,7 @@
 ------------------
 
    * fixed #107: touch() does not respect file permissions
+   * fixed #105: vfs directory structure is not reset after each test
 
 
 1.4.0 (2014-09-14)

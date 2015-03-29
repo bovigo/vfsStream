@@ -124,6 +124,7 @@ class vfsStreamWrapper
     public static function setRoot(vfsStreamContainer $root)
     {
         self::$root = $root;
+        clearstatcache();
         return self::$root;
     }
 
