@@ -14,7 +14,6 @@
          stopOnFailure="false"
          stopOnIncomplete="false"
          stopOnSkipped="false"
-         strict="false"
          verbose="true">
   <testsuites>
     <testsuite>
