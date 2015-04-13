@@ -188,6 +188,35 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
         return null;
     }
 
+	/**
+	 * @param string $path
+	 * @return \org\bovigo\vfs\vfsStreamContent|\org\bovigo\vfs\vfsStreamDirectory
+	 * @throws vfsStreamException
+	 */
+	public function getChildByPath($path)
+	{
+		if(!is_string($path)){
+			throw new vfsStreamException("Unexpected argument, path as string only supported");
+		}
+		$aPath = explode('/', $path);
+		$child = $this->getChild($aPath[0]);
+		array_shift($aPath);
+
+		if($aPath){
+			foreach($aPath as $childName){
+				$tmp = $child->getChild($childName);
+				if(!is_null($tmp)){
+					$child = $tmp;
+				}
+				else{
+					throw new vfsStreamException("Cannot find child `$childName` while searching for `$path` ");
+				}
+			}
+		}
+
+		return $child;
+	}
+
     /**
      * helper method to detect the real child name
      *
