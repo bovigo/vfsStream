@@ -195,6 +195,9 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
 	 */
 	public function getChildByPath($path)
 	{
+		if(!is_string($path)){
+			throw new vfsStreamException("Unexpected argument, path as string only supported");
+		}
 		$aPath = explode('/', $path);
 		$child = $this->getChild($aPath[0]);
 		array_shift($aPath);
@@ -202,7 +205,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
 		if($aPath){
 			foreach($aPath as $childName){
 				$tmp = $child->getChild($childName);
-				if($tmp){
+				if(!is_null($tmp)){
 					$child = $tmp;
 				}
 				else{
