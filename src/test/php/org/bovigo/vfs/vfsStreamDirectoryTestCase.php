@@ -210,6 +210,39 @@ class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $this->dir->sizeSummarized());
     }
 
+	/**
+	 * @test
+	 */
+	public function getChildByPath(){
+		$subdir = new vfsStreamDirectory('child');
+		$subdir->addChild(new vfsStreamDirectory('grandChild'));
+		$this->dir->addChild($subdir);
+		$result = $this->dir->getChildByPath('child/grandChild');
+
+		$this->assertEquals('grandChild', $result->getName());
+		$this->assertEquals(0, $result->size());
+	}
+
+	/**
+	 * @test
+	 * @expectedException  org\bovigo\vfs\vfsStreamException
+	 */
+	public function getChildByPath_notFound(){
+		$subdir = new vfsStreamDirectory('child');
+		$this->dir->addChild($subdir);
+		$this->dir->getChildByPath('child/grandChild');
+	}
+
+	/**
+	 * @test
+	 * @expectedException  org\bovigo\vfs\vfsStreamException
+	 */
+	public function getChildByPath_notStringArg(){
+		$subdir = new vfsStreamDirectory('child');
+		$this->dir->addChild($subdir);
+		$this->dir->getChildByPath(false);
+	}
+	
     /**
      * dd
      *
