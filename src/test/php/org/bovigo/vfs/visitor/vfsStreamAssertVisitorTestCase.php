@@ -20,13 +20,13 @@ class vfsStreamAssertVisitorTestCase extends \PHPUnit_Framework_TestCase {
 	public function visitRecursiveDirectoryStructure() {
 		$root             = vfsStream::setup('root',
 			null,
-			[
-				'test'    => [
-					'foo'     => ['test.txt' => 'hello'],
+			array(
+				'test'    => array(
+					'foo'     => array('test.txt' => 'hello'),
 					'baz.txt' => 'world'
-				],
+				),
 				'foo.txt' => ''
-			]
+			)
 		);
 		$structureVisitor = new vfsStreamAssertVisitor();
 
