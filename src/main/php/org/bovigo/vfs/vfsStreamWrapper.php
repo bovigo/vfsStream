@@ -231,7 +231,7 @@ class vfsStreamWrapper
             if ('.' !== $pathPart) {
                 if ('..' !== $pathPart) {
                     $newPath[] = $pathPart;
-                } else {
+                } elseif (count($newPath) > 1) {
                     array_pop($newPath);
                 }
             }

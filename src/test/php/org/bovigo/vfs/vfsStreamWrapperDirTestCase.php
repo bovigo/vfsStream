@@ -401,6 +401,34 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
+     * @group bug_115
+     */
+    public function accessWithExcessDoubleDotsReturnsCorrectContent()
+    {
+        $this->assertEquals('baz2',
+            file_get_contents(vfsStream::url('foo/../../../../bar/../baz2'))
+        );
+    }
+
+    /**
+     * @test
+     * @group bug_115
+     */
+    public function alwaysResolvesRootDirectoryAsOwnParentWithDoubleDot()
+    {
+        vfsStreamWrapper::getRoot()->chown(vfsStream::OWNER_USER_1);
+
+        $this->assertTrue(is_dir(vfsStream::url('foo/..')));
+        $stat = stat(vfsStream::url('foo/..'));
+        $this->assertEquals(
+            vfsStream::OWNER_USER_1,
+            $stat['uid']
+        );
+    }
+
+
+    /**
+     * @test
      * @since  0.11.0
      * @group  issue_23
      */
