@@ -124,6 +124,7 @@ class vfsStreamWrapper
      * registered with this class, a vfsStreamException will be thrown.
      * 
      * @throws vfsStreamException
+     * @since  1.6.0
      */
     public static function unregister()
     {
