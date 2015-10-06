@@ -1,4 +1,4 @@
-1.6.0 (2015-10-??)
+1.6.0 (2015-10-06)
 ------------------
 
    * added `vfsStreamWrapper::unregister()`, provided by @malkusch with #114
