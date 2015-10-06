@@ -116,6 +116,32 @@ class vfsStreamWrapper
     }
 
     /**
+     * Unregisters a previously registered URL wrapper for the vfs scheme.
+     * 
+     * If this stream wrapper wasn't registered, the method returns silently.
+     *
+     * If unregistering fails, or if the URL wrapper for vfs:// was not
+     * registered with this class, a vfsStreamException will be thrown.
+     * 
+     * @throws vfsStreamException
+     */
+    public static function unregister()
+    {
+        if (!self::$registered) {
+            if (in_array(vfsStream::SCHEME, stream_get_wrappers())) {
+                throw new vfsStreamException('The URL wrapper for the protocol ' . vfsStream::SCHEME . ' was not registered with this version of vfsStream.');
+            }
+            return;
+        }
+
+        if (!@stream_wrapper_unregister(vfsStream::SCHEME)) {
+            throw new vfsStreamException('Failed to unregister the URL wrapper for the ' . vfsStream::SCHEME . ' protocol.');
+        }
+
+        self::$registered = false;
+    }
+
+    /**
      * sets the root content
      *
      * @param   vfsStreamContainer  $root
