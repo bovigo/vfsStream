@@ -1,7 +1,8 @@
-1.?.? (2015-10-??)
+1.6.0 (2015-10-??)
 ------------------
 
-   * fixed #115: incorrect handling of .. in root directory on PHP 5.5, fix provided by @acoulton with #116
+   * added `vfsStreamWrapper::unregister()`, provided by @malkusch with #114
+   * fixed #115: incorrect handling of `..` in root directory on PHP 5.5, fix provided by @acoulton with #116
 
 
 1.5.0 (2015-03-29)
