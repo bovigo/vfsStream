@@ -66,7 +66,16 @@ class vfsStream
      */
     public static function url($path)
     {
-        return self::SCHEME . '://' . str_replace('\\', '/', $path);
+        return self::SCHEME . '://' . join(
+                '/',
+                array_map(
+                        'urlencode',    // ensure singe path parts are correctly urlencoded
+                        explode(
+                                '/',
+                                str_replace('\\', '/', $path)  // ensure correct directory separator
+                        )
+                )
+        );
     }
 
     /**

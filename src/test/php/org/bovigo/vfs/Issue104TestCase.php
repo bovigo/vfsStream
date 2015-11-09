@@ -45,7 +45,7 @@ class Issue104TestCase extends \PHPUnit_Framework_TestCase
         vfsStream::setup('root', null, $structure);
         $this->assertEquals(
                 $content,
-                file_get_contents(vfsStream::url('root/foo%20bar/schema.xsd'))
+                file_get_contents(vfsStream::url('root/foo bar/schema.xsd'))
         );
     }
 }
