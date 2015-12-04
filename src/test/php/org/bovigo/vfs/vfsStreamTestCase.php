@@ -725,4 +725,15 @@ class vfsStreamTestCase extends \PHPUnit_Framework_TestCase
                 $root->getChild('withSubfolders/subfolder1/file1.txt')->getContent()
         );
     }
+
+    /**
+     * @test
+     * @group  issue_121
+     * @since  1.6.1
+     */
+    public function createDirectoryWithTrailingSlashShouldNotCreateSubdirectoryWithEmptyName()
+    {
+        $directory = vfsStream::newDirectory('foo/');
+        $this->assertFalse($directory->hasChildren());
+    }
 }

@@ -1,7 +1,8 @@
-1.6.1 (2015-11-??)
+1.6.1 (2015-12-??)
 ------------------
 
    * `vfsStream::url()` didn't urlencode single path parts while `vfsStream::path()` did urldecode them
+   * fixed #121, #122: create directory with trailing slash results in "Uninitialized string offset: 0"
 
 
 1.6.0 (2015-10-06)
