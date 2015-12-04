@@ -1,4 +1,4 @@
-1.6.1 (2015-12-??)
+1.6.1 (2015-12-04)
 ------------------
 
    * `vfsStream::url()` didn't urlencode single path parts while `vfsStream::path()` did urldecode them
