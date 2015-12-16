@@ -683,7 +683,7 @@ class vfsStreamWrapper
      */
     public function stream_cast($cast_as)
     {
-        $this->fp = fopen(sys_get_temp_dir() . '/vfs-' . md5($this->content->path()), 'wb+');
+        $this->fp = fopen('php://temp', 'wb+');
         if ($this->content->size() > 0 ) {
             fwrite($this->fp, $this->content->getContent());
             rewind($this->fp);
