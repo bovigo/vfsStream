@@ -278,6 +278,7 @@ class vfsStreamWrapper
      */
     public function stream_open($path, $mode, $options, $opened_path)
     {
+        $this->omode = $mode;
         $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
         $mode     = str_replace(array('t', 'b', '+'), '', $mode);
         if (in_array($mode, array('r', 'w', 'a', 'x', 'c')) === false) {
@@ -413,6 +414,12 @@ class vfsStreamWrapper
      */
     public function stream_close()
     {
+        if (isset($this->fp)) {
+            fclose($this->fp);
+            $this->fp = null;
+            $this->content->setContent(file_get_contents(sys_get_temp_dir() . '/vfs-' . md5($this->content->path())));
+        }
+
         $this->content->lock($this, LOCK_UN);
     }
 
@@ -672,11 +679,17 @@ class vfsStreamWrapper
      * @param   int  $cast_as
      * @since   0.9.0
      * @see     https://github.com/mikey179/vfsStream/issues/3
-     * @return  bool
+     * @return  bool|resource
      */
     public function stream_cast($cast_as)
     {
-        return false;
+        $this->fp = fopen(sys_get_temp_dir() . '/vfs-' . md5($this->content->path()), 'wb+');
+        if ($this->content->size() > 0 ) {
+            fwrite($this->fp, $this->content->getContent());
+            rewind($this->fp);
+        }
+
+        return $this->fp;
     }
 
     /**
