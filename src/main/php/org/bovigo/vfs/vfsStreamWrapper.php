@@ -415,9 +415,12 @@ class vfsStreamWrapper
     public function stream_close()
     {
         if (isset($this->fp)) {
+            fseek($this->fp, 0, SEEK_END);
+            $length = ftell($this->fp);
+            rewind($this->fp);
+            $this->content->setContent(fread($this->fp, $length));
             fclose($this->fp);
             $this->fp = null;
-            $this->content->setContent(file_get_contents(sys_get_temp_dir() . '/vfs-' . md5($this->content->path())));
         }
 
         $this->content->lock($this, LOCK_UN);
