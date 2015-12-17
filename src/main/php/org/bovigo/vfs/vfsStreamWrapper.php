@@ -445,6 +445,10 @@ class vfsStreamWrapper
      */
     public function stream_cast($cast_as)
     {
+        if (STREAM_CAST_FOR_SELECT === $cast_as) {
+            return false;
+        }
+
         $this->fp = fopen('php://temp', 'wb+');
         if ($this->content->size() > 0 && false !== $this->fp) {
             fwrite($this->fp, $this->content->getContent());
