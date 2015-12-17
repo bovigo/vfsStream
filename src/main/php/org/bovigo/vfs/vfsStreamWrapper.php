@@ -689,7 +689,7 @@ class vfsStreamWrapper
         $this->fp = fopen('php://temp', 'wb+');
         if ($this->content->size() > 0 ) {
             fwrite($this->fp, $this->content->getContent());
-            rewind($this->fp);
+            fseek($this->fp, $this->content->getBytesRead(), SEEK_SET);
         }
 
         return $this->fp;
