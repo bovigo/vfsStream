@@ -437,6 +437,9 @@ class vfsStreamWrapper
      * This will return a file resource pointing to php://temp which allows to
      * use vfsStream with urls like compress.zlib://vfs://root/test.nbt.
      *
+     * When called from stream_select() it will still return false as this is
+     * not supported.
+     *
      * @param   int  $cast_as
      * @since   0.9.0
      * @see     https://github.com/mikey179/vfsStream/issues/3
