@@ -88,6 +88,12 @@ class vfsStreamWrapper
      * @type  vfsStreamDirectory
      */
     protected $dirIterator;
+    /**
+     * file pointer to resource when stream_cast() was called
+     *
+     * @type  resource
+     */
+    private $fp;
 
     /**
      * method to register the stream wrapper
@@ -278,7 +284,6 @@ class vfsStreamWrapper
      */
     public function stream_open($path, $mode, $options, $opened_path)
     {
-        $this->omode = $mode;
         $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
         $mode     = str_replace(array('t', 'b', '+'), '', $mode);
         if (in_array($mode, array('r', 'w', 'a', 'x', 'c')) === false) {
@@ -424,6 +429,29 @@ class vfsStreamWrapper
         }
 
         $this->content->lock($this, LOCK_UN);
+    }
+
+    /**
+     * retrieve the underlaying resource
+     *
+     * This will return a file resource pointing to php://temp which allows to
+     * use vfsStream with urls like compress.zlib://vfs://root/test.nbt.
+     *
+     * @param   int  $cast_as
+     * @since   0.9.0
+     * @see     https://github.com/mikey179/vfsStream/issues/3
+     * @see     https://github.com/mikey179/vfsStream/pull/125
+     * @return  bool|resource
+     */
+    public function stream_cast($cast_as)
+    {
+        $this->fp = fopen('php://temp', 'wb+');
+        if ($this->content->size() > 0 && false !== $this->fp) {
+            fwrite($this->fp, $this->content->getContent());
+            fseek($this->fp, $this->content->getBytesRead(), SEEK_SET);
+        }
+
+        return $this->fp;
     }
 
     /**
@@ -671,28 +699,6 @@ class vfsStreamWrapper
                           'blocks'  => -1
                     );
         return array_merge(array_values($fileStat), $fileStat);
-    }
-
-    /**
-     * retrieve the underlaying resource
-     *
-     * Please note that this method always returns false as there is no
-     * underlaying resource to return.
-     *
-     * @param   int  $cast_as
-     * @since   0.9.0
-     * @see     https://github.com/mikey179/vfsStream/issues/3
-     * @return  bool|resource
-     */
-    public function stream_cast($cast_as)
-    {
-        $this->fp = fopen('php://temp', 'wb+');
-        if ($this->content->size() > 0 ) {
-            fwrite($this->fp, $this->content->getContent());
-            fseek($this->fp, $this->content->getBytesRead(), SEEK_SET);
-        }
-
-        return $this->fp;
     }
 
     /**
