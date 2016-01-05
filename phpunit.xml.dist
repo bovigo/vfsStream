@@ -17,6 +17,7 @@
          verbose="true">
   <testsuites>
     <testsuite>
+      <directory suffix=".phpt">./src/test/phpt</directory>
       <directory suffix="TestCase.php">./src/test/php</directory>
     </testsuite>
   </testsuites>
