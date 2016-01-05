@@ -16,7 +16,7 @@ matrix:
 
 install:
   - composer install
-  - composer require satooshi/php-coveralls:dev-master
+  - composer require satooshi/php-coveralls '~1.0'
 
 script:
   - vendor/bin/phpunit --coverage-text
