@@ -1,5 +1,8 @@
 --TEST--
 Reproduce octal output from stream wrapper invocation
+
+See https://bugs.php.net/bug.php?id=71287
+See https://github.com/mikey179/vfsStream/issues/120
 --FILE--
 <?php
 class Stream {
