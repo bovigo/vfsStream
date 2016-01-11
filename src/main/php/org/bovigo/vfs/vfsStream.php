@@ -69,7 +69,7 @@ class vfsStream
         return self::SCHEME . '://' . join(
                 '/',
                 array_map(
-                        'urlencode',    // ensure singe path parts are correctly urlencoded
+                        'rawurlencode',    // ensure singe path parts are correctly urlencoded
                         explode(
                                 '/',
                                 str_replace('\\', '/', $path)  // ensure correct directory separator
@@ -92,7 +92,7 @@ class vfsStream
         $path = str_replace('\\', '/', $path);
         // replace double slashes with single slashes
         $path = str_replace('//', '/', $path);
-        return urldecode($path);
+        return rawurldecode($path);
     }
 
     /**
