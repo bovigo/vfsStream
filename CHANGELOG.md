@@ -1,4 +1,4 @@
-1.6.2 (2016-??-??)
+1.6.2 (2016-01-13)
 ------------------
 
    * fixed #128 duplicate "valid" files/directories and incorrect file names
