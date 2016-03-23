@@ -16,10 +16,10 @@ matrix:
 
 install:
   - composer install
-  - composer require satooshi/php-coveralls '~1.0'
+  - composer require satooshi/php-coveralls
 
 script:
   - vendor/bin/phpunit --coverage-text
 
 after_script:
-  - vendor/bin/coveralls
+  - travis_retry vendor/bin/coveralls
