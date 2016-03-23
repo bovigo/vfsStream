@@ -43,7 +43,10 @@ class FilenameTestCase extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals(
-                array('vfs://root/lost+found/.', 'vfs://root/lost+found/..'),
+                array(
+                        'vfs://root/lost+found' . DIRECTORY_SEPARATOR . '.',
+                        'vfs://root/lost+found' . DIRECTORY_SEPARATOR . '..'
+                ),
                 $results
         );
     }
@@ -74,7 +77,11 @@ class FilenameTestCase extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals(
-                array('vfs://root/.', 'vfs://root/..', 'vfs://root/lost+found'),
+                array(
+                        'vfs://root' . DIRECTORY_SEPARATOR . '.',
+                        'vfs://root' . DIRECTORY_SEPARATOR . '..',
+                        'vfs://root' . DIRECTORY_SEPARATOR . 'lost+found'
+                ),
                 $results
         );
     }
