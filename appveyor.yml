@@ -19,6 +19,6 @@ install:
   - if %CACHED%==0 cd ..
 
 test_script:
-  - php -d extension_dir=.\php\ext -d extension=php_openssl.dll .\xp\composer.phar install --prefer-dist
+  - php -d extension_dir=.\php\ext -d extension=php_openssl.dll .\php\composer.phar install
   - vendor/bin/phpunit.bat --coverage-text
   
