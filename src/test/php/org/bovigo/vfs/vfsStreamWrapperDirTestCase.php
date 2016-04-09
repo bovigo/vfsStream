@@ -251,6 +251,19 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
+     * @group  issue_131
+     * @since  1.6.3
+     */
+    public function allowsRecursiveMkDirWithDirectoryName0()
+    {
+        vfsStream::setup('root');
+        $subdir  = vfsStream::url('root/a/0');
+        mkdir($subdir, 0777, true);
+        $this->assertFileExists($subdir);
+    }
+
+    /**
+     * @test
      * @group  permissions
      * @group  bug_15
      */

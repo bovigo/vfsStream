@@ -358,7 +358,7 @@ class vfsStream
         $ownName   = substr($name, 0, $firstSlash);
         $subDirs   = substr($name, $firstSlash + 1);
         $directory = new vfsStreamDirectory($ownName, $permissions);
-        if (!empty($subDirs)) {
+        if (is_string($subDirs) && strlen($subDirs) > 0) {
             self::newDirectory($subDirs, $permissions)->at($directory);
         }
 
