@@ -78,4 +78,3 @@ class vfsStreamDirectoryIssue18TestCase extends \PHPUnit_Framework_TestCase
         );
     }
 }
-?>

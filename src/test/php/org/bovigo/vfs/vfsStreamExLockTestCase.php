@@ -53,4 +53,3 @@ class vfsStreamExLockTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals("another string\n", file_get_contents(vfsStream::url('root/testfile')));
     }
 }
-

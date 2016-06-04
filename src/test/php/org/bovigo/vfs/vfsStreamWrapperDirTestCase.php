@@ -498,4 +498,3 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertNotNull($root->getChild('testFolder'));
     }
 }
-?>

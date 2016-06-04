@@ -91,4 +91,3 @@ class vfsStreamContainerIterator implements \Iterator
         return (false !== current($this->children));
     }
 }
-?>

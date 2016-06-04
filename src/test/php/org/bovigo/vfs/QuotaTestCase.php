@@ -78,4 +78,3 @@ class QuotaTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->quota->spaceLeft(9));
     }
 }
-?>

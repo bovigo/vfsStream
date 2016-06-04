@@ -61,4 +61,3 @@ class vfsStreamWrapperWithoutRootTestCase extends \PHPUnit_Framework_TestCase
         $this->assertFalse(@rename(vfsStream::url('foo'), vfsStream::url('bar')));
     }
 }
-?>

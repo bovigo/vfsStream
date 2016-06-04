@@ -60,4 +60,3 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends \PHPUnit_Framework_TestC
         vfsStreamWrapper::register();
     }
 }
-?>
