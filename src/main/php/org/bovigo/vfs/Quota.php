@@ -84,4 +84,3 @@ class Quota
         return $spaceLeft;
     }
 }
-?>

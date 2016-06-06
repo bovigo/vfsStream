@@ -117,12 +117,12 @@ class vfsStreamWrapper
 
     /**
      * Unregisters a previously registered URL wrapper for the vfs scheme.
-     * 
+     *
      * If this stream wrapper wasn't registered, the method returns silently.
      *
      * If unregistering fails, or if the URL wrapper for vfs:// was not
      * registered with this class, a vfsStreamException will be thrown.
-     * 
+     *
      * @throws vfsStreamException
      * @since  1.6.0
      */
@@ -1010,4 +1010,3 @@ class vfsStreamWrapper
         return array_merge(array_values($fileStat), $fileStat);
     }
 }
-?>

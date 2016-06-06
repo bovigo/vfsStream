@@ -455,4 +455,3 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertFalse(@file_get_contents($this->baz1URL));
     }
 }
-?>

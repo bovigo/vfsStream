@@ -53,4 +53,3 @@ interface vfsStreamVisitor
      */
     public function visitBlockDevice(vfsStreamBlock $block);
 }
-?>

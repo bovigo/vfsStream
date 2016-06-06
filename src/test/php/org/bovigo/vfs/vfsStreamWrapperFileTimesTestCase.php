@@ -312,4 +312,3 @@ class vfsStreamWrapperFileTimesTestCase extends \PHPUnit_Framework_TestCase
         $this->markTestSkipped('Changing file attributes via stream wrapper for self-defined streams is not supported by PHP.');
     }
 }
-?>

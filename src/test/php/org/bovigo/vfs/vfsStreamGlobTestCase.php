@@ -26,4 +26,3 @@ class vfsStreamGlobTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEmpty(glob(vfsStream::url('example'), GLOB_MARK));
     }
 }
-?>

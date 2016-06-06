@@ -73,4 +73,3 @@ class vfsStreamWrapperSetOptionTestCase extends \PHPUnit_Framework_TestCase
         fclose($fp);
     }
 }
-?>

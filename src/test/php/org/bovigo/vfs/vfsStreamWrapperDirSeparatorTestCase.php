@@ -70,4 +70,3 @@ class vfsStreamWrapperDirSeparatorTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue(file_exists(vfsStream::url('root/').'dir\\'));
     }
 }
-?>

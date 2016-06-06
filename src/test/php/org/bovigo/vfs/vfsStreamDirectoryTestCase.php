@@ -332,4 +332,3 @@ class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->dir->isOwnedByGroup(vfsStream::GROUP_USER_1));
     }
 }
-?>

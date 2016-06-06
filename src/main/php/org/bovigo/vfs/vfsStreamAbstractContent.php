@@ -416,4 +416,3 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
         return vfsStream::url($this->path());
     }
 }
-?>

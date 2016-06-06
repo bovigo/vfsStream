@@ -1051,4 +1051,3 @@ class vfsStreamAbstractContentTestCase extends \PHPUnit_Framework_TestCase
                );
     }
 }
-?>

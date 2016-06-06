@@ -100,4 +100,3 @@ class vfsStreamPrintVisitorTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals("- root\n  - test\n    - foo\n      - test.txt\n    - baz.txt\n  - foo.txt\n", file_get_contents('vfs://root/foo.txt'));
     }
 }
-?>

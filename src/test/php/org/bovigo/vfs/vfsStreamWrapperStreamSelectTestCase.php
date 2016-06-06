@@ -32,4 +32,3 @@ class vfsStreamWrapperSelectStreamTestCase extends \PHPUnit_Framework_TestCase
         stream_select($readarray, $writearray, $exceptarray, 1);
     }
 }
-?>

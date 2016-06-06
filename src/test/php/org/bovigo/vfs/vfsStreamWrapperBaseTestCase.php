@@ -96,4 +96,3 @@ abstract class vfsStreamWrapperBaseTestCase extends \PHPUnit_Framework_TestCase
         vfsStreamWrapper::setRoot($this->foo);
     }
 }
-?>
