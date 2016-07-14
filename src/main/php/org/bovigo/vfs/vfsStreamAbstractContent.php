@@ -76,7 +76,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      */
     public function __construct($name, $permissions = null)
     {
-        $this->name = $name;
+        $this->name = "{$name}";
         $time       = time();
         if (null === $permissions) {
             $permissions = $this->getDefaultPermissions() & ~vfsStream::umask();
@@ -115,7 +115,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      */
     public function rename($newName)
     {
-        $this->name = $newName;
+        $this->name = "{$newName}";
     }
 
     /**
