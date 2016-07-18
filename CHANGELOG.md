@@ -1,3 +1,9 @@
+1.6.4 (2016-07-18)
+------------------
+
+   * fixed #134 type safe directory names, reported and fixed by Sebastian Hopfe
+
+
 1.6.3 (2016-04-09)
 ------------------
 
