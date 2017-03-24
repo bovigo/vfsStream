@@ -8,6 +8,9 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+
+use org\bovigo\vfs\content\LargeFileContent;
+
 /**
  * Test for org\bovigo\vfs\vfsStream.
  */
@@ -735,5 +738,43 @@ class vfsStreamTestCase extends \PHPUnit_Framework_TestCase
     {
         $directory = vfsStream::newDirectory('foo/');
         $this->assertFalse($directory->hasChildren());
+    }
+
+    /**
+     * @test
+     * @group  issue_149
+     */
+    public function addStructureHandlesVfsStreamFileObjects()
+    {
+        $structure = array(
+            'topLevel' => array(
+                'thisIsAFile' => 'file contents',
+                vfsStream::newFile('anotherFile'),
+            ),
+        );
+
+        vfsStream::setup();
+        $root = vfsStream::create($structure);
+
+        $this->assertTrue($root->hasChild('topLevel/anotherFile'));
+    }
+
+    /**
+     * @test
+     * @group  issue_149
+     */
+    public function createHandlesLargeFileContentObjects()
+    {
+        $structure = array(
+            'topLevel' => array(
+                'thisIsAFile' => 'file contents',
+                'anotherFile' => LargeFileContent::withMegabytes(2),
+            ),
+        );
+
+        vfsStream::setup();
+        $root = vfsStream::create($structure);
+
+        $this->assertTrue($root->hasChild('topLevel/anotherFile'));
     }
 }
