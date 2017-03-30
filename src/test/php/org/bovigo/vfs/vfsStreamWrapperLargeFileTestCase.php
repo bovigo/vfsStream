@@ -42,6 +42,10 @@ class vfsStreamWrapperLargeFileTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasLargeFileSize()
     {
+        if (PHP_INT_MAX == 2147483647) {
+            $this->markTestSkipped('Requires 64-bit version of PHP');
+        }
+
         $this->assertEquals(
                 100 * 1024 * 1024 * 1024,
                 filesize($this->largeFile->url())
