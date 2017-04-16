@@ -807,6 +807,10 @@ class vfsStreamWrapper
             trigger_error('Target is not a directory', E_USER_WARNING);
             return false;
         }
+        if (!$srcContent->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
+            trigger_error('Permission denied', E_USER_WARNING);
+            return false;
+        }
 
         // remove old source first, so we can rename later
         // (renaming first would lead to not being able to remove the old path)

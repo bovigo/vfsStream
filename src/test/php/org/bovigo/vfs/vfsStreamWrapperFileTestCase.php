@@ -446,6 +446,18 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
+     */
+    public function cannotRenameNotWritableFile()
+    {
+        $this->baz1->chmod(0400);
+        $oldName = $this->baz1->url();
+        $newName = $this->baz1->url() . '.new';
+
+        $this->assertFalse(@rename($oldName, $newName));
+    }
+
+    /**
+     * @test
      * @group issue_38
      */
     public function cannotReadFileFromNonReadableDir()
