@@ -351,7 +351,7 @@ class vfsStream
      */
     public static function newDirectory($name, $permissions = null)
     {
-        if ('/' === $name{0}) {
+        if ($name !== '' && '/' === $name{0}) {
             $name = substr($name, 1);
         }
 
