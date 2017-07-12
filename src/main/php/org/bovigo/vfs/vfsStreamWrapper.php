@@ -278,10 +278,12 @@ class vfsStreamWrapper
      */
     public function stream_open($path, $mode, $options, $opened_path)
     {
+        $triggerErrors = ($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS;
+
         $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
         $mode     = str_replace(array('t', 'b', '+'), '', $mode);
         if (in_array($mode, array('r', 'w', 'a', 'x', 'c')) === false) {
-            if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
+            if ($triggerErrors) {
                 trigger_error('Illegal mode ' . $mode . ', use r, w, a, x  or c, flavoured with t, b and/or +', E_USER_WARNING);
             }
 
@@ -293,7 +295,7 @@ class vfsStreamWrapper
         $this->content = $this->getContentOfType($path, vfsStreamContent::TYPE_FILE);
         if (null !== $this->content) {
             if (self::WRITE === $mode) {
-                if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
+                if ($triggerErrors) {
                     trigger_error('File ' . $path . ' already exists, can not open with mode x', E_USER_WARNING);
                 }
 
@@ -313,8 +315,14 @@ class vfsStreamWrapper
                 $this->content->openForAppend();
             } else {
                 if (!$this->content->isReadable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
-                    if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
+                    if ($triggerErrors) {
                         trigger_error('Permission denied', E_USER_WARNING);
+                    }
+                    return false;
+                }
+                if ($error = $this->content->getOpenError()) {
+                    if ($triggerErrors) {
+                        trigger_error($error, E_USER_WARNING);
                     }
                     return false;
                 }

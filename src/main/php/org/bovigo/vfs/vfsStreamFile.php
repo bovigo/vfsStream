@@ -35,6 +35,10 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @type  bool[string]
      */
     protected $sharedLock = array();
+    /**
+     * @var null|string
+     */
+    private $openError;
 
     /**
      * constructor
@@ -390,5 +394,29 @@ class vfsStreamFile extends vfsStreamAbstractContent
         }
 
         return null !== $this->exclusiveLock;
+    }
+
+    /**
+     * Setter to set (string w/ content) or remove (null) triggering an error
+     * on a vfs-stream-wrapped fopen() call.
+     * 
+     * @param string|null $error string (non-zero length) to raise an error on fopen, null to unset (default)
+     * @since 1.6.5
+     * @see   https://github.com/mikey179/vfsStream/issues/155
+     */
+    public function setOpenError($error = null)
+    {
+        $this->openError = $error;
+    }
+
+    /**
+     * @see    setOpenError
+     * @return null|string
+     * @since  1.6.5
+     * @see    https://github.com/mikey179/vfsStream/issues/155
+     */
+    public function getOpenError()
+    {
+        return $this->openError;
     }
 }

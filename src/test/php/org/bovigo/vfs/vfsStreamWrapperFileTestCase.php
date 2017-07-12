@@ -454,4 +454,22 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         $this->bar->chmod(0);
         $this->assertFalse(@file_get_contents($this->baz1URL));
     }
+
+    /**
+     * @test
+     * @see   https://github.com/mikey179/vfsStream/issues/155
+     * @since 1.6.5
+     */
+    public function errorOnOpen()
+    {
+        $file = $this->baz1;
+        $path = $file->url();
+        $this->assertNotFalse(@fopen($path, 'r'), 'precondition');
+
+        $file->setOpenError("fopen() gives error");
+        $this->assertFalse(@fopen($path, 'r'), 'fopen fails now');
+
+        $file->setOpenError(null);
+        $this->assertNotFalse(@fopen($path, 'r'), 'fopen works again');
+    }
 }
