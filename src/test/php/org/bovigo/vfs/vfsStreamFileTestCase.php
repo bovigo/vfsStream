@@ -129,6 +129,8 @@ class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(2, SEEK_END));
         $this->assertEquals(2, $this->file->getBytesRead());
+        $this->assertFalse($this->file->seek(-1, SEEK_SET),'Seek before beginning of file');
+        $this->assertEquals(2, $this->file->getBytesRead());
     }
 
     /**
@@ -156,6 +158,9 @@ class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $this->file->readUntilEnd());
         $this->assertEquals(9, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(2, SEEK_END));
+        $this->assertEquals('', $this->file->readUntilEnd());
+        $this->assertEquals(11, $this->file->getBytesRead());
+        $this->assertFalse($this->file->seek(-35, SEEK_SET),'Seek before beginning of file');
         $this->assertEquals('', $this->file->readUntilEnd());
         $this->assertEquals(11, $this->file->getBytesRead());
     }
