@@ -129,8 +129,17 @@ class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $this->file->getBytesRead());
         $this->assertTrue($this->file->seek(2, SEEK_END));
         $this->assertEquals(2, $this->file->getBytesRead());
-        $this->assertFalse($this->file->seek(-1, SEEK_SET),'Seek before beginning of file');
-        $this->assertEquals(2, $this->file->getBytesRead());
+    }
+
+    /**
+     * test seeking to offset before the beginning of the file
+     *
+     * @test
+     */
+    public function seekEmptyFileBeforeBeginning()
+    {
+        $this->assertFalse($this->file->seek(-5, SEEK_SET),'Seek before beginning of file');
+        $this->assertEquals(0, $this->file->getBytesRead());
     }
 
     /**
@@ -160,9 +169,28 @@ class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->file->seek(2, SEEK_END));
         $this->assertEquals('', $this->file->readUntilEnd());
         $this->assertEquals(11, $this->file->getBytesRead());
-        $this->assertFalse($this->file->seek(-35, SEEK_SET),'Seek before beginning of file');
-        $this->assertEquals('', $this->file->readUntilEnd());
-        $this->assertEquals(11, $this->file->getBytesRead());
+    }
+
+    /**
+     * test seeking to offset before the beginning of the file
+     *
+     * @test
+     */
+    public function seekFileBeforeBeginning()
+    {
+        $this->file->setContent('foobarbaz');
+        $this->assertFalse($this->file->seek(-5, SEEK_SET),'Seek before beginning of file');
+        $this->assertEquals(0, $this->file->getBytesRead());
+        $this->assertTrue($this->file->seek(2, SEEK_CUR));
+        $this->assertFalse($this->file->seek(-5, SEEK_SET),'Seek before beginning of file');
+        $this->assertEquals(2, $this->file->getBytesRead());
+        $this->assertEquals('obarbaz', $this->file->readUntilEnd());
+        $this->assertFalse($this->file->seek(-5, SEEK_CUR),'Seek before beginning of file');
+        $this->assertEquals(2, $this->file->getBytesRead());
+        $this->assertEquals('obarbaz', $this->file->readUntilEnd());
+        $this->assertFalse($this->file->seek(-20, SEEK_END),'Seek before beginning of file');
+        $this->assertEquals(2, $this->file->getBytesRead());
+        $this->assertEquals('obarbaz', $this->file->readUntilEnd());
     }
 
     /**
