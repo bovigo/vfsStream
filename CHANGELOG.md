@@ -1,3 +1,9 @@
+1.6.5 (2017-08-01)
+------------------
+
+   * fixed #157 seeking before beginning of file should fail, reported and fixed by @merijnvdk
+
+
 1.6.4 (2016-07-18)
 ------------------
 

@@ -52,24 +52,29 @@ abstract class SeekableFileContent implements FileContent
      */
     public function seek($offset, $whence)
     {
+        $newOffset = $this->offset;
         switch ($whence) {
             case SEEK_CUR:
-                $this->offset += $offset;
-                return true;
+                $newOffset += $offset;
+                break;
 
             case SEEK_END:
-                $this->offset = $this->size() + $offset;
-                return true;
+                $newOffset = $this->size() + $offset;
+                break;
 
             case SEEK_SET:
-                $this->offset = $offset;
-                return true;
+                $newOffset = $offset;
+                break;
 
             default:
                 return false;
         }
-
-        return false;
+        
+        if ($newOffset<0) {
+            return false;
+        }
+        $this->offset = $newOffset;
+        return true;
     }
 
     /**

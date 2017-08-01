@@ -132,6 +132,16 @@ class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @since 1.6.5
+     */
+    public function seekEmptyFileBeforeBeginningDoesNotChangeOffset()
+    {
+        $this->assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
+        $this->assertEquals(0, $this->file->getBytesRead());
+    }
+
+    /**
      * test seeking to offset
      *
      * @test
@@ -158,6 +168,27 @@ class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->file->seek(2, SEEK_END));
         $this->assertEquals('', $this->file->readUntilEnd());
         $this->assertEquals(11, $this->file->getBytesRead());
+    }
+
+    /**
+     * @test
+     * @since 1.6.5
+     */
+    public function seekFileBeforeBeginningDoesNotChangeOffset()
+    {
+        $this->file->setContent('foobarbaz');
+        $this->assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
+        $this->assertEquals(0, $this->file->getBytesRead());
+        $this->assertTrue($this->file->seek(2, SEEK_CUR));
+        $this->assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
+        $this->assertEquals(2, $this->file->getBytesRead());
+        $this->assertEquals('obarbaz', $this->file->readUntilEnd());
+        $this->assertFalse($this->file->seek(-5, SEEK_CUR), 'Seek before beginning of file');
+        $this->assertEquals(2, $this->file->getBytesRead());
+        $this->assertEquals('obarbaz', $this->file->readUntilEnd());
+        $this->assertFalse($this->file->seek(-20, SEEK_END), 'Seek before beginning of file');
+        $this->assertEquals(2, $this->file->getBytesRead());
+        $this->assertEquals('obarbaz', $this->file->readUntilEnd());
     }
 
     /**
