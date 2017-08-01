@@ -2,6 +2,7 @@
 ------------------
 
    * fixed #157 seeking before beginning of file should fail, reported and fixed by @merijnvdk
+   * structure array in `vfsStream::create()` and `vfsStream::setup()` now can contain instances of `org\bovigo\vfs\content\FileContent` and `org\bovigo\vfs\vfsStreamFile`, patch provivded by Joshua Smith (@jsmitty12)
 
 
 1.6.4 (2016-07-18)
