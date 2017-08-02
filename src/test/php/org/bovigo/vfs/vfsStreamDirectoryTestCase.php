@@ -166,6 +166,9 @@ class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
         $mockChild->expects($this->once())
                   ->method('size')
                   ->will($this->returnValue(5));
+        $mockChild->expects($this->once())
+                  ->method('isWritable')
+                  ->willReturn(true);
         $this->dir->addChild($mockChild);
         $this->assertTrue($this->dir->hasChild('bar'));
         $bar = $this->dir->getChild('bar');

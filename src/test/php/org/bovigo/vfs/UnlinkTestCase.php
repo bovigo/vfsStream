@@ -24,7 +24,7 @@ class UnlinkTestCase extends \PHPUnit_Framework_TestCase
         $structure = array('test_directory' => array('test.file' => ''));
         $root = vfsStream::setup('root', null, $structure);
         $root->getChild('test_directory')->chmod(0777);
-        $root->getChild('test_directory')->getChild('test.file')->chmod(0444);
+        $root->getChild('test_directory')->getChild('test.file')->chmod(0333);
         $this->assertTrue(@unlink(vfsStream::url('root/test_directory/test.file')));
     }
 
