@@ -135,6 +135,10 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     {
         foreach ($this->children as $key => $child) {
             if ($child->appliesTo($name)) {
+                if (!$child->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
+                    return false;
+                }
+
                 $child->setParentPath(null);
                 unset($this->children[$key]);
                 $this->updateModifications();
