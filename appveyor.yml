@@ -17,7 +17,11 @@ install:
   - if %CACHED%==0 appveyor DownloadFile https://getcomposer.org/composer.phar
   - if %CACHED%==0 7z x php.zip -y
   - if %CACHED%==0 cd ..
+  - if %CACHED%==0 echo date.timezone="Europe/Berlin" >> php.ini
+  - if %CACHED%==0 echo extension_dir=ext >> php.ini
+  - if %CACHED%==0 echo extension=php_openssl.dll >> php.ini
+  - if %CACHED%==0 echo extension=php_mbstring.dll >> php.ini
 
 test_script:
-  - php -d extension_dir=.\php\ext -d extension=php_openssl.dll .\php\composer.phar install
+  - php .\php\composer.phar install
   - vendor/bin/phpunit.bat --coverage-text
