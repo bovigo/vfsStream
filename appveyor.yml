@@ -16,11 +16,12 @@ install:
   - if %CACHED%==0 appveyor DownloadFile http://windows.php.net/downloads/releases/archives/php-7.1.8-nts-Win32-VC14-x64.zip -FileName php.zip
   - if %CACHED%==0 appveyor DownloadFile https://getcomposer.org/composer.phar
   - if %CACHED%==0 7z x php.zip -y
-  - if %CACHED%==0 cd ..
+  - if %CACHED%==0 copy php.ini-production php.ini /Y
   - if %CACHED%==0 echo date.timezone="Europe/Berlin" >> php.ini
   - if %CACHED%==0 echo extension_dir=ext >> php.ini
   - if %CACHED%==0 echo extension=php_openssl.dll >> php.ini
   - if %CACHED%==0 echo extension=php_mbstring.dll >> php.ini
+  - if %CACHED%==0 cd ..
 
 test_script:
   - php .\php\composer.phar install
