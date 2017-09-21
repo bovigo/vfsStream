@@ -8,6 +8,8 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use bovigo\callmap\NewInstance;
+use org\bovigo\vfs\content\FileContent;
 use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamFile.
@@ -314,14 +316,12 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function withContentAcceptsAnyFileContentInstance()
     {
-        $mockFileContent = $this->createMock('org\bovigo\vfs\content\FileContent');
-        $mockFileContent->expects($this->once())
-                        ->method('content')
-                        ->will($this->returnValue('foobarbaz'));
+        $fileContent = NewInstance::of(FileContent::class)->returns([
+            'content' => 'foobarbaz'
+        ]);
         $this->assertEquals(
                 'foobarbaz',
-                $this->file->withContent($mockFileContent)
-                           ->getContent()
+                $this->file->withContent($fileContent)->getContent()
         );
     }
 

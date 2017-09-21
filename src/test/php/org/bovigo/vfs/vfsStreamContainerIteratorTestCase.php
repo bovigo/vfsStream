@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamContainerIterator.
@@ -23,15 +24,15 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     /**
      * child one
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  vfsStreamContent
      */
-    private $mockChild1;
+    private $child1;
     /**
      * child two
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  vfsStreamContent
      */
-    private $mockChild2;
+    private $child2;
 
     /**
      * set up test environment
@@ -39,16 +40,15 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     public function setUp()
     {
         $this->dir = new vfsStreamDirectory('foo');
-        $this->mockChild1 = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
-        $this->mockChild1->expects($this->any())
-                         ->method('getName')
-                         ->will($this->returnValue('bar'));
-        $this->dir->addChild($this->mockChild1);
-        $this->mockChild2 = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
-        $this->mockChild2->expects($this->any())
-                         ->method('getName')
-                         ->will($this->returnValue('baz'));
-        $this->dir->addChild($this->mockChild2);
+        $this->child1 = NewInstance::of(vfsStreamContent::class)->returns([
+           'getName' => 'bar'
+        ]);
+
+        $this->dir->addChild($this->child1);
+        $this->child2 = NewInstance::of(vfsStreamContent::class)->returns([
+           'getName' => 'baz'
+        ]);
+        $this->dir->addChild($this->child2);
     }
 
     /**
@@ -59,41 +59,34 @@ class vfsStreamContainerIteratorTestCase extends TestCase
         vfsStream::enableDotfiles();
     }
 
-    /**
-     * @return  array
-     */
-    public function provideSwitchWithExpectations()
+    public function provideSwitchWithExpectations(): array
     {
-        return array(array(function() { vfsStream::disableDotfiles(); },
-                           array()
-                     ),
-                     array(function() { vfsStream::enableDotfiles(); },
-                           array('.', '..')
-                     )
-        );
+        return [
+            [[vfsStream::class, 'disableDotfiles'], []],
+            [[vfsStream::class, 'enableDotfiles'], ['.', '..']]
+        ];
     }
 
-    private function getDirName($dir)
+    private function getDirName($dir): string
     {
         if (is_string($dir)) {
             return $dir;
         }
 
-
         return $dir->getName();
     }
 
     /**
-     * @param  \Closure  $dotFilesSwitch
+     * @param  callable  $switchDotFiles
      * @param  array     $dirNames
      * @test
      * @dataProvider  provideSwitchWithExpectations
      */
-    public function iteration(\Closure $dotFilesSwitch, array $dirs)
+    public function iteration(callable $switchDotFiles, array $dirs)
     {
-        $dirs[] = $this->mockChild1;
-        $dirs[] = $this->mockChild2;
-        $dotFilesSwitch();
+        $dirs[] = $this->child1;
+        $dirs[] = $this->child2;
+        $switchDotFiles();
         $dirIterator = $this->dir->getIterator();
         foreach ($dirs as $dir) {
             $this->assertEquals($this->getDirName($dir), $dirIterator->key());

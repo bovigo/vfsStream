@@ -8,10 +8,13 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs\visitor;
+use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use org\bovigo\vfs\vfsStreamBlock;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\callmap\verify;
 /**
  * Test for org\bovigo\vfs\visitor\vfsStreamAbstractVisitor.
  *
@@ -33,10 +36,7 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
      */
     public function setUp()
     {
-        $this->abstractVisitor = $this->createPartialMock(
-            vfsStreamAbstractVisitor::class,
-            ['visitFile', 'visitDirectory']
-        );
+        $this->abstractVisitor = NewInstance::of(vfsStreamAbstractVisitor::class);
     }
 
     /**
@@ -45,11 +45,10 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
      */
     public function visitThrowsInvalidArgumentExceptionOnUnknownContentType()
     {
-        $mockContent = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
-        $mockContent->expects($this->any())
-                    ->method('getType')
-                    ->will($this->returnValue('invalid'));
-        $this->abstractVisitor->visit($mockContent);
+        $content = NewInstance::of(vfsStreamContent::class)->returns([
+            'getType' => 'invalid'
+        ]);
+        $this->abstractVisitor->visit($content);
     }
 
     /**
@@ -58,12 +57,11 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     public function visitWithFileCallsVisitFile()
     {
         $file = new vfsStreamFile('foo.txt');
-        $this->abstractVisitor->expects($this->once())
-                              ->method('visitFile')
-                              ->with($this->equalTo($file));
-        $this->assertSame($this->abstractVisitor,
-                          $this->abstractVisitor->visit($file)
+        $this->assertSame(
+            $this->abstractVisitor,
+            $this->abstractVisitor->visit($file)
         );
+        verify($this->abstractVisitor, 'visitFile')->received($file);
     }
 
     /**
@@ -74,12 +72,11 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     public function visitWithBlockCallsVisitFile()
     {
         $block = new vfsStreamBlock('foo');
-        $this->abstractVisitor->expects($this->once())
-                              ->method('visitFile')
-                              ->with($this->equalTo($block));
-        $this->assertSame($this->abstractVisitor,
-                          $this->abstractVisitor->visit($block)
+        $this->assertSame(
+            $this->abstractVisitor,
+            $this->abstractVisitor->visit($block)
         );
+        verify($this->abstractVisitor, 'visitFile')->received($block);
     }
 
     /**
@@ -88,11 +85,10 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     public function visitWithDirectoryCallsVisitDirectory()
     {
         $dir = new vfsStreamDirectory('bar');
-        $this->abstractVisitor->expects($this->once())
-                              ->method('visitDirectory')
-                              ->with($this->equalTo($dir));
-        $this->assertSame($this->abstractVisitor,
-                          $this->abstractVisitor->visit($dir)
+        $this->assertSame(
+            $this->abstractVisitor,
+            $this->abstractVisitor->visit($dir)
         );
+        verify($this->abstractVisitor, 'visitDirectory')->received($dir);
     }
 }

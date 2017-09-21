@@ -26,7 +26,7 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
      * @return  vfsStreamVisitor
      * @throws  \InvalidArgumentException
      */
-    public function visit(vfsStreamContent $content)
+    public function visit(vfsStreamContent $content): vfsStreamVisitor
     {
         switch ($content->getType()) {
             case vfsStreamContent::TYPE_BLOCK:
@@ -57,7 +57,7 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
      * @param   vfsStreamBlock $block
      * @return  vfsStreamVisitor
      */
-    public function visitBlockDevice(vfsStreamBlock $block)
+    public function visitBlockDevice(vfsStreamBlock $block): vfsStreamVisitor
     {
         return $this->visitFile($block);
     }

@@ -49,7 +49,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      * @param   vfsStreamFile  $file
      * @return  vfsStreamStructureVisitor
      */
-    public function visitFile(vfsStreamFile $file)
+    public function visitFile(vfsStreamFile $file): vfsStreamVisitor
     {
         $this->current[$file->getName()] = $file->getContent();
         return $this;
@@ -61,7 +61,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      * @param   vfsStreamBlock $block
      * @return  vfsStreamStructureVisitor
      */
-    public function visitBlockDevice(vfsStreamBlock $block)
+    public function visitBlockDevice(vfsStreamBlock $block): vfsStreamVisitor
     {
         $this->current['[' . $block->getName() . ']'] = $block->getContent();
         return $this;
@@ -73,7 +73,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      * @param   vfsStreamDirectory  $dir
      * @return  vfsStreamStructureVisitor
      */
-    public function visitDirectory(vfsStreamDirectory $dir)
+    public function visitDirectory(vfsStreamDirectory $dir): vfsStreamVisitor
     {
         $this->current[$dir->getName()] = array();
         $tmp           =& $this->current;
@@ -92,7 +92,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      * @return  array
      * @api
      */
-    public function getStructure()
+    public function getStructure(): array
     {
         return $this->structure;
     }
@@ -102,7 +102,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      *
      * @return  vfsStreamStructureVisitor
      */
-    public function reset()
+    public function reset(): self
     {
         $this->structure = array();
         $this->current   =& $this->structure;

@@ -58,7 +58,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      * @param   vfsStreamFile  $file
      * @return  vfsStreamPrintVisitor
      */
-    public function visitFile(vfsStreamFile $file)
+    public function visitFile(vfsStreamFile $file): vfsStreamVisitor
     {
         $this->printContent($file->getName());
         return $this;
@@ -70,7 +70,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      * @param   vfsStreamBlock  $block
      * @return  vfsStreamPrintVisitor
      */
-    public function visitBlockDevice(vfsStreamBlock $block)
+    public function visitBlockDevice(vfsStreamBlock $block): vfsStreamVisitor
     {
         $name = '[' . $block->getName() . ']';
         $this->printContent($name);
@@ -83,7 +83,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      * @param   vfsStreamDirectory  $dir
      * @return  vfsStreamPrintVisitor
      */
-    public function visitDirectory(vfsStreamDirectory $dir)
+    public function visitDirectory(vfsStreamDirectory $dir): vfsStreamVisitor
     {
         $this->printContent($dir->getName());
         $this->depth++;

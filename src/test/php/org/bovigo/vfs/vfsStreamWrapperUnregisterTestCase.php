@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
@@ -39,9 +40,10 @@ class vfsStreamWrapperUnregisterTestCase extends TestCase
         // Unregister possible registered URL wrapper.
         vfsStreamWrapper::unregister();
 
-        $mock = $this->createMock('org\\bovigo\\vfs\\vfsStreamWrapper');
-        stream_wrapper_register(vfsStream::SCHEME, get_class($mock));
-
+        stream_wrapper_register(
+          vfsStream::SCHEME,
+          NewInstance::classname(vfsStreamWrapper::class)
+        );
         vfsStreamWrapper::unregister();
     }
 

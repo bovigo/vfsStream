@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamDirectory.
@@ -95,14 +96,11 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function hasChildrenReturnsTrueIfAtLeastOneChildPresent()
     {
-        $mockChild = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
-        $mockChild->expects($this->any())
-                  ->method('appliesTo')
-                  ->will($this->returnValue(false));
-        $mockChild->expects($this->any())
-                  ->method('getName')
-                  ->will($this->returnValue('baz'));
-        $this->dir->addChild($mockChild);
+        $content = NewInstance::of(vfsStreamContent::class)->returns([
+            'appliesTo' => false,
+            'getName'   => 'baz'
+        ]);
+        $this->dir->addChild($content);
         $this->assertTrue($this->dir->hasChildren());
     }
 
@@ -131,47 +129,23 @@ class vfsStreamDirectoryTestCase extends TestCase
     }
 
     /**
-     * @test
-     */
-    public function nonExistingChild()
-    {
-        $mockChild = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
-        $mockChild->expects($this->any())
-                  ->method('appliesTo')
-                  ->will($this->returnValue(false));
-        $mockChild->expects($this->any())
-                  ->method('getName')
-                  ->will($this->returnValue('baz'));
-        $this->dir->addChild($mockChild);
-        $this->assertFalse($this->dir->removeChild('bar'));
-    }
-
-    /**
      * test that adding, handling and removing of a child works as expected
      *
      * @test
      */
     public function childHandling()
     {
-        $mockChild = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
-        $mockChild->expects($this->any())
-                  ->method('getType')
-                  ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
-        $mockChild->expects($this->any())
-                  ->method('getName')
-                  ->will($this->returnValue('bar'));
-        $mockChild->expects($this->any())
-                  ->method('appliesTo')
-                  ->with($this->equalTo('bar'))
-                  ->will($this->returnValue(true));
-        $mockChild->expects($this->once())
-                  ->method('size')
-                  ->will($this->returnValue(5));
-        $this->dir->addChild($mockChild);
+        $content = NewInstance::of(vfsStreamContent::class)->returns([
+            'getType'   => vfsStreamContent::TYPE_FILE,
+            'appliesTo' => function($name) { return 'bar' === $name; },
+            'getName'   => 'bar',
+            'size'      => 5
+        ]);
+        $this->dir->addChild($content);
         $this->assertTrue($this->dir->hasChild('bar'));
         $bar = $this->dir->getChild('bar');
-        $this->assertSame($mockChild, $bar);
-        $this->assertEquals(array($mockChild), $this->dir->getChildren());
+        $this->assertSame($content, $bar);
+        $this->assertEquals([$content], $this->dir->getChildren());
         $this->assertEquals(0, $this->dir->size());
         $this->assertEquals(5, $this->dir->sizeSummarized());
         $this->assertTrue($this->dir->removeChild('bar'));
@@ -187,26 +161,21 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function childHandlingWithSubdirectory()
     {
-        $mockChild = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
-        $mockChild->expects($this->any())
-                  ->method('getType')
-                  ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
-        $mockChild->expects($this->any())
-                  ->method('getName')
-                  ->will($this->returnValue('bar'));
-        $mockChild->expects($this->once())
-                  ->method('size')
-                  ->will($this->returnValue(5));
+        $content = NewInstance::of(vfsStreamContent::class)->returns([
+            'getType'   => vfsStreamContent::TYPE_FILE,
+            'getName'   => 'bar',
+            'size'      => 5
+        ]);
         $subdir = new vfsStreamDirectory('subdir');
-        $subdir->addChild($mockChild);
+        $subdir->addChild($content);
         $this->dir->addChild($subdir);
         $this->assertTrue($this->dir->hasChild('subdir'));
         $this->assertSame($subdir, $this->dir->getChild('subdir'));
-        $this->assertEquals(array($subdir), $this->dir->getChildren());
+        $this->assertEquals([$subdir], $this->dir->getChildren());
         $this->assertEquals(0, $this->dir->size());
         $this->assertEquals(5, $this->dir->sizeSummarized());
         $this->assertTrue($this->dir->removeChild('subdir'));
-        $this->assertEquals(array(), $this->dir->getChildren());
+        $this->assertEquals([], $this->dir->getChildren());
         $this->assertEquals(0, $this->dir->size());
         $this->assertEquals(0, $this->dir->sizeSummarized());
     }
@@ -220,26 +189,20 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function addChildReplacesChildWithSameName_Bug_5()
     {
-        $mockChild1 = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
-        $mockChild1->expects($this->any())
-                   ->method('getType')
-                   ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
-        $mockChild1->expects($this->any())
-                   ->method('getName')
-                   ->will($this->returnValue('bar'));
-        $mockChild2 = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
-        $mockChild2->expects($this->any())
-                   ->method('getType')
-                   ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
-        $mockChild2->expects($this->any())
-                   ->method('getName')
-                   ->will($this->returnValue('bar'));
-        $this->dir->addChild($mockChild1);
+        $content1 = NewInstance::of(vfsStreamContent::class)->returns([
+            'getType'   => vfsStreamContent::TYPE_FILE,
+            'getName'   => 'bar'
+        ]);
+        $content2 = NewInstance::of(vfsStreamContent::class)->returns([
+            'getType'   => vfsStreamContent::TYPE_FILE,
+            'getName'   => 'bar'
+        ]);
+        $this->dir->addChild($content1);
         $this->assertTrue($this->dir->hasChild('bar'));
-        $this->assertSame($mockChild1, $this->dir->getChild('bar'));
-        $this->dir->addChild($mockChild2);
+        $this->assertSame($content1, $this->dir->getChild('bar'));
+        $this->dir->addChild($content2);
         $this->assertTrue($this->dir->hasChild('bar'));
-        $this->assertSame($mockChild2, $this->dir->getChild('bar'));
+        $this->assertSame($content2, $this->dir->getChild('bar'));
     }
 
     /**
@@ -252,13 +215,10 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function explicitTestForSeparatorWithNestedPaths_Bug_24()
     {
-        $mockChild = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
-        $mockChild->expects($this->any())
-                  ->method('getType')
-                  ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
-        $mockChild->expects($this->any())
-                  ->method('getName')
-                  ->will($this->returnValue('bar'));
+        $content = NewInstance::of(vfsStreamContent::class)->returns([
+            'getType'   => vfsStreamContent::TYPE_FILE,
+            'getName'   => 'bar'
+        ]);
 
         $subdir1 = new vfsStreamDirectory('subdir1');
         $this->dir->addChild($subdir1);
@@ -266,7 +226,7 @@ class vfsStreamDirectoryTestCase extends TestCase
         $subdir2 = new vfsStreamDirectory('subdir2');
         $subdir1->addChild($subdir2);
 
-        $subdir2->addChild($mockChild);
+        $subdir2->addChild($content);
 
         $this->assertTrue($this->dir->hasChild('subdir1'), "Level 1 path with separator exists");
         $this->assertTrue($this->dir->hasChild('subdir1/subdir2'), "Level 2 path with separator exists");

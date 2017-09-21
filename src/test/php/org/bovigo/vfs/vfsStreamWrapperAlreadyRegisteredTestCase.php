@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
 /**
  * Helper class for the test.
@@ -32,16 +33,6 @@ class TestvfsStreamWrapper extends vfsStreamWrapper
 class vfsStreamWrapperAlreadyRegisteredTestCase extends TestCase
 {
     /**
-     * set up test environment
-     */
-    public function setUp()
-    {
-        TestvfsStreamWrapper::unregister();
-        $mock = $this->createMock('org\\bovigo\\vfs\\vfsStreamWrapper');
-        stream_wrapper_register(vfsStream::SCHEME, get_class($mock));
-    }
-
-    /**
      * clean up test environment
      */
     public function tearDown()
@@ -58,6 +49,11 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends TestCase
      */
     public function registerOverAnotherStreamWrapper()
     {
+        TestvfsStreamWrapper::unregister();
+        stream_wrapper_register(
+            vfsStream::SCHEME,
+            NewInstance::classname(vfsStreamWrapper::class)
+        );
         vfsStreamWrapper::register();
     }
 }

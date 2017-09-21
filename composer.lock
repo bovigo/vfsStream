@@ -4,9 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a00ba219815f2657348d15a6a2e3f7c",
+    "content-hash": "487168b5a77a1abf086d56d09dc06b07",
     "packages": [],
     "packages-dev": [
+        {
+            "name": "bovigo/callmap",
+            "version": "v4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mikey179/bovigo-callmap.git",
+                "reference": "fc354de8669c352178ab57da1cfd24f1609546cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mikey179/bovigo-callmap/zipball/fc354de8669c352178ab57da1cfd24f1609546cf",
+                "reference": "fc354de8669c352178ab57da1cfd24f1609546cf",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "bovigo/assert": " ^3.0",
+                "phpunit/phpunit": "~6.3"
+            },
+            "suggest": {
+                "bovigo/assert": "To use argument verification",
+                "phpunit/phpunit": "Alternative option for argument verification",
+                "xp-framework/unittest": "Alternative option for argument verification"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "bovigo\\callmap\\": "src/main/php"
+                },
+                "files": [
+                    "src/main/php/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Allows to stub and mock method calls by applying a callmap.",
+            "time": "2017-09-20T16:32:54+00:00"
+        },
         {
             "name": "doctrine/instantiator",
             "version": "1.1.0",

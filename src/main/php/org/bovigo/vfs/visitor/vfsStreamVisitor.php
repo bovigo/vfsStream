@@ -27,7 +27,7 @@ interface vfsStreamVisitor
      * @param   vfsStreamContent  $content
      * @return  vfsStreamVisitor
      */
-    public function visit(vfsStreamContent $content);
+    public function visit(vfsStreamContent $content): self;
 
     /**
      * visit a file and process it
@@ -35,7 +35,7 @@ interface vfsStreamVisitor
      * @param   vfsStreamFile  $file
      * @return  vfsStreamVisitor
      */
-    public function visitFile(vfsStreamFile $file);
+    public function visitFile(vfsStreamFile $file): self;
 
     /**
      * visit a directory and process it
@@ -43,7 +43,7 @@ interface vfsStreamVisitor
      * @param   vfsStreamDirectory  $dir
      * @return  vfsStreamVisitor
      */
-    public function visitDirectory(vfsStreamDirectory $dir);
+    public function visitDirectory(vfsStreamDirectory $dir): self;
 
     /**
      * visit a block device and process it
@@ -51,5 +51,5 @@ interface vfsStreamVisitor
      * @param   vfsStreamBlock  $block
      * @return  vfsStreamVisitor
      */
-    public function visitBlockDevice(vfsStreamBlock $block);
+    public function visitBlockDevice(vfsStreamBlock $block): self;
 }
