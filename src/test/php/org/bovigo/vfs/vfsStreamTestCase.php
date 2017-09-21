@@ -538,8 +538,8 @@ class vfsStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function inspectWithContentGivesContentToVisitor()
     {
-        $mockContent = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
-        $mockVisitor = $this->getMock('org\\bovigo\\vfs\\visitor\\vfsStreamVisitor');
+        $mockContent = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockVisitor = $this->createMock('org\\bovigo\\vfs\\visitor\\vfsStreamVisitor');
         $mockVisitor->expects($this->once())
                     ->method('visit')
                     ->with($this->equalTo($mockContent))
@@ -555,7 +555,7 @@ class vfsStreamTestCase extends \PHPUnit_Framework_TestCase
     public function inspectWithoutContentGivesRootToVisitor()
     {
         $root = vfsStream::setup();
-        $mockVisitor = $this->getMock('org\\bovigo\\vfs\\visitor\\vfsStreamVisitor');
+        $mockVisitor = $this->createMock('org\\bovigo\\vfs\\visitor\\vfsStreamVisitor');
         $mockVisitor->expects($this->once())
                     ->method('visitDirectory')
                     ->with($this->equalTo($root))
@@ -571,7 +571,7 @@ class vfsStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function inspectWithoutContentAndWithoutRootThrowsInvalidArgumentException()
     {
-        $mockVisitor = $this->getMock('org\\bovigo\\vfs\\visitor\\vfsStreamVisitor');
+        $mockVisitor = $this->createMock('org\\bovigo\\vfs\\visitor\\vfsStreamVisitor');
         $mockVisitor->expects($this->never())
                     ->method('visit');
         $mockVisitor->expects($this->never())

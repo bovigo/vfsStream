@@ -36,7 +36,7 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends \PHPUnit_Framework_TestC
     public function setUp()
     {
         TestvfsStreamWrapper::unregister();
-        $mock = $this->getMock('org\\bovigo\\vfs\\vfsStreamWrapper');
+        $mock = $this->createMock('org\\bovigo\\vfs\\vfsStreamWrapper');
         stream_wrapper_register(vfsStream::SCHEME, get_class($mock));
     }
 

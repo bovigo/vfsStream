@@ -20,14 +20,14 @@
         "php": "^7.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.5"
+        "phpunit/phpunit": "~5.7"
     },
     "autoload": {
         "psr-0": { "org\\bovigo\\vfs\\": "src/main/php" }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.6.x-dev"
+            "dev-master": "2.0.x-dev"
         }
     }
 }

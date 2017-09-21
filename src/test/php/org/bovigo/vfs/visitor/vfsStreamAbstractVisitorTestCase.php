@@ -32,9 +32,10 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->abstractVisitor = $this->getMock('org\\bovigo\\vfs\\visitor\\vfsStreamAbstractVisitor',
-                                                array('visitFile', 'visitDirectory')
-                                 );
+        $this->abstractVisitor = $this->createPartialMock(
+            vfsStreamAbstractVisitor::class,
+            ['visitFile', 'visitDirectory']
+        );
     }
 
     /**
@@ -43,13 +44,11 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function visitThrowsInvalidArgumentExceptionOnUnknownContentType()
     {
-        $mockContent = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockContent = $this->createMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockContent->expects($this->any())
                     ->method('getType')
                     ->will($this->returnValue('invalid'));
-        $this->assertSame($this->abstractVisitor,
-                          $this->abstractVisitor->visit($mockContent)
-        );
+        $this->abstractVisitor->visit($mockContent);
     }
 
     /**

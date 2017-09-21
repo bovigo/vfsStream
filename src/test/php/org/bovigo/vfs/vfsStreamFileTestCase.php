@@ -313,7 +313,7 @@ class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
      */
     public function withContentAcceptsAnyFileContentInstance()
     {
-        $mockFileContent = $this->getMock('org\bovigo\vfs\content\FileContent');
+        $mockFileContent = $this->createMock('org\bovigo\vfs\content\FileContent');
         $mockFileContent->expects($this->once())
                         ->method('content')
                         ->will($this->returnValue('foobarbaz'));
