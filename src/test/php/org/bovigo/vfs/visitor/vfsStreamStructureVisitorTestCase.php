@@ -9,6 +9,7 @@
  */
 namespace org\bovigo\vfs\visitor;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\visitor\vfsStreamStructureVisitor.
  *
@@ -16,7 +17,7 @@ use org\bovigo\vfs\vfsStream;
  * @see    https://github.com/mikey179/vfsStream/issues/10
  * @group  issue_10
  */
-class vfsStreamStructureVisitorTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamStructureVisitorTestCase extends TestCase
 {
     /**
      * @test

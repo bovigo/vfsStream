@@ -1,16 +1,20 @@
 <?php
 /**
- * Created by PhpStorm.
- * Project: vfsStream
- * User: Sebastian Hopfe
- * Date: 14.07.16
- * Time: 14:07
+ * This file is part of vfsStream.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  org\bovigo\vfs
  */
-
 namespace org\bovigo\vfs;
-
-
-class vfsStreamDirectoryIssue134TestCase extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+/**
+ * Test for org\bovigo\vfs\vfsStreamDirectory.
+ *
+ * @group  issue_134
+ */
+class vfsStreamDirectoryIssue134TestCase extends TestCase
 {
     /**
      * access to root directory

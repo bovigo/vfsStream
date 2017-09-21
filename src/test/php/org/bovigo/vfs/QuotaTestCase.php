@@ -8,12 +8,13 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\Quota.
  *
  * @group  issue_35
  */
-class QuotaTestCase extends \PHPUnit_Framework_TestCase
+class QuotaTestCase extends TestCase
 {
     /**
      * instance to test

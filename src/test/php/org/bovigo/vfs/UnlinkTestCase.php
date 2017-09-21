@@ -8,12 +8,13 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for unlink() functionality.
  *
  * @group  unlink
  */
-class UnlinkTestCase extends \PHPUnit_Framework_TestCase
+class UnlinkTestCase extends TestCase
 {
     /**
      * @test
@@ -51,7 +52,7 @@ class UnlinkTestCase extends \PHPUnit_Framework_TestCase
         vfsStream::setup();
         try {
             $this->assertFalse(unlink('vfs://root/foo.txt'));
-        } catch (\PHPUnit_Framework_Error $fe) {
+        } catch (\PHPUnit\Framework\Error\Error $fe) {
             $this->assertEquals('unlink(vfs://root/foo.txt): No such file or directory', $fe->getMessage());
         }
     }

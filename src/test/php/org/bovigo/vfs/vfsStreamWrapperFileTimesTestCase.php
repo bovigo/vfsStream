@@ -8,12 +8,13 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  *
  * @since  0.9.0
  */
-class vfsStreamWrapperFileTimesTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperFileTimesTestCase extends TestCase
 {
     /**
      * URL of foo.txt file

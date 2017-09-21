@@ -214,7 +214,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @test
      * @group  issue_28
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \PHPUnit\Framework\Error\Error
      * @expectedExceptionMessage  mkdir(): Path vfs://root/dir exists
      */
     public function mkDirShouldNotOverwriteExistingDirectoriesAndTriggerE_USER_WARNING()
@@ -239,7 +239,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @test
      * @group  issue_28
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \PHPUnit\Framework\Error\Error
      * @expectedExceptionMessage  mkdir(): Path vfs://root/test.txt exists
      */
     public function mkDirShouldNotOverwriteExistingFilesAndTriggerE_USER_WARNING()
@@ -449,7 +449,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     {
         try {
             $this->assertFalse(unlink($this->barURL));
-        } catch (\PHPUnit_Framework_Error $fe) {
+        } catch (\PHPUnit\Framework\Error\Error $fe) {
             $this->assertEquals('unlink(vfs://foo/bar): Operation not permitted', $fe->getMessage());
         }
 
@@ -467,7 +467,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         vfsStream::newDirectory('empty')->at($this->foo);
         try {
             $this->assertTrue(unlink($this->fooURL . '/empty'));
-        } catch (\PHPUnit_Framework_Error $fe) {
+        } catch (\PHPUnit\Framework\Error\Error $fe) {
             $this->assertEquals('unlink(vfs://foo/empty): Operation not permitted', $fe->getMessage());
         }
 

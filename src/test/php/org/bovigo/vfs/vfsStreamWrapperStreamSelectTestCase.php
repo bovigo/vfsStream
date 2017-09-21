@@ -8,17 +8,18 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  *
  * @since  0.9.0
  * @group  issue_3
  */
-class vfsStreamWrapperSelectStreamTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperSelectStreamTestCase extends TestCase
 {
     /**
      * @test
-     * @expectedException \PHPUnit_Framework_Error
+     * @expectedException \PHPUnit\Framework\Error\Error
      */
     public function selectStream()
     {

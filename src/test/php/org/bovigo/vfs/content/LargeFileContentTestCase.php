@@ -8,13 +8,14 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs\content;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\content\LargeFileContent.
  *
  * @since  1.3.0
  * @group  issue_79
  */
-class LargeFileContentTestCase extends \PHPUnit_Framework_TestCase
+class LargeFileContentTestCase extends TestCase
 {
     /**
      * instance to test

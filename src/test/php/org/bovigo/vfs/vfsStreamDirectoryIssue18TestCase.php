@@ -8,12 +8,13 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamDirectory.
  *
  * @group  bug_18
  */
-class vfsStreamDirectoryIssue18TestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamDirectoryIssue18TestCase extends TestCase
 {
     /**
      * access to root directory

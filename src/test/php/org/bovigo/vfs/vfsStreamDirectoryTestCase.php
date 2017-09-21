@@ -8,10 +8,11 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamDirectory.
  */
-class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamDirectoryTestCase extends TestCase
 {
     /**
      * instance to test

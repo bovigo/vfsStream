@@ -8,10 +8,11 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamContainerIterator.
  */
-class vfsStreamContainerIteratorTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamContainerIteratorTestCase extends TestCase
 {
     /**
      * instance to test

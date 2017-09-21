@@ -8,10 +8,11 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamBlock.
  */
-class vfsStreamBlockTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamBlockTestCase extends TestCase
 {
     /**
      * The block device being tested.

@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for stream_set_option() implementation.
  *
@@ -15,7 +16,7 @@ namespace org\bovigo\vfs;
  * @see    https://github.com/mikey179/vfsStream/issues/15
  * @group  issue_15
  */
-class vfsStreamWrapperSetOptionTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperSetOptionTestCase extends TestCase
 {
     /**
      * root directory

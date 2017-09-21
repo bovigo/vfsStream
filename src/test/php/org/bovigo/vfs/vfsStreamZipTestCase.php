@@ -8,12 +8,13 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper in conjunction with ext/zip.
  *
  * @group  zip
  */
-class vfsStreamZipTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamZipTestCase extends TestCase
 {
     /**
      * set up test environment

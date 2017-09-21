@@ -8,13 +8,14 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test that using windows directory separator works correct.
  *
  * @since  0.9.0
  * @group  issue_8
  */
-class vfsStreamWrapperDirSeparatorTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperDirSeparatorTestCase extends TestCase
 {
     /**
      * root diretory

@@ -8,12 +8,13 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * @group  issue_104
  * @group  issue_128
  * @since  1.5.0
  */
-class Issue104TestCase extends \PHPUnit_Framework_TestCase
+class Issue104TestCase extends TestCase
 {
     /**
      * @test

@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for flock() implementation.
  *
@@ -17,7 +18,7 @@ namespace org\bovigo\vfs;
  * @see         https://github.com/mikey179/vfsStream/issues/6
  * @group       issue_6
  */
-class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperFlockTestCase extends TestCase
 {
     /**
      * root directory

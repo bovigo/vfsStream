@@ -8,13 +8,14 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs\content;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\content\StringBasedFileContent.
  *
  * @since  1.3.0
  * @group  issue_79
  */
-class StringBasedFileContentTestCase extends \PHPUnit_Framework_TestCase
+class StringBasedFileContentTestCase extends TestCase
 {
     /**
      * instance to test

@@ -8,12 +8,13 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for quota related functionality of org\bovigo\vfs\vfsStreamWrapper.
  *
  * @group  issue_35
  */
-class vfsStreamWrapperQuotaTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperQuotaTestCase extends TestCase
 {
     /**
      * access to root
@@ -56,7 +57,7 @@ class vfsStreamWrapperQuotaTestCase extends \PHPUnit_Framework_TestCase
     {
         try {
             file_put_contents(vfsStream::url('root/file.txt'), '12345678901');
-        } catch (\PHPUnit_Framework_Error $e) {
+        } catch (\PHPUnit\Framework\Error\Error $e) {
             $this->assertEquals('file_put_contents(): Only 10 of 11 bytes written, possibly out of free disk space',
                                 $e->getMessage()
             );
@@ -77,7 +78,7 @@ class vfsStreamWrapperQuotaTestCase extends \PHPUnit_Framework_TestCase
                    );
         try {
             file_put_contents(vfsStream::url('root/file.txt'), '12345678901');
-        } catch (\PHPUnit_Framework_Error $e) {
+        } catch (\PHPUnit\Framework\Error\Error $e) {
             $this->assertEquals('file_put_contents(): Only 7 of 11 bytes written, possibly out of free disk space',
                                 $e->getMessage()
             );

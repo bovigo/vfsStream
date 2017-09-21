@@ -8,13 +8,14 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStream.
  *
  * @since       0.9.0
  * @group       issue_2
  */
-class vfsStreamGlobTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamGlobTestCase extends TestCase
 {
     /**
      * @test

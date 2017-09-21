@@ -8,12 +8,13 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for permissions related functionality.
  *
  * @group  permissions
  */
-class PermissionsTestCase extends \PHPUnit_Framework_TestCase
+class PermissionsTestCase extends TestCase
 {
     /**
      * @type  vfsStreamDirectory
@@ -92,7 +93,7 @@ class PermissionsTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  issue_107
-     * @expectedException  PHPUnit_Framework_Error
+     * @expectedException  \PHPUnit\Framework\Error\Error
      * @expectedExceptionMessage  Can not create new file in non-writable path root
      * @requires PHP 5.4
      * @since  1.5.0

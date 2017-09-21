@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Helper class for the test.
  */
@@ -37,7 +38,7 @@ class TestvfsStreamAbstractContent extends vfsStreamAbstractContent
 /**
  * Test for org\bovigo\vfs\vfsStreamAbstractContent.
  */
-class vfsStreamAbstractContentTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamAbstractContentTestCase extends TestCase
 {
     /**
      * @test

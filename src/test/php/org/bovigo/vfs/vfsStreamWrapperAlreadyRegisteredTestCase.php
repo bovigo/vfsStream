@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Helper class for the test.
  */
@@ -28,7 +29,7 @@ class TestvfsStreamWrapper extends vfsStreamWrapper
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
-class vfsStreamWrapperAlreadyRegisteredTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperAlreadyRegisteredTestCase extends TestCase
 {
     /**
      * set up test environment

@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for directory iteration.
  *
@@ -15,7 +16,7 @@ namespace org\bovigo\vfs;
  * @group  issue_128
  * @since  1.6.2
  */
-class FilenameTestCase extends \PHPUnit_Framework_TestCase
+class FilenameTestCase extends TestCase
 {
     private $rootDir;
     private $lostAndFound;

@@ -8,6 +8,7 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for umask settings.
  *
@@ -15,7 +16,7 @@ namespace org\bovigo\vfs;
  * @group  umask
  * @since  0.8.0
  */
-class vfsStreamUmaskTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamUmaskTestCase extends TestCase
 {
     /**
      * set up test environment

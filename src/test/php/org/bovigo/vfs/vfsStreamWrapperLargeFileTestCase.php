@@ -9,6 +9,7 @@
  */
 namespace org\bovigo\vfs;
 use org\bovigo\vfs\content\LargeFileContent;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for large file mocks.
  *
@@ -17,7 +18,7 @@ use org\bovigo\vfs\content\LargeFileContent;
  * @since       1.3.0
  * @group       issue_79
  */
-class vfsStreamWrapperLargeFileTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperLargeFileTestCase extends TestCase
 {
     /**
      * large file to test

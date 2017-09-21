@@ -8,11 +8,11 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
-
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
-class vfsStreamWrapperUnregisterTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperUnregisterTestCase extends TestCase
 {
 
     /**

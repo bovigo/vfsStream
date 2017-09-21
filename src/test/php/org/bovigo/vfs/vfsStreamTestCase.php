@@ -8,13 +8,12 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
-
 use org\bovigo\vfs\content\LargeFileContent;
-
+use PHPUnit\Framework\TestCase;
 /**
  * Test for org\bovigo\vfs\vfsStream.
  */
-class vfsStreamTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamTestCase extends TestCase
 {
     /**
      * set up test environment

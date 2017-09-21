@@ -322,19 +322,6 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      * @group  issue_11
      * @group  permissions
      */
-    public function chownDoesNotWorkOnVfsStreamUrls()
-    {
-        if (version_compare(phpversion(), '5.4.0', '<')) {
-            $this->assertFalse(@chown($this->fooURL, vfsStream::OWNER_USER_2));
-            $this->assertEquals(vfsStream::getCurrentUser(), fileowner($this->fooURL));
-        }
-    }
-
-    /**
-     * @test
-     * @group  issue_11
-     * @group  permissions
-     */
     public function groupIsCurrentGroupByDefault()
     {
         $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->fooURL));
@@ -370,19 +357,6 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->barURL . '/.'));
         $this->assertEquals(vfsStream::GROUP_USER_2, filegroup($this->baz1URL));
         $this->assertEquals(vfsStream::GROUP_USER_2, filegroup($this->baz2URL));
-    }
-
-    /**
-     * @test
-     * @group  issue_11
-     * @group  permissions
-     */
-    public function chgrpDoesNotWorkOnVfsStreamUrls()
-    {
-        if (version_compare(phpversion(), '5.4.0', '<')) {
-            $this->assertFalse(@chgrp($this->fooURL, vfsStream::GROUP_USER_2));
-            $this->assertEquals(vfsStream::getCurrentGroup(), filegroup($this->fooURL));
-        }
     }
 
     /**
@@ -438,7 +412,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
-     * @expectedException  PHPUnit_Framework_Error
+     * @expectedException  \PHPUnit\Framework\Error\Error
      */
     public function renameFileIntoFile()
     {
@@ -466,7 +440,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * assert that trying to rename from a non existing file trigger a warning
      *
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \PHPUnit\Framework\Error\Error
      * @test
      */
     public function renameOnSourceFileNotFound()
@@ -476,7 +450,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * assert that trying to rename to a directory that is not found trigger a warning
 
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \PHPUnit\Framework\Error\Error
      * @test
      */
     public function renameOnDestinationDirectoryFileNotFound()
@@ -609,7 +583,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \PHPUnit\Framework\Error\Error
      */
     public function openFileWithoutDirectory()
     {

@@ -8,13 +8,14 @@
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
+use PHPUnit\Framework\TestCase;
 /**
  * Test for LOCK_EX behaviour related to file_put_contents().
  *
  * @group   lock_fpc
  * @author  https://github.com/iwyg
  */
-class vfsStreamExLockTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamExLockTestCase extends TestCase
 {
     /**
      * set up test environment
