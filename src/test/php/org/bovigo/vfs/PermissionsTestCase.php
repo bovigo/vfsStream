@@ -95,7 +95,6 @@ class PermissionsTestCase extends TestCase
      * @group  issue_107
      * @expectedException  \PHPUnit\Framework\Error\Error
      * @expectedExceptionMessage  Can not create new file in non-writable path root
-     * @requires PHP 5.4
      * @since  1.5.0
      */
     public function touchOnNonWriteableDirectoryTriggersError()
@@ -107,7 +106,6 @@ class PermissionsTestCase extends TestCase
     /**
      * @test
      * @group  issue_107
-     * @requires PHP 5.4
      * @since  1.5.0
      */
     public function touchOnNonWriteableDirectoryDoesNotCreateFile()

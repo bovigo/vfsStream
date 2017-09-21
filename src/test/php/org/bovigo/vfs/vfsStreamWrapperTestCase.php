@@ -255,25 +255,14 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function chmodModifiesPermissions()
     {
-        if (version_compare(phpversion(), '5.4.0', '<')) {
-            $this->assertFalse(@chmod($this->fooURL, 0755));
-            $this->assertFalse(@chmod($this->barURL, 0711));
-            $this->assertFalse(@chmod($this->baz1URL, 0644));
-            $this->assertFalse(@chmod($this->baz2URL, 0664));
-            $this->assertEquals(40777, decoct(fileperms($this->fooURL)));
-            $this->assertEquals(40777, decoct(fileperms($this->barURL)));
-            $this->assertEquals(100666, decoct(fileperms($this->baz1URL)));
-            $this->assertEquals(100666, decoct(fileperms($this->baz2URL)));
-        } else {
-            $this->assertTrue(chmod($this->fooURL, 0755));
-            $this->assertTrue(chmod($this->barURL, 0711));
-            $this->assertTrue(chmod($this->baz1URL, 0644));
-            $this->assertTrue(chmod($this->baz2URL, 0664));
-            $this->assertEquals(40755, decoct(fileperms($this->fooURL)));
-            $this->assertEquals(40711, decoct(fileperms($this->barURL)));
-            $this->assertEquals(100644, decoct(fileperms($this->baz1URL)));
-            $this->assertEquals(100664, decoct(fileperms($this->baz2URL)));
-        }
+        $this->assertTrue(chmod($this->fooURL, 0755));
+        $this->assertTrue(chmod($this->barURL, 0711));
+        $this->assertTrue(chmod($this->baz1URL, 0644));
+        $this->assertTrue(chmod($this->baz2URL, 0664));
+        $this->assertEquals(40755, decoct(fileperms($this->fooURL)));
+        $this->assertEquals(40711, decoct(fileperms($this->barURL)));
+        $this->assertEquals(100644, decoct(fileperms($this->baz1URL)));
+        $this->assertEquals(100664, decoct(fileperms($this->baz2URL)));
     }
 
     /**
@@ -297,18 +286,10 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function chownChangesUser()
     {
-        if (version_compare(phpversion(), '5.4.0', '<')) {
-            $this->foo->chown(vfsStream::OWNER_USER_1);
-            $this->bar->chown(vfsStream::OWNER_USER_1);
-            $this->baz1->chown(vfsStream::OWNER_USER_2);
-            $this->baz2->chown(vfsStream::OWNER_USER_2);
-        } else {
-            chown($this->fooURL, vfsStream::OWNER_USER_1);
-            chown($this->barURL, vfsStream::OWNER_USER_1);
-            chown($this->baz1URL, vfsStream::OWNER_USER_2);
-            chown($this->baz2URL, vfsStream::OWNER_USER_2);
-        }
-
+        chown($this->fooURL, vfsStream::OWNER_USER_1);
+        chown($this->barURL, vfsStream::OWNER_USER_1);
+        chown($this->baz1URL, vfsStream::OWNER_USER_2);
+        chown($this->baz2URL, vfsStream::OWNER_USER_2);
         $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->fooURL));
         $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->fooURL . '/.'));
         $this->assertEquals(vfsStream::OWNER_USER_1, fileowner($this->barURL));
@@ -339,18 +320,10 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function chgrp()
     {
-        if (version_compare(phpversion(), '5.4.0', '<')) {
-            $this->foo->chgrp(vfsStream::GROUP_USER_1);
-            $this->bar->chgrp(vfsStream::GROUP_USER_1);
-            $this->baz1->chgrp(vfsStream::GROUP_USER_2);
-            $this->baz2->chgrp(vfsStream::GROUP_USER_2);
-        } else {
-            chgrp($this->fooURL, vfsStream::GROUP_USER_1);
-            chgrp($this->barURL, vfsStream::GROUP_USER_1);
-            chgrp($this->baz1URL, vfsStream::GROUP_USER_2);
-            chgrp($this->baz2URL, vfsStream::GROUP_USER_2);
-        }
-
+        chgrp($this->fooURL, vfsStream::GROUP_USER_1);
+        chgrp($this->barURL, vfsStream::GROUP_USER_1);
+        chgrp($this->baz1URL, vfsStream::GROUP_USER_2);
+        chgrp($this->baz2URL, vfsStream::GROUP_USER_2);
         $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->fooURL));
         $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->fooURL . '/.'));
         $this->assertEquals(vfsStream::GROUP_USER_1, filegroup($this->barURL));
@@ -595,14 +568,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @group     issue_33
      * @since     1.1.0
-     * @requires  PHP 5.4.0
      */
     public function truncateRemovesSuperflouosContent()
     {
-        if (strstr(PHP_VERSION, 'hiphop') !== false) {
-            $this->markTestSkipped('Not supported on hhvm');
-        }
-
         $handle = fopen($this->baz1URL, "r+");
         $this->assertTrue(ftruncate($handle, 0));
         $this->assertEquals(0, filesize($this->baz1URL));
@@ -614,14 +582,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @group     issue_33
      * @since     1.1.0
-     * @requires  PHP 5.4.0
      */
     public function truncateToGreaterSizeAddsZeroBytes()
     {
-        if (strstr(PHP_VERSION, 'hiphop') !== false) {
-            $this->markTestSkipped('Not supported on hhvm');
-        }
-
         $handle = fopen($this->baz1URL, "r+");
         $this->assertTrue(ftruncate($handle, 25));
         $this->assertEquals(25, filesize($this->baz1URL));
@@ -633,7 +596,6 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @test
      * @group     issue_11
-     * @requires  PHP 5.4.0
      */
     public function touchCreatesNonExistingFile()
     {
@@ -644,7 +606,6 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @test
      * @group     issue_11
-     * @requires  PHP 5.4.0
      */
     public function touchChangesAccessAndModificationTimeForFile()
     {
@@ -657,7 +618,6 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @group     issue_11
      * @group     issue_80
-     * @requires  PHP 5.4.0
      */
     public function touchChangesTimesToCurrentTimestampWhenNoTimesGiven()
     {
@@ -669,7 +629,6 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @test
      * @group     issue_11
-     * @requires  PHP 5.4.0
      */
     public function touchWithModifiedTimeChangesAccessAndModifiedTime()
     {
@@ -681,7 +640,6 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @test
      * @group     issue_11
-     * @requires  PHP 5.4.0
      */
     public function touchChangesAccessAndModificationTimeForDirectory()
     {

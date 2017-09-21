@@ -93,14 +93,6 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      */
     public function truncateToLessThanQuotaWritesEverything()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
-        if (strstr(PHP_VERSION, 'hiphop') !== false) {
-            $this->markTestSkipped('Not supported on hhvm');
-        }
-
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         $this->assertTrue(ftruncate($fp, 9));
         fclose($fp);
@@ -118,14 +110,6 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      */
     public function truncateUpToQotaWritesEverything()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
-        if (strstr(PHP_VERSION, 'hiphop') !== false) {
-            $this->markTestSkipped('Not supported on hhvm');
-        }
-
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         $this->assertTrue(ftruncate($fp, 10));
         fclose($fp);
@@ -143,14 +127,6 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      */
     public function truncateToMoreThanQotaWritesOnlyUpToQuota()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
-        if (strstr(PHP_VERSION, 'hiphop') !== false) {
-            $this->markTestSkipped('Not supported on hhvm');
-        }
-
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         $this->assertTrue(ftruncate($fp, 11));
         fclose($fp);
@@ -168,14 +144,6 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      */
     public function truncateConsidersAllFilesForQuota()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
-        if (strstr(PHP_VERSION, 'hiphop') !== false) {
-            $this->markTestSkipped('Not supported on hhvm');
-        }
-
         vfsStream::newFile('bar.txt')
                  ->withContent('bar')
                  ->at(vfsStream::newDirectory('bar')
@@ -198,14 +166,6 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      */
     public function canNotTruncateToGreaterLengthWhenDiscQuotaReached()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP 5.4');
-        }
-
-        if (strstr(PHP_VERSION, 'hiphop') !== false) {
-            $this->markTestSkipped('Not supported on hhvm');
-        }
-
         vfsStream::newFile('bar.txt')
                  ->withContent('1234567890')
                  ->at(vfsStream::newDirectory('bar')
