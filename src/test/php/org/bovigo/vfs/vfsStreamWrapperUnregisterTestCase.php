@@ -10,6 +10,10 @@
 namespace org\bovigo\vfs;
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\doesNotContain;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
@@ -17,25 +21,20 @@ class vfsStreamWrapperUnregisterTestCase extends TestCase
 {
 
     /**
-     * Unregistering a registered URL wrapper.
-     *
      * @test
      */
     public function unregisterRegisteredUrlWrapper()
     {
         vfsStreamWrapper::register();
         vfsStreamWrapper::unregister();
-        $this->assertNotContains(vfsStream::SCHEME, stream_get_wrappers());
+        assert(stream_get_wrappers(), doesNotContain(vfsStream::SCHEME));
     }
 
     /**
-     * Unregistering a third party wrapper for vfs:// fails.
-     *
      * @test
-     * @expectedException org\bovigo\vfs\vfsStreamException
      * @runInSeparateProcess
      */
-    public function unregisterThirdPartyVfsScheme()
+    public function canNotUnregisterThirdPartyVfsScheme()
     {
         // Unregister possible registered URL wrapper.
         vfsStreamWrapper::unregister();
@@ -44,34 +43,30 @@ class vfsStreamWrapperUnregisterTestCase extends TestCase
           vfsStream::SCHEME,
           NewInstance::classname(vfsStreamWrapper::class)
         );
-        vfsStreamWrapper::unregister();
+        expect(function() { vfsStreamWrapper::unregister(); })
+          ->throws(vfsStreamException::class);
     }
 
     /**
-     * Unregistering when not in registered state will fail.
-     *
      * @test
-     * @expectedException org\bovigo\vfs\vfsStreamException
      * @runInSeparateProcess
      */
-    public function unregisterWhenNotInRegisteredState()
+    public function canNotUnregisterWhenNotInRegisteredState()
     {
         vfsStreamWrapper::register();
         stream_wrapper_unregister(vfsStream::SCHEME);
-        vfsStreamWrapper::unregister();
+        expect(function() { vfsStreamWrapper::unregister(); })
+          ->throws(vfsStreamException::class);
     }
 
     /**
-     * Unregistering while not registers won't fail.
-     *
      * @test
      */
-    public function unregisterWhenNotRegistered()
+    public function unregisterWhenNotRegisteredDoesNotFail()
     {
         // Unregister possible registered URL wrapper.
         vfsStreamWrapper::unregister();
-
-        $this->assertNotContains(vfsStream::SCHEME, stream_get_wrappers());
-        vfsStreamWrapper::unregister();
+        expect(function() { vfsStreamWrapper::unregister(); })
+          ->doesNotThrow();
     }
 }

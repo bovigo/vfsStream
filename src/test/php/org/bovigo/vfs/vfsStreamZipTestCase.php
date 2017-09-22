@@ -9,6 +9,9 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper in conjunction with ext/zip.
  *
@@ -17,37 +20,19 @@ use PHPUnit\Framework\TestCase;
 class vfsStreamZipTestCase extends TestCase
 {
     /**
-     * set up test environment
-     */
-    public function setUp()
-    {
-        if (extension_loaded('zip') === false) {
-            $this->markTestSkipped('No ext/zip installed, skipping test.');
-        }
-
-        $this->markTestSkipped('Zip extension can not work with vfsStream urls.');
-
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(vfsStream::newDirectory('root'));
-
-    }
-
-    /**
      * @test
+     * @requires extension zip
      */
-    public function createZipArchive()
+    public function zipExtensionDoesNotSupportUserlandStreams()
     {
-        $zip = new ZipArchive();
-        $this->assertTrue($zip->open(vfsStream::url('root/test.zip'), ZipArchive::CREATE));
-        $this->assertTrue($zip->addFromString("testfile1.txt", "#1 This is a test string added as testfile1.txt.\n"));
-        $this->assertTrue($zip->addFromString("testfile2.txt", "#2 This is a test string added as testfile2.txt.\n"));
+        vfsStream::setup();
+        $zip = new \ZipArchive();
+        assertTrue($zip->open(vfsStream::url('root/test.zip'), \ZipArchive::CREATE));
+        assertTrue($zip->addFromString("testfile1.txt", "#1 This is a test string added as testfile1.txt.\n"));
+        assertTrue($zip->addFromString("testfile2.txt", "#2 This is a test string added as testfile2.txt.\n"));
         $zip->setArchiveComment('a test');
-        var_dump($zip);
-        $this->assertTrue($zip->close());
-        var_dump($zip->getStatusString());
-        var_dump($zip->close());
-        var_dump($zip->getStatusString());
-        var_dump($zip);
-        var_dump(file_exists(vfsStream::url('root/test.zip')));
+        expect(function() use ($zip) { $zip->close(); })
+          ->triggers()
+          ->withMessage('ZipArchive::close(): Failure to create temporary file: No such file or directory');
     }
 }

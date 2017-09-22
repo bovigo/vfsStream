@@ -72,8 +72,8 @@ abstract class vfsStreamWrapperBaseTestCase extends TestCase
         $this->barURL  = vfsStream::url('foo/bar');
         $this->baz1URL = vfsStream::url('foo/bar/baz1');
         $this->baz2URL = vfsStream::url('foo/baz2');
-        $this->foo     = new vfsStreamDirectory('foo');
-        $this->bar     = new vfsStreamDirectory('bar');
+        $this->foo     = vfsStream::newDirectory('foo');
+        $this->bar     = vfsStream::newDirectory('bar');
         $this->baz1    = vfsStream::newFile('baz1')
                                   ->lastModified(300)
                                   ->lastAccessed(300)

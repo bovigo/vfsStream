@@ -9,6 +9,10 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 /**
  * @group  issue_104
  * @group  issue_128
@@ -16,20 +20,24 @@ use PHPUnit\Framework\TestCase;
  */
 class Issue104TestCase extends TestCase
 {
+    private $content;
+
+    public function setup()
+    {
+      $this->content = '<xs:schema targetNamespace="http://www.example.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                          <xs:complexType name="myType"></xs:complexType>
+                        </xs:schema>';
+      $structure = ['foo bar' => ['schema.xsd' => $this->content]];
+      vfsStream::setup('root', null, $structure);
+    }
+
     /**
      * @test
      */
     public function vfsStreamCanHandleUrlEncodedPathPassedByInternalPhpCode()
     {
-        $structure = array('foo bar' => array(
-                'schema.xsd' => '<xs:schema targetNamespace="http://www.example.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-                                    <xs:complexType name="myType"></xs:complexType>
-                                </xs:schema>',
-                )
-        );
-        vfsStream::setup('root', null, $structure);
         $doc = new \DOMDocument();
-        $this->assertTrue($doc->load(vfsStream::url('root/foo bar/schema.xsd')));
+        assertTrue($doc->load(vfsStream::url('root/foo bar/schema.xsd')));
     }
 
     /**
@@ -37,17 +45,9 @@ class Issue104TestCase extends TestCase
      */
     public function vfsStreamCanHandleUrlEncodedPath()
     {
-        $content = '<xs:schema targetNamespace="http://www.example.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-                                    <xs:complexType name="myType"></xs:complexType>
-                                </xs:schema>';
-        $structure = array('foo bar' => array(
-                'schema.xsd' => $content,
-                )
-        );
-        vfsStream::setup('root', null, $structure);
-        $this->assertEquals(
-                $content,
-                file_get_contents(vfsStream::url('root/foo bar/schema.xsd'))
+        assert(
+            file_get_contents(vfsStream::url('root/foo bar/schema.xsd')),
+            equals($this->content)
         );
     }
 }

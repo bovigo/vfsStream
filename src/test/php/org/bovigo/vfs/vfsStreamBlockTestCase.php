@@ -9,35 +9,55 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for org\bovigo\vfs\vfsStreamBlock.
  */
 class vfsStreamBlockTestCase extends TestCase
 {
     /**
-     * The block device being tested.
-     *
-     * @var vfsStreamBlock $block
+     * @test
      */
-    protected $block;
-
-    public function setUp()
+    public function isOfTypeBlock()
     {
-        $this->block = new vfsStreamBlock('foo');
+        assert((new vfsStreamBlock('foo'))->getType(), equals(vfsStreamContent::TYPE_BLOCK));
     }
 
     /**
-     * test default values and methods
-     *
      * @test
      */
-    public function defaultValues()
+    public function appliesForSelf()
     {
-        $this->assertEquals(vfsStreamContent::TYPE_BLOCK, $this->block->getType());
-        $this->assertEquals('foo', $this->block->getName());
-        $this->assertTrue($this->block->appliesTo('foo'));
-        $this->assertFalse($this->block->appliesTo('foo/bar'));
-        $this->assertFalse($this->block->appliesTo('bar'));
+        assertTrue((new vfsStreamBlock('foo'))->appliesTo('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotApplyForSubDirectories()
+    {
+        assertFalse((new vfsStreamBlock('foo'))->appliesTo('foo/bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotApplyForOtherNames()
+    {
+        assertFalse((new vfsStreamBlock('foo'))->appliesTo('bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function hasGivenName()
+    {
+        assert((new vfsStreamBlock('foo'))->getName(), equals('foo'));
     }
 
     /**
@@ -49,7 +69,7 @@ class vfsStreamBlockTestCase extends TestCase
     {
         $root = vfsStream::setup('root');
         $root->addChild(vfsStream::newBlock('foo'));
-        $this->assertEquals('block', filetype(vfsStream::url('root/foo')));
+        assert(filetype(vfsStream::url('root/foo')), equals('block'));
     }
 
     /**
@@ -59,32 +79,26 @@ class vfsStreamBlockTestCase extends TestCase
      */
     public function addStructure()
     {
-        $structure = array(
-            'topLevel' => array(
-                'thisIsAFile' => 'file contents',
-                '[blockDevice]' => 'block contents'
-            )
+        vfsStream::create(['topLevel' => [
+            'thisIsAFile'   => 'file contents',
+            '[blockDevice]' => 'block contents'
+        ]]);
+        assert(
+            filetype(vfsStream::url('root/topLevel/blockDevice')),
+            equals('block')
         );
-
-        $root = vfsStream::create($structure);
-
-        $this->assertSame('block', filetype(vfsStream::url('root/topLevel/blockDevice')));
     }
 
     /**
-     * tests that a blank name for a block device throws an exception
      * @test
-     * @expectedException org\bovigo\vfs\vfsStreamException
      */
-    public function createWithEmptyName()
+    public function createWithEmptyNameThrowsException()
     {
-        $structure = array(
-            'topLevel' => array(
+        expect(function() {
+            vfsStream::create(['topLevel' => [
                 'thisIsAFile' => 'file contents',
-                '[]' => 'block contents'
-            )
-        );
-
-        $root = vfsStream::create($structure);
+                '[]'          => 'block contents'
+            ]]);
+        })->throws(vfsStreamException::class);
     }
 }

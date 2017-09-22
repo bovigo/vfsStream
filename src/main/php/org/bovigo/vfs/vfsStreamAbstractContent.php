@@ -220,7 +220,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   vfsStreamContainer  $container
      * @return  $this
      */
-    public function at(vfsStreamContainer $container)
+    public function at(vfsStreamContainer $container): vfsStreamContent
     {
         $container->addChild($this);
         return $this;
@@ -232,7 +232,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int  $permissions
      * @return  $this
      */
-    public function chmod($permissions)
+    public function chmod($permissions): vfsStreamContent
     {
         $this->permissions           = $permissions;
         $this->lastAttributeModified = time();
@@ -316,7 +316,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int  $user
      * @return  $this
      */
-    public function chown($user)
+    public function chown($user): vfsStreamContent
     {
         $this->user                  = $user;
         $this->lastAttributeModified = time();
@@ -350,7 +350,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int  $group
      * @return  $this
      */
-    public function chgrp($group)
+    public function chgrp($group): vfsStreamContent
     {
         $this->group                 = $group;
         $this->lastAttributeModified = time();

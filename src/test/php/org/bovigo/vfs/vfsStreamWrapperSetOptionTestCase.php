@@ -9,6 +9,10 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stream_set_option() implementation.
  *
@@ -40,7 +44,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     public function setBlockingDoesNotWork()
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $this->assertFalse(stream_set_blocking($fp, 1));
+        assertFalse(stream_set_blocking($fp, 1));
         fclose($fp);
     }
 
@@ -50,7 +54,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     public function removeBlockingDoesNotWork()
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $this->assertFalse(stream_set_blocking($fp, 0));
+        assertFalse(stream_set_blocking($fp, 0));
         fclose($fp);
     }
 
@@ -60,7 +64,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     public function setTimeoutDoesNotWork()
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $this->assertFalse(stream_set_timeout($fp, 1));
+        assertFalse(stream_set_timeout($fp, 1));
         fclose($fp);
     }
 
@@ -70,7 +74,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     public function setWriteBufferDoesNotWork()
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $this->assertEquals(-1, stream_set_write_buffer($fp, 512));
+        assert(stream_set_write_buffer($fp, 512), equals(-1));
         fclose($fp);
     }
 }

@@ -10,6 +10,15 @@
 namespace org\bovigo\vfs;
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyArray;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for org\bovigo\vfs\vfsStreamDirectory.
  */
@@ -27,58 +36,77 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function setUp()
     {
-        $this->dir = new vfsStreamDirectory('foo');
+        $this->dir = vfsStream::newDirectory('foo');
     }
 
     /**
-     * assure that a directory seperator inside the name throws an exception
-     *
      * @test
-     * @expectedException  org\bovigo\vfs\vfsStreamException
      */
-    public function invalidCharacterInName()
+    public function invalidCharacterInNameThrowsException()
     {
-        $dir = new vfsStreamDirectory('foo/bar');
+        expect(function() { new vfsStreamDirectory('foo/bar'); })
+            ->throws(vfsStreamException::class);
     }
 
     /**
-     * test default values and methods
-     *
      * @test
      */
-    public function defaultValues()
+    public function isOfTypeDir()
     {
-        $this->assertEquals(vfsStreamContent::TYPE_DIR, $this->dir->getType());
-        $this->assertEquals('foo', $this->dir->getName());
-        $this->assertTrue($this->dir->appliesTo('foo'));
-        $this->assertTrue($this->dir->appliesTo('foo/bar'));
-        $this->assertFalse($this->dir->appliesTo('bar'));
-        $this->assertEquals(array(), $this->dir->getChildren());
+        assert($this->dir->getType(), equals(vfsStreamContent::TYPE_DIR));
     }
 
     /**
-     * test renaming the directory
-     *
      * @test
      */
-    public function rename()
+    public function appliesForSelf()
+    {
+        assertTrue($this->dir->appliesTo('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function appliesForSubDirectories()
+    {
+        assertTrue($this->dir->appliesTo('foo/bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotApplyForOtherNames()
+    {
+        assertFalse($this->dir->appliesTo('bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function hasGivenName()
+    {
+        assert($this->dir->getName(), equals('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function canBeRenamed()
     {
         $this->dir->rename('bar');
-        $this->assertEquals('bar', $this->dir->getName());
-        $this->assertFalse($this->dir->appliesTo('foo'));
-        $this->assertFalse($this->dir->appliesTo('foo/bar'));
-        $this->assertTrue($this->dir->appliesTo('bar'));
+        assert($this->dir->getName(), equals('bar'));
+        assertFalse($this->dir->appliesTo('foo'));
+        assertFalse($this->dir->appliesTo('foo/bar'));
+        assertTrue($this->dir->appliesTo('bar'));
     }
 
     /**
-     * renaming the directory to an invalid name throws a vfsStreamException
-     *
      * @test
-     * @expectedException  org\bovigo\vfs\vfsStreamException
      */
     public function renameToInvalidNameThrowsvfsStreamException()
     {
-        $this->dir->rename('foo/baz');
+        expect(function() { $this->dir->rename('foo/baz'); })
+            ->throws(vfsStreamException::class);
     }
 
     /**
@@ -87,7 +115,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function hasNoChildrenByDefault()
     {
-        $this->assertFalse($this->dir->hasChildren());
+        assertFalse($this->dir->hasChildren());
     }
 
     /**
@@ -101,7 +129,7 @@ class vfsStreamDirectoryTestCase extends TestCase
             'getName'   => 'baz'
         ]);
         $this->dir->addChild($content);
-        $this->assertTrue($this->dir->hasChildren());
+        assertTrue($this->dir->hasChildren());
     }
 
     /**
@@ -109,7 +137,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function hasChildReturnsFalseForNonExistingChild()
     {
-        $this->assertFalse($this->dir->hasChild('bar'));
+        assertFalse($this->dir->hasChild('bar'));
     }
 
     /**
@@ -117,7 +145,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function getChildReturnsNullForNonExistingChild()
     {
-        $this->assertNull($this->dir->getChild('bar'));
+        assertNull($this->dir->getChild('bar'));
     }
 
     /**
@@ -125,89 +153,120 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function removeChildReturnsFalseForNonExistingChild()
     {
-        $this->assertFalse($this->dir->removeChild('bar'));
+        assertFalse($this->dir->removeChild('bar'));
+    }
+
+    private function createChild(): vfsStreamContent
+    {
+      return NewInstance::of(vfsStreamContent::class)->returns([
+          'getType'   => vfsStreamContent::TYPE_FILE,
+          'appliesTo' => function($name) { return 'bar' === $name; },
+          'getName'   => 'bar',
+          'size'      => 5
+      ]);
     }
 
     /**
-     * test that adding, handling and removing of a child works as expected
-     *
      * @test
      */
-    public function childHandling()
+    public function hasChildAfterItHasBeenAdded()
     {
-        $content = NewInstance::of(vfsStreamContent::class)->returns([
-            'getType'   => vfsStreamContent::TYPE_FILE,
-            'appliesTo' => function($name) { return 'bar' === $name; },
-            'getName'   => 'bar',
-            'size'      => 5
-        ]);
+        $this->dir->addChild($this->createChild());
+        assertTrue($this->dir->hasChild('bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function returnsAddedInstance()
+    {
+        $content = $this->createChild();
         $this->dir->addChild($content);
-        $this->assertTrue($this->dir->hasChild('bar'));
-        $bar = $this->dir->getChild('bar');
-        $this->assertSame($content, $bar);
-        $this->assertEquals([$content], $this->dir->getChildren());
-        $this->assertEquals(0, $this->dir->size());
-        $this->assertEquals(5, $this->dir->sizeSummarized());
-        $this->assertTrue($this->dir->removeChild('bar'));
-        $this->assertEquals(array(), $this->dir->getChildren());
-        $this->assertEquals(0, $this->dir->size());
-        $this->assertEquals(0, $this->dir->sizeSummarized());
+        assert($this->dir->getChild('bar'), isSameAs($content));
     }
 
     /**
-     * test that adding, handling and removing of a child works as expected
-     *
      * @test
      */
-    public function childHandlingWithSubdirectory()
+    public function returnsListOfAll()
     {
-        $content = NewInstance::of(vfsStreamContent::class)->returns([
-            'getType'   => vfsStreamContent::TYPE_FILE,
-            'getName'   => 'bar',
-            'size'      => 5
-        ]);
-        $subdir = new vfsStreamDirectory('subdir');
-        $subdir->addChild($content);
-        $this->dir->addChild($subdir);
-        $this->assertTrue($this->dir->hasChild('subdir'));
-        $this->assertSame($subdir, $this->dir->getChild('subdir'));
-        $this->assertEquals([$subdir], $this->dir->getChildren());
-        $this->assertEquals(0, $this->dir->size());
-        $this->assertEquals(5, $this->dir->sizeSummarized());
-        $this->assertTrue($this->dir->removeChild('subdir'));
-        $this->assertEquals([], $this->dir->getChildren());
-        $this->assertEquals(0, $this->dir->size());
-        $this->assertEquals(0, $this->dir->sizeSummarized());
+        $content = $this->createChild();
+        $this->dir->addChild($content);
+        assert($this->dir->getChildren(), equals([$content]));
     }
 
     /**
-     * dd
-     *
+     * @test
+     */
+    public function sizeOfDirectoryIs0()
+    {
+        assert($this->dir->size(), equals(0));
+    }
+
+    /**
+     * @test
+     */
+    public function sizeOfDirectoryIsAlways0()
+    {
+        $this->dir->addChild($this->createChild());
+        assert($this->dir->size(), equals(0));
+    }
+
+    /**
+     * @test
+     */
+    public function summarizedSizeIs0WhenNoChildrenAdded()
+    {
+        assert($this->dir->sizeSummarized(), equals(0));
+    }
+
+    /**
+     * @test
+     */
+    public function summarizedSizeContainsSizeOfChildren()
+    {
+        $this->dir->addChild($this->createChild());
+        assert($this->dir->sizeSummarized(), equals(5));
+    }
+
+    /**
+     * @test
+     */
+    public function summarizedSizeContainsSizeOfChildrenIncludingSubdirectories()
+    {
+        $subdir  = vfsStream::newDirectory('subdir');
+        $subdir->addChild($this->createChild());
+        $this->dir->addChild($subdir);
+        assert($this->dir->sizeSummarized(), equals(5));
+    }
+
+    /**
+     * @test
+     */
+    public function childCanBeRemoved()
+    {
+        $this->dir->addChild($this->createChild());
+        assertTrue($this->dir->removeChild('bar'));
+        assertEmptyArray($this->dir->getChildren());
+    }
+
+    /**
      * @test
      * @group  regression
      * @group  bug_5
      */
     public function addChildReplacesChildWithSameName_Bug_5()
     {
-        $content1 = NewInstance::of(vfsStreamContent::class)->returns([
-            'getType'   => vfsStreamContent::TYPE_FILE,
-            'getName'   => 'bar'
-        ]);
-        $content2 = NewInstance::of(vfsStreamContent::class)->returns([
-            'getType'   => vfsStreamContent::TYPE_FILE,
-            'getName'   => 'bar'
-        ]);
-        $this->dir->addChild($content1);
-        $this->assertTrue($this->dir->hasChild('bar'));
-        $this->assertSame($content1, $this->dir->getChild('bar'));
+        $content2 = $this->createChild();
+        $this->dir->addChild($this->createChild());
         $this->dir->addChild($content2);
-        $this->assertTrue($this->dir->hasChild('bar'));
-        $this->assertSame($content2, $this->dir->getChild('bar'));
+        assert($this->dir->getChild('bar'), isSameAs($content2));
     }
 
     /**
-     * When testing for a nested path, verify that directory separators are respected properly
-     * so that subdir1/subdir2 is not considered equal to subdir1Xsubdir2.
+     * When testing for a nested path, verify that directory separators are
+     * respected properly so that subdir1/subdir2 is not considered equal to
+     * subdir1Xsubdir2.
      *
      * @test
      * @group bug_24
@@ -215,81 +274,86 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function explicitTestForSeparatorWithNestedPaths_Bug_24()
     {
-        $content = NewInstance::of(vfsStreamContent::class)->returns([
-            'getType'   => vfsStreamContent::TYPE_FILE,
-            'getName'   => 'bar'
-        ]);
-
-        $subdir1 = new vfsStreamDirectory('subdir1');
+        $subdir1 = vfsStream::newDirectory('subdir1');
         $this->dir->addChild($subdir1);
-
-        $subdir2 = new vfsStreamDirectory('subdir2');
+        $subdir2 = vfsStream::newDirectory('subdir2');
         $subdir1->addChild($subdir2);
+        $subdir2->addChild($this->createChild());
 
-        $subdir2->addChild($content);
+        assertTrue($this->dir->hasChild('subdir1'), 'Level 1 path with separator exists');
+        assertTrue($this->dir->hasChild('subdir1/subdir2'), 'Level 2 path with separator exists');
+        assertTrue($this->dir->hasChild('subdir1/subdir2/bar'), 'Level 3 path with separator exists');
+        assertFalse($this->dir->hasChild('subdir1.subdir2'), 'Path with period does not exist');
+        assertFalse($this->dir->hasChild('subdir1.subdir2/bar'), 'Nested path with period does not exist');
+    }
 
-        $this->assertTrue($this->dir->hasChild('subdir1'), "Level 1 path with separator exists");
-        $this->assertTrue($this->dir->hasChild('subdir1/subdir2'), "Level 2 path with separator exists");
-        $this->assertTrue($this->dir->hasChild('subdir1/subdir2/bar'), "Level 3 path with separator exists");
-        $this->assertFalse($this->dir->hasChild('subdir1.subdir2'), "Path with period does not exist");
-        $this->assertFalse($this->dir->hasChild('subdir1.subdir2/bar'), "Nested path with period does not exist");
+    /**
+     * @test
+     * @group  permissions
+     */
+    public function defaultPermissions()
+    {
+        assert($this->dir->getPermissions(), equals(0777));
     }
 
 
     /**
-     * setting and retrieving permissions for a directory
-     *
      * @test
      * @group  permissions
      */
-    public function permissions()
+    public function permissionsCanBeChanged()
     {
-        $this->assertEquals(0777, $this->dir->getPermissions());
-        $this->assertSame($this->dir, $this->dir->chmod(0755));
-        $this->assertEquals(0755, $this->dir->getPermissions());
+        assert($this->dir->chmod(0755)->getPermissions(), equals(0755));
     }
 
     /**
-     * setting and retrieving permissions for a directory
-     *
      * @test
      * @group  permissions
      */
-    public function permissionsSet()
+    public function permissionsCanBeSetOnCreation()
     {
-        $this->dir = new vfsStreamDirectory('foo', 0755);
-        $this->assertEquals(0755, $this->dir->getPermissions());
-        $this->assertSame($this->dir, $this->dir->chmod(0700));
-        $this->assertEquals(0700, $this->dir->getPermissions());
+        assert(vfsStream::newDirectory('foo', 0755)->getPermissions(), equals(0755));
     }
 
     /**
-     * setting and retrieving owner of a file
-     *
      * @test
      * @group  permissions
      */
-    public function owner()
+    public function currentUserIsDefaultOwner()
     {
-        $this->assertEquals(vfsStream::getCurrentUser(), $this->dir->getUser());
-        $this->assertTrue($this->dir->isOwnedByUser(vfsStream::getCurrentUser()));
-        $this->assertSame($this->dir, $this->dir->chown(vfsStream::OWNER_USER_1));
-        $this->assertEquals(vfsStream::OWNER_USER_1, $this->dir->getUser());
-        $this->assertTrue($this->dir->isOwnedByUser(vfsStream::OWNER_USER_1));
+        assert($this->dir->getUser(), equals(vfsStream::getCurrentUser()));
+        assertTrue($this->dir->isOwnedByUser(vfsStream::getCurrentUser()));
     }
 
     /**
-     * setting and retrieving owner group of a file
-     *
      * @test
      * @group  permissions
      */
-    public function group()
+    public function ownerCanBeChanged()
     {
-        $this->assertEquals(vfsStream::getCurrentGroup(), $this->dir->getGroup());
-        $this->assertTrue($this->dir->isOwnedByGroup(vfsStream::getCurrentGroup()));
-        $this->assertSame($this->dir, $this->dir->chgrp(vfsStream::GROUP_USER_1));
-        $this->assertEquals(vfsStream::GROUP_USER_1, $this->dir->getGroup());
-        $this->assertTrue($this->dir->isOwnedByGroup(vfsStream::GROUP_USER_1));
+        $this->dir->chown(vfsStream::OWNER_USER_1);
+        assert($this->dir->getUser(), equals(vfsStream::OWNER_USER_1));
+        assertTrue($this->dir->isOwnedByUser(vfsStream::OWNER_USER_1));
+    }
+
+    /**
+     * @test
+     * @group  permissions
+     */
+    public function currentGroupIsDefaultGroup()
+    {
+        assert($this->dir->getGroup(), equals(vfsStream::getCurrentGroup()));
+        assertTrue($this->dir->isOwnedByGroup(vfsStream::getCurrentGroup()));
+    }
+
+    /**
+     * @test
+     * @group  permissions
+     */
+    public function groupCanBeChanged()
+    {
+        $this->dir->chgrp(vfsStream::GROUP_USER_1);
+        assert($this->dir->getGroup(), equals(vfsStream::GROUP_USER_1));
+        assertTrue($this->dir->isOwnedByGroup(vfsStream::GROUP_USER_1));
     }
 }

@@ -9,6 +9,12 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isOfSize;
 /**
  * Test for org\bovigo\vfs\vfsStreamDirectory.
  *
@@ -41,8 +47,9 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
      */
     public function shouldContainThreeSubdirectories()
     {
-        $this->assertEquals(3,
-                            count($this->rootDirectory->getChild('var/log/app')->getChildren())
+        assert(
+            $this->rootDirectory->getChild('var/log/app')->getChildren(),
+            isOfSize(3)
         );
     }
 
@@ -51,9 +58,10 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
      */
     public function shouldContainSubdirectoryFoo()
     {
-        $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('foo'));
-        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
-                                $this->rootDirectory->getChild('var/log/app')->getChild('foo')
+        assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('foo'));
+        assert(
+            $this->rootDirectory->getChild('var/log/app')->getChild('foo'),
+            isInstanceOf(vfsStreamDirectory::class)
         );
     }
 
@@ -62,9 +70,10 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
      */
     public function shouldContainSubdirectoryApp1()
     {
-        $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app1'));
-        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
-                                $this->rootDirectory->getChild('var/log/app')->getChild('app1')
+        assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app1'));
+        assert(
+            $this->rootDirectory->getChild('var/log/app')->getChild('app1'),
+            isInstanceOf(vfsStreamDirectory::class)
         );
     }
 
@@ -73,9 +82,10 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
      */
     public function shouldContainSubdirectoryApp2()
     {
-        $this->assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app2'));
-        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
-                                $this->rootDirectory->getChild('var/log/app')->getChild('app2')
+        assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app2'));
+        assert(
+            $this->rootDirectory->getChild('var/log/app')->getChild('app2'),
+            isInstanceOf(vfsStreamDirectory::class)
         );
     }
 }

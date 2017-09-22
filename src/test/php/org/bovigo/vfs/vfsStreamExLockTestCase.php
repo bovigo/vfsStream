@@ -9,6 +9,10 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for LOCK_EX behaviour related to file_put_contents().
  *
@@ -24,7 +28,6 @@ class vfsStreamExLockTestCase extends TestCase
     {
         $root = vfsStream::setup();
         vfsStream::newFile('testfile')->at($root);
-
     }
 
     /**
@@ -34,23 +37,27 @@ class vfsStreamExLockTestCase extends TestCase
      *
      * @test
      */
-    public function filePutContentsLockShouldReportError()
+    public function filePutContentsWithLockShouldReportError()
     {
-        @file_put_contents(vfsStream::url('root/testfile'), "some string\n", LOCK_EX);
-        $php_error = error_get_last();
-        $this->assertEquals("file_put_contents(): Exclusive locks may only be set for regular files", $php_error['message']);
+        expect(function() {
+            file_put_contents(vfsStream::url('root/testfile'), "some string\n", LOCK_EX);
+        })->triggers()
+          ->withMessage('file_put_contents(): Exclusive locks may only be set for regular files');
     }
 
     /**
      * @test
      */
-    public function flockSouldPass()
+    public function flockShouldPass()
     {
         $fp = fopen(vfsStream::url('root/testfile'), 'w');
         flock($fp, LOCK_EX);
         fwrite($fp, "another string\n");
         flock($fp, LOCK_UN);
         fclose($fp);
-        $this->assertEquals("another string\n", file_get_contents(vfsStream::url('root/testfile')));
+        assert(
+            file_get_contents(vfsStream::url('root/testfile')),
+            equals("another string\n")
+        );
     }
 }

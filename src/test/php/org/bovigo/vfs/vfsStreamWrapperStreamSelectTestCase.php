@@ -9,6 +9,8 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\expect;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  *
@@ -19,17 +21,17 @@ class vfsStreamWrapperSelectStreamTestCase extends TestCase
 {
     /**
      * @test
-     * @expectedException \PHPUnit\Framework\Error\Error
      */
-    public function selectStream()
+    public function selectStreamDoesNotWork()
     {
         $root = vfsStream::setup();
         $file = vfsStream::newFile('foo.txt')->at($root)->withContent('testContent');
-
-        $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        $readarray   = array($fp);
-        $writearray  = array();
-        $exceptarray = array();
-        stream_select($readarray, $writearray, $exceptarray, 1);
+        $read   = [fopen(vfsStream::url('root/foo.txt'), 'rb')];
+        $write  = [];
+        $except = [];
+        expect(function() use ($read, $write, $except) {
+            stream_select($read, $write, $except, 1);
+        })->triggers(E_WARNING)
+          ->withMessage('stream_select(): No stream arrays were passed');
     }
 }

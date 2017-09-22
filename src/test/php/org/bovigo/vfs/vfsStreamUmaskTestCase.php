@@ -9,6 +9,9 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for umask settings.
  *
@@ -18,17 +21,11 @@ use PHPUnit\Framework\TestCase;
  */
 class vfsStreamUmaskTestCase extends TestCase
 {
-    /**
-     * set up test environment
-     */
     public function setUp()
     {
         vfsStream::umask(0000);
     }
 
-    /**
-     * clean up test environment
-     */
     public function tearDown()
     {
         vfsStream::umask(0000);
@@ -39,12 +36,7 @@ class vfsStreamUmaskTestCase extends TestCase
      */
     public function gettingUmaskSettingDoesNotChangeUmaskSetting()
     {
-        $this->assertEquals(vfsStream::umask(),
-                            vfsStream::umask()
-        );
-        $this->assertEquals(0000,
-                            vfsStream::umask()
-        );
+        assert(vfsStream::umask(), equals(0000));
     }
 
     /**
@@ -52,12 +44,7 @@ class vfsStreamUmaskTestCase extends TestCase
      */
     public function changingUmaskSettingReturnsOldUmaskSetting()
     {
-        $this->assertEquals(0000,
-                            vfsStream::umask(0022)
-        );
-        $this->assertEquals(0022,
-                            vfsStream::umask()
-        );
+        assert(vfsStream::umask(0022), equals(0000));
     }
 
     /**
@@ -65,8 +52,8 @@ class vfsStreamUmaskTestCase extends TestCase
      */
     public function createFileWithDefaultUmaskSetting()
     {
-        $file = new vfsStreamFile('foo');
-        $this->assertEquals(0666, $file->getPermissions());
+        $file = vfsStream::newFile('foo');
+        assert($file->getPermissions(), equals(0666));
     }
 
     /**
@@ -75,8 +62,8 @@ class vfsStreamUmaskTestCase extends TestCase
     public function createFileWithDifferentUmaskSetting()
     {
         vfsStream::umask(0022);
-        $file = new vfsStreamFile('foo');
-        $this->assertEquals(0644, $file->getPermissions());
+        $file = vfsStream::newFile('foo');
+        assert($file->getPermissions(), equals(0644));
     }
 
     /**
@@ -84,8 +71,8 @@ class vfsStreamUmaskTestCase extends TestCase
      */
     public function createDirectoryWithDefaultUmaskSetting()
     {
-        $directory = new vfsStreamDirectory('foo');
-        $this->assertEquals(0777, $directory->getPermissions());
+        $directory = vfsStream::newDirectory('foo');
+        assert($directory->getPermissions(), equals(0777));
     }
 
     /**
@@ -94,8 +81,8 @@ class vfsStreamUmaskTestCase extends TestCase
     public function createDirectoryWithDifferentUmaskSetting()
     {
         vfsStream::umask(0022);
-        $directory = new vfsStreamDirectory('foo');
-        $this->assertEquals(0755, $directory->getPermissions());
+        $directory = vfsStream::newDirectory('foo');
+        assert($directory->getPermissions(), equals(0755));
     }
 
     /**
@@ -105,7 +92,7 @@ class vfsStreamUmaskTestCase extends TestCase
     {
         $root = vfsStream::setup();
         file_put_contents(vfsStream::url('root/newfile.txt'), 'file content');
-        $this->assertEquals(0666, $root->getChild('newfile.txt')->getPermissions());
+        assert($root->getChild('newfile.txt')->getPermissions(), equals(0666));
     }
 
     /**
@@ -116,7 +103,7 @@ class vfsStreamUmaskTestCase extends TestCase
         $root = vfsStream::setup();
         vfsStream::umask(0022);
         file_put_contents(vfsStream::url('root/newfile.txt'), 'file content');
-        $this->assertEquals(0644, $root->getChild('newfile.txt')->getPermissions());
+        assert($root->getChild('newfile.txt')->getPermissions(), equals(0644));
     }
 
     /**
@@ -126,7 +113,7 @@ class vfsStreamUmaskTestCase extends TestCase
     {
         $root = vfsStream::setup();
         mkdir(vfsStream::url('root/newdir'));
-        $this->assertEquals(0777, $root->getChild('newdir')->getPermissions());
+        assert($root->getChild('newdir')->getPermissions(), equals(0777));
     }
 
     /**
@@ -137,7 +124,7 @@ class vfsStreamUmaskTestCase extends TestCase
         $root = vfsStream::setup();
         vfsStream::umask(0022);
         mkdir(vfsStream::url('root/newdir'));
-        $this->assertEquals(0755, $root->getChild('newdir')->getPermissions());
+        assert($root->getChild('newdir')->getPermissions(), equals(0755));
     }
 
     /**
@@ -148,7 +135,7 @@ class vfsStreamUmaskTestCase extends TestCase
         $root = vfsStream::setup();
         vfsStream::umask(0022);
         mkdir(vfsStream::url('root/newdir'), null);
-        $this->assertEquals(0000, $root->getChild('newdir')->getPermissions());
+        assert($root->getChild('newdir')->getPermissions(), equals(0000));
     }
 
     /**
@@ -160,7 +147,7 @@ class vfsStreamUmaskTestCase extends TestCase
         $root = vfsStream::setup();
         vfsStream::umask(0022);
         mkdir(vfsStream::url('root/newdir'), 0777);
-        $this->assertEquals(0755, $root->getChild('newdir')->getPermissions());
+        assert($root->getChild('newdir')->getPermissions(), equals(0755));
     }
 
     /**
@@ -171,7 +158,7 @@ class vfsStreamUmaskTestCase extends TestCase
         $root = vfsStream::setup();
         vfsStream::umask(0022);
         mkdir(vfsStream::url('root/newdir'), 0700);
-        $this->assertEquals(0700, $root->getChild('newdir')->getPermissions());
+        assert($root->getChild('newdir')->getPermissions(), equals(0700));
     }
 
     /**
@@ -180,7 +167,7 @@ class vfsStreamUmaskTestCase extends TestCase
     public function defaultUmaskSettingDoesNotInfluenceSetup()
     {
         $root = vfsStream::setup();
-        $this->assertEquals(0777, $root->getPermissions());
+        assert($root->getPermissions(), equals(0777));
     }
 
     /**
@@ -190,6 +177,6 @@ class vfsStreamUmaskTestCase extends TestCase
     {
         vfsStream::umask(0022);
         $root = vfsStream::setup();
-        $this->assertEquals(0755, $root->getPermissions());
+        assert($root->getPermissions(), equals(0755));
     }
 }

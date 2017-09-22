@@ -21,7 +21,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^6.3",
-        "bovigo/callmap": "^4.0"
+        "bovigo/callmap": "^4.0",
+        "bovigo/assert": "^3.0"
     },
     "autoload": {
         "psr-0": { "org\\bovigo\\vfs\\": "src/main/php" }

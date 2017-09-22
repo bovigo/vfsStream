@@ -9,6 +9,10 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for org\bovigo\vfs\vfsStream.
  *
@@ -17,16 +21,8 @@ use PHPUnit\Framework\TestCase;
  */
 class vfsStreamResolveIncludePathTestCase extends TestCase
 {
-    /**
-     * include path to restore after test run
-     *
-     * @var  string
-     */
     protected $backupIncludePath;
 
-    /**
-     * set up test environment
-     */
     public function setUp()
     {
         $this->backupIncludePath = get_include_path();
@@ -35,9 +31,6 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
         set_include_path('vfs://root/a' . PATH_SEPARATOR . $this->backupIncludePath);
     }
 
-    /**
-     * clean up test environment
-     */
     public function tearDown()
     {
         set_include_path($this->backupIncludePath);
@@ -49,7 +42,10 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
     public function knownFileCanBeResolved()
     {
         file_put_contents('vfs://root/a/path/knownFile.php', '<?php ?>');
-        $this->assertEquals('vfs://root/a/path/knownFile.php', stream_resolve_include_path('path/knownFile.php'));
+        assert(
+            stream_resolve_include_path('path/knownFile.php'),
+            equals('vfs://root/a/path/knownFile.php')
+        );
     }
 
     /**
@@ -57,6 +53,6 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
      */
     public function unknownFileCanNotBeResolvedYieldsFalse()
     {
-        $this->assertFalse(@stream_resolve_include_path('path/unknownFile.php'));
+        assertFalse(@stream_resolve_include_path('path/unknownFile.php'));
     }
 }

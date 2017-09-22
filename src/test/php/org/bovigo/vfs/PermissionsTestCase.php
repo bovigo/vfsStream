@@ -9,6 +9,10 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\expect;
 /**
  * Test for permissions related functionality.
  *
@@ -26,8 +30,11 @@ class PermissionsTestCase extends TestCase
      */
     public function setup()
     {
-        $structure = array('test_directory' => array('test.file' => ''));
-        $this->root = vfsStream::setup('root', null, $structure);
+        $this->root = vfsStream::setup(
+            'root',
+            null,
+            ['test_directory' => ['test.file' => '']]
+        );
     }
 
     /**
@@ -37,7 +44,7 @@ class PermissionsTestCase extends TestCase
     public function canNotChangePermissionWhenDirectoryNotWriteable()
     {
         $this->root->getChild('test_directory')->chmod(0444);
-        $this->assertFalse(@chmod(vfsStream::url('root/test_directory/test.file'), 0777));
+        assertFalse(@chmod(vfsStream::url('root/test_directory/test.file'), 0777));
     }
 
     /**
@@ -47,7 +54,7 @@ class PermissionsTestCase extends TestCase
     public function canNotChangePermissionWhenFileNotOwned()
     {
         $this->root->getChild('test_directory')->getChild('test.file')->chown(vfsStream::OWNER_USER_1);
-        $this->assertFalse(@chmod(vfsStream::url('root/test_directory/test.file'), 0777));
+        assertFalse(@chmod(vfsStream::url('root/test_directory/test.file'), 0777));
     }
 
     /**
@@ -57,7 +64,7 @@ class PermissionsTestCase extends TestCase
     public function canNotChangeOwnerWhenDirectoryNotWriteable()
     {
         $this->root->getChild('test_directory')->chmod(0444);
-        $this->assertFalse(@chown(vfsStream::url('root/test_directory/test.file'), vfsStream::OWNER_USER_2));
+        assertFalse(@chown(vfsStream::url('root/test_directory/test.file'), vfsStream::OWNER_USER_2));
     }
 
     /**
@@ -67,7 +74,7 @@ class PermissionsTestCase extends TestCase
     public function canNotChangeOwnerWhenFileNotOwned()
     {
         $this->root->getChild('test_directory')->getChild('test.file')->chown(vfsStream::OWNER_USER_1);
-        $this->assertFalse(@chown(vfsStream::url('root/test_directory/test.file'), vfsStream::OWNER_USER_2));
+        assertFalse(@chown(vfsStream::url('root/test_directory/test.file'), vfsStream::OWNER_USER_2));
     }
 
     /**
@@ -77,7 +84,7 @@ class PermissionsTestCase extends TestCase
     public function canNotChangeGroupWhenDirectoryNotWriteable()
     {
         $this->root->getChild('test_directory')->chmod(0444);
-        $this->assertFalse(@chgrp(vfsStream::url('root/test_directory/test.file'), vfsStream::GROUP_USER_2));
+        assertFalse(@chgrp(vfsStream::url('root/test_directory/test.file'), vfsStream::GROUP_USER_2));
     }
 
     /**
@@ -87,20 +94,20 @@ class PermissionsTestCase extends TestCase
     public function canNotChangeGroupWhenFileNotOwned()
     {
         $this->root->getChild('test_directory')->getChild('test.file')->chown(vfsStream::OWNER_USER_1);
-        $this->assertFalse(@chgrp(vfsStream::url('root/test_directory/test.file'), vfsStream::GROUP_USER_2));
+        assertFalse(@chgrp(vfsStream::url('root/test_directory/test.file'), vfsStream::GROUP_USER_2));
     }
 
     /**
      * @test
      * @group  issue_107
-     * @expectedException  \PHPUnit\Framework\Error\Error
-     * @expectedExceptionMessage  Can not create new file in non-writable path root
      * @since  1.5.0
      */
     public function touchOnNonWriteableDirectoryTriggersError()
     {
         $this->root->chmod(0555);
-        touch($this->root->url() . '/touch.txt');
+        expect(function() { touch($this->root->url() . '/touch.txt'); })
+            ->triggers()
+            ->withMessage('Can not create new file in non-writable path root');
     }
 
     /**
@@ -111,7 +118,7 @@ class PermissionsTestCase extends TestCase
     public function touchOnNonWriteableDirectoryDoesNotCreateFile()
     {
         $this->root->chmod(0555);
-        $this->assertFalse(@touch($this->root->url() . '/touch.txt'));
-        $this->assertFalse($this->root->hasChild('touch.txt'));
+        assertFalse(@touch($this->root->url() . '/touch.txt'));
+        assertFalse($this->root->hasChild('touch.txt'));
     }
 }

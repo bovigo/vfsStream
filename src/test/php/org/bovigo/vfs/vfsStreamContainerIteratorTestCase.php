@@ -10,6 +10,13 @@
 namespace org\bovigo\vfs;
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for org\bovigo\vfs\vfsStreamContainerIterator.
  */
@@ -67,7 +74,7 @@ class vfsStreamContainerIteratorTestCase extends TestCase
         ];
     }
 
-    private function getDirName($dir): string
+    private function nameOf($dir): string
     {
         if (is_string($dir)) {
             return $dir;
@@ -89,17 +96,17 @@ class vfsStreamContainerIteratorTestCase extends TestCase
         $switchDotFiles();
         $dirIterator = $this->dir->getIterator();
         foreach ($dirs as $dir) {
-            $this->assertEquals($this->getDirName($dir), $dirIterator->key());
-            $this->assertTrue($dirIterator->valid());
+            assert($dirIterator->key(), equals($this->nameOf($dir)));
+            assertTrue($dirIterator->valid());
             if (!is_string($dir)) {
-                $this->assertSame($dir, $dirIterator->current());
+                assert($dirIterator->current(), isSameAs($dir));
             }
 
             $dirIterator->next();
         }
 
-        $this->assertFalse($dirIterator->valid());
-        $this->assertNull($dirIterator->key());
-        $this->assertNull($dirIterator->current());
+        assertFalse($dirIterator->valid());
+        assertNull($dirIterator->key());
+        assertNull($dirIterator->current());
     }
 }

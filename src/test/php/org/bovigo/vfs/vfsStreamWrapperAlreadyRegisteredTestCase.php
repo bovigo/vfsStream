@@ -10,8 +10,12 @@
 namespace org\bovigo\vfs;
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\expect;
 /**
  * Helper class for the test.
+ *
+ * Required to be able to reset the internal state of vfsStreamWrapper.
  */
 class TestvfsStreamWrapper extends vfsStreamWrapper
 {
@@ -41,19 +45,16 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends TestCase
     }
 
     /**
-     * registering the stream wrapper when another stream wrapper is already
-     * registered for the vfs scheme should throw an exception
-     *
      * @test
-     * @expectedException  org\bovigo\vfs\vfsStreamException
      */
-    public function registerOverAnotherStreamWrapper()
+    public function registerOverAnotherStreamWrapperThrowsException()
     {
         TestvfsStreamWrapper::unregister();
         stream_wrapper_register(
             vfsStream::SCHEME,
             NewInstance::classname(vfsStreamWrapper::class)
         );
-        vfsStreamWrapper::register();
+        expect(function() { vfsStreamWrapper::register(); })
+          ->throws(vfsStreamException::class);
     }
 }

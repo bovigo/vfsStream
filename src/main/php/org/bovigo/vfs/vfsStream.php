@@ -333,7 +333,7 @@ class vfsStream
      * @param   int     $permissions  permissions of file to create
      * @return  vfsStreamFile
      */
-    public static function newFile($name, $permissions = null)
+    public static function newFile($name, $permissions = null): vfsStreamFile
     {
         return new vfsStreamFile($name, $permissions);
     }
@@ -349,7 +349,7 @@ class vfsStream
      * @param   int     $permissions  permissions of directory to create
      * @return  vfsStreamDirectory
      */
-    public static function newDirectory($name, $permissions = null)
+    public static function newDirectory($name, $permissions = null): vfsStreamDirectory
     {
         if ('/' === $name{0}) {
             $name = substr($name, 1);
@@ -421,7 +421,7 @@ class vfsStream
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/10
      */
-    public static function inspect(vfsStreamVisitor $visitor, vfsStreamContent $content = null)
+    public static function inspect(vfsStreamVisitor $visitor, vfsStreamContent $content = null): vfsStreamVisitor
     {
         if (null !== $content) {
             return $visitor->visit($content);

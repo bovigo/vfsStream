@@ -9,11 +9,13 @@
  */
 namespace org\bovigo\vfs\visitor;
 use bovigo\callmap\NewInstance;
+use org\bovigo\vfs\vfsStreamContent;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use org\bovigo\vfs\vfsStreamBlock;
 use PHPUnit\Framework\TestCase;
 
+use function bovigo\assert\expect;
 use function bovigo\callmap\verify;
 /**
  * Test for org\bovigo\vfs\visitor\vfsStreamAbstractVisitor.
@@ -41,14 +43,14 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
 
     /**
      * @test
-     * @expectedException  \InvalidArgumentException
      */
     public function visitThrowsInvalidArgumentExceptionOnUnknownContentType()
     {
         $content = NewInstance::of(vfsStreamContent::class)->returns([
             'getType' => 'invalid'
         ]);
-        $this->abstractVisitor->visit($content);
+        expect(function() use ($content) { $this->abstractVisitor->visit($content); })
+          ->throws(\InvalidArgumentException::class);
     }
 
     /**
@@ -57,25 +59,17 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     public function visitWithFileCallsVisitFile()
     {
         $file = new vfsStreamFile('foo.txt');
-        $this->assertSame(
-            $this->abstractVisitor,
-            $this->abstractVisitor->visit($file)
-        );
+        $this->abstractVisitor->visit($file);
         verify($this->abstractVisitor, 'visitFile')->received($file);
     }
 
     /**
-     * tests that a block device eventually calls out to visit file
-     *
      * @test
      */
-    public function visitWithBlockCallsVisitFile()
+    public function visitWithBlockEventuallyCallsVisitFile()
     {
         $block = new vfsStreamBlock('foo');
-        $this->assertSame(
-            $this->abstractVisitor,
-            $this->abstractVisitor->visit($block)
-        );
+        $this->abstractVisitor->visit($block);
         verify($this->abstractVisitor, 'visitFile')->received($block);
     }
 
@@ -85,10 +79,7 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     public function visitWithDirectoryCallsVisitDirectory()
     {
         $dir = new vfsStreamDirectory('bar');
-        $this->assertSame(
-            $this->abstractVisitor,
-            $this->abstractVisitor->visit($dir)
-        );
+        $this->abstractVisitor->visit($dir);
         verify($this->abstractVisitor, 'visitDirectory')->received($dir);
     }
 }

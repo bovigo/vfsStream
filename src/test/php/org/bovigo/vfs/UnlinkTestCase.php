@@ -9,6 +9,10 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\expect;
 /**
  * Test for unlink() functionality.
  *
@@ -20,26 +24,26 @@ class UnlinkTestCase extends TestCase
      * @test
      * @group  issue_51
      */
-    public function canRemoveNonWritableFileFromWritableDirectory()
+    public function canUnlinkNonWritableFileFromWritableDirectory()
     {
-        $structure = array('test_directory' => array('test.file' => ''));
+        $structure = ['test_directory' => ['test.file' => '']];
         $root = vfsStream::setup('root', null, $structure);
         $root->getChild('test_directory')->chmod(0777);
         $root->getChild('test_directory')->getChild('test.file')->chmod(0444);
-        $this->assertTrue(@unlink(vfsStream::url('root/test_directory/test.file')));
+        assertTrue(@unlink(vfsStream::url('root/test_directory/test.file')));
     }
 
     /**
      * @test
      * @group  issue_51
      */
-    public function canNotRemoveWritableFileFromNonWritableDirectory()
+    public function canNotUnlinkWritableFileFromNonWritableDirectory()
     {
-        $structure = array('test_directory' => array('test.file' => ''));
+        $structure = ['test_directory' => ['test.file' => '']];
         $root = vfsStream::setup('root', null, $structure);
         $root->getChild('test_directory')->chmod(0444);
         $root->getChild('test_directory')->getChild('test.file')->chmod(0777);
-        $this->assertFalse(@unlink(vfsStream::url('root/test_directory/test.file')));
+        assertFalse(@unlink(vfsStream::url('root/test_directory/test.file')));
     }
 
     /**
@@ -50,10 +54,8 @@ class UnlinkTestCase extends TestCase
     public function unlinkNonExistingFileTriggersError()
     {
         vfsStream::setup();
-        try {
-            $this->assertFalse(unlink('vfs://root/foo.txt'));
-        } catch (\PHPUnit\Framework\Error\Error $fe) {
-            $this->assertEquals('unlink(vfs://root/foo.txt): No such file or directory', $fe->getMessage());
-        }
+        expect(function() { assertFalse(unlink('vfs://root/foo.txt')); })
+            ->triggers()
+            ->withMessage('unlink(vfs://root/foo.txt): No such file or directory');
     }
 }

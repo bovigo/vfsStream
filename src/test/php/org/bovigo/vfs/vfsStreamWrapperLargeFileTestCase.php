@@ -10,11 +10,12 @@
 namespace org\bovigo\vfs;
 use org\bovigo\vfs\content\LargeFileContent;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for large file mocks.
  *
- * @package     bovigo_vfs
- * @subpackage  test
  * @since       1.3.0
  * @group       issue_79
  */
@@ -34,8 +35,8 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     {
         $root = vfsStream::setup();
         $this->largeFile = vfsStream::newFile('large.txt')
-                                    ->withContent(LargeFileContent::withGigabytes(100))
-                                    ->at($root);
+            ->withContent(LargeFileContent::withGigabytes(100))
+            ->at($root);
     }
 
     /**
@@ -47,10 +48,7 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
             $this->markTestSkipped('Requires 64-bit version of PHP');
         }
 
-        $this->assertEquals(
-                100 * 1024 * 1024 * 1024,
-                filesize($this->largeFile->url())
-        );
+        assert(filesize($this->largeFile->url()), equals(100 * 1024 * 1024 * 1024));
     }
 
     /**
@@ -58,10 +56,10 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
      */
     public function canReadFromLargeFile()
     {
-        $fp = fopen($this->largeFile->url(), 'rb');
+        $fp   = fopen($this->largeFile->url(), 'rb');
         $data = fread($fp, 15);
         fclose($fp);
-        $this->assertEquals(str_repeat(' ', 15), $data);
+        assert($data, equals(str_repeat(' ', 15)));
     }
 
     /**
@@ -74,9 +72,6 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
         fwrite($fp, 'foobarbaz');
         fclose($fp);
         $this->largeFile->seek((100 * 1024 * 1024) - 3, SEEK_SET);
-        $this->assertEquals(
-                '   foobarbaz   ',
-                $this->largeFile->read(15)
-        );
+        assert($this->largeFile->read(15), equals('   foobarbaz   '));
     }
 }

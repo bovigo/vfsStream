@@ -11,6 +11,14 @@ namespace org\bovigo\vfs;
 use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\content\FileContent;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyString;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for org\bovigo\vfs\vfsStreamFile.
  */
@@ -28,110 +36,208 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function setUp()
     {
-        $this->file = new vfsStreamFile('foo');
+        $this->file = vfsStream::newFile('foo');
     }
 
     /**
-     * test default values and methods
-     *
      * @test
      */
-    public function defaultValues()
+    public function isOfTypeFile()
     {
-        $this->assertEquals(vfsStreamContent::TYPE_FILE, $this->file->getType());
-        $this->assertEquals('foo', $this->file->getName());
-        $this->assertTrue($this->file->appliesTo('foo'));
-        $this->assertFalse($this->file->appliesTo('foo/bar'));
-        $this->assertFalse($this->file->appliesTo('bar'));
+        assert($this->file->getType(), equals(vfsStreamContent::TYPE_FILE));
     }
 
     /**
-     * test setting and getting the content of a file
-     *
      * @test
      */
-    public function content()
+    public function appliesForSelf()
     {
-        $this->assertNull($this->file->getContent());
-        $this->assertSame($this->file, $this->file->setContent('bar'));
-        $this->assertEquals('bar', $this->file->getContent());
-        $this->assertSame($this->file, $this->file->withContent('baz'));
-        $this->assertEquals('baz', $this->file->getContent());
+        assertTrue($this->file->appliesTo('foo'));
     }
 
     /**
-     * test renaming the directory
-     *
      * @test
      */
-    public function rename()
+    public function doesNotApplyForSubDirectories()
+    {
+        assertFalse($this->file->appliesTo('foo/bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotApplyForOtherNames()
+    {
+        assertFalse($this->file->appliesTo('bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function hasGivenName()
+    {
+        assert($this->file->getName(), equals('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function canBeRenamed()
     {
         $this->file->rename('bar');
-        $this->assertEquals('bar', $this->file->getName());
-        $this->assertFalse($this->file->appliesTo('foo'));
-        $this->assertFalse($this->file->appliesTo('foo/bar'));
-        $this->assertTrue($this->file->appliesTo('bar'));
+        assert($this->file->getName(), equals('bar'));
+        assertFalse($this->file->appliesTo('foo'));
+        assertFalse($this->file->appliesTo('foo/bar'));
+        assertTrue($this->file->appliesTo('bar'));
     }
 
     /**
-     * test reading contents from the file
-     *
      * @test
      */
-    public function readEmptyFile()
+    public function hasNoContentByDefault()
     {
-        $this->assertTrue($this->file->eof());
-        $this->assertEquals(0, $this->file->size());
-        $this->assertEquals('', $this->file->read(5));
+      assertNull($this->file->getContent());
+    }
+
+    /**
+     * @test
+     */
+    public function contentCanBeChanged()
+    {
+        $this->file->setContent('bar');
+        assert($this->file->getContent(), equals('bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function isAtEofWhenEmpty()
+    {
+        assertTrue($this->file->eof());
+    }
+
+    /**
+     * @test
+     */
+    public function fileSizeIs0WhenEmpty()
+    {
+        assert($this->file->size(), equals(0));
+    }
+
+    /**
+     * @test
+     */
+    public function readFromEmptyFileReturnsEmptyString()
+    {
+        assertEmptyString($this->file->read(5));
         $this->assertEquals(5, $this->file->getBytesRead());
         $this->assertTrue($this->file->eof());
     }
 
     /**
-     * test reading contents from the file
-     *
      * @test
      */
-    public function read()
+    public function reportsAmountOfBytesReadEvenWhenEmpty()
+    {
+        $this->file->read(5);
+        assert($this->file->getBytesRead(), equals(5));
+    }
+
+    /**
+     * @test
+     */
+    public function isNotAtEofWhenNotAllContentRead()
     {
         $this->file->setContent('foobarbaz');
-        $this->assertFalse($this->file->eof());
-        $this->assertEquals(9, $this->file->size());
-        $this->assertEquals('foo', $this->file->read(3));
-        $this->assertEquals(3, $this->file->getBytesRead());
-        $this->assertFalse($this->file->eof());
-        $this->assertEquals(9, $this->file->size());
-        $this->assertEquals('bar', $this->file->read(3));
-        $this->assertEquals(6, $this->file->getBytesRead());
-        $this->assertFalse($this->file->eof());
-        $this->assertEquals(9, $this->file->size());
-        $this->assertEquals('baz', $this->file->read(3));
-        $this->assertEquals(9, $this->file->getBytesRead());
-        $this->assertEquals(9, $this->file->size());
-        $this->assertTrue($this->file->eof());
-        $this->assertEquals('', $this->file->read(3));
+        assertFalse($this->file->eof());
     }
 
     /**
-     * test seeking to offset
-     *
      * @test
      */
-    public function seekEmptyFile()
+    public function fileSizeEqualsSizeOfContent()
     {
-        $this->assertFalse($this->file->seek(0, 55));
-        $this->assertTrue($this->file->seek(0, SEEK_SET));
-        $this->assertEquals(0, $this->file->getBytesRead());
-        $this->assertTrue($this->file->seek(5, SEEK_SET));
-        $this->assertEquals(5, $this->file->getBytesRead());
-        $this->assertTrue($this->file->seek(0, SEEK_CUR));
-        $this->assertEquals(5, $this->file->getBytesRead());
-        $this->assertTrue($this->file->seek(2, SEEK_CUR));
-        $this->assertEquals(7, $this->file->getBytesRead());
-        $this->assertTrue($this->file->seek(0, SEEK_END));
-        $this->assertEquals(0, $this->file->getBytesRead());
-        $this->assertTrue($this->file->seek(2, SEEK_END));
-        $this->assertEquals(2, $this->file->getBytesRead());
+        $this->file->setContent('foobarbaz');
+        assert($this->file->size(), equals(9));
+    }
+
+    /**
+     * @test
+     */
+    public function readDoesNotChangeFileSize()
+    {
+        $this->file->setContent('foobarbaz');
+        $this->file->read(3);
+        assert($this->file->size(), equals(9));
+    }
+
+    /**
+     * @test
+     */
+    public function partialReads()
+    {
+        $this->file->setContent('foobarbaz');
+        assert($this->file->read(3), equals('foo'));
+        assert($this->file->getBytesRead(), equals(3));
+        assertFalse($this->file->eof());
+
+        assert($this->file->read(3), equals('bar'));
+        assert($this->file->getBytesRead(), equals(6));
+        assertFalse($this->file->eof());
+
+        assert($this->file->read(3), equals('baz'));
+        assert($this->file->getBytesRead(), equals(9));
+        assertTrue($this->file->eof());
+    }
+
+    /**
+     * @test
+     */
+    public function readAfterEofReturnsEmptyString()
+    {
+        $this->file->setContent('foobarbaz');
+        $this->file->read(9);
+        assertEmptyString($this->file->read(3));
+    }
+
+    /**
+     * @test
+     */
+    public function seekWithInvalidSeekCommandReturnsFalse()
+    {
+        assertFalse($this->file->seek(0, 55));
+    }
+
+    public function seeks(): array
+    {
+      return [
+          [0, SEEK_SET, 0, 'foobarbaz'],
+          [5, SEEK_SET, 5, 'rbaz'],
+          [0, SEEK_END, 0, ''],
+          [2, SEEK_END, 2, ''],
+      ];
+    }
+
+    /**
+     * @test
+     * @dataProvider  seeks
+     */
+    public function seekEmptyFile(int $offset, $whence, int $expected)
+    {
+        assertTrue($this->file->seek($offset, $whence));
+        assert($this->file->getBytesRead(), equals($expected));
+    }
+
+    /**
+     * @test
+     */
+    public function seekEmptyFileWithSEEK_CUR()
+    {
+        $this->file->seek(5, SEEK_SET);
+        assertTrue($this->file->seek(0, SEEK_CUR));
+        assert($this->file->getBytesRead(), equals(5));
+        assertTrue($this->file->seek(2, SEEK_CUR));
+        assert($this->file->getBytesRead(), equals(7));
     }
 
     /**
@@ -140,37 +246,39 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function seekEmptyFileBeforeBeginningDoesNotChangeOffset()
     {
-        $this->assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
-        $this->assertEquals(0, $this->file->getBytesRead());
+        assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
+        assert($this->file->getBytesRead(), equals(0));
     }
 
     /**
-     * test seeking to offset
-     *
      * @test
+     * @dataProvider  seeks
      */
-    public function seekRead()
+    public function seekRead(int $offset, $whence, int $expected, string $remaining)
     {
         $this->file->setContent('foobarbaz');
-        $this->assertFalse($this->file->seek(0, 55));
-        $this->assertTrue($this->file->seek(0, SEEK_SET));
-        $this->assertEquals('foobarbaz', $this->file->readUntilEnd());
-        $this->assertEquals(0, $this->file->getBytesRead());
-        $this->assertTrue($this->file->seek(5, SEEK_SET));
-        $this->assertEquals('rbaz', $this->file->readUntilEnd());
-        $this->assertEquals(5, $this->file->getBytesRead());
-        $this->assertTrue($this->file->seek(0, SEEK_CUR));
-        $this->assertEquals('rbaz', $this->file->readUntilEnd());
-        $this->assertEquals(5, $this->file->getBytesRead(), 5);
-        $this->assertTrue($this->file->seek(2, SEEK_CUR));
-        $this->assertEquals('az', $this->file->readUntilEnd());
-        $this->assertEquals(7, $this->file->getBytesRead());
-        $this->assertTrue($this->file->seek(0, SEEK_END));
-        $this->assertEquals('', $this->file->readUntilEnd());
-        $this->assertEquals(9, $this->file->getBytesRead());
-        $this->assertTrue($this->file->seek(2, SEEK_END));
-        $this->assertEquals('', $this->file->readUntilEnd());
-        $this->assertEquals(11, $this->file->getBytesRead());
+        if (SEEK_END === $whence) {
+          $expected += 9;
+        }
+
+        assertTrue($this->file->seek($offset, $whence));
+        assert($this->file->readUntilEnd(), equals($remaining));
+        assert($this->file->getBytesRead(), equals($expected));
+    }
+
+    /**
+     * @test
+     */
+    public function seekFileWithSEEK_CUR()
+    {
+        $this->file->setContent('foobarbaz');
+        $this->file->seek(5, SEEK_SET);
+        assertTrue($this->file->seek(0, SEEK_CUR));
+        assert($this->file->readUntilEnd(), equals('rbaz'));
+        assert($this->file->getBytesRead(), equals(5));
+        assertTrue($this->file->seek(2, SEEK_CUR));
+        assert($this->file->readUntilEnd(), equals('az'));
+        assert($this->file->getBytesRead(), equals(7));
     }
 
     /**
@@ -180,18 +288,8 @@ class vfsStreamFileTestCase extends TestCase
     public function seekFileBeforeBeginningDoesNotChangeOffset()
     {
         $this->file->setContent('foobarbaz');
-        $this->assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
-        $this->assertEquals(0, $this->file->getBytesRead());
-        $this->assertTrue($this->file->seek(2, SEEK_CUR));
-        $this->assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
-        $this->assertEquals(2, $this->file->getBytesRead());
-        $this->assertEquals('obarbaz', $this->file->readUntilEnd());
-        $this->assertFalse($this->file->seek(-5, SEEK_CUR), 'Seek before beginning of file');
-        $this->assertEquals(2, $this->file->getBytesRead());
-        $this->assertEquals('obarbaz', $this->file->readUntilEnd());
-        $this->assertFalse($this->file->seek(-20, SEEK_END), 'Seek before beginning of file');
-        $this->assertEquals(2, $this->file->getBytesRead());
-        $this->assertEquals('obarbaz', $this->file->readUntilEnd());
+        assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
+        assert($this->file->getBytesRead(), equals(0));
     }
 
     /**
@@ -199,88 +297,100 @@ class vfsStreamFileTestCase extends TestCase
      *
      * @test
      */
-    public function writeEmptyFile()
+    public function writeReturnsAmountsOfBytesWritten()
     {
         $this->assertEquals(3, $this->file->write('foo'));
-        $this->assertEquals('foo', $this->file->getContent());
-        $this->assertEquals(3, $this->file->size());
-        $this->assertEquals(3, $this->file->write('bar'));
-        $this->assertEquals('foobar', $this->file->getContent());
-        $this->assertEquals(6, $this->file->size());
     }
 
     /**
-     * test writing data into the file
-     *
+     * @test
+     */
+    public function writeEmptyFile()
+    {
+        $this->file->write('foo');
+        $this->file->write('bar');
+        assert($this->file->getContent(), equals('foobar'));
+    }
+
+    /**
      * @test
      */
     public function write()
     {
         $this->file->setContent('foobarbaz');
         $this->assertTrue($this->file->seek(3, SEEK_SET));
-        $this->assertEquals(3, $this->file->write('foo'));
-        $this->assertEquals('foofoobaz', $this->file->getContent());
-        $this->assertEquals(9, $this->file->size());
-        $this->assertEquals(3, $this->file->write('bar'));
-        $this->assertEquals('foofoobar', $this->file->getContent());
-        $this->assertEquals(9, $this->file->size());
+        $this->file->write('foo');
+        assert($this->file->getContent(), equals('foofoobaz'));
     }
 
     /**
-     * setting and retrieving permissions for a file
-     *
      * @test
      * @group  permissions
      */
-    public function permissions()
+    public function defaultPermissions()
     {
-        $this->assertEquals(0666, $this->file->getPermissions());
-        $this->assertSame($this->file, $this->file->chmod(0644));
-        $this->assertEquals(0644, $this->file->getPermissions());
+        assert($this->file->getPermissions(), equals(0666));
+    }
+
+
+    /**
+     * @test
+     * @group  permissions
+     */
+    public function permissionsCanBeChanged()
+    {
+        assert($this->file->chmod(0600)->getPermissions(), equals(0600));
     }
 
     /**
-     * setting and retrieving permissions for a file
-     *
      * @test
      * @group  permissions
      */
-    public function permissionsSet()
+    public function permissionsCanBeSetOnCreation()
     {
-        $this->file = new vfsStreamFile('foo', 0644);
-        $this->assertEquals(0644, $this->file->getPermissions());
-        $this->assertSame($this->file, $this->file->chmod(0600));
-        $this->assertEquals(0600, $this->file->getPermissions());
+        assert(vfsStream::newFile('foo', 0644)->getPermissions(), equals(0644));
     }
 
     /**
-     * setting and retrieving owner of a file
-     *
      * @test
      * @group  permissions
      */
-    public function owner()
+    public function currentUserIsDefaultOwner()
     {
-        $this->assertEquals(vfsStream::getCurrentUser(), $this->file->getUser());
-        $this->assertTrue($this->file->isOwnedByUser(vfsStream::getCurrentUser()));
-        $this->assertSame($this->file, $this->file->chown(vfsStream::OWNER_USER_1));
-        $this->assertEquals(vfsStream::OWNER_USER_1, $this->file->getUser());
-        $this->assertTrue($this->file->isOwnedByUser(vfsStream::OWNER_USER_1));
+        assert($this->file->getUser(), equals(vfsStream::getCurrentUser()));
+        assertTrue($this->file->isOwnedByUser(vfsStream::getCurrentUser()));
     }
 
     /**
-     * setting and retrieving owner group of a file
-     *
      * @test
      * @group  permissions
      */
-    public function group()
+    public function ownerCanBeChanged()
     {
-        $this->assertEquals(vfsStream::getCurrentGroup(), $this->file->getGroup());
-        $this->assertTrue($this->file->isOwnedByGroup(vfsStream::getCurrentGroup()));
-        $this->assertSame($this->file, $this->file->chgrp(vfsStream::GROUP_USER_1));
-        $this->assertEquals(vfsStream::GROUP_USER_1, $this->file->getGroup());
-        $this->assertTrue($this->file->isOwnedByGroup(vfsStream::GROUP_USER_1));
+        $this->file->chown(vfsStream::OWNER_USER_1);
+        assert($this->file->getUser(), equals(vfsStream::OWNER_USER_1));
+        assertTrue($this->file->isOwnedByUser(vfsStream::OWNER_USER_1));
+    }
+
+    /**
+     * @test
+     * @group  permissions
+     */
+    public function currentGroupIsDefaultGroup()
+    {
+        assert($this->file->getGroup(), equals(vfsStream::getCurrentGroup()));
+        assertTrue($this->file->isOwnedByGroup(vfsStream::getCurrentGroup()));
+    }
+
+    /**
+     * @test
+     * @group  permissions
+     */
+    public function groupCanBeChanged()
+    {
+        $this->file->chgrp(vfsStream::GROUP_USER_1);
+        assert($this->file->getGroup(), equals(vfsStream::GROUP_USER_1));
+        assertTrue($this->file->isOwnedByGroup(vfsStream::GROUP_USER_1));
     }
 
     /**
@@ -290,10 +400,9 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function truncateRemovesSuperflouosContent()
     {
-        $this->assertEquals(11, $this->file->write("lorem ipsum"));
-        $this->assertTrue($this->file->truncate(5));
-        $this->assertEquals(5, $this->file->size());
-        $this->assertEquals('lorem', $this->file->getContent());
+        $this->file->write("lorem ipsum");
+        assertTrue($this->file->truncate(5));
+        assert($this->file->getContent(), equals('lorem'));
     }
 
     /**
@@ -303,10 +412,12 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function truncateToGreaterSizeAddsZeroBytes()
     {
-        $this->assertEquals(11, $this->file->write("lorem ipsum"));
-        $this->assertTrue($this->file->truncate(25));
-        $this->assertEquals(25, $this->file->size());
-        $this->assertEquals("lorem ipsum\0\0\0\0\0\0\0\0\0\0\0\0\0\0", $this->file->getContent());
+        $this->file->write("lorem ipsum");
+        assertTrue($this->file->truncate(25));
+        assert(
+            $this->file->getContent(),
+            equals("lorem ipsum\0\0\0\0\0\0\0\0\0\0\0\0\0\0")
+        );
     }
 
     /**
@@ -319,20 +430,20 @@ class vfsStreamFileTestCase extends TestCase
         $fileContent = NewInstance::of(FileContent::class)->returns([
             'content' => 'foobarbaz'
         ]);
-        $this->assertEquals(
-                'foobarbaz',
-                $this->file->withContent($fileContent)->getContent()
+        assert(
+                $this->file->withContent($fileContent)->getContent(),
+                equals('foobarbaz')
         );
     }
 
     /**
      * @test
      * @group  issue_79
-     * @expectedException  \InvalidArgumentException
      * @since  1.3.0
      */
     public function withContentThrowsInvalidArgumentExceptionWhenContentIsNoStringAndNoFileContent()
     {
-        $this->file->withContent(313);
+        expect(function() { $this->file->withContent(313); })
+          ->throws(\InvalidArgumentException::class);
     }
 }

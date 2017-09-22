@@ -10,6 +10,10 @@
 namespace org\bovigo\vfs\visitor;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for org\bovigo\vfs\visitor\vfsStreamStructureVisitor.
  *
@@ -19,17 +23,22 @@ use PHPUnit\Framework\TestCase;
  */
 class vfsStreamStructureVisitorTestCase extends TestCase
 {
+    private $structureVisitor;
+
+    public function setup()
+    {
+        $this->structureVisitor = new vfsStreamStructureVisitor();
+    }
     /**
      * @test
      */
     public function visitFileCreatesStructureForFile()
     {
-        $structureVisitor = new vfsStreamStructureVisitor();
-        $this->assertEquals(array('foo.txt' => 'test'),
-                            $structureVisitor->visitFile(vfsStream::newFile('foo.txt')
-                                                                  ->withContent('test')
-                                               )
-                                             ->getStructure()
+        assert(
+            $this->structureVisitor->visitFile(
+                vfsStream::newFile('foo.txt')->withContent('test')
+            )->getStructure(),
+            equals(['foo.txt' => 'test'])
         );
     }
 
@@ -38,12 +47,11 @@ class vfsStreamStructureVisitorTestCase extends TestCase
      */
     public function visitFileCreatesStructureForBlock()
     {
-        $structureVisitor = new vfsStreamStructureVisitor();
-        $this->assertEquals(array('[foo]' => 'test'),
-                            $structureVisitor->visitBlockDevice(vfsStream::newBlock('foo')
-                                                                  ->withContent('test')
-                                               )
-                                             ->getStructure()
+        assert(
+            $this->structureVisitor->visitBlockDevice(
+                vfsStream::newBlock('foo')->withContent('test')
+            )->getStructure(),
+            equals(['[foo]' => 'test'])
         );
     }
 
@@ -52,10 +60,11 @@ class vfsStreamStructureVisitorTestCase extends TestCase
      */
     public function visitDirectoryCreatesStructureForDirectory()
     {
-        $structureVisitor = new vfsStreamStructureVisitor();
-        $this->assertEquals(array('baz' => array()),
-                            $structureVisitor->visitDirectory(vfsStream::newDirectory('baz'))
-                                             ->getStructure()
+        assert(
+            $this->structureVisitor->visitDirectory(
+                  vfsStream::newDirectory('baz')
+            )->getStructure(),
+            equals(['baz' => []])
         );
     }
 
@@ -64,23 +73,17 @@ class vfsStreamStructureVisitorTestCase extends TestCase
      */
     public function visitRecursiveDirectoryStructure()
     {
-        $root         = vfsStream::setup('root',
-                                         null,
-                                         array('test' => array('foo'     => array('test.txt' => 'hello'),
-                                                               'baz.txt' => 'world'
-                                                         ),
-                                               'foo.txt' => ''
-                                         )
-                        );
-        $structureVisitor = new vfsStreamStructureVisitor();
-        $this->assertEquals(array('root' => array('test' => array('foo'     => array('test.txt' => 'hello'),
-                                                                  'baz.txt' => 'world'
-                                                                               ),
-                                                                  'foo.txt' => ''
-                                            ),
-                            ),
-                            $structureVisitor->visitDirectory($root)
-                                             ->getStructure()
+        $structure = [
+          'root' => ['test' => [
+                        'foo'     => ['test.txt' => 'hello'],
+                        'baz.txt' => 'world'
+                    ],
+                    'foo.txt' => ''
+        ]];
+        $root = vfsStream::setup('root', null, $structure['root']);
+        assert(
+            $this->structureVisitor->visitDirectory($root)->getStructure(),
+            equals($structure)
         );
     }
 }

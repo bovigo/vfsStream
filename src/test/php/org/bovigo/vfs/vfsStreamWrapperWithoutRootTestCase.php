@@ -9,13 +9,15 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assertFalse;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
 class vfsStreamWrapperWithoutRootTestCase extends TestCase
 {
     /**
-     * set up test environment
+     * set up test environment but without root
      */
     public function setUp()
     {
@@ -23,42 +25,34 @@ class vfsStreamWrapperWithoutRootTestCase extends TestCase
     }
 
     /**
-     * no root > no directory to open
-     *
      * @test
      */
     public function canNotOpenDirectory()
     {
-        $this->assertFalse(@dir(vfsStream::url('foo')));
+        assertFalse(@dir(vfsStream::url('foo')));
     }
 
     /**
-     * can not unlink without root
-     *
      * @test
      */
     public function canNotUnlink()
     {
-        $this->assertFalse(@unlink(vfsStream::url('foo')));
+        assertFalse(@unlink(vfsStream::url('foo')));
     }
 
     /**
-     * can not open a file without root
-     *
      * @test
      */
     public function canNotOpen()
     {
-        $this->assertFalse(@fopen(vfsStream::url('foo'), 'r'));
+        assertFalse(@fopen(vfsStream::url('foo'), 'r'));
     }
 
     /**
-     * can not rename a file without root
-     *
      * @test
      */
     public function canNotRename()
     {
-        $this->assertFalse(@rename(vfsStream::url('foo'), vfsStream::url('bar')));
+        assertFalse(@rename(vfsStream::url('foo'), vfsStream::url('bar')));
     }
 }

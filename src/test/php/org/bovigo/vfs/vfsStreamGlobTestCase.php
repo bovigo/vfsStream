@@ -9,6 +9,8 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assertEmpty;
 /**
  * Test for org\bovigo\vfs\vfsStream.
  *
@@ -24,6 +26,6 @@ class vfsStreamGlobTestCase extends TestCase
     {
         $root = vfsStream::setup('example');
         mkdir(vfsStream::url('example/test/'), 0777, true);
-        $this->assertEmpty(glob(vfsStream::url('example'), GLOB_MARK));
+        assertEmpty(glob(vfsStream::url('example'), GLOB_MARK));
     }
 }

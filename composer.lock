@@ -4,9 +4,54 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "487168b5a77a1abf086d56d09dc06b07",
+    "content-hash": "d73641d7ca3e8aca89539e6a284e636a",
     "packages": [],
     "packages-dev": [
+        {
+            "name": "bovigo/assert",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mikey179/bovigo-assert.git",
+                "reference": "ddd0fb9de0e9a921cf14bc1d0f3ab14f69fd75f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/ddd0fb9de0e9a921cf14bc1d0f3ab14f69fd75f0",
+                "reference": "ddd0fb9de0e9a921cf14bc1d0f3ab14f69fd75f0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1",
+                "sebastian/comparator": "^2.0",
+                "sebastian/exporter": "^3.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^6.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "bovigo\\assert\\": "src/main/php"
+                },
+                "files": [
+                    "src/main/php/assert.php",
+                    "src/main/php/predicate/predicates.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Provides assertions for unit tests.",
+            "time": "2017-09-20T15:44:14+00:00"
+        },
         {
             "name": "bovigo/callmap",
             "version": "v4.0.0",

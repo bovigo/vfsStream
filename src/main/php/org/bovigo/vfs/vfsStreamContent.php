@@ -96,7 +96,7 @@ interface vfsStreamContent
      * @param   vfsStreamContainer  $container
      * @return  vfsStreamContent
      */
-    public function at(vfsStreamContainer $container);
+    public function at(vfsStreamContainer $container): self;
 
     /**
      * change file mode to given permissions
@@ -104,7 +104,7 @@ interface vfsStreamContent
      * @param   int  $permissions
      * @return  vfsStreamContent
      */
-    public function chmod($permissions);
+    public function chmod($permissions): self;
 
     /**
      * returns permissions
@@ -146,7 +146,7 @@ interface vfsStreamContent
      * @param   int  $user
      * @return  vfsStreamContent
      */
-    public function chown($user);
+    public function chown($user): self;
 
     /**
      * checks whether file is owned by given user
@@ -169,7 +169,7 @@ interface vfsStreamContent
      * @param   int  $group
      * @return  vfsStreamContent
      */
-    public function chgrp($group);
+    public function chgrp($group): self;
 
     /**
      * checks whether file is owned by group

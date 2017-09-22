@@ -9,6 +9,11 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\contains;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for directory iteration.
  *
@@ -37,33 +42,27 @@ class FilenameTestCase extends TestCase
      */
     public function worksWithCorrectName()
     {
-        $results = array();
+        $results = [];
         $it = new \RecursiveDirectoryIterator($this->lostAndFound);
         foreach ($it as $f) {
             $results[] = $f->getPathname();
         }
 
-        $this->assertEquals(
-                array(
-                        'vfs://root/lost+found' . DIRECTORY_SEPARATOR . '.',
-                        'vfs://root/lost+found' . DIRECTORY_SEPARATOR . '..'
-                ),
-                $results
-        );
+        assert($results, equals([
+            'vfs://root/lost+found' . DIRECTORY_SEPARATOR . '.',
+            'vfs://root/lost+found' . DIRECTORY_SEPARATOR . '..'
+        ]));
     }
 
     /**
      * @test
-     * @expectedException  UnexpectedValueException
-     * @expectedExceptionMessage  failed to open dir
      */
     public function doesNotWorkWithInvalidName()
     {
-        $results = array();
-        $it = new \RecursiveDirectoryIterator($this->rootDir . '/lost found/');
-        foreach ($it as $f) {
-            $results[] = $f->getPathname();
-        }
+        expect(function() {
+            new \RecursiveDirectoryIterator($this->rootDir . '/lost found/');
+        })->throws(\UnexpectedValueException::class)
+          ->message(contains('failed to open dir'));
     }
 
     /**
@@ -71,19 +70,16 @@ class FilenameTestCase extends TestCase
      */
     public function returnsCorrectNames()
     {
-        $results = array();
+        $results = [];
         $it = new \RecursiveDirectoryIterator($this->rootDir);
         foreach ($it as $f) {
             $results[] = $f->getPathname();
         }
 
-        $this->assertEquals(
-                array(
-                        'vfs://root' . DIRECTORY_SEPARATOR . '.',
-                        'vfs://root' . DIRECTORY_SEPARATOR . '..',
-                        'vfs://root' . DIRECTORY_SEPARATOR . 'lost+found'
-                ),
-                $results
-        );
+        assert($results, equals([
+          'vfs://root' . DIRECTORY_SEPARATOR . '.',
+          'vfs://root' . DIRECTORY_SEPARATOR . '..',
+          'vfs://root' . DIRECTORY_SEPARATOR . 'lost+found'
+        ]));
     }
 }

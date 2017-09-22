@@ -9,6 +9,8 @@
  */
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assertNotNull;
 /**
  * Test for org\bovigo\vfs\vfsStreamDirectory.
  *
@@ -34,35 +36,28 @@ class vfsStreamDirectoryIssue134TestCase extends TestCase
     }
 
     /**
-     * Test: should save directory name as string internal
-     *
+     * @test
      * @small
      */
-    public function testShouldSaveDirectoryNameAsStringInternal()
+    public function shouldSaveDirectoryNameAsStringInternal()
     {
         $dir = $this->rootDirectory->getChild('var/log/app');
-
         $dir->addChild(vfsStream::newDirectory(80));
-
-        static::assertNotNull($this->rootDirectory->getChild('var/log/app/80'));
+        assertNotNull($this->rootDirectory->getChild('var/log/app/80'));
     }
 
 
 
     /**
-     * Test: should rename directory name as string internal
-     *
+     * @test
      * @small
      */
-    public function testShouldRenameDirectoryNameAsStringInternal()
+    public function shouldRenameDirectoryNameAsStringInternal()
     {
         $dir = $this->rootDirectory->getChild('var/log/app');
-
         $dir->addChild(vfsStream::newDirectory(80));
-
         $child = $this->rootDirectory->getChild('var/log/app/80');
         $child->rename(90);
-
-        static::assertNotNull($this->rootDirectory->getChild('var/log/app/90'));
+        assertNotNull($this->rootDirectory->getChild('var/log/app/90'));
     }
 }

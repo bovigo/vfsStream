@@ -9,6 +9,10 @@
  */
 namespace org\bovigo\vfs\content;
 use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for org\bovigo\vfs\content\LargeFileContent.
  *
@@ -37,7 +41,7 @@ class LargeFileContentTestCase extends TestCase
      */
     public function hasSizeOriginallyGiven()
     {
-        $this->assertEquals(100, $this->largeFileContent->size());
+        assert($this->largeFileContent->size(), equals(100));
     }
 
     /**
@@ -45,10 +49,7 @@ class LargeFileContentTestCase extends TestCase
      */
     public function contentIsFilledUpWithSpacesIfNoDataWritten()
     {
-        $this->assertEquals(
-                str_repeat(' ', 100),
-                $this->largeFileContent->content()
-        );
+        assert($this->largeFileContent->content(), equals(str_repeat(' ', 100)));
     }
 
     /**
@@ -56,10 +57,7 @@ class LargeFileContentTestCase extends TestCase
      */
     public function readReturnsSpacesWhenNothingWrittenAtOffset()
     {
-        $this->assertEquals(
-                str_repeat(' ', 10),
-                $this->largeFileContent->read(10)
-        );
+        assert($this->largeFileContent->read(10), equals(str_repeat(' ', 10)));
     }
 
     /**
@@ -69,10 +67,15 @@ class LargeFileContentTestCase extends TestCase
     {
         $this->largeFileContent->write('foobarbaz');
         $this->largeFileContent->seek(0, SEEK_SET);
-        $this->assertEquals(
-                'foobarbaz ',
-                $this->largeFileContent->read(10)
-        );
+        assert($this->largeFileContent->read(10), equals('foobarbaz '));
+    }
+
+    /**
+     * @test
+     */
+    public function writeReturnsAmounfOfWrittenBytes()
+    {
+        assert($this->largeFileContent->write('foobarbaz'), equals(9));
     }
 
     /**
@@ -80,10 +83,10 @@ class LargeFileContentTestCase extends TestCase
      */
     public function writesDataAtStartWhenOffsetNotMoved()
     {
-        $this->assertEquals(9, $this->largeFileContent->write('foobarbaz'));
-        $this->assertEquals(
-                'foobarbaz' . str_repeat(' ', 91),
-                $this->largeFileContent->content()
+        $this->largeFileContent->write('foobarbaz');
+        assert(
+            $this->largeFileContent->content(),
+            equals('foobarbaz' . str_repeat(' ', 91))
         );
     }
 
@@ -92,8 +95,8 @@ class LargeFileContentTestCase extends TestCase
      */
     public function writeDataAtStartDoesNotIncreaseSize()
     {
-        $this->assertEquals(9, $this->largeFileContent->write('foobarbaz'));
-        $this->assertEquals(100, $this->largeFileContent->size());
+        $this->largeFileContent->write('foobarbaz');
+        assert($this->largeFileContent->size(), equals(100));
     }
 
     /**
@@ -102,10 +105,10 @@ class LargeFileContentTestCase extends TestCase
     public function writesDataAtOffsetWhenOffsetMoved()
     {
         $this->largeFileContent->seek(50, SEEK_SET);
-        $this->assertEquals(9, $this->largeFileContent->write('foobarbaz'));
-        $this->assertEquals(
-                str_repeat(' ', 50) . 'foobarbaz' . str_repeat(' ', 41),
-                $this->largeFileContent->content()
+        $this->largeFileContent->write('foobarbaz');
+        assert(
+            $this->largeFileContent->content(),
+            equals(str_repeat(' ', 50) . 'foobarbaz' . str_repeat(' ', 41))
         );
     }
 
@@ -115,8 +118,8 @@ class LargeFileContentTestCase extends TestCase
     public function writeDataInBetweenDoesNotIncreaseSize()
     {
         $this->largeFileContent->seek(50, SEEK_SET);
-        $this->assertEquals(9, $this->largeFileContent->write('foobarbaz'));
-        $this->assertEquals(100, $this->largeFileContent->size());
+        $this->largeFileContent->write('foobarbaz');
+        assert($this->largeFileContent->size(), equals(100));
     }
 
     /**
@@ -125,10 +128,10 @@ class LargeFileContentTestCase extends TestCase
     public function writesDataOverEndWhenOffsetAndDataLengthLargerThanSize()
     {
         $this->largeFileContent->seek(95, SEEK_SET);
-        $this->assertEquals(9, $this->largeFileContent->write('foobarbaz'));
-        $this->assertEquals(
-                str_repeat(' ', 95) . 'foobarbaz',
-                $this->largeFileContent->content()
+        $this->largeFileContent->write('foobarbaz');
+        assert(
+            $this->largeFileContent->content(),
+            equals(str_repeat(' ', 95) . 'foobarbaz')
         );
     }
 
@@ -139,7 +142,7 @@ class LargeFileContentTestCase extends TestCase
     {
         $this->largeFileContent->seek(95, SEEK_SET);
         $this->assertEquals(9, $this->largeFileContent->write('foobarbaz'));
-        $this->assertEquals(104, $this->largeFileContent->size());
+        assert($this->largeFileContent->size(), equals(104));
     }
 
     /**
@@ -148,10 +151,10 @@ class LargeFileContentTestCase extends TestCase
     public function writesDataAfterEndWhenOffsetAfterEnd()
     {
         $this->largeFileContent->seek(0, SEEK_END);
-        $this->assertEquals(9, $this->largeFileContent->write('foobarbaz'));
-        $this->assertEquals(
-                str_repeat(' ', 100) . 'foobarbaz',
-                $this->largeFileContent->content()
+        $this->largeFileContent->write('foobarbaz');
+        assert(
+            $this->largeFileContent->content(),
+            equals(str_repeat(' ', 100) . 'foobarbaz')
         );
     }
 
@@ -161,8 +164,8 @@ class LargeFileContentTestCase extends TestCase
     public function writeDataAfterLastOffsetIncreasesSize()
     {
         $this->largeFileContent->seek(0, SEEK_END);
-        $this->assertEquals(9, $this->largeFileContent->write('foobarbaz'));
-        $this->assertEquals(109, $this->largeFileContent->size());
+        $this->largeFileContent->write('foobarbaz');
+        assert($this->largeFileContent->size(), equals(109));
     }
 
     /**
@@ -170,8 +173,8 @@ class LargeFileContentTestCase extends TestCase
      */
     public function truncateReducesSize()
     {
-        $this->assertTrue($this->largeFileContent->truncate(50));
-        $this->assertEquals(50, $this->largeFileContent->size());
+        assertTrue($this->largeFileContent->truncate(50));
+        assert($this->largeFileContent->size(), equals(50));
     }
 
     /**
@@ -181,10 +184,10 @@ class LargeFileContentTestCase extends TestCase
     {
         $this->largeFileContent->seek(45, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
-        $this->assertTrue($this->largeFileContent->truncate(50));
-        $this->assertEquals(
-                str_repeat(' ', 45) . 'fooba',
-                $this->largeFileContent->content()
+        $this->largeFileContent->truncate(50);
+        assert(
+            $this->largeFileContent->content(),
+            equals(str_repeat(' ', 45) . 'fooba')
         );
     }
 
@@ -193,11 +196,7 @@ class LargeFileContentTestCase extends TestCase
      */
     public function createInstanceWithKilobytes()
     {
-        $this->assertEquals(
-                100 * 1024,
-                LargeFileContent::withKilobytes(100)
-                                ->size()
-        );
+        assert(LargeFileContent::withKilobytes(100)->size(), equals(100 * 1024));
     }
 
     /**
@@ -205,11 +204,7 @@ class LargeFileContentTestCase extends TestCase
      */
     public function createInstanceWithMegabytes()
     {
-        $this->assertEquals(
-                100 * 1024 * 1024,
-                LargeFileContent::withMegabytes(100)
-                                ->size()
-        );
+        assert(LargeFileContent::withMegabytes(100)->size(), equals(100 * 1024 * 1024));
     }
 
     /**
@@ -217,10 +212,6 @@ class LargeFileContentTestCase extends TestCase
      */
     public function createInstanceWithGigabytes()
     {
-        $this->assertEquals(
-                100 * 1024 *  1024 * 1024,
-                LargeFileContent::withGigabytes(100)
-                                ->size()
-        );
+        assert(LargeFileContent::withGigabytes(100)->size(), equals(100 * 1024 * 1024 * 1024));
     }
 }

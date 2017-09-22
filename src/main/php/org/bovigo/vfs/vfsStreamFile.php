@@ -78,7 +78,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  vfsStreamFile
      * @see     withContent()
      */
-    public function setContent($content)
+    public function setContent($content): vfsStreamFile
     {
         return $this->withContent($content);
     }
@@ -93,7 +93,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  vfsStreamFile
      * @throws  \InvalidArgumentException
      */
-    public function withContent($content)
+    public function withContent($content): vfsStreamFile
     {
         if (is_string($content)) {
             $this->content = new StringBasedFileContent($content);
