@@ -10,8 +10,10 @@
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
+use function bovigo\assert\assert;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper in conjunction with ext/zip.
  *
@@ -27,12 +29,19 @@ class vfsStreamZipTestCase extends TestCase
     {
         vfsStream::setup();
         $zip = new \ZipArchive();
-        assertTrue($zip->open(vfsStream::url('root/test.zip'), \ZipArchive::CREATE));
-        assertTrue($zip->addFromString("testfile1.txt", "#1 This is a test string added as testfile1.txt.\n"));
-        assertTrue($zip->addFromString("testfile2.txt", "#2 This is a test string added as testfile2.txt.\n"));
-        $zip->setArchiveComment('a test');
-        expect(function() use ($zip) { $zip->close(); })
-          ->triggers()
-          ->withMessage('ZipArchive::close(): Failure to create temporary file: No such file or directory');
+        if (DIRECTORY_SEPARATOR == '\\') {
+            assert(
+                $zip->open(vfsStream::url('root/test.zip'), \ZipArchive::CREATE),
+                equals(\ZipArchive::ER_READ)
+            );
+        } else {
+            assertTrue($zip->open(vfsStream::url('root/test.zip'), \ZipArchive::CREATE));
+            assertTrue($zip->addFromString("testfile1.txt", "#1 This is a test string added as testfile1.txt.\n"));
+            assertTrue($zip->addFromString("testfile2.txt", "#2 This is a test string added as testfile2.txt.\n"));
+            $zip->setArchiveComment('a test');
+            expect(function() use ($zip) { $zip->close(); })
+              ->triggers()
+              ->withMessage('ZipArchive::close(): Failure to create temporary file: No such file or directory');
+        }
     }
 }
