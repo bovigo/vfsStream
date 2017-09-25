@@ -21,6 +21,7 @@ install:
   - if %CACHED%==0 echo extension_dir=ext >> php.ini
   - if %CACHED%==0 echo extension=php_openssl.dll >> php.ini
   - if %CACHED%==0 echo extension=php_mbstring.dll >> php.ini
+  - if %CACHED%==0 echo zend.assertions = 1 >> php.ini
   - if %CACHED%==0 cd ..
 
 test_script:
