@@ -9,22 +9,31 @@
  */
 namespace org\bovigo\vfs;
 require_once __DIR__ . '/vfsStreamWrapperBaseTestCase.php';
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyString;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
 class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
 {
     /**
-     * assert that file_get_contents() delivers correct file contents
-     *
      * @test
      */
-    public function file_get_contents()
+    public function file_get_contentsReturnsFileContents()
     {
-        $this->assertEquals('baz2', file_get_contents($this->baz2URL));
-        $this->assertEquals('baz 1', file_get_contents($this->baz1URL));
-        $this->assertFalse(@file_get_contents($this->barURL));
-        $this->assertFalse(@file_get_contents($this->fooURL));
+        assert(file_get_contents($this->fileInRoot->url()), equals('file 2'));
+    }
+
+    /**
+     * @test
+     */
+    public function file_get_contentsReturnsFalseForDirectories()
+    {
+        assertFalse(@file_get_contents($this->subdir->url()));
     }
 
     /**
@@ -32,27 +41,30 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function file_get_contentsNonReadableFile()
+    public function file_get_contentsReturnsEmptyStringForNonReadableFile()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root'));
-        vfsStream::newFile('new.txt', 0000)->at(vfsStreamWrapper::getRoot())->withContent('content');
-        $this->assertEquals('', @file_get_contents(vfsStream::url('root/new.txt')));
+        vfsStream::newFile('new.txt', 0000)->at($this->root)->withContent('content');
+        assertEmptyString(@file_get_contents(vfsStream::url('root/new.txt')));
     }
 
     /**
-     * assert that file_put_contents() delivers correct file contents
-     *
+     * @test
+     */
+    public function file_put_contentsReturnsAmountOfWrittenBytes()
+    {
+        assert(
+            file_put_contents($this->fileInRoot->url(), 'baz is not bar'),
+            equals(14)
+        );
+    }
+
+    /**
      * @test
      */
     public function file_put_contentsExistingFile()
     {
-        $this->assertEquals(14, file_put_contents($this->baz2URL, 'baz is not bar'));
-        $this->assertEquals('baz is not bar', $this->baz2->getContent());
-        $this->assertEquals(6, file_put_contents($this->baz1URL, 'foobar'));
-        $this->assertEquals('foobar', $this->baz1->getContent());
-        $this->assertFalse(@file_put_contents($this->barURL, 'This does not work.'));
-        $this->assertFalse(@file_put_contents($this->fooURL, 'This does not work, too.'));
+        file_put_contents($this->fileInRoot->url(), 'baz is not bar');
+        assert($this->fileInRoot->getContent(), equals('baz is not bar'));
     }
 
     /**
@@ -62,11 +74,9 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function file_put_contentsExistingFileNonWritableDirectory()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root', 0000));
-        vfsStream::newFile('new.txt')->at(vfsStreamWrapper::getRoot())->withContent('content');
-        $this->assertEquals(15, @file_put_contents(vfsStream::url('root/new.txt'), 'This does work.'));
-        $this->assertEquals('This does work.', file_get_contents(vfsStream::url('root/new.txt')));
+        $this->root->chmod(0000);
+        file_put_contents($this->fileInRoot->url(), 'This does work.');
+        assert($this->fileInRoot->getContent(), equals('This does work.'));
 
     }
 
@@ -77,11 +87,9 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function file_put_contentsExistingNonWritableFile()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root'));
-        vfsStream::newFile('new.txt', 0400)->at(vfsStreamWrapper::getRoot())->withContent('content');
-        $this->assertFalse(@file_put_contents(vfsStream::url('root/new.txt'), 'This does not work.'));
-        $this->assertEquals('content', file_get_contents(vfsStream::url('root/new.txt')));
+        $this->fileInRoot->chmod(0400);
+        assertFalse(@file_put_contents($this->fileInRoot->url(), 'This does not work.'));
+        assert($this->fileInRoot->getContent(), equals('file 2'));
     }
 
     /**
@@ -91,10 +99,8 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function file_put_contentsNonExistingFile()
     {
-        $this->assertEquals(14, file_put_contents($this->fooURL . '/baznot.bar', 'baz is not bar'));
-        $this->assertEquals(3, count($this->foo->getChildren()));
-        $this->assertEquals(14, file_put_contents($this->barURL . '/baznot.bar', 'baz is not bar'));
-        $this->assertEquals(2, count($this->bar->getChildren()));
+        file_put_contents($this->root->url() . '/baznot.bar', 'baz is not bar');
+        assert($this->root->getChild('baznot.bar')->getContent(), equals('baz is not bar'));
     }
 
     /**
@@ -104,21 +110,16 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function file_put_contentsNonExistingFileNonWritableDirectory()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root', 0000));
-        $this->assertFalse(@file_put_contents(vfsStream::url('root/new.txt'), 'This does not work.'));
-        $this->assertFalse(file_exists(vfsStream::url('root/new.txt')));
-
+        $this->root->chmod(0000);
+        assertFalse(@file_put_contents(vfsStream::url('root/new.txt'), 'This does not work.'));
     }
 
     /**
-     * using a file pointer should work without any problems
-     *
      * @test
      */
     public function usingFilePointer()
     {
-        $fp = fopen($this->baz1URL, 'r');
+        $fp = fopen($this->fileInSubdir->url(), 'r');
         $this->assertEquals(0, ftell($fp));
         $this->assertFalse(feof($fp));
         $this->assertEquals(0, fseek($fp, 2));
@@ -126,15 +127,15 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertEquals(0, fseek($fp, 1, SEEK_CUR));
         $this->assertEquals(3, ftell($fp));
         $this->assertEquals(0, fseek($fp, 1, SEEK_END));
-        $this->assertEquals(6, ftell($fp));
+        $this->assertEquals(7, ftell($fp));
         $this->assertTrue(feof($fp));
         $this->assertEquals(0, fseek($fp, 2));
         $this->assertFalse(feof($fp));
         $this->assertEquals(2, ftell($fp));
-        $this->assertEquals('z', fread($fp, 1));
+        $this->assertEquals('l', fread($fp, 1));
         $this->assertEquals(3, ftell($fp));
-        $this->assertEquals(' 1', fread($fp, 8092));
-        $this->assertEquals(5, ftell($fp));
+        $this->assertEquals('e 1', fread($fp, 8092));
+        $this->assertEquals(6, ftell($fp));
         $this->assertTrue(fclose($fp));
     }
 
@@ -145,11 +146,11 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function is_file()
     {
-        $this->assertFalse(is_file($this->fooURL));
-        $this->assertFalse(is_file($this->barURL));
-        $this->assertTrue(is_file($this->baz1URL));
-        $this->assertTrue(is_file($this->baz2URL));
-        $this->assertFalse(is_file($this->fooURL . '/another'));
+        $this->assertFalse(is_file($this->root->url()));
+        $this->assertFalse(is_file($this->subdir->url()));
+        $this->assertTrue(is_file($this->fileInSubdir->url()));
+        $this->assertTrue(is_file($this->fileInRoot->url()));
+        $this->assertFalse(is_file($this->root->url() . '/another'));
         $this->assertFalse(is_file(vfsStream::url('another')));
     }
 
@@ -160,10 +161,10 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function issue13CanNotOverwriteFiles()
     {
-        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        $vfsFile = vfsStream::url('root/overwrite.txt');
         file_put_contents($vfsFile, 'test');
         file_put_contents($vfsFile, 'd');
-        $this->assertEquals('d', file_get_contents($vfsFile));
+        assert(file_get_contents($vfsFile), equals('d'));
     }
 
     /**
@@ -173,12 +174,12 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function appendContentIfOpenedWithModeA()
     {
-        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        $vfsFile = vfsStream::url('root/overwrite.txt');
         file_put_contents($vfsFile, 'test');
         $fp = fopen($vfsFile, 'ab');
         fwrite($fp, 'd');
         fclose($fp);
-        $this->assertEquals('testd', file_get_contents($vfsFile));
+        assert(file_get_contents($vfsFile), equals('testd'));
     }
 
     /**
@@ -188,11 +189,11 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canOverwriteNonExistingFileWithModeX()
     {
-        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        $vfsFile = vfsStream::url('root/overwrite.txt');
         $fp = fopen($vfsFile, 'xb');
         fwrite($fp, 'test');
         fclose($fp);
-        $this->assertEquals('test', file_get_contents($vfsFile));
+        assert(file_get_contents($vfsFile), equals('test'));
     }
 
     /**
@@ -202,10 +203,10 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotOverwriteExistingFileWithModeX()
     {
-        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        $vfsFile = vfsStream::url('root/overwrite.txt');
         file_put_contents($vfsFile, 'test');
-        $this->assertFalse(@fopen($vfsFile, 'xb'));
-        $this->assertEquals('test', file_get_contents($vfsFile));
+        assertFalse(@fopen($vfsFile, 'xb'));
+        assert(file_get_contents($vfsFile), equals('test'));
     }
 
     /**
@@ -215,7 +216,7 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotOpenNonExistingFileReadonly()
     {
-        $this->assertFalse(@fopen(vfsStream::url('foo/doesNotExist.txt'), 'rb'));
+        assertFalse(@fopen(vfsStream::url('root/doesNotExist.txt'), 'rb'));
     }
 
     /**
@@ -225,7 +226,7 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotOpenNonExistingFileReadAndWrite()
     {
-        $this->assertFalse(@fopen(vfsStream::url('foo/doesNotExist.txt'), 'rb+'));
+        assertFalse(@fopen(vfsStream::url('root/doesNotExist.txt'), 'rb+'));
     }
 
     /**
@@ -235,7 +236,7 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotOpenWithIllegalMode()
     {
-        $this->assertFalse(@fopen($this->baz2URL, 'invalid'));
+        assertFalse(@fopen($this->fileInRoot->url(), 'invalid'));
     }
 
     /**
@@ -245,11 +246,11 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotWriteToReadOnlyFile()
     {
-        $fp = fopen($this->baz2URL, 'rb');
-        $this->assertEquals('baz2', fread($fp, 4096));
-        $this->assertEquals(0, fwrite($fp, 'foo'));
+        $fp = fopen($this->fileInRoot->url(), 'rb');
+        assert(fread($fp, 4096), equals('file 2'));
+        assert(fwrite($fp, 'foo'), equals(0));
         fclose($fp);
-        $this->assertEquals('baz2', file_get_contents($this->baz2URL));
+        assert($this->fileInRoot->getContent(), equals('file 2'));
     }
 
     /**
@@ -259,13 +260,13 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotReadFromWriteOnlyFileWithModeW()
     {
-        $fp = fopen($this->baz2URL, 'wb');
-        $this->assertEquals('', fread($fp, 4096));
-        $this->assertEquals(3, fwrite($fp, 'foo'));
+        $fp = fopen($this->fileInRoot->url(), 'wb');
+        assertEmptyString(fread($fp, 4096));
+        assert(fwrite($fp, 'foo'), equals(3));
         fseek($fp, 0);
-        $this->assertEquals('', fread($fp, 4096));
+        assertEmptyString(fread($fp, 4096));
         fclose($fp);
-        $this->assertEquals('foo', file_get_contents($this->baz2URL));
+        assert($this->fileInRoot->getContent(), equals('foo'));
     }
 
     /**
@@ -275,13 +276,13 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotReadFromWriteOnlyFileWithModeA()
     {
-        $fp = fopen($this->baz2URL, 'ab');
-        $this->assertEquals('', fread($fp, 4096));
-        $this->assertEquals(3, fwrite($fp, 'foo'));
+        $fp = fopen($this->fileInRoot->url(), 'ab');
+        assertEmptyString(fread($fp, 4096));
+        assert(fwrite($fp, 'foo'), equals(3));
         fseek($fp, 0);
-        $this->assertEquals('', fread($fp, 4096));
+        assertEmptyString(fread($fp, 4096));
         fclose($fp);
-        $this->assertEquals('baz2foo', file_get_contents($this->baz2URL));
+        assert($this->fileInRoot->getContent(), equals('file 2foo'));
     }
 
     /**
@@ -291,14 +292,14 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotReadFromWriteOnlyFileWithModeX()
     {
-        $vfsFile = vfsStream::url('foo/modeXtest.txt');
+        $vfsFile = vfsStream::url('root/modeXtest.txt');
         $fp = fopen($vfsFile, 'xb');
-        $this->assertEquals('', fread($fp, 4096));
-        $this->assertEquals(3, fwrite($fp, 'foo'));
+        assertEmptyString(fread($fp, 4096));
+        assert(fwrite($fp, 'foo'), equals(3));
         fseek($fp, 0);
-        $this->assertEquals('', fread($fp, 4096));
+        assertEmptyString(fread($fp, 4096));
         fclose($fp);
-        $this->assertEquals('foo', file_get_contents($vfsFile));
+        assert(file_get_contents($vfsFile), equals('foo'));
     }
 
     /**
@@ -308,11 +309,9 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotRemoveFileFromDirectoryWithoutWritePermissions()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root', 0000));
-        vfsStream::newFile('new.txt')->at(vfsStreamWrapper::getRoot());
-        $this->assertFalse(unlink(vfsStream::url('root/new.txt')));
-        $this->assertTrue(file_exists(vfsStream::url('root/new.txt')));
+        $this->root->chmod('root', 0000);
+        assertFalse(@unlink($this->fileInRoot->url()));
+        assertTrue($this->root->hasChild('file2'));
     }
 
     /**
@@ -321,10 +320,10 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function truncatesFileWhenOpenedWithModeW()
     {
-        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        $vfsFile = vfsStream::url('root/overwrite.txt');
         file_put_contents($vfsFile, 'test');
         $fp = fopen($vfsFile, 'wb');
-        $this->assertEquals('', file_get_contents($vfsFile));
+        assertEmptyString(file_get_contents($vfsFile));
         fclose($fp);
     }
 
@@ -334,12 +333,12 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function createsNonExistingFileWhenOpenedWithModeC()
     {
-        $vfsFile = vfsStream::url('foo/tobecreated.txt');
+        $vfsFile = vfsStream::url('root/tobecreated.txt');
         $fp = fopen($vfsFile, 'cb');
         fwrite($fp, 'some content');
-        $this->assertTrue($this->foo->hasChild('tobecreated.txt'));
+        assertTrue($this->root->hasChild('tobecreated.txt'));
         fclose($fp);
-        $this->assertEquals('some content', file_get_contents($vfsFile));
+        assert(file_get_contents($vfsFile), equals('some content'));
     }
 
     /**
@@ -348,12 +347,12 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function createsNonExistingFileWhenOpenedWithModeCplus()
     {
-        $vfsFile = vfsStream::url('foo/tobecreated.txt');
+        $vfsFile = vfsStream::url('root/tobecreated.txt');
         $fp = fopen($vfsFile, 'cb+');
         fwrite($fp, 'some content');
-        $this->assertTrue($this->foo->hasChild('tobecreated.txt'));
+        assertTrue($this->root->hasChild('tobecreated.txt'));
         fclose($fp);
-        $this->assertEquals('some content', file_get_contents($vfsFile));
+        assert(file_get_contents($vfsFile), equals('some content'));
     }
 
     /**
@@ -362,11 +361,11 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function doesNotTruncateFileWhenOpenedWithModeC()
     {
-        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        $vfsFile = vfsStream::url('root/overwrite.txt');
         file_put_contents($vfsFile, 'test');
         $fp = fopen($vfsFile, 'cb');
-        $this->assertEquals('test', file_get_contents($vfsFile));
         fclose($fp);
+        assert(file_get_contents($vfsFile), equals('test'));
     }
 
     /**
@@ -375,10 +374,10 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function setsPointerToStartWhenOpenedWithModeC()
     {
-        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        $vfsFile = vfsStream::url('root/overwrite.txt');
         file_put_contents($vfsFile, 'test');
         $fp = fopen($vfsFile, 'cb');
-        $this->assertEquals(0, ftell($fp));
+        assert(ftell($fp), equals(0));
         fclose($fp);
     }
 
@@ -388,11 +387,11 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function doesNotTruncateFileWhenOpenedWithModeCplus()
     {
-        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        $vfsFile = vfsStream::url('root/overwrite.txt');
         file_put_contents($vfsFile, 'test');
         $fp = fopen($vfsFile, 'cb+');
-        $this->assertEquals('test', file_get_contents($vfsFile));
         fclose($fp);
+        assert(file_get_contents($vfsFile), equals('test'));
     }
 
     /**
@@ -401,10 +400,10 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function setsPointerToStartWhenOpenedWithModeCplus()
     {
-        $vfsFile = vfsStream::url('foo/overwrite.txt');
+        $vfsFile = vfsStream::url('root/overwrite.txt');
         file_put_contents($vfsFile, 'test');
         $fp = fopen($vfsFile, 'cb+');
-        $this->assertEquals(0, ftell($fp));
+        assert(ftell($fp), equals(0));
         fclose($fp);
     }
 
@@ -413,8 +412,8 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function cannotOpenExistingNonwritableFileWithModeA()
     {
-        $this->baz1->chmod(0400);
-        $this->assertFalse(@fopen($this->baz1URL, 'a'));
+        $this->fileInSubdir->chmod(0400);
+        assertFalse(@fopen($this->fileInSubdir->url(), 'a'));
     }
 
     /**
@@ -422,8 +421,8 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function cannotOpenExistingNonwritableFileWithModeW()
     {
-        $this->baz1->chmod(0400);
-        $this->assertFalse(@fopen($this->baz1URL, 'w'));
+        $this->fileInSubdir->chmod(0400);
+        assertFalse(@fopen($this->fileInSubdir->url(), 'w'));
     }
 
     /**
@@ -431,8 +430,8 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function cannotOpenNonReadableFileWithModeR()
     {
-        $this->baz1->chmod(0);
-        $this->assertFalse(@fopen($this->baz1URL, 'r'));
+        $this->fileInSubdir->chmod(0000);
+        assertFalse(@fopen($this->fileInSubdir->url(), 'r'));
     }
 
     /**
@@ -440,18 +439,19 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function cannotRenameToNonWritableDir()
     {
-        $this->bar->chmod(0);
-        $this->assertFalse(@rename($this->baz2URL, vfsStream::url('foo/bar/baz3')));
+        $this->subdir->chmod(0000);
+        assertFalse(@rename($this->fileInRoot->url(), vfsStream::url('root/bar/baz3')));
     }
 
     /**
      * @test
+     * @group permissions
      * @group issue_38
      */
     public function cannotReadFileFromNonReadableDir()
     {
-        $this->markTestSkipped("Issue #38.");
-        $this->bar->chmod(0);
-        $this->assertFalse(@file_get_contents($this->baz1URL));
+        $this->markTestSkipped('Ignored for now, see https://github.com/mikey179/vfsStream/issues/38');
+        $this->subdir->chmod(0000);
+        assertFalse(@file_get_contents($this->fileInSubdir->url()));
     }
 }

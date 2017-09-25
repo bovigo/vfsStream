@@ -17,6 +17,7 @@ use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isOfSize;
 use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper around mkdir().
@@ -38,36 +39,54 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     public function mkdirDoesNotOverwriteExistingRoot($newRoot)
     {
         assertFalse(mkdir(vfsStream::url($newRoot), 0777, true));
-        assert(vfsStreamWrapper::getRoot(), isSameAs($this->foo));
+        assert(vfsStreamWrapper::getRoot(), isSameAs($this->root));
     }
 
     /**
      * @test
      * @group  permissions
      */
-    public function mkdirNonRecursively()
+    public function mkdirNonRecursivelyIsRejectedWhenNotSpecified()
     {
-        assertFalse(mkdir($this->barURL . '/another/more'));
-        $this->assertEquals(2, count($this->foo->getChildren()));
-        $this->assertTrue(mkdir($this->fooURL . '/another'));
-        $this->assertEquals(3, count($this->foo->getChildren()));
-        $this->assertEquals(0777, $this->foo->getChild('another')->getPermissions());
+        assertFalse(mkdir($this->subdir->url() . '/another/more'));
+        assertFalse($this->root->hasChild('another'));
     }
 
     /**
-     * assert that mkdir() creates the correct directory structure
-     *
      * @test
      * @group  permissions
      */
-    public function mkdirRecursively()
+    public function mkdirNonRecursivelyForSingleDirectory()
     {
-        $this->assertTrue(mkdir($this->fooURL . '/another/more', 0777, true));
-        $this->assertEquals(3, count($this->foo->getChildren()));
-        $another = $this->foo->getChild('another');
-        $this->assertTrue($another->hasChild('more'));
-        $this->assertEquals(0777, $this->foo->getChild('another')->getPermissions());
-        $this->assertEquals(0777, $this->foo->getChild('another')->getChild('more')->getPermissions());
+        assertTrue(mkdir($this->root->url() . '/another'));
+        assertTrue($this->root->hasChild('another'));
+    }
+
+    /**
+     * @test
+     * @group  permissions
+     */
+    public function mkdirNonRecursivelyWithDefaultPermissions()
+    {
+        assertTrue(mkdir($this->root->url() . '/another'));
+        assert($this->root->getChild('another')->getPermissions(), equals(0777));
+    }
+
+    public function mkdirChildren(): array
+    {
+        return [['another'], ['another/more']];
+    }
+
+    /**
+     * @test
+     * @dataProvider  mkdirChildren
+     * @group  permissions
+     */
+    public function mkdirRecursively(string $child)
+    {
+        assertTrue(mkdir($this->root->url() . '/another/more', 0775, true));
+        assertTrue($this->root->hasChild($child));
+        assert($this->root->getChild($child)->getPermissions(), equals(0775));
     }
 
     /**
@@ -77,9 +96,8 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function mkdirWithDots()
     {
-        $this->assertTrue(mkdir($this->fooURL . '/another/../more/.', 0777, true));
-        $this->assertEquals(3, count($this->foo->getChildren()));
-        $this->assertTrue($this->foo->hasChild('more'));
+        assertTrue(mkdir($this->root->url() . '/another/../more/.', 0777, true));
+        assertTrue($this->root->hasChild('more'));
     }
 
     /**
@@ -89,9 +107,9 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     public function mkdirWithoutRootCreatesNewRoot()
     {
         vfsStreamWrapper::register();
-        assertTrue(@mkdir(vfsStream::url('foo')));
+        assertTrue(@mkdir(vfsStream::url('root')));
         $root = vfsStreamWrapper::getRoot();
-        assert($root->getName(), equals('foo'));
+        assert($root->getName(), equals('root'));
         assert($root->getPermissions(), equals(0777));
     }
 
@@ -102,65 +120,18 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     public function mkdirWithoutRootCreatesNewRootDifferentPermissions()
     {
         vfsStreamWrapper::register();
-        assertTrue(@mkdir(vfsStream::url('foo'), 0755));
+        assertTrue(@mkdir(vfsStream::url('root'), 0755));
         $root = vfsStreamWrapper::getRoot();
-        assert($root->getName(), equals('foo'));
+        assert($root->getName(), equals('root'));
         assert($root->getPermissions(), equals(0755));
     }
 
     /**
-     * trying to create a subdirectory of a file should not work
-     *
      * @test
      */
-    public function mkdirOnFileReturnsFalse()
+    public function mkdirOnExistingFileReturnsFalse()
     {
-        $this->assertFalse(mkdir($this->baz1URL . '/another/more', 0777, true));
-    }
-
-    /**
-     * assert that mkdir() creates the correct directory structure
-     *
-     * @test
-     * @group  permissions
-     */
-    public function mkdirNonRecursivelyDifferentPermissions()
-    {
-        $this->assertTrue(mkdir($this->fooURL . '/another', 0755));
-        $this->assertEquals(0755, $this->foo->getChild('another')->getPermissions());
-    }
-
-    /**
-     * assert that mkdir() creates the correct directory structure
-     *
-     * @test
-     * @group  permissions
-     */
-    public function mkdirRecursivelyDifferentPermissions()
-    {
-        $this->assertTrue(mkdir($this->fooURL . '/another/more', 0755, true));
-        $this->assertEquals(3, count($this->foo->getChildren()));
-        $another = $this->foo->getChild('another');
-        $this->assertTrue($another->hasChild('more'));
-        $this->assertEquals(0755, $this->foo->getChild('another')->getPermissions());
-        $this->assertEquals(0755, $this->foo->getChild('another')->getChild('more')->getPermissions());
-    }
-
-    /**
-     * assert that mkdir() creates the correct directory structure
-     *
-     * @test
-     * @group  permissions
-     */
-    public function mkdirRecursivelyUsesDefaultPermissions()
-    {
-        $this->foo->chmod(0700);
-        $this->assertTrue(mkdir($this->fooURL . '/another/more', 0777, true));
-        $this->assertEquals(3, count($this->foo->getChildren()));
-        $another = $this->foo->getChild('another');
-        $this->assertTrue($another->hasChild('more'));
-        $this->assertEquals(0777, $this->foo->getChild('another')->getPermissions());
-        $this->assertEquals(0777, $this->foo->getChild('another')->getChild('more')->getPermissions());
+        assertFalse(mkdir($this->fileInSubdir->url() . '/another/more', 0777, true));
     }
 
     /**
@@ -170,12 +141,9 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function mkdirDirCanNotCreateNewDirInNonWritingDirectory()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root'));
-        vfsStreamWrapper::getRoot()->addChild(new vfsStreamDirectory('restrictedFolder', 0000));
-        $this->assertFalse(is_writable(vfsStream::url('root/restrictedFolder/')));
-        $this->assertFalse(mkdir(vfsStream::url('root/restrictedFolder/newFolder')));
-        $this->assertFalse(vfsStreamWrapper::getRoot()->hasChild('restrictedFolder/newFolder'));
+        vfsStream::newDirectory('restrictedFolder', 0000)->at($this->root);
+        assertFalse(mkdir(vfsStream::url('root/restrictedFolder/newFolder')));
+        assertFalse($this->root->hasChild('restrictedFolder/newFolder'));
     }
 
     /**
@@ -184,7 +152,6 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function mkDirShouldNotOverwriteExistingDirectories()
     {
-        vfsStream::setup('root');
         $dir = vfsStream::url('root/dir');
         assertTrue(mkdir($dir));
         assertFalse(@mkdir($dir));
@@ -196,7 +163,6 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function mkDirShouldNotOverwriteExistingDirectoriesAndTriggerE_USER_WARNING()
     {
-        vfsStream::setup('root');
         $dir = vfsStream::url('root/dir');
         mkdir($dir);
         expect(function() use ($dir) { mkdir($dir); })
@@ -210,9 +176,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function mkDirShouldNotOverwriteExistingFiles()
     {
-        $root = vfsStream::setup('root');
-        vfsStream::newFile('test.txt')->at($root);
-        assertFalse(@mkdir(vfsStream::url('root/test.txt')));
+        assertFalse(@mkdir($this->fileInRoot->url()));
     }
 
     /**
@@ -221,10 +185,9 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function mkDirShouldNotOverwriteExistingFilesAndTriggerE_USER_WARNING()
     {
-        vfsStream::newFile('test.txt')->at(vfsStream::setup('root'));
-        expect(function() { mkdir(vfsStream::url('root/test.txt')); })
+        expect(function() { mkdir($this->fileInRoot->url()); })
           ->triggers(E_USER_WARNING)
-          ->withMessage('mkdir(): Path vfs://root/test.txt exists');
+          ->withMessage('mkdir(): Path vfs://root/file2 exists');
     }
 
     /**
@@ -234,7 +197,6 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function allowsRecursiveMkDirWithDirectoryName0()
     {
-        vfsStream::setup('root');
         $subdir  = vfsStream::url('root/a/0');
         mkdir($subdir, 0777, true);
         $this->assertFileExists($subdir);
@@ -247,27 +209,46 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotIterateOverNonReadableDirectory()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(vfsStream::newDirectory('root', 0000));
-        assertFalse(@opendir(vfsStream::url('root')));
-        assertFalse(@dir(vfsStream::url('root')));
+        $restricted = vfsStream::newDirectory('restrictedFolder', 0000)->at($this->root);
+        assertFalse(@opendir($restricted->url()));
+        assertFalse(@dir($restricted->url()));
+    }
+
+    public function directories(): array
+    {
+        return [
+            [vfsStream::url('root')],
+            [vfsStream::url('root') . '/.'],
+            [vfsStream::url('root/subdir')],
+            [vfsStream::url('root/subdir') . '/.'],
+        ];
     }
 
     /**
-     * assert is_dir() returns correct result
-     *
      * @test
+     * @dataProvider directories
      */
-    public function is_dir()
+    public function is_dirReturnsTrueForDirectories(string $directory)
     {
-        $this->assertTrue(is_dir($this->fooURL));
-        $this->assertTrue(is_dir($this->fooURL . '/.'));
-        $this->assertTrue(is_dir($this->barURL));
-        $this->assertTrue(is_dir($this->barURL . '/.'));
-        $this->assertFalse(is_dir($this->baz1URL));
-        $this->assertFalse(is_dir($this->baz2URL));
-        $this->assertFalse(is_dir($this->fooURL . '/another'));
-        $this->assertFalse(is_dir(vfsStream::url('another')));
+        assertTrue(is_dir($directory));
+    }
+
+    public function nonDirectories(): array
+    {
+        return [
+            [vfsStream::url('root/subdir/file1.txt')],
+            [vfsStream::url('root/file2')],
+            [vfsStream::url('root/annother')],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider nonDirectories
+     */
+    public function is_dirReturnsFalseForFilesAndNonExistingDirectories(string $file)
+    {
+        assertFalse(is_dir($file));
     }
 
     /**
@@ -276,7 +257,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     public function canNotUnlinkDirectoryWithoutRoot()
     {
         vfsStreamWrapper::register();
-        assertFalse(@rmdir(vfsStream::url('foo')));
+        assertFalse(@rmdir(vfsStream::url('root')));
     }
 
     /**
@@ -284,7 +265,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function rmdirCanNotRemoveFiles()
     {
-        assertFalse(rmdir($this->baz1URL));
+        assertFalse(rmdir($this->fileInSubdir->url()));
     }
 
     /**
@@ -292,7 +273,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function rmdirCanNotRemoveNonExistingDirectory()
     {
-        assertFalse(rmdir($this->fooURL . '/another'));
+        assertFalse(rmdir($this->root->url() . '/another'));
     }
 
     /**
@@ -300,7 +281,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function rmdirCanNotRemoveNonEmptyDirectory()
     {
-        assertFalse(rmdir($this->fooURL));
+        assertFalse(rmdir($this->root->url()));
     }
 
     /**
@@ -308,9 +289,9 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function rmdirCanRemoveEmptyDirectory()
     {
-        vfsStream::newDirectory('empty')->at($this->foo);
-        assertTrue(rmdir($this->fooURL . '/empty'));
-        assertFalse($this->foo->hasChild('empty'));
+        vfsStream::newDirectory('empty')->at($this->root);
+        assertTrue(rmdir($this->root->url() . '/empty'));
+        assertFalse($this->root->hasChild('empty'));
     }
 
     /**
@@ -318,9 +299,9 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function rmdirCanRemoveEmptyDirectoryWithDot()
     {
-        vfsStream::newDirectory('empty')->at($this->foo);
-        assertTrue(rmdir($this->fooURL . '/empty/.'));
-        assertFalse($this->foo->hasChild('empty'));
+        vfsStream::newDirectory('empty')->at($this->root);
+        assertTrue(rmdir($this->root->url() . '/empty/.'));
+        assertFalse($this->root->hasChild('empty'));
     }
 
     /**
@@ -328,10 +309,10 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function rmdirCanRemoveEmptyRoot()
     {
-        $this->foo->removeChild('bar');
-        $this->foo->removeChild('baz2');
-        assertTrue(rmdir($this->fooURL));
-        assertFalse(file_exists($this->fooURL)); // make sure statcache was cleared
+        $this->root->removeChild('subdir');
+        $this->root->removeChild('file2');
+        assertTrue(rmdir($this->root->url()));
+        assertFalse(file_exists($this->root->url())); // make sure statcache was cleared
         assertNull(vfsStreamWrapper::getRoot());
     }
 
@@ -342,12 +323,10 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function rmdirDirCanNotRemoveDirFromNonWritingDirectory()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(vfsStream::newDirectory('root', 0000));
-        vfsStreamWrapper::getRoot()->addChild(vfsStream::newDirectory('nonRemovableFolder'));
-        assertFalse(is_writable(vfsStream::url('root')));
-        assertFalse(rmdir(vfsStream::url('root/nonRemovableFolder')));
-        assertTrue(vfsStreamWrapper::getRoot()->hasChild('nonRemovableFolder'));
+        $nonRemovable = vfsStream::newDirectory('nonRemovableFolder')->at($this->root);
+        $this->root->chmod(0000);
+        assertFalse(rmdir($nonRemovable->url()));
+        assertTrue($this->root->hasChild('nonRemovableFolder'));
     }
 
     /**
@@ -357,13 +336,11 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function issue17()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(vfsStream::newDirectory('root', 0770));
-        vfsStreamWrapper::getRoot()
+        $this->root->chmod(0770)
             ->chgrp(vfsStream::GROUP_USER_1)
             ->chown(vfsStream::OWNER_USER_1);
         assertFalse(mkdir(vfsStream::url('root/doesNotWork')));
-        assertFalse(vfsStreamWrapper::getRoot()->hasChild('doesNotWork'));
+        assertFalse($this->root->hasChild('doesNotWork'));
     }
 
     /**
@@ -373,8 +350,8 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     public function accessWithDoubleDotReturnsCorrectContent()
     {
         assert(
-            file_get_contents(vfsStream::url('foo/bar/../baz2')),
-            equals('baz2')
+            file_get_contents(vfsStream::url('root/subdir/../file2')),
+            equals('file 2')
         );
     }
 
@@ -385,8 +362,8 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     public function accessWithExcessDoubleDotsReturnsCorrectContent()
     {
         assert(
-            file_get_contents(vfsStream::url('foo/../../../../bar/../baz2')),
-            equals('baz2')
+            file_get_contents(vfsStream::url('root/../../../../subdir/../file2')),
+            equals('file 2')
         );
     }
 
@@ -396,9 +373,9 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function alwaysResolvesRootDirectoryAsOwnParentWithDoubleDot()
     {
-        vfsStreamWrapper::getRoot()->chown(vfsStream::OWNER_USER_1);
-        assertTrue(is_dir(vfsStream::url('foo/..')));
-        $stat = stat(vfsStream::url('foo/..'));
+        $this->root->chown(vfsStream::OWNER_USER_1);
+        assertTrue(is_dir(vfsStream::url('root/..')));
+        $stat = stat(vfsStream::url('root/..'));
         assert($stat['uid'], equals(vfsStream::OWNER_USER_1));
     }
 
@@ -410,11 +387,11 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function unlinkCanNotRemoveNonEmptyDirectory()
     {
-        expect(function() { assertFalse(unlink($this->barURL)); })
+        expect(function() { assertFalse(unlink($this->subdir->url())); })
           ->triggers()
-          ->withMessage('unlink(vfs://foo/bar): Operation not permitted');
-        assertTrue($this->foo->hasChild('bar'));
-        $this->assertFileExists($this->barURL);
+          ->withMessage('unlink(vfs://root/subdir): Operation not permitted');
+        assertTrue($this->root->hasChild('subdir'));
+        $this->assertFileExists($this->subdir->url());
     }
 
     /**
@@ -424,13 +401,13 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function unlinkCanNotRemoveEmptyDirectory()
     {
-        $url = vfsStream::newDirectory('empty')->at($this->foo)->url();
+        $url = vfsStream::newDirectory('empty')->at($this->root)->url();
         expect(function() use ($url) { assertFalse(unlink($url)); })
           ->triggers()
-          ->withMessage('unlink(vfs://foo/empty): Operation not permitted');
+          ->withMessage('unlink(vfs://root/empty): Operation not permitted');
 
-        assertTrue($this->foo->hasChild('empty'));
-        $this->assertFileExists($this->fooURL . '/empty');
+        assertTrue($this->root->hasChild('empty'));
+        $this->assertFileExists($this->root->url() . '/empty');
     }
 
     /**

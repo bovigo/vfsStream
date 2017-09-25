@@ -33,8 +33,8 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     public function provideSwitchWithExpectations(): array
     {
         return [
-            [[vfsStream::class, 'disableDotfiles'], ['bar', 'baz2']],
-            [[vfsStream::class, 'enableDotfiles'], ['.', '..', 'bar', 'baz2']]
+            [[vfsStream::class, 'disableDotfiles'], ['subdir', 'file2']],
+            [[vfsStream::class, 'enableDotfiles'], ['.', '..', 'subdir', 'file2']]
         ];
     }
 
@@ -43,7 +43,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
         assert(
             $actualCount,
             equals($expectedCount),
-            'Directory foo contains ' . $expectedCount . ' children, but got ' . $actualCount . ' children while iterating over directory contents'
+            'Directory root contains ' . $expectedCount . ' children, but got ' . $actualCount . ' children while iterating over directory contents'
         );
     }
 
@@ -56,7 +56,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     public function directoryIteration(callable $switchDotFiles, array $expectedDirectories)
     {
         $switchDotFiles();
-        $dir = dir($this->fooURL);
+        $dir = dir($this->root->url());
         $i   = 0;
         while (false !== ($entry = $dir->read())) {
             $i++;
@@ -84,7 +84,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     public function directoryIterationWithDot(callable $switchDotFiles, array $expectedDirectories)
     {
         $switchDotFiles();
-        $dir = dir($this->fooURL . '/.');
+        $dir = dir($this->root->url() . '/.');
         $i   = 0;
         while (false !== ($entry = $dir->read())) {
             $i++;
@@ -114,7 +114,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     public function directoryIterationWithOpenDir_Bug_2(callable $switchDotFiles, array $expectedDirectories)
     {
         $switchDotFiles();
-        $handle = opendir($this->fooURL);
+        $handle = opendir($this->root->url());
         $i   = 0;
         while (false !== ($entry = readdir($handle))) {
             $i++;
@@ -146,7 +146,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     public function directoryIteration_Bug_4(callable $switchDotFiles, array $expectedDirectories)
     {
         $switchDotFiles();
-        $dir   = $this->fooURL;
+        $dir   = $this->root->url();
         $list1 = [];
         if ($handle = opendir($dir)) {
             while (false !== ($listItem = readdir($handle))) {
@@ -192,12 +192,12 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
         $switchDotFiles();
         $list1   = [];
         $list2   = [];
-        $handle1 = opendir($this->fooURL);
+        $handle1 = opendir($this->root->url());
         if (false !== ($listItem = readdir($handle1))) {
             $list1[] = $listItem;
         }
 
-        $handle2 = opendir($this->fooURL);
+        $handle2 = opendir($this->root->url());
         if (false !== ($listItem = readdir($handle2))) {
             $list2[] = $listItem;
         }
