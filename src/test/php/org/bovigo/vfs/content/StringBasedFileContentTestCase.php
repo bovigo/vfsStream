@@ -75,9 +75,9 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function readMovesOffset()
     {
-        $this->assertEquals('foo', $this->stringBasedFileContent->read(3));
-        $this->assertEquals('bar', $this->stringBasedFileContent->read(3));
-        $this->assertEquals('baz', $this->stringBasedFileContent->read(3));
+        assert($this->stringBasedFileContent->read(3), equals('foo'));
+        assert($this->stringBasedFileContent->read(3), equals('bar'));
+        assert($this->stringBasedFileContent->read(3), equals('baz'));
     }
 
     /**

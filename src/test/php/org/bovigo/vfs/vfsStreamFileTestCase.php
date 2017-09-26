@@ -130,8 +130,15 @@ class vfsStreamFileTestCase extends TestCase
     public function readFromEmptyFileReturnsEmptyString()
     {
         assertEmptyString($this->file->read(5));
-        $this->assertEquals(5, $this->file->getBytesRead());
-        $this->assertTrue($this->file->eof());
+    }
+
+    /**
+     * @test
+     */
+    public function readFromEmptyFileMovesPointer()
+    {
+        $this->file->read(5);
+        assert($this->file->getBytesRead(), equals(5));
     }
 
     /**
@@ -299,7 +306,7 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function writeReturnsAmountsOfBytesWritten()
     {
-        $this->assertEquals(3, $this->file->write('foo'));
+        assert($this->file->write('foo'), equals(3));
     }
 
     /**
@@ -318,7 +325,7 @@ class vfsStreamFileTestCase extends TestCase
     public function write()
     {
         $this->file->setContent('foobarbaz');
-        $this->assertTrue($this->file->seek(3, SEEK_SET));
+        $this->file->seek(3, SEEK_SET);
         $this->file->write('foo');
         assert($this->file->getContent(), equals('foofoobaz'));
     }

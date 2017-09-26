@@ -91,13 +91,13 @@ class vfsStreamTestCase extends TestCase
     {
         assert($root->getPermissions(), equals($permissions));
 
-        $this->assertTrue($root->hasChild('bar'));
-        $this->assertTrue($root->hasChild('bar/baz'));
-        $this->assertFalse($root->hasChild('baz'));
+        assertTrue($root->hasChild('bar'));
+        assertTrue($root->hasChild('bar/baz'));
+        assertFalse($root->hasChild('baz'));
 
         $bar = $root->getChild('bar');
         assert($bar->getPermissions(), equals($permissions));
-        $this->assertTrue($bar->hasChild('baz'));
+        assertTrue($bar->hasChild('baz'));
         $baz1 = $bar->getChild('baz');
 
         assert($baz1->getPermissions(), equals($permissions));

@@ -141,7 +141,7 @@ class LargeFileContentTestCase extends TestCase
     public function writeDataOverLastOffsetIncreasesSize()
     {
         $this->largeFileContent->seek(95, SEEK_SET);
-        $this->assertEquals(9, $this->largeFileContent->write('foobarbaz'));
+        $this->largeFileContent->write('foobarbaz');
         assert($this->largeFileContent->size(), equals(104));
     }
 

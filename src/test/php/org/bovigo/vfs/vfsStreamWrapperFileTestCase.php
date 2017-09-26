@@ -117,41 +117,89 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @test
      */
-    public function usingFilePointer()
+    public function filePointerKnowsPositionInFile()
     {
         $fp = fopen($this->fileInSubdir->url(), 'r');
-        $this->assertEquals(0, ftell($fp));
-        $this->assertFalse(feof($fp));
-        $this->assertEquals(0, fseek($fp, 2));
-        $this->assertEquals(2, ftell($fp));
-        $this->assertEquals(0, fseek($fp, 1, SEEK_CUR));
-        $this->assertEquals(3, ftell($fp));
-        $this->assertEquals(0, fseek($fp, 1, SEEK_END));
-        $this->assertEquals(7, ftell($fp));
-        $this->assertTrue(feof($fp));
-        $this->assertEquals(0, fseek($fp, 2));
-        $this->assertFalse(feof($fp));
-        $this->assertEquals(2, ftell($fp));
-        $this->assertEquals('l', fread($fp, 1));
-        $this->assertEquals(3, ftell($fp));
-        $this->assertEquals('e 1', fread($fp, 8092));
-        $this->assertEquals(6, ftell($fp));
-        $this->assertTrue(fclose($fp));
+        assert(ftell($fp), equals(0));
+        fclose($fp);
+    }
+
+    public function seekArgs(): array
+    {
+        return [
+            [2, null, 2],
+            [1, SEEK_CUR, 1],
+            [1, SEEK_END, 7],
+        ];
     }
 
     /**
-     * assert is_file() returns correct result
-     *
+     * @test
+     * @dataProvider  seekArgs
+     */
+    public function canSeekInFile($where, $whence, $pos)
+    {
+        $fp = fopen($this->fileInSubdir->url(), 'r');
+        assert(fseek($fp, $where, $whence), equals(0));
+        assert(ftell($fp), equals($pos));
+        fclose($fp);
+    }
+
+    /**
      * @test
      */
-    public function is_file()
+    public function recognizesEof()
     {
-        $this->assertFalse(is_file($this->root->url()));
-        $this->assertFalse(is_file($this->subdir->url()));
-        $this->assertTrue(is_file($this->fileInSubdir->url()));
-        $this->assertTrue(is_file($this->fileInRoot->url()));
-        $this->assertFalse(is_file($this->root->url() . '/another'));
-        $this->assertFalse(is_file(vfsStream::url('another')));
+        $fp = fopen($this->fileInSubdir->url(), 'r');
+        fseek($fp, 1, SEEK_END);
+        assertTrue(feof($fp));
+        fclose($fp);
+    }
+
+    /**
+     * @test
+     */
+    public function readsFromSeekedPosition()
+    {
+        $fp = fopen($this->fileInSubdir->url(), 'r');
+        fseek($fp, 2);
+        assert(fread($fp, 1), equals('l'));
+        fclose($fp);
+    }
+
+    /**
+     * @test
+     */
+    public function readingMovesPosition()
+    {
+        $fp = fopen($this->fileInSubdir->url(), 'r');
+        fread($fp, 8092);
+        assert(ftell($fp), equals(6));
+        fclose($fp);
+    }
+
+    /**
+     * @test
+     */
+    public function is_fileReturnsFalseForDirectory()
+    {
+        assertFalse(is_file($this->root->url()));
+    }
+
+    /**
+     * @test
+     */
+    public function is_fileReturnsTrueForFile()
+    {
+        assertTrue(is_file($this->fileInSubdir->url()));
+    }
+
+    /**
+     * @test
+     */
+    public function is_fileReturnsFalseForNonExisting()
+    {
+        assertFalse(is_file($this->root->url() . '/doesNotExist'));
     }
 
     /**
@@ -448,10 +496,10 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      * @group permissions
      * @group issue_38
      */
-    public function cannotReadFileFromNonReadableDir()
-    {
-        $this->markTestSkipped('Ignored for now, see https://github.com/mikey179/vfsStream/issues/38');
-        $this->subdir->chmod(0000);
-        assertFalse(@file_get_contents($this->fileInSubdir->url()));
-    }
+    // public function cannotReadFileFromNonReadableDir()
+    // {
+    //     $this->markTestSkipped('Ignored for now, see https://github.com/mikey179/vfsStream/issues/38');
+    //     $this->subdir->chmod(0000);
+    //     assertFalse(@file_get_contents($this->fileInSubdir->url()));
+    // }
 }

@@ -10,15 +10,18 @@
 namespace org\bovigo\vfs;
 require_once __DIR__ . '/vfsStreamWrapperBaseTestCase.php';
 
-use function bovigo\assert\assert;
-use function bovigo\assert\assertFalse;
-use function bovigo\assert\assertNotNull;
-use function bovigo\assert\assertNull;
-use function bovigo\assert\assertTrue;
-use function bovigo\assert\expect;
-use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isOfSize;
-use function bovigo\assert\predicate\isSameAs;
+use function bovigo\assert\{
+    assert,
+    assertFalse,
+    assertNotNull,
+    assertNull,
+    assertTrue,
+    expect,
+    predicate\equals,
+    predicate\isExistingDirectory,
+    predicate\isOfSize,
+    predicate\isSameAs
+};
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper around mkdir().
  */
@@ -199,7 +202,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     {
         $subdir  = vfsStream::url('root/a/0');
         mkdir($subdir, 0777, true);
-        $this->assertFileExists($subdir);
+        assert($subdir, isExistingDirectory());
     }
 
     /**
@@ -389,9 +392,8 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     {
         expect(function() { assertFalse(unlink($this->subdir->url())); })
           ->triggers()
-          ->withMessage('unlink(vfs://root/subdir): Operation not permitted');
-        assertTrue($this->root->hasChild('subdir'));
-        $this->assertFileExists($this->subdir->url());
+          ->withMessage('unlink(vfs://root/subdir): Operation not permitted')
+          ->after($this->subdir->url(), isExistingDirectory());
     }
 
     /**
@@ -404,10 +406,8 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         $url = vfsStream::newDirectory('empty')->at($this->root)->url();
         expect(function() use ($url) { assertFalse(unlink($url)); })
           ->triggers()
-          ->withMessage('unlink(vfs://root/empty): Operation not permitted');
-
-        assertTrue($this->root->hasChild('empty'));
-        $this->assertFileExists($this->root->url() . '/empty');
+          ->withMessage('unlink(vfs://root/empty): Operation not permitted')
+          ->after($this->root->url() . '/empty', isExistingDirectory());
     }
 
     /**
