@@ -29,7 +29,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
      *
      * @type  char[]
      */
-    private $content = array();
+    private $content = [];
     /**
      * file size in bytes
      *

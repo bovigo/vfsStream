@@ -129,14 +129,14 @@ class vfsStream
      *
      * Assumed $structure contains an array like this:
      * <code>
-     * array('Core' = array('AbstractFactory' => array('test.php'    => 'some text content',
-     *                                                 'other.php'   => 'Some more text content',
-     *                                                 'Invalid.csv' => 'Something else',
-     *                                           ),
-     *                      'AnEmptyFolder'   => array(),
-     *                      'badlocation.php' => 'some bad content',
-     *                )
-     * )
+     * ['Core' = ['AbstractFactory' => ['test.php'    => 'some text content',
+     *                                  'other.php'   => 'Some more text content',
+     *                                  'Invalid.csv' => 'Something else',
+     *                                 ],
+     *            'AnEmptyFolder'   => [],
+     *            'badlocation.php' => 'some bad content',
+     *           ]
+     * ]
      * </code>
      * the resulting directory tree will look like this:
      * <pre>
@@ -237,7 +237,7 @@ class vfsStream
             } elseif (is_string($data) === true) {
                 $matches = null;
                 preg_match('/^\[(.*)\]$/', $name, $matches);
-                if ($matches !== array()) {
+                if ($matches !== []) {
                     self::newBlock($matches[1])->withContent($data)->at($baseDir);
                 } else {
                     self::newFile($name)->withContent($data)->at($baseDir);

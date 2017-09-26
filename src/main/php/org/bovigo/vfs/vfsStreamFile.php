@@ -34,7 +34,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      *
      * @type  bool[string]
      */
-    protected $sharedLock = array();
+    protected $sharedLock = [];
 
     /**
      * constructor

@@ -75,7 +75,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      */
     public function visitDirectory(vfsStreamDirectory $dir): vfsStreamVisitor
     {
-        $this->current[$dir->getName()] = array();
+        $this->current[$dir->getName()] = [];
         $tmp           =& $this->current;
         $this->current =& $tmp[$dir->getName()];
         foreach ($dir as $child) {
@@ -104,7 +104,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      */
     public function reset(): self
     {
-        $this->structure = array();
+        $this->structure = [];
         $this->current   =& $this->structure;
         return $this;
     }
