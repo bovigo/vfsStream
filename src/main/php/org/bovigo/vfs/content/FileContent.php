@@ -20,14 +20,14 @@ interface FileContent
      *
      * @return  string
      */
-    public function content();
+    public function content(): string;
 
     /**
      * returns size of content
      *
      * @return  int
      */
-    public function size();
+    public function size(): int;
 
     /**
      * reads the given amount of bytes from content
@@ -35,7 +35,7 @@ interface FileContent
      * @param   int     $count
      * @return  string
      */
-    public function read($count);
+    public function read(int $count): string;
 
     /**
      * seeks to the given offset
@@ -44,14 +44,14 @@ interface FileContent
      * @param   int   $whence
      * @return  bool
      */
-    public function seek($offset, $whence);
+    public function seek(int $offset, int $whence): bool;
 
     /**
      * checks whether pointer is at end of file
      *
      * @return  bool
      */
-    public function eof();
+    public function eof(): bool;
 
     /**
      * writes an amount of data
@@ -59,7 +59,7 @@ interface FileContent
      * @param   string  $data
      * @return  amount of written bytes
      */
-    public function write($data);
+    public function write(string $data): int;
 
     /**
      * Truncates a file to a given length
@@ -67,5 +67,5 @@ interface FileContent
      * @param   int  $size length to truncate file to
      * @return  bool
      */
-    public function truncate($size);
+    public function truncate(int $size): bool;
 }

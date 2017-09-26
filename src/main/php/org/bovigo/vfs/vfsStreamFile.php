@@ -42,9 +42,9 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @param  string  $name
      * @param  int     $permissions  optional
      */
-    public function __construct($name, $permissions = null)
+    public function __construct(string $name, int $permissions = null)
     {
-        $this->content = new StringBasedFileContent(null);
+        $this->content = new StringBasedFileContent('');
         $this->type    = vfsStreamContent::TYPE_FILE;
         parent::__construct($name, $permissions);
     }
@@ -55,7 +55,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  int
      * @since   0.8.0
      */
-    protected function getDefaultPermissions()
+    protected function getDefaultPermissions(): int
     {
         return 0666;
     }
@@ -66,7 +66,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @param   string  $name
      * @return  bool
      */
-    public function appliesTo($name)
+    public function appliesTo(string $name): bool
     {
         return ($name === $this->name);
     }
@@ -74,7 +74,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * alias for withContent()
      *
-     * @param   string  $content
+     * @param   string|FileContent  $content
      * @return  vfsStreamFile
      * @see     withContent()
      */
@@ -114,7 +114,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      *
      * @return  string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content->content();
     }
@@ -163,7 +163,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @param   int     $count
      * @return  string
      */
-    public function read($count)
+    public function read(int $count): string
     {
         $this->lastAccessed = time();
         return $this->content->read($count);
@@ -177,7 +177,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  string
      * @deprecated  since 1.3.0
      */
-    public function readUntilEnd()
+    public function readUntilEnd(): string
     {
         $this->lastAccessed = time();
         return $this->content->readUntilEnd();
@@ -191,7 +191,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @param   string  $data
      * @return  amount of written bytes
      */
-    public function write($data)
+    public function write(string $data): int
     {
         $this->lastModified = time();
         return $this->content->write($data);
@@ -204,7 +204,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  bool
      * @since   1.1.0
      */
-    public function truncate($size)
+    public function truncate(int $size): bool
     {
         $this->content->truncate($size);
         $this->lastModified = time();
@@ -216,7 +216,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      *
      * @return  bool
      */
-    public function eof()
+    public function eof(): bool
     {
         return $this->content->eof();
     }
@@ -227,7 +227,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  int
      * @deprecated  since 1.3.0
      */
-    public function getBytesRead()
+    public function getBytesRead(): int
     {
         return $this->content->bytesRead();
     }
@@ -239,7 +239,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @param   int   $whence
      * @return  bool
      */
-    public function seek($offset, $whence)
+    public function seek(int $offset, int $whence): bool
     {
         return $this->content->seek($offset, $whence);
     }
@@ -249,7 +249,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      *
      * @return  int
      */
-    public function size()
+    public function size(): int
     {
         return $this->content->size();
     }
@@ -265,7 +265,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function lock($resource, $operation)
+    public function lock($resource, int $operation): bool
     {
         if ((LOCK_NB & $operation) == LOCK_NB) {
             $operation = $operation - LOCK_NB;
@@ -335,7 +335,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function isLocked($resource = null)
+    public function isLocked($resource = null): bool
     {
         return $this->hasSharedLock($resource) || $this->hasExclusiveLock($resource);
     }
@@ -349,7 +349,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function hasSharedLock($resource = null)
+    public function hasSharedLock($resource = null): bool
     {
         if (null !== $resource) {
             return isset($this->sharedLock[$this->getResourceId($resource)]);
@@ -365,7 +365,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  string
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function getResourceId($resource) {
+    public function getResourceId($resource): string {
         if (is_resource($resource)) {
             $data = stream_get_meta_data($resource);
             $resource = $data['wrapper_data'];
@@ -383,7 +383,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function hasExclusiveLock($resource = null)
+    public function hasExclusiveLock($resource = null): bool
     {
         if (null !== $resource) {
             return $this->exclusiveLock === $this->getResourceId($resource);

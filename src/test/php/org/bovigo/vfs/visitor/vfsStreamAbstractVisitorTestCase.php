@@ -47,7 +47,8 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     public function visitThrowsInvalidArgumentExceptionOnUnknownContentType()
     {
         $content = NewInstance::of(vfsStreamContent::class)->returns([
-            'getType' => 'invalid'
+            'getName' => 'foo.txt',
+            'getType' => -1
         ]);
         expect(function() use ($content) { $this->abstractVisitor->visit($content); })
           ->throws(\InvalidArgumentException::class);

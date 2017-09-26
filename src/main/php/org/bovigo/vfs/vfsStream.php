@@ -65,7 +65,7 @@ class vfsStream
      * @param   string  $path  path to translate to vfsStream url
      * @return  string
      */
-    public static function url($path)
+    public static function url(string $path): string
     {
         return self::SCHEME . '://' . join(
                 '/',
@@ -85,7 +85,7 @@ class vfsStream
      * @param   string  $url  vfsStream url to translate into path
      * @return  string
      */
-    public static function path($url)
+    public static function path(string $url): string
     {
         // remove line feeds and trailing whitespaces and path separators
         $path = trim($url, " \t\r\n\0\x0B/\\");
@@ -105,7 +105,7 @@ class vfsStream
      * @return  int
      * @since   0.8.0
      */
-    public static function umask($umask = null)
+    public static function umask(int $umask = null): int
     {
         $oldUmask = self::$umask;
         if (null !== $umask) {
@@ -161,7 +161,7 @@ class vfsStream
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
      */
-    public static function setup($rootDirName = 'root', $permissions = null, array $structure = array())
+    public static function setup(string $rootDirName = 'root', int $permissions = null, array $structure = []): vfsStreamDirectory
     {
         vfsStreamWrapper::register();
         return self::create($structure, vfsStreamWrapper::setRoot(self::newDirectory($rootDirName, $permissions)));
@@ -208,7 +208,7 @@ class vfsStream
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
      */
-    public static function create(array $structure, vfsStreamDirectory $baseDir = null)
+    public static function create(array $structure, vfsStreamDirectory $baseDir = null): vfsStreamDirectory
     {
         if (null === $baseDir) {
             $baseDir = vfsStreamWrapper::getRoot();
@@ -228,7 +228,7 @@ class vfsStream
      * @param   vfsStreamDirectory  $baseDir    directory to add the structure to
      * @return  vfsStreamDirectory
      */
-    protected static function addStructure(array $structure, vfsStreamDirectory $baseDir)
+    protected static function addStructure(array $structure, vfsStreamDirectory $baseDir): vfsStreamDirectory
     {
         foreach ($structure as $name => $data) {
             $name = (string) $name;
@@ -272,7 +272,7 @@ class vfsStream
      * @since   0.11.0
      * @see     https://github.com/mikey179/vfsStream/issues/4
      */
-    public static function copyFromFileSystem($path, vfsStreamDirectory $baseDir = null, $maxFileSize = 1048576)
+    public static function copyFromFileSystem(string $path, vfsStreamDirectory $baseDir = null, $maxFileSize = 1048576): vfsStreamDirectory
     {
         if (null === $baseDir) {
             $baseDir = vfsStreamWrapper::getRoot();
@@ -333,7 +333,7 @@ class vfsStream
      * @param   int     $permissions  permissions of file to create
      * @return  vfsStreamFile
      */
-    public static function newFile($name, $permissions = null): vfsStreamFile
+    public static function newFile(string $name, int $permissions = null): vfsStreamFile
     {
         return new vfsStreamFile($name, $permissions);
     }
@@ -349,7 +349,7 @@ class vfsStream
      * @param   int     $permissions  permissions of directory to create
      * @return  vfsStreamDirectory
      */
-    public static function newDirectory($name, $permissions = null): vfsStreamDirectory
+    public static function newDirectory(string $name, int $permissions = null): vfsStreamDirectory
     {
         if ('/' === $name{0}) {
             $name = substr($name, 1);
@@ -377,7 +377,7 @@ class vfsStream
      * @param   int     $permissions    permissions of block to create
      * @return vfsStreamBlock
      */
-    public static function newBlock($name, $permissions = null)
+    public static function newBlock(string $name, int $permissions = null): vfsStreamBlock
     {
         return new vfsStreamBlock($name, $permissions);
     }
@@ -389,7 +389,7 @@ class vfsStream
      *
      * @return  int
      */
-    public static function getCurrentUser()
+    public static function getCurrentUser(): int
     {
         return function_exists('posix_getuid') ? posix_getuid() : self::OWNER_ROOT;
     }
@@ -401,7 +401,7 @@ class vfsStream
      *
      * @return  int
      */
-    public static function getCurrentGroup()
+    public static function getCurrentGroup(): int
     {
         return function_exists('posix_getgid') ? posix_getgid() : self::GROUP_ROOT;
     }
@@ -441,7 +441,7 @@ class vfsStream
      * @param  int  $bytes
      * @since  1.1.0
      */
-    public static function setQuota($bytes)
+    public static function setQuota(int $bytes)
     {
         vfsStreamWrapper::setQuota(new Quota($bytes));
     }
@@ -452,7 +452,7 @@ class vfsStream
      * @return  bool
      * @since   1.3.0
      */
-    public static function useDotfiles()
+    public static function useDotfiles(): bool
     {
         return self::$dotFiles;
     }

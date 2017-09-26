@@ -18,9 +18,9 @@ class DotDirectory extends vfsStreamDirectory
      *
      * @return  vfsStreamContainerIterator
      */
-    public function getIterator()
+    public function getIterator(): \Iterator
     {
-        return new \ArrayIterator(array());
+        return new \ArrayIterator([]);
     }
 
     /**
@@ -28,7 +28,7 @@ class DotDirectory extends vfsStreamDirectory
      *
      * @return  bool
      */
-    public function isDot()
+    public function isDot(): bool
     {
         return true;
     }

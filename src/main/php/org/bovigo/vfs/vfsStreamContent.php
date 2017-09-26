@@ -44,14 +44,14 @@ interface vfsStreamContent
      *
      * @return  string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * renames the content
      *
      * @param  string  $newName
      */
-    public function rename($newName);
+    public function rename(string $newName);
 
     /**
      * checks whether the container can be applied to given name
@@ -59,21 +59,21 @@ interface vfsStreamContent
      * @param   string  $name
      * @return  bool
      */
-    public function appliesTo($name);
+    public function appliesTo(string $name): bool;
 
     /**
      * returns the type of the container
      *
      * @return  int
      */
-    public function getType();
+    public function getType(): int;
 
     /**
      * returns size of content
      *
      * @return  int
      */
-    public function size();
+    public function size(): int;
 
     /**
      * sets the last modification time of the stream content
@@ -81,14 +81,14 @@ interface vfsStreamContent
      * @param   int  $filemtime
      * @return  vfsStreamContent
      */
-    public function lastModified($filemtime);
+    public function lastModified(int $filemtime): self;
 
     /**
      * returns the last modification time of the stream content
      *
      * @return  int
      */
-    public function filemtime();
+    public function filemtime(): int;
 
     /**
      * adds content to given container
@@ -104,14 +104,14 @@ interface vfsStreamContent
      * @param   int  $permissions
      * @return  vfsStreamContent
      */
-    public function chmod($permissions): self;
+    public function chmod(int $permissions): self;
 
     /**
      * returns permissions
      *
      * @return  int
      */
-    public function getPermissions();
+    public function getPermissions(): int;
 
     /**
      * checks whether content is readable
@@ -120,7 +120,7 @@ interface vfsStreamContent
      * @param   int   $group  id of group to check for
      * @return  bool
      */
-    public function isReadable($user, $group);
+    public function isReadable(int $user, int $group): bool;
 
     /**
      * checks whether content is writable
@@ -129,7 +129,7 @@ interface vfsStreamContent
      * @param   int   $group  id of group to check for
      * @return  bool
      */
-    public function isWritable($user, $group);
+    public function isWritable(int $user, int $group): bool;
 
     /**
      * checks whether content is executable
@@ -138,7 +138,7 @@ interface vfsStreamContent
      * @param   int   $group  id of group to check for
      * @return  bool
      */
-    public function isExecutable($user, $group);
+    public function isExecutable(int $user, int $group): bool;
 
     /**
      * change owner of file to given user
@@ -146,7 +146,7 @@ interface vfsStreamContent
      * @param   int  $user
      * @return  vfsStreamContent
      */
-    public function chown($user): self;
+    public function chown(int $user): self;
 
     /**
      * checks whether file is owned by given user
@@ -154,14 +154,14 @@ interface vfsStreamContent
      * @param   int  $user
      * @return  bool
      */
-    public function isOwnedByUser($user);
+    public function isOwnedByUser(int $user): bool;
 
     /**
      * returns owner of file
      *
      * @return  int
      */
-    public function getUser();
+    public function getUser(): int;
 
     /**
      * change owner group of file to given group
@@ -169,7 +169,7 @@ interface vfsStreamContent
      * @param   int  $group
      * @return  vfsStreamContent
      */
-    public function chgrp($group): self;
+    public function chgrp(int $group): self;
 
     /**
      * checks whether file is owned by group
@@ -177,14 +177,14 @@ interface vfsStreamContent
      * @param   int   $group
      * @return  bool
      */
-    public function isOwnedByGroup($group);
+    public function isOwnedByGroup(int $group): bool;
 
     /**
      * returns owner group of file
      *
      * @return  int
      */
-    public function getGroup();
+    public function getGroup(): int;
 
     /**
      * sets parent path
@@ -193,7 +193,15 @@ interface vfsStreamContent
      * @internal  only to be set by parent
      * @since   1.2.0
      */
-    public function setParentPath($parentPath);
+    public function setParentPath(string $parentPath);
+
+    /**
+     * removes parent path
+     *
+     * @internal  only to be set by parent
+     * @since   2.0.0
+     */
+    public function removeParentPath();
 
     /**
      * returns path to this content
@@ -201,7 +209,7 @@ interface vfsStreamContent
      * @return  string
      * @since   1.2.0
      */
-    public function path();
+    public function path(): string;
 
     /**
      * returns complete vfsStream url for this content
@@ -209,5 +217,5 @@ interface vfsStreamContent
      * @return  string
      * @since   1.2.0
      */
-    public function url();
+    public function url(): string;
 }

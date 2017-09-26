@@ -357,7 +357,7 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotRemoveFileFromDirectoryWithoutWritePermissions()
     {
-        $this->root->chmod('root', 0000);
+        $this->root->chmod(0000);
         assertFalse(@unlink($this->fileInRoot->url()));
         assertTrue($this->root->hasChild('file2'));
     }

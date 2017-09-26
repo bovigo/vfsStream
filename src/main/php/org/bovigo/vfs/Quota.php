@@ -34,7 +34,7 @@ class Quota
      *
      * @param  int  $amount  quota in bytes
      */
-    public function __construct($amount)
+    public function __construct(int $amount)
     {
         $this->amount = $amount;
     }
@@ -44,7 +44,7 @@ class Quota
      *
      * @return  Quota
      */
-    public static function unlimited()
+    public static function unlimited(): self
     {
         return new self(self::UNLIMITED);
     }
@@ -54,7 +54,7 @@ class Quota
      *
      * @return  bool
      */
-    public function isLimited()
+    public function isLimited(): bool
     {
         return self::UNLIMITED < $this->amount;
     }
@@ -66,7 +66,7 @@ class Quota
      * @param     int   $usedSpace
      * @return    int
      */
-    public function spaceLeft($usedSpace)
+    public function spaceLeft(int $usedSpace): int
     {
         if (self::UNLIMITED === $this->amount) {
             return $usedSpace;

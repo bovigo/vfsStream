@@ -25,7 +25,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      *
      * @type  array
      */
-    protected $structure = array();
+    protected $structure = [];
     /**
      * poiting to currently iterated directory
      *

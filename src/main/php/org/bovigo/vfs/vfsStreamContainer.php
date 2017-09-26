@@ -26,7 +26,7 @@ interface vfsStreamContainer extends \IteratorAggregate
      * @param   string  $name
      * @return  bool
      */
-    public function removeChild($name);
+    public function removeChild(string $name): bool;
 
     /**
      * checks whether the container contains a child with the given name
@@ -34,7 +34,7 @@ interface vfsStreamContainer extends \IteratorAggregate
      * @param   string  $name
      * @return  bool
      */
-    public function hasChild($name);
+    public function hasChild(string $name): bool;
 
     /**
      * returns the child with the given name
@@ -42,7 +42,7 @@ interface vfsStreamContainer extends \IteratorAggregate
      * @param   string  $name
      * @return  vfsStreamContent
      */
-    public function getChild($name);
+    public function getChild(string $name): ?vfsStreamContent;
 
     /**
      * checks whether directory contains any children
@@ -50,12 +50,12 @@ interface vfsStreamContainer extends \IteratorAggregate
      * @return  bool
      * @since   0.10.0
      */
-    public function hasChildren();
+    public function hasChildren(): bool;
 
     /**
      * returns a list of children for this directory
      *
      * @return  vfsStreamContent[]
      */
-    public function getChildren();
+    public function getChildren(): array;
 }

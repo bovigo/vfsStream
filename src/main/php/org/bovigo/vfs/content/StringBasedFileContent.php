@@ -27,7 +27,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
      *
      * @param  string  $content
      */
-    public function __construct($content)
+    public function __construct(string $content)
     {
         $this->content = $content;
     }
@@ -37,7 +37,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
      *
      * @return  string
      */
-    public function content()
+    public function content(): string
     {
         return $this->content;
     }
@@ -47,7 +47,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
      *
      * @return  int
      */
-    public function size()
+    public function size(): int
     {
         return strlen($this->content);
     }
@@ -55,10 +55,11 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
     /**
      * actual reading of length starting at given offset
      *
-     * @param  int  $offset
-     * @param  int  $count
+     * @param   int  $offset
+     * @param   int  $count
+     * @return  string
      */
-    protected function doRead($offset, $count)
+    protected function doRead(int $offset, int $count): string
     {
         return substr($this->content, $offset, $count);
     }
@@ -70,7 +71,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
      * @param   int     $offset
      * @param   int     $length
      */
-    protected function doWrite($data, $offset, $length)
+    protected function doWrite(string $data, int $offset, int $length)
     {
         $this->content = substr($this->content, 0, $offset)
                        . $data
@@ -83,7 +84,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
      * @param   int  $size length to truncate file to
      * @return  bool
      */
-    public function truncate($size)
+    public function truncate(int $size): bool
     {
         if ($size > $this->size()) {
             // Pad with null-chars if we're "truncating up"

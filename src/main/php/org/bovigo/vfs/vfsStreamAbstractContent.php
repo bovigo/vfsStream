@@ -74,7 +74,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param  string  $name
      * @param  int     $permissions  optional
      */
-    public function __construct($name, $permissions = null)
+    public function __construct(string $name, int $permissions = null)
     {
         $this->name = "{$name}";
         $time       = time();
@@ -96,14 +96,14 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @return  int
      * @since   0.8.0
      */
-    protected abstract function getDefaultPermissions();
+    protected abstract function getDefaultPermissions(): int;
 
     /**
      * returns the file name of the content
      *
      * @return  string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -113,7 +113,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      *
      * @param  string  $newName
      */
-    public function rename($newName)
+    public function rename(string $newName)
     {
         $this->name = "{$newName}";
     }
@@ -124,7 +124,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   string  $name
      * @return  bool
      */
-    public function appliesTo($name)
+    public function appliesTo(string $name): bool
     {
         if ($name === $this->name) {
             return true;
@@ -139,7 +139,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      *
      * @return  int
      */
-    public function getType()
+    public function getType(): int
     {
         return $this->type;
     }
@@ -150,7 +150,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int  $filemtime
      * @return  $this
      */
-    public function lastModified($filemtime)
+    public function lastModified(int $filemtime): vfsStreamContent
     {
         $this->lastModified = $filemtime;
         return $this;
@@ -161,7 +161,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      *
      * @return  int
      */
-    public function filemtime()
+    public function filemtime(): int
     {
         return $this->lastModified;
     }
@@ -173,7 +173,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @return  $this
      * @since   0.9
      */
-    public function lastAccessed($fileatime)
+    public function lastAccessed(int $fileatime): vfsStreamContent
     {
         $this->lastAccessed = $fileatime;
         return $this;
@@ -185,7 +185,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @return  int
      * @since   0.9
      */
-    public function fileatime()
+    public function fileatime(): int
     {
         return $this->lastAccessed;
     }
@@ -197,7 +197,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @return  $this
      * @since   0.9
      */
-    public function lastAttributeModified($filectime)
+    public function lastAttributeModified(int $filectime): vfsStreamContent
     {
         $this->lastAttributeModified = $filectime;
         return $this;
@@ -209,7 +209,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @return  int
      * @since   0.9
      */
-    public function filectime()
+    public function filectime(): int
     {
         return $this->lastAttributeModified;
     }
@@ -232,7 +232,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int  $permissions
      * @return  $this
      */
-    public function chmod($permissions): vfsStreamContent
+    public function chmod(int $permissions): vfsStreamContent
     {
         $this->permissions           = $permissions;
         $this->lastAttributeModified = time();
@@ -245,7 +245,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      *
      * @return  int
      */
-    public function getPermissions()
+    public function getPermissions(): int
     {
         return $this->permissions;
     }
@@ -257,7 +257,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int   $group  id of group to check for
      * @return  bool
      */
-    public function isReadable($user, $group)
+    public function isReadable(int $user, int $group): bool
     {
         if ($this->user === $user) {
             $check = 0400;
@@ -277,7 +277,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int   $group  id of group to check for
      * @return  bool
      */
-    public function isWritable($user, $group)
+    public function isWritable(int $user, int $group): bool
     {
         if ($this->user === $user) {
             $check = 0200;
@@ -297,7 +297,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int   $group  id of group to check for
      * @return  bool
      */
-    public function isExecutable($user, $group)
+    public function isExecutable(int $user, int $group): bool
     {
         if ($this->user === $user) {
             $check = 0100;
@@ -316,7 +316,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int  $user
      * @return  $this
      */
-    public function chown($user): vfsStreamContent
+    public function chown(int $user): vfsStreamContent
     {
         $this->user                  = $user;
         $this->lastAttributeModified = time();
@@ -329,7 +329,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int  $user
      * @return  bool
      */
-    public function isOwnedByUser($user)
+    public function isOwnedByUser(int $user): bool
     {
         return $this->user === $user;
     }
@@ -339,7 +339,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      *
      * @return  int
      */
-    public function getUser()
+    public function getUser(): int
     {
         return $this->user;
     }
@@ -350,7 +350,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int  $group
      * @return  $this
      */
-    public function chgrp($group): vfsStreamContent
+    public function chgrp(int $group): vfsStreamContent
     {
         $this->group                 = $group;
         $this->lastAttributeModified = time();
@@ -363,7 +363,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int   $group
      * @return  bool
      */
-    public function isOwnedByGroup($group)
+    public function isOwnedByGroup(int $group): bool
     {
         return $this->group === $group;
     }
@@ -373,7 +373,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      *
      * @return  int
      */
-    public function getGroup()
+    public function getGroup(): int
     {
         return $this->group;
     }
@@ -385,9 +385,20 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @internal  only to be set by parent
      * @since   1.2.0
      */
-    public function setParentPath($parentPath)
+    public function setParentPath(string $parentPath)
     {
         $this->parentPath = $parentPath;
+    }
+
+    /**
+     * removes parent path
+     *
+     * @internal  only to be set by parent
+     * @since   2.0.0
+     */
+    public function removeParentPath()
+    {
+        $this->parentPath = null;
     }
 
     /**
@@ -396,7 +407,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @return  string
      * @since   1.2.0
      */
-    public function path()
+    public function path(): string
     {
         if (null === $this->parentPath) {
             return $this->name;
@@ -411,7 +422,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @return  string
      * @since   1.2.0
      */
-    public function url()
+    public function url(): string
     {
         return vfsStream::url($this->path());
     }

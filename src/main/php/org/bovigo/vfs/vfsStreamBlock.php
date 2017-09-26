@@ -22,7 +22,7 @@ class vfsStreamBlock extends vfsStreamFile
      * @param  string  $name
      * @param  int     $permissions  optional
      */
-    public function __construct($name, $permissions = null)
+    public function __construct(string $name, int $permissions = null)
     {
         if (empty($name)) {
             throw new vfsStreamException('Name of Block device was empty');

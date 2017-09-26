@@ -28,7 +28,7 @@ abstract class SeekableFileContent implements FileContent
      * @param   int     $count
      * @return  string
      */
-    public function read($count)
+    public function read(int $count): string
     {
         $data = $this->doRead($this->offset, $count);
         $this->offset += $count;
@@ -38,10 +38,11 @@ abstract class SeekableFileContent implements FileContent
     /**
      * actual reading of given byte count starting at given offset
      *
-     * @param  int  $offset
-     * @param  int  $count
+     * @param   int  $offset
+     * @param   int  $count
+     * @return  string
      */
-    protected abstract function doRead($offset, $count);
+    protected abstract function doRead(int $offset, int $count): string;
 
     /**
      * seeks to the given offset
@@ -50,7 +51,7 @@ abstract class SeekableFileContent implements FileContent
      * @param   int   $whence
      * @return  bool
      */
-    public function seek($offset, $whence)
+    public function seek(int $offset, int $whence): bool
     {
         $newOffset = $this->offset;
         switch ($whence) {
@@ -69,10 +70,11 @@ abstract class SeekableFileContent implements FileContent
             default:
                 return false;
         }
-        
-        if ($newOffset<0) {
+
+        if ($newOffset < 0) {
             return false;
         }
+
         $this->offset = $newOffset;
         return true;
     }
@@ -82,7 +84,7 @@ abstract class SeekableFileContent implements FileContent
      *
      * @return  bool
      */
-    public function eof()
+    public function eof(): bool
     {
         return $this->size() <= $this->offset;
     }
@@ -93,7 +95,7 @@ abstract class SeekableFileContent implements FileContent
      * @param   string  $data
      * @return  amount of written bytes
      */
-    public function write($data)
+    public function write(string $data): int
     {
         $dataLength    = strlen($data);
         $this->doWrite($data, $this->offset, $dataLength);
@@ -108,7 +110,7 @@ abstract class SeekableFileContent implements FileContent
      * @param   int     $offset
      * @param   int     $length
      */
-    protected abstract function doWrite($data, $offset, $length);
+    protected abstract function doWrite(string $data, int $offset, int $length);
 
     /**
      * for backwards compatibility with vfsStreamFile::bytesRead()
@@ -116,7 +118,7 @@ abstract class SeekableFileContent implements FileContent
      * @return  int
      * @deprecated
      */
-    public function bytesRead()
+    public function bytesRead(): int
     {
         return $this->offset;
     }
@@ -127,7 +129,7 @@ abstract class SeekableFileContent implements FileContent
      * @return  string
      * @deprecated
      */
-    public function readUntilEnd()
+    public function readUntilEnd(): string
     {
         return substr($this->content(), $this->offset);
     }

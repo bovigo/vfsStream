@@ -148,7 +148,7 @@ class vfsStreamWrapper
      * @param   vfsStreamContainer  $root
      * @return  vfsStreamContainer
      */
-    public static function setRoot(vfsStreamContainer $root)
+    public static function setRoot(vfsStreamContainer $root): ?vfsStreamContainer
     {
         self::$root = $root;
         clearstatcache();
@@ -160,7 +160,7 @@ class vfsStreamWrapper
      *
      * @return  vfsStreamContainer
      */
-    public static function getRoot()
+    public static function getRoot(): ?vfsStreamContainer
     {
         return self::$root;
     }
@@ -182,7 +182,7 @@ class vfsStreamWrapper
      * @param   string  $path
      * @return  vfsStreamContent
      */
-    protected function getContent($path)
+    protected function getContent(string $path): ?vfsStreamContent
     {
         if (null === self::$root) {
             return null;
@@ -205,7 +205,7 @@ class vfsStreamWrapper
      * @param   string  $path
      * @return  bool
      */
-    private function isInRoot($path)
+    private function isInRoot(string $path): bool
     {
         return substr($path, 0, strlen(self::$root->getName())) === self::$root->getName();
     }
@@ -217,7 +217,7 @@ class vfsStreamWrapper
      * @param   int     $type
      * @return  vfsStreamContent
      */
-    protected function getContentOfType($path, $type)
+    protected function getContentOfType(string $path, int $type): ?vfsStreamContent
     {
         $content = $this->getContent($path);
         if (null !== $content && $content->getType() === $type) {
@@ -233,16 +233,17 @@ class vfsStreamWrapper
      * @param   string  $path
      * @return  string[]
      */
-    protected function splitPath($path)
+    protected function splitPath(string $path): array
     {
         $lastSlashPos = strrpos($path, '/');
         if (false === $lastSlashPos) {
-            return array('dirname' => '', 'basename' => $path);
+            return ['dirname' => '', 'basename' => $path];
         }
 
-        return array('dirname'  => substr($path, 0, $lastSlashPos),
-                     'basename' => substr($path, $lastSlashPos + 1)
-               );
+        return [
+            'dirname'  => substr($path, 0, $lastSlashPos),
+            'basename' => substr($path, $lastSlashPos + 1)
+        ];
     }
 
     /**
@@ -251,9 +252,9 @@ class vfsStreamWrapper
      * @param   string  $path
      * @return  string
      */
-    protected function resolvePath($path)
+    protected function resolvePath(string $path): string
     {
-        $newPath  = array();
+        $newPath  = [];
         foreach (explode('/', $path) as $pathPart) {
             if ('.' !== $pathPart) {
                 if ('..' !== $pathPart) {
@@ -276,7 +277,7 @@ class vfsStreamWrapper
      * @param   string  $opened_path  full path that was actually opened
      * @return  bool
      */
-    public function stream_open($path, $mode, $options, $opened_path)
+    public function stream_open(string $path, string $mode, string $options, string $opened_path = null): bool
     {
         $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
         $mode     = str_replace(array('t', 'b', '+'), '', $mode);
@@ -339,9 +340,9 @@ class vfsStreamWrapper
      * @param   string  $path     the path to open
      * @param   string  $mode     mode for opening
      * @param   string  $options  options for opening
-     * @return  bool
+     * @return  bool|vfsStreamFile
      */
-    private function createFile($path, $mode = null, $options = null)
+    private function createFile(string $path, string $mode = null, int $options = null)
     {
         $names = $this->splitPath($path);
         if (empty($names['dirname']) === true) {
@@ -393,7 +394,7 @@ class vfsStreamWrapper
      * @param   bool    $extended  true if + was set with opening mode
      * @return  int
      */
-    protected function calculateMode($mode, $extended)
+    protected function calculateMode(string $mode, bool $extended): int
     {
         if (true === $extended) {
             return self::ALL;
@@ -422,7 +423,7 @@ class vfsStreamWrapper
      * @param   int     $count  amount of bytes to read
      * @return  string
      */
-    public function stream_read($count)
+    public function stream_read(int $count): string
     {
         if (self::WRITEONLY === $this->mode) {
             return '';
@@ -441,7 +442,7 @@ class vfsStreamWrapper
      * @param   string  $data
      * @return  int     amount of bytes written
      */
-    public function stream_write($data)
+    public function stream_write(string $data): int
     {
         if (self::READONLY === $this->mode) {
             return 0;
@@ -465,7 +466,7 @@ class vfsStreamWrapper
      * @return  bool
      * @since   1.1.0
      */
-    public function stream_truncate($size)
+    public function stream_truncate(int $size): bool
     {
         if (self::READONLY === $this->mode) {
             return false;
@@ -502,7 +503,7 @@ class vfsStreamWrapper
      * @return  bool
      * @since   1.1.0
      */
-    public function stream_metadata($path, $option, $var)
+    public function stream_metadata(string $path, int $option, $var): bool
     {
         $path    = $this->resolvePath(vfsStream::path($path));
         $content = $this->getContent($path);
@@ -529,12 +530,10 @@ class vfsStreamWrapper
                     return false;
                 }
 
-                return $this->doPermChange($path,
-                                           $content,
-                                           function() use ($content, $var)
-                                           {
-                                               $content->chown($var);
-                                           }
+                return $this->doPermChange(
+                    $path,
+                    $content,
+                    function() use ($content, $var) { $content->chown($var); }
                 );
 
             case STREAM_META_GROUP_NAME:
@@ -545,12 +544,10 @@ class vfsStreamWrapper
                     return false;
                 }
 
-                return $this->doPermChange($path,
-                                           $content,
-                                           function() use ($content, $var)
-                                           {
-                                               $content->chgrp($var);
-                                           }
+                return $this->doPermChange(
+                    $path,
+                    $content,
+                    function() use ($content, $var) { $content->chgrp($var); }
                 );
 
             case STREAM_META_ACCESS:
@@ -558,12 +555,10 @@ class vfsStreamWrapper
                     return false;
                 }
 
-                return $this->doPermChange($path,
-                                           $content,
-                                           function() use ($content, $var)
-                                           {
-                                               $content->chmod($var);
-                                           }
+                return $this->doPermChange(
+                    $path,
+                    $content,
+                    function() use ($content, $var) { $content->chmod($var); }
                 );
 
             default:
@@ -576,10 +571,10 @@ class vfsStreamWrapper
      *
      * @param   string                    $path
      * @param   vfsStreamAbstractContent  $content
-     * @param   \Closure                  $change
+     * @param   callable                  $change
      * @return  bool
      */
-    private function doPermChange($path, vfsStreamAbstractContent $content, \Closure $change)
+    private function doPermChange(string $path, vfsStreamAbstractContent $content, callable $change): bool
     {
         if (!$content->isOwnedByUser(vfsStream::getCurrentUser())) {
             return false;
@@ -602,7 +597,7 @@ class vfsStreamWrapper
      *
      * @return  bool
      */
-    public function stream_eof()
+    public function stream_eof(): bool
     {
         return $this->content->eof();
     }
@@ -612,7 +607,7 @@ class vfsStreamWrapper
      *
      * @return  int
      */
-    public function stream_tell()
+    public function stream_tell(): int
     {
         return $this->content->getBytesRead();
     }
@@ -624,7 +619,7 @@ class vfsStreamWrapper
      * @param   int   $whence
      * @return  bool
      */
-    public function stream_seek($offset, $whence)
+    public function stream_seek(int $offset, int $whence): bool
     {
         return $this->content->seek($offset, $whence);
     }
@@ -634,7 +629,7 @@ class vfsStreamWrapper
      *
      * @return  bool
      */
-    public function stream_flush()
+    public function stream_flush(): bool
     {
         return true;
     }
@@ -644,22 +639,23 @@ class vfsStreamWrapper
      *
      * @return  array
      */
-    public function stream_stat()
+    public function stream_stat(): array
     {
-        $fileStat = array('dev'     => 0,
-                          'ino'     => 0,
-                          'mode'    => $this->content->getType() | $this->content->getPermissions(),
-                          'nlink'   => 0,
-                          'uid'     => $this->content->getUser(),
-                          'gid'     => $this->content->getGroup(),
-                          'rdev'    => 0,
-                          'size'    => $this->content->size(),
-                          'atime'   => $this->content->fileatime(),
-                          'mtime'   => $this->content->filemtime(),
-                          'ctime'   => $this->content->filectime(),
-                          'blksize' => -1,
-                          'blocks'  => -1
-                    );
+        $fileStat = [
+            'dev'     => 0,
+            'ino'     => 0,
+            'mode'    => $this->content->getType() | $this->content->getPermissions(),
+            'nlink'   => 0,
+            'uid'     => $this->content->getUser(),
+            'gid'     => $this->content->getGroup(),
+            'rdev'    => 0,
+            'size'    => $this->content->size(),
+            'atime'   => $this->content->fileatime(),
+            'mtime'   => $this->content->filemtime(),
+            'ctime'   => $this->content->filectime(),
+            'blksize' => -1,
+            'blocks'  => -1
+        ];
         return array_merge(array_values($fileStat), $fileStat);
     }
 
@@ -674,7 +670,7 @@ class vfsStreamWrapper
      * @see     https://github.com/mikey179/vfsStream/issues/3
      * @return  bool
      */
-    public function stream_cast($cast_as)
+    public function stream_cast(int $cast_as): bool
     {
         return false;
     }
@@ -689,7 +685,7 @@ class vfsStreamWrapper
      * @see     https://github.com/mikey179/vfsStream/issues/31
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function stream_lock($operation)
+    public function stream_lock(int $operation): bool
     {
         if ((LOCK_NB & $operation) == LOCK_NB) {
             $operation = $operation - LOCK_NB;
@@ -709,7 +705,7 @@ class vfsStreamWrapper
      * @see     https://github.com/mikey179/vfsStream/issues/15
      * @see     http://www.php.net/manual/streamwrapper.stream-set-option.php
      */
-    public function stream_set_option($option, $arg1, $arg2)
+    public function stream_set_option(int $option, $arg1, $arg2)
     {
         switch ($option) {
             case STREAM_OPTION_BLOCKING:
@@ -734,7 +730,7 @@ class vfsStreamWrapper
      * @param   string  $path
      * @return  bool
      */
-    public function unlink($path)
+    public function unlink(string $path): bool
     {
         $realPath = $this->resolvePath(vfsStream::path($path));
         $content  = $this->getContent($realPath);
@@ -757,7 +753,7 @@ class vfsStreamWrapper
      * @param   string  $path
      * @return  bool
      */
-    protected function doUnlink($path)
+    protected function doUnlink(string $path): bool
     {
         if (self::$root->getName() === $path) {
             // delete root? very brave. :)
@@ -784,7 +780,7 @@ class vfsStreamWrapper
      * @return  bool
      * @author  Benoit Aubuchon
      */
-    public function rename($path_from, $path_to)
+    public function rename(string $path_from, string $path_to): bool
     {
         $srcRealPath = $this->resolvePath(vfsStream::path($path_from));
         $dstRealPath = $this->resolvePath(vfsStream::path($path_to));
@@ -830,7 +826,7 @@ class vfsStreamWrapper
      * @param   int     $options
      * @return  bool
      */
-    public function mkdir($path, $mode, $options)
+    public function mkdir(string $path, int $mode, int $options): bool
     {
         $umask = vfsStream::umask();
         if (0 < $umask) {
@@ -888,7 +884,7 @@ class vfsStreamWrapper
      * @return  bool
      * @todo    consider $options with STREAM_MKDIR_RECURSIVE
      */
-    public function rmdir($path, $options)
+    public function rmdir(string $path, int $options): bool
     {
         $path  = $this->resolvePath(vfsStream::path($path));
         $child = $this->getContentOfType($path, vfsStreamContent::TYPE_DIR);
@@ -925,7 +921,7 @@ class vfsStreamWrapper
      * @param   int     $options
      * @return  bool
      */
-    public function dir_opendir($path, $options)
+    public function dir_opendir(string $path, int $options): bool
     {
         $path      = $this->resolvePath(vfsStream::path($path));
         $this->dir = $this->getContentOfType($path, vfsStreamContent::TYPE_DIR);
@@ -940,7 +936,7 @@ class vfsStreamWrapper
     /**
      * reads directory contents
      *
-     * @return  string
+     * @return  string|bool
      */
     public function dir_readdir()
     {
@@ -968,7 +964,7 @@ class vfsStreamWrapper
      *
      * @return  bool
      */
-    public function dir_closedir()
+    public function dir_closedir(): bool
     {
         $this->dirIterator = null;
         return true;
@@ -979,9 +975,9 @@ class vfsStreamWrapper
      *
      * @param   string  $path   path of url to return status for
      * @param   int     $flags  flags set by the stream API
-     * @return  array
+     * @return  array|bool
      */
-    public function url_stat($path, $flags)
+    public function url_stat(string $path, int $flags)
     {
         $content = $this->getContent($this->resolvePath(vfsStream::path($path)));
         if (null === $content) {
@@ -993,20 +989,21 @@ class vfsStreamWrapper
 
         }
 
-        $fileStat = array('dev'     => 0,
-                          'ino'     => 0,
-                          'mode'    => $content->getType() | $content->getPermissions(),
-                          'nlink'   => 0,
-                          'uid'     => $content->getUser(),
-                          'gid'     => $content->getGroup(),
-                          'rdev'    => 0,
-                          'size'    => $content->size(),
-                          'atime'   => $content->fileatime(),
-                          'mtime'   => $content->filemtime(),
-                          'ctime'   => $content->filectime(),
-                          'blksize' => -1,
-                          'blocks'  => -1
-                    );
+        $fileStat = [
+            'dev'     => 0,
+            'ino'     => 0,
+            'mode'    => $content->getType() | $content->getPermissions(),
+            'nlink'   => 0,
+            'uid'     => $content->getUser(),
+            'gid'     => $content->getGroup(),
+            'rdev'    => 0,
+            'size'    => $content->size(),
+            'atime'   => $content->fileatime(),
+            'mtime'   => $content->filemtime(),
+            'ctime'   => $content->filectime(),
+            'blksize' => -1,
+            'blocks'  => -1
+        ];
         return array_merge(array_values($fileStat), $fileStat);
     }
 }

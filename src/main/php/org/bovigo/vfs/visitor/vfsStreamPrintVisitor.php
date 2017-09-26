@@ -100,7 +100,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      *
      * @param  string   $name
      */
-    protected function printContent($name)
+    protected function printContent(string $name)
     {
         fwrite($this->out, str_repeat('  ', $this->depth) . '- ' . $name . "\n");
     }
