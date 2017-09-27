@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of vfsStream.
  *
@@ -53,7 +54,7 @@ class vfsStreamWrapperDirSeparatorTestCase extends TestCase
      */
     public function directoryCanBeCreatedUsingWinDirSeparator()
     {
-        mkdir('vfs://root/dir\bar\foo', true, 0777);
+        mkdir('vfs://root/dir\bar\foo', 0777, true);
         assertTrue($this->root->hasChild('dir'));
         assertTrue($this->root->getChild('dir')->hasChild('bar'));
         assertTrue($this->root->getChild('dir/bar')->hasChild('foo'));

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of vfsStream.
  *
@@ -361,9 +362,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         // root/file2 is a file, so it can not be turned into a directory
         $oldURL  = $this->fileInSubdir->url();
         $baz3URL = vfsStream::url('root/file2/baz3');
-        expect(function() {
+        expect(function() use ($baz3URL) {
             assertTrue(rename($this->fileInSubdir->url(), $baz3URL));
-        })->triggers(E_WARNING)
+        })->triggers(E_USER_WARNING)
           ->after($baz3URL, isNonExistingFile())
           ->after($oldURL, isExistingFile());
     }

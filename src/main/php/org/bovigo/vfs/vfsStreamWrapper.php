@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of vfsStream.
  *
@@ -273,11 +274,11 @@ class vfsStreamWrapper
      *
      * @param   string  $path         the path to open
      * @param   string  $mode         mode for opening
-     * @param   string  $options      options for opening
+     * @param   int     $options      options for opening
      * @param   string  $opened_path  full path that was actually opened
      * @return  bool
      */
-    public function stream_open(string $path, string $mode, string $options, string $opened_path = null): bool
+    public function stream_open(string $path, string $mode, int $options, string $opened_path = null): bool
     {
         $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
         $mode     = str_replace(['t', 'b', '+'], '', $mode);

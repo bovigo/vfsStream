@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of vfsStream.
  *
@@ -61,7 +62,8 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
      */
     protected function doRead(int $offset, int $count): string
     {
-        return substr($this->content, $offset, $count);
+        $data = substr($this->content, $offset, $count);
+        return (false === $data) ? '' : $data;
     }
 
     /**

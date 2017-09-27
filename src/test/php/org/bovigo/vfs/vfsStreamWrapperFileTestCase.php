@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of vfsStream.
  *
@@ -127,7 +128,7 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
     public function seekArgs(): array
     {
         return [
-            [2, null, 2],
+            [2, SEEK_SET, 2],
             [1, SEEK_CUR, 1],
             [1, SEEK_END, 7],
         ];

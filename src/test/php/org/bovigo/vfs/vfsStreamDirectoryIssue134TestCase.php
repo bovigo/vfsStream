@@ -1,4 +1,6 @@
 <?php
+//declare(strict_types=1);
+// disabled as the test requires no strict types
 /**
  * This file is part of vfsStream.
  *

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of vfsStream.
  *
@@ -32,7 +33,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      *
      * @type  int
      */
-    protected $depth;
+    protected $depth = 0;
 
     /**
      * constructor

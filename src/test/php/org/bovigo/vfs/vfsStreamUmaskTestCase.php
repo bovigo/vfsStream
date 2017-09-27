@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of vfsStream.
  *
@@ -134,7 +135,7 @@ class vfsStreamUmaskTestCase extends TestCase
     {
         $root = vfsStream::setup();
         vfsStream::umask(0022);
-        mkdir(vfsStream::url('root/newdir'), null);
+        mkdir(vfsStream::url('root/newdir'), 0000);
         assert($root->getChild('newdir')->getPermissions(), equals(0000));
     }
 

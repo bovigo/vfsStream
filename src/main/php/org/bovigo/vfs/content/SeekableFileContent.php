@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of vfsStream.
  *
@@ -131,6 +132,7 @@ abstract class SeekableFileContent implements FileContent
      */
     public function readUntilEnd(): string
     {
-        return substr($this->content(), $this->offset);
+        $data = substr($this->content(), $this->offset);
+        return (false === $data) ? '' : $data;
     }
 }

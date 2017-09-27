@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of vfsStream.
  *
@@ -44,7 +45,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     public function setBlockingDoesNotWork()
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        assertFalse(stream_set_blocking($fp, 1));
+        assertFalse(stream_set_blocking($fp, true));
         fclose($fp);
     }
 
@@ -54,7 +55,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     public function removeBlockingDoesNotWork()
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        assertFalse(stream_set_blocking($fp, 0));
+        assertFalse(stream_set_blocking($fp, false));
         fclose($fp);
     }
 
