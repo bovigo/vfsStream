@@ -12,7 +12,7 @@ namespace org\bovigo\vfs;
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\doesNotContain;
 /**
@@ -28,7 +28,7 @@ class vfsStreamWrapperUnregisterTestCase extends TestCase
     {
         vfsStreamWrapper::register();
         vfsStreamWrapper::unregister();
-        assert(stream_get_wrappers(), doesNotContain(vfsStream::SCHEME));
+        assertThat(stream_get_wrappers(), doesNotContain(vfsStream::SCHEME));
     }
 
     /**

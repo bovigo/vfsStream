@@ -13,7 +13,7 @@ use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\content\FileContent;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
@@ -44,7 +44,7 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function isOfTypeFile()
     {
-        assert($this->file->getType(), equals(vfsStreamContent::TYPE_FILE));
+        assertThat($this->file->getType(), equals(vfsStreamContent::TYPE_FILE));
     }
 
     /**
@@ -76,7 +76,7 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function hasGivenName()
     {
-        assert($this->file->getName(), equals('foo'));
+        assertThat($this->file->getName(), equals('foo'));
     }
 
     /**
@@ -85,7 +85,7 @@ class vfsStreamFileTestCase extends TestCase
     public function canBeRenamed()
     {
         $this->file->rename('bar');
-        assert($this->file->getName(), equals('bar'));
+        assertThat($this->file->getName(), equals('bar'));
         assertFalse($this->file->appliesTo('foo'));
         assertFalse($this->file->appliesTo('foo/bar'));
         assertTrue($this->file->appliesTo('bar'));
@@ -105,7 +105,7 @@ class vfsStreamFileTestCase extends TestCase
     public function contentCanBeChanged()
     {
         $this->file->setContent('bar');
-        assert($this->file->getContent(), equals('bar'));
+        assertThat($this->file->getContent(), equals('bar'));
     }
 
     /**
@@ -121,7 +121,7 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function fileSizeIs0WhenEmpty()
     {
-        assert($this->file->size(), equals(0));
+        assertThat($this->file->size(), equals(0));
     }
 
     /**
@@ -138,7 +138,7 @@ class vfsStreamFileTestCase extends TestCase
     public function readFromEmptyFileMovesPointer()
     {
         $this->file->read(5);
-        assert($this->file->getBytesRead(), equals(5));
+        assertThat($this->file->getBytesRead(), equals(5));
     }
 
     /**
@@ -147,7 +147,7 @@ class vfsStreamFileTestCase extends TestCase
     public function reportsAmountOfBytesReadEvenWhenEmpty()
     {
         $this->file->read(5);
-        assert($this->file->getBytesRead(), equals(5));
+        assertThat($this->file->getBytesRead(), equals(5));
     }
 
     /**
@@ -165,7 +165,7 @@ class vfsStreamFileTestCase extends TestCase
     public function fileSizeEqualsSizeOfContent()
     {
         $this->file->setContent('foobarbaz');
-        assert($this->file->size(), equals(9));
+        assertThat($this->file->size(), equals(9));
     }
 
     /**
@@ -175,7 +175,7 @@ class vfsStreamFileTestCase extends TestCase
     {
         $this->file->setContent('foobarbaz');
         $this->file->read(3);
-        assert($this->file->size(), equals(9));
+        assertThat($this->file->size(), equals(9));
     }
 
     /**
@@ -184,16 +184,16 @@ class vfsStreamFileTestCase extends TestCase
     public function partialReads()
     {
         $this->file->setContent('foobarbaz');
-        assert($this->file->read(3), equals('foo'));
-        assert($this->file->getBytesRead(), equals(3));
+        assertThat($this->file->read(3), equals('foo'));
+        assertThat($this->file->getBytesRead(), equals(3));
         assertFalse($this->file->eof());
 
-        assert($this->file->read(3), equals('bar'));
-        assert($this->file->getBytesRead(), equals(6));
+        assertThat($this->file->read(3), equals('bar'));
+        assertThat($this->file->getBytesRead(), equals(6));
         assertFalse($this->file->eof());
 
-        assert($this->file->read(3), equals('baz'));
-        assert($this->file->getBytesRead(), equals(9));
+        assertThat($this->file->read(3), equals('baz'));
+        assertThat($this->file->getBytesRead(), equals(9));
         assertTrue($this->file->eof());
     }
 
@@ -232,7 +232,7 @@ class vfsStreamFileTestCase extends TestCase
     public function seekEmptyFile(int $offset, $whence, int $expected)
     {
         assertTrue($this->file->seek($offset, $whence));
-        assert($this->file->getBytesRead(), equals($expected));
+        assertThat($this->file->getBytesRead(), equals($expected));
     }
 
     /**
@@ -242,9 +242,9 @@ class vfsStreamFileTestCase extends TestCase
     {
         $this->file->seek(5, SEEK_SET);
         assertTrue($this->file->seek(0, SEEK_CUR));
-        assert($this->file->getBytesRead(), equals(5));
+        assertThat($this->file->getBytesRead(), equals(5));
         assertTrue($this->file->seek(2, SEEK_CUR));
-        assert($this->file->getBytesRead(), equals(7));
+        assertThat($this->file->getBytesRead(), equals(7));
     }
 
     /**
@@ -254,7 +254,7 @@ class vfsStreamFileTestCase extends TestCase
     public function seekEmptyFileBeforeBeginningDoesNotChangeOffset()
     {
         assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
-        assert($this->file->getBytesRead(), equals(0));
+        assertThat($this->file->getBytesRead(), equals(0));
     }
 
     /**
@@ -269,8 +269,8 @@ class vfsStreamFileTestCase extends TestCase
         }
 
         assertTrue($this->file->seek($offset, $whence));
-        assert($this->file->readUntilEnd(), equals($remaining));
-        assert($this->file->getBytesRead(), equals($expected));
+        assertThat($this->file->readUntilEnd(), equals($remaining));
+        assertThat($this->file->getBytesRead(), equals($expected));
     }
 
     /**
@@ -281,11 +281,11 @@ class vfsStreamFileTestCase extends TestCase
         $this->file->setContent('foobarbaz');
         $this->file->seek(5, SEEK_SET);
         assertTrue($this->file->seek(0, SEEK_CUR));
-        assert($this->file->readUntilEnd(), equals('rbaz'));
-        assert($this->file->getBytesRead(), equals(5));
+        assertThat($this->file->readUntilEnd(), equals('rbaz'));
+        assertThat($this->file->getBytesRead(), equals(5));
         assertTrue($this->file->seek(2, SEEK_CUR));
-        assert($this->file->readUntilEnd(), equals('az'));
-        assert($this->file->getBytesRead(), equals(7));
+        assertThat($this->file->readUntilEnd(), equals('az'));
+        assertThat($this->file->getBytesRead(), equals(7));
     }
 
     /**
@@ -296,7 +296,7 @@ class vfsStreamFileTestCase extends TestCase
     {
         $this->file->setContent('foobarbaz');
         assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
-        assert($this->file->getBytesRead(), equals(0));
+        assertThat($this->file->getBytesRead(), equals(0));
     }
 
     /**
@@ -306,7 +306,7 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function writeReturnsAmountsOfBytesWritten()
     {
-        assert($this->file->write('foo'), equals(3));
+        assertThat($this->file->write('foo'), equals(3));
     }
 
     /**
@@ -316,7 +316,7 @@ class vfsStreamFileTestCase extends TestCase
     {
         $this->file->write('foo');
         $this->file->write('bar');
-        assert($this->file->getContent(), equals('foobar'));
+        assertThat($this->file->getContent(), equals('foobar'));
     }
 
     /**
@@ -327,7 +327,7 @@ class vfsStreamFileTestCase extends TestCase
         $this->file->setContent('foobarbaz');
         $this->file->seek(3, SEEK_SET);
         $this->file->write('foo');
-        assert($this->file->getContent(), equals('foofoobaz'));
+        assertThat($this->file->getContent(), equals('foofoobaz'));
     }
 
     /**
@@ -336,7 +336,7 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function defaultPermissions()
     {
-        assert($this->file->getPermissions(), equals(0666));
+        assertThat($this->file->getPermissions(), equals(0666));
     }
 
 
@@ -346,7 +346,7 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function permissionsCanBeChanged()
     {
-        assert($this->file->chmod(0600)->getPermissions(), equals(0600));
+        assertThat($this->file->chmod(0600)->getPermissions(), equals(0600));
     }
 
     /**
@@ -355,7 +355,7 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function permissionsCanBeSetOnCreation()
     {
-        assert(vfsStream::newFile('foo', 0644)->getPermissions(), equals(0644));
+        assertThat(vfsStream::newFile('foo', 0644)->getPermissions(), equals(0644));
     }
 
     /**
@@ -364,7 +364,7 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function currentUserIsDefaultOwner()
     {
-        assert($this->file->getUser(), equals(vfsStream::getCurrentUser()));
+        assertThat($this->file->getUser(), equals(vfsStream::getCurrentUser()));
         assertTrue($this->file->isOwnedByUser(vfsStream::getCurrentUser()));
     }
 
@@ -375,7 +375,7 @@ class vfsStreamFileTestCase extends TestCase
     public function ownerCanBeChanged()
     {
         $this->file->chown(vfsStream::OWNER_USER_1);
-        assert($this->file->getUser(), equals(vfsStream::OWNER_USER_1));
+        assertThat($this->file->getUser(), equals(vfsStream::OWNER_USER_1));
         assertTrue($this->file->isOwnedByUser(vfsStream::OWNER_USER_1));
     }
 
@@ -385,7 +385,7 @@ class vfsStreamFileTestCase extends TestCase
      */
     public function currentGroupIsDefaultGroup()
     {
-        assert($this->file->getGroup(), equals(vfsStream::getCurrentGroup()));
+        assertThat($this->file->getGroup(), equals(vfsStream::getCurrentGroup()));
         assertTrue($this->file->isOwnedByGroup(vfsStream::getCurrentGroup()));
     }
 
@@ -396,7 +396,7 @@ class vfsStreamFileTestCase extends TestCase
     public function groupCanBeChanged()
     {
         $this->file->chgrp(vfsStream::GROUP_USER_1);
-        assert($this->file->getGroup(), equals(vfsStream::GROUP_USER_1));
+        assertThat($this->file->getGroup(), equals(vfsStream::GROUP_USER_1));
         assertTrue($this->file->isOwnedByGroup(vfsStream::GROUP_USER_1));
     }
 
@@ -409,7 +409,7 @@ class vfsStreamFileTestCase extends TestCase
     {
         $this->file->write("lorem ipsum");
         assertTrue($this->file->truncate(5));
-        assert($this->file->getContent(), equals('lorem'));
+        assertThat($this->file->getContent(), equals('lorem'));
     }
 
     /**
@@ -421,7 +421,7 @@ class vfsStreamFileTestCase extends TestCase
     {
         $this->file->write("lorem ipsum");
         assertTrue($this->file->truncate(25));
-        assert(
+        assertThat(
             $this->file->getContent(),
             equals("lorem ipsum\0\0\0\0\0\0\0\0\0\0\0\0\0\0")
         );
@@ -437,7 +437,7 @@ class vfsStreamFileTestCase extends TestCase
         $fileContent = NewInstance::of(FileContent::class)->returns([
             'content' => 'foobarbaz'
         ]);
-        assert(
+        assertThat(
                 $this->file->withContent($fileContent)->getContent(),
                 equals('foobarbaz')
         );

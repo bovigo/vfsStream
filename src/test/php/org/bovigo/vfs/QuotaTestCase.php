@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
@@ -58,7 +58,7 @@ class QuotaTestCase extends TestCase
      */
     public function unlimitedQuotaHasAlwaysSpaceLeft()
     {
-        assert(Quota::unlimited()->spaceLeft(303), equals(303));
+        assertThat(Quota::unlimited()->spaceLeft(303), equals(303));
     }
 
     /**
@@ -66,7 +66,7 @@ class QuotaTestCase extends TestCase
      */
     public function hasNoSpaceLeftWhenUsedSpaceIsLargerThanQuota()
     {
-        assert($this->quota->spaceLeft(11), equals(0));
+        assertThat($this->quota->spaceLeft(11), equals(0));
     }
 
     /**
@@ -74,7 +74,7 @@ class QuotaTestCase extends TestCase
      */
     public function hasNoSpaceLeftWhenUsedSpaceIsEqualToQuota()
     {
-        assert($this->quota->spaceLeft(10), equals(0));
+        assertThat($this->quota->spaceLeft(10), equals(0));
     }
 
     /**
@@ -82,6 +82,6 @@ class QuotaTestCase extends TestCase
      */
     public function hasSpaceLeftWhenUsedSpaceIsLowerThanQuota()
     {
-        assert($this->quota->spaceLeft(9), equals(1));
+        assertThat($this->quota->spaceLeft(9), equals(1));
     }
 }

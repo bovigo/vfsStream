@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs\content;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
@@ -44,7 +44,7 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function hasContentOriginallySet()
     {
-        assert($this->stringBasedFileContent->content(), equals('foobarbaz'));
+        assertThat($this->stringBasedFileContent->content(), equals('foobarbaz'));
     }
 
     /**
@@ -60,7 +60,7 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function sizeEqualsLengthOfGivenString()
     {
-        assert($this->stringBasedFileContent->size(), equals(9));
+        assertThat($this->stringBasedFileContent->size(), equals(9));
     }
 
     /**
@@ -68,7 +68,7 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function readReturnsSubstringWithRequestedLength()
     {
-        assert($this->stringBasedFileContent->read(3), equals('foo'));
+        assertThat($this->stringBasedFileContent->read(3), equals('foo'));
     }
 
     /**
@@ -76,9 +76,9 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function readMovesOffset()
     {
-        assert($this->stringBasedFileContent->read(3), equals('foo'));
-        assert($this->stringBasedFileContent->read(3), equals('bar'));
-        assert($this->stringBasedFileContent->read(3), equals('baz'));
+        assertThat($this->stringBasedFileContent->read(3), equals('foo'));
+        assertThat($this->stringBasedFileContent->read(3), equals('bar'));
+        assertThat($this->stringBasedFileContent->read(3), equals('baz'));
     }
 
     /**
@@ -86,7 +86,7 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function readMoreThanSizeReturnsWholeContent()
     {
-        assert($this->stringBasedFileContent->read(10), equals('foobarbaz'));
+        assertThat($this->stringBasedFileContent->read(10), equals('foobarbaz'));
     }
 
     /**
@@ -104,7 +104,7 @@ class StringBasedFileContentTestCase extends TestCase
     public function readDoesNotChangeSize()
     {
         $this->stringBasedFileContent->read(3);
-        assert($this->stringBasedFileContent->size(), equals(9));
+        assertThat($this->stringBasedFileContent->size(), equals(9));
     }
 
     /**
@@ -148,7 +148,7 @@ class StringBasedFileContentTestCase extends TestCase
     public function canSeekToGivenOffset()
     {
         assertTrue($this->stringBasedFileContent->seek(5, SEEK_SET));
-        assert($this->stringBasedFileContent->read(10), equals('rbaz'));
+        assertThat($this->stringBasedFileContent->read(10), equals('rbaz'));
     }
 
     /**
@@ -158,7 +158,7 @@ class StringBasedFileContentTestCase extends TestCase
     {
         $this->stringBasedFileContent->seek(5, SEEK_SET);
         assertTrue($this->stringBasedFileContent->seek(2, SEEK_CUR));
-        assert($this->stringBasedFileContent->read(10), equals('az'));
+        assertThat($this->stringBasedFileContent->read(10), equals('az'));
     }
 
     /**
@@ -175,8 +175,8 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function writeOverwritesExistingContentWhenOffsetNotAtEof()
     {
-        assert($this->stringBasedFileContent->write('bar'), equals(3));
-        assert($this->stringBasedFileContent->content(), equals('barbarbaz'));
+        assertThat($this->stringBasedFileContent->write('bar'), equals(3));
+        assertThat($this->stringBasedFileContent->content(), equals('barbarbaz'));
     }
 
     /**
@@ -185,8 +185,8 @@ class StringBasedFileContentTestCase extends TestCase
     public function writeAppendsContentWhenOffsetAtEof()
     {
         $this->stringBasedFileContent->seek(0, SEEK_END);
-        assert($this->stringBasedFileContent->write('bar'), equals(3));
-        assert($this->stringBasedFileContent->content(), equals('foobarbazbar'));
+        assertThat($this->stringBasedFileContent->write('bar'), equals(3));
+        assertThat($this->stringBasedFileContent->content(), equals('foobarbazbar'));
     }
 
     /**
@@ -197,7 +197,7 @@ class StringBasedFileContentTestCase extends TestCase
     public function truncateRemovesSuperflouosContent()
     {
         assertTrue($this->stringBasedFileContent->truncate(6));
-        assert($this->stringBasedFileContent->content(), equals('foobar'));
+        assertThat($this->stringBasedFileContent->content(), equals('foobar'));
     }
 
     /**
@@ -208,7 +208,7 @@ class StringBasedFileContentTestCase extends TestCase
     public function truncateDecreasesSize()
     {
         assertTrue($this->stringBasedFileContent->truncate(6));
-        assert($this->stringBasedFileContent->size(), equals(6));
+        assertThat($this->stringBasedFileContent->size(), equals(6));
     }
 
     /**
@@ -219,7 +219,7 @@ class StringBasedFileContentTestCase extends TestCase
     public function truncateToGreaterSizeAddsZeroBytes()
     {
         assertTrue($this->stringBasedFileContent->truncate(25));
-        assert(
+        assertThat(
             $this->stringBasedFileContent->content(),
             equals("foobarbaz\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0")
         );
@@ -233,6 +233,6 @@ class StringBasedFileContentTestCase extends TestCase
     public function truncateToGreaterSizeIncreasesSize()
     {
         assertTrue($this->stringBasedFileContent->truncate(25));
-        assert($this->stringBasedFileContent->size(), equals(25));
+        assertThat($this->stringBasedFileContent->size(), equals(25));
     }
 }

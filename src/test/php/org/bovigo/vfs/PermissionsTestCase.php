@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\expect;
 /**

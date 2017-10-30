@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\contains;
 use function bovigo\assert\predicate\equals;
@@ -49,7 +49,7 @@ class FilenameTestCase extends TestCase
             $results[] = $f->getPathname();
         }
 
-        assert($results, equals([
+        assertThat($results, equals([
             'vfs://root/lost+found' . DIRECTORY_SEPARATOR . '.',
             'vfs://root/lost+found' . DIRECTORY_SEPARATOR . '..'
         ]));
@@ -77,7 +77,7 @@ class FilenameTestCase extends TestCase
             $results[] = $f->getPathname();
         }
 
-        assert($results, equals([
+        assertThat($results, equals([
           'vfs://root' . DIRECTORY_SEPARATOR . '.',
           'vfs://root' . DIRECTORY_SEPARATOR . '..',
           'vfs://root' . DIRECTORY_SEPARATOR . 'lost+found'

@@ -12,7 +12,7 @@ namespace org\bovigo\vfs;
 require_once __DIR__ . '/vfsStreamWrapperBaseTestCase.php';
 
 use function bovigo\assert\{
-    assert,
+    assertThat,
     assertEmptyString,
     assertFalse,
     assertNull,
@@ -52,7 +52,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     {
         vfsStreamWrapper::register();
         $root = vfsStream::newDirectory('root');
-        assert(vfsStreamWrapper::setRoot($root), isSameAs($root));
+        assertThat(vfsStreamWrapper::setRoot($root), isSameAs($root));
     }
 
     /**
@@ -60,7 +60,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function filesizeOfDirectoryIsZero()
     {
-        assert(filesize($this->root->url()), equals(0));
+        assertThat(filesize($this->root->url()), equals(0));
     }
 
     /**
@@ -68,7 +68,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function filesizeOfFile()
     {
-        assert(filesize($this->fileInSubdir->url()), equals(6));
+        assertThat(filesize($this->fileInSubdir->url()), equals(6));
     }
 
     /**
@@ -96,8 +96,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->root->lastModified(100)
             ->lastAccessed(100)
             ->lastAttributeModified(100);
-        assert(filemtime($this->root->url()), equals(100));
-        assert(filemtime($this->root->url() . '/.'), equals(100));
+        assertThat(filemtime($this->root->url()), equals(100));
+        assertThat(filemtime($this->root->url() . '/.'), equals(100));
     }
 
     /**
@@ -135,7 +135,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function dirnameReturnsDirectoryPath()
     {
-        assert(
+        assertThat(
             dirname($this->fileInSubdir->url()),
             equals($this->subdir->url())
         );
@@ -148,7 +148,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function dirnameForNonExistingPathDoesNotWork()
     {
-        assert(
+        assertThat(
             dirname(vfsStream::url('doesNotExist')),
             equals('vfs:') // should be '.'
         );
@@ -169,7 +169,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function basename($path, $basename)
     {
-        assert(basename($path), equals($basename));
+        assertThat(basename($path), equals($basename));
     }
 
     /**
@@ -270,8 +270,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function filePermissionsAreReturned($element, $permissions)
     {
-        assert(decoct(fileperms($this->$element->url())), equals($permissions));
-        assert(decoct(fileperms($this->$element->url() . '/.')), equals($permissions));
+        assertThat(decoct(fileperms($this->$element->url())), equals($permissions));
+        assertThat(decoct(fileperms($this->$element->url() . '/.')), equals($permissions));
     }
 
     /**
@@ -281,7 +281,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function filePermissionsCanBeChanged()
     {
         $this->root->chmod(0755);
-        assert(decoct(fileperms($this->root->url())), equals(40755));
+        assertThat(decoct(fileperms($this->root->url())), equals(40755));
     }
 
     /**
@@ -292,7 +292,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function chmodModifiesPermissions()
     {
         assertTrue(chmod($this->root->url(), 0755));
-        assert(decoct(fileperms($this->root->url())), equals(40755));
+        assertThat(decoct(fileperms($this->root->url())), equals(40755));
     }
 
     /**
@@ -303,8 +303,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function chownChangesUser()
     {
         assertTrue(chown($this->root->url(), vfsStream::OWNER_USER_1));
-        assert(fileowner($this->root->url()), equals(vfsStream::OWNER_USER_1));
-        assert(fileowner($this->root->url() . '/.'), equals(vfsStream::OWNER_USER_1));
+        assertThat(fileowner($this->root->url()), equals(vfsStream::OWNER_USER_1));
+        assertThat(fileowner($this->root->url() . '/.'), equals(vfsStream::OWNER_USER_1));
     }
 
     /**
@@ -315,8 +315,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function chgrpChangesGroup()
     {
         assertTrue(chgrp($this->root->url(), vfsStream::GROUP_USER_1));
-        assert(filegroup($this->root->url()), equals(vfsStream::GROUP_USER_1));
-        assert(filegroup($this->root->url() . '/.'), equals(vfsStream::GROUP_USER_1));
+        assertThat(filegroup($this->root->url()), equals(vfsStream::GROUP_USER_1));
+        assertThat(filegroup($this->root->url() . '/.'), equals(vfsStream::GROUP_USER_1));
     }
 
     public function targets(): array
@@ -337,8 +337,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function renameDirectory($source, $target)
     {
         assertTrue(rename($source, $target));
-        assert($target, isExistingDirectory());
-        assert($source, isNonExistingDirectory());
+        assertThat($target, isExistingDirectory());
+        assertThat($source, isNonExistingDirectory());
     }
 
     /**
@@ -350,8 +350,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         // move root/subdir to root/file2
         $oldURL = $this->subdir->url();
         assertTrue(rename($oldURL, $this->fileInRoot->url()));
-        assert(vfsStream::url('root/file2/file1'), isExistingFile());
-        assert($oldURL, isNonExistingDirectory());
+        assertThat(vfsStream::url('root/file2/file1'), isExistingFile());
+        assertThat($oldURL, isNonExistingDirectory());
     }
 
     /**
@@ -379,8 +379,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $oldURL  = $this->fileInSubdir->url();
         $baz3URL = vfsStream::url('root/baz3');
         assertTrue(rename($this->fileInSubdir->url(), $baz3URL));
-        assert($baz3URL, isExistingFile());
-        assert($oldURL, isNonExistingFile());
+        assertThat($baz3URL, isExistingFile());
+        assertThat($oldURL, isNonExistingFile());
     }
 
     /**
@@ -391,7 +391,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     {
         // move root/subdir/file1 to root/baz3
         assertTrue(rename($this->fileInSubdir->url(), $this->root->url() . '/baz3'));
-        assert($this->subdir->url(), isExistingDirectory());
+        assertThat($this->subdir->url(), isExistingDirectory());
     }
 
     /**
@@ -418,7 +418,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function statAndFstatReturnSameResult()
     {
         $fp = fopen($this->fileInRoot->url(), 'r');
-        assert(stat($this->fileInRoot->url()), equals(fstat($fp)));
+        assertThat(stat($this->fileInRoot->url()), equals(fstat($fp)));
         fclose($fp);
     }
 
@@ -430,7 +430,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->fileInRoot->lastModified(400)
             ->lastAccessed(400)
             ->lastAttributeModified(400);
-        assert(
+        assertThat(
             stat($this->fileInRoot->url()),
             equals([
                 0         => 0,
@@ -471,7 +471,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->root->lastModified(100)
             ->lastAccessed(100)
             ->lastAttributeModified(100);
-        assert(
+        assertThat(
             stat($this->root->url()),
             equals([
                 0         => 0,
@@ -512,7 +512,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
       $this->root->lastModified(100)
           ->lastAccessed(100)
           ->lastAttributeModified(100);
-      assert(
+      assertThat(
           stat($this->root->url() . '/.'),
           equals([
               0         => 0,
@@ -579,7 +579,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $handle = fopen($this->fileInSubdir->url(), "r+");
         assertTrue(ftruncate($handle, 25));
         fclose($handle);
-        assert(
+        assertThat(
             file_get_contents($this->fileInSubdir->url()),
             equals("file 1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0")
         );
@@ -602,8 +602,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function touchChangesAccessAndModificationTimeForFile()
     {
         assertTrue(touch($this->fileInSubdir->url(), 303, 313));
-        assert($this->fileInSubdir->filemtime(), equals(303));
-        assert($this->fileInSubdir->fileatime(), equals(313));
+        assertThat($this->fileInSubdir->filemtime(), equals(303));
+        assertThat($this->fileInSubdir->fileatime(), equals(313));
     }
 
     /**
@@ -614,8 +614,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function touchChangesTimesToCurrentTimestampWhenNoTimesGiven()
     {
         assertTrue(touch($this->fileInSubdir->url()));
-        assert($this->fileInSubdir->filemtime(), equals(time(), 1));
-        assert($this->fileInSubdir->fileatime(), equals(time(), 1));
+        assertThat($this->fileInSubdir->filemtime(), equals(time(), 1));
+        assertThat($this->fileInSubdir->fileatime(), equals(time(), 1));
     }
 
     /**
@@ -625,8 +625,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function touchWithModifiedTimeChangesAccessAndModifiedTime()
     {
         assertTrue(touch($this->fileInSubdir->url(), 303));
-        assert($this->fileInSubdir->filemtime(), equals(303));
-        assert($this->fileInSubdir->fileatime(), equals(303));
+        assertThat($this->fileInSubdir->filemtime(), equals(303));
+        assertThat($this->fileInSubdir->fileatime(), equals(303));
     }
 
     /**
@@ -636,8 +636,8 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     public function touchChangesAccessAndModificationTimeForDirectory()
     {
         assertTrue(touch($this->root->url(), 303, 313));
-        assert($this->root->filemtime(), equals(303));
-        assert($this->root->fileatime(), equals(313));
+        assertThat($this->root->filemtime(), equals(303));
+        assertThat($this->root->fileatime(), equals(313));
     }
 
     public function elements(): array
@@ -658,7 +658,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function pathesAreCorrectlySet($element)
     {
-        assert($this->$element->path(), equals(vfsStream::path($this->$element->url())));
+        assertThat($this->$element->path(), equals(vfsStream::path($this->$element->url())));
     }
 
     /**
@@ -671,7 +671,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $baz3URL = vfsStream::url('root/baz3');
         // move root/subdir/file1 to root/baz3
         assertTrue(rename($this->fileInSubdir->url(), $baz3URL));
-        assert($this->fileInSubdir->path(), equals(vfsStream::path($baz3URL)));
+        assertThat($this->fileInSubdir->path(), equals(vfsStream::path($baz3URL)));
     }
 
     /**
@@ -684,6 +684,6 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $baz3URL = vfsStream::url('root/baz3');
         // move root/subdir/file1 to root/baz3
         assertTrue(rename($this->fileInSubdir->url(), $baz3URL));
-        assert($this->fileInSubdir->url(), equals($baz3URL));
+        assertThat($this->fileInSubdir->url(), equals($baz3URL));
     }
 }

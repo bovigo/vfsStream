@@ -12,7 +12,7 @@ namespace org\bovigo\vfs;
 use org\bovigo\vfs\content\LargeFileContent;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for large file mocks.
@@ -49,7 +49,7 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
             $this->markTestSkipped('Requires 64-bit version of PHP');
         }
 
-        assert(filesize($this->largeFile->url()), equals(100 * 1024 * 1024 * 1024));
+        assertThat(filesize($this->largeFile->url()), equals(100 * 1024 * 1024 * 1024));
     }
 
     /**
@@ -60,7 +60,7 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
         $fp   = fopen($this->largeFile->url(), 'rb');
         $data = fread($fp, 15);
         fclose($fp);
-        assert($data, equals(str_repeat(' ', 15)));
+        assertThat($data, equals(str_repeat(' ', 15)));
     }
 
     /**
@@ -73,6 +73,6 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
         fwrite($fp, 'foobarbaz');
         fclose($fp);
         $this->largeFile->seek((100 * 1024 * 1024) - 3, SEEK_SET);
-        assert($this->largeFile->read(15), equals('   foobarbaz   '));
+        assertThat($this->largeFile->read(15), equals('   foobarbaz   '));
     }
 }

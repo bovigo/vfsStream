@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
@@ -26,7 +26,7 @@ class vfsStreamBlockTestCase extends TestCase
      */
     public function isOfTypeBlock()
     {
-        assert((new vfsStreamBlock('foo'))->getType(), equals(vfsStreamContent::TYPE_BLOCK));
+        assertThat((new vfsStreamBlock('foo'))->getType(), equals(vfsStreamContent::TYPE_BLOCK));
     }
 
     /**
@@ -58,7 +58,7 @@ class vfsStreamBlockTestCase extends TestCase
      */
     public function hasGivenName()
     {
-        assert((new vfsStreamBlock('foo'))->getName(), equals('foo'));
+        assertThat((new vfsStreamBlock('foo'))->getName(), equals('foo'));
     }
 
     /**
@@ -70,7 +70,7 @@ class vfsStreamBlockTestCase extends TestCase
     {
         $root = vfsStream::setup('root');
         $root->addChild(vfsStream::newBlock('foo'));
-        assert(filetype(vfsStream::url('root/foo')), equals('block'));
+        assertThat(filetype(vfsStream::url('root/foo')), equals('block'));
     }
 
     /**
@@ -84,7 +84,7 @@ class vfsStreamBlockTestCase extends TestCase
             'thisIsAFile'   => 'file contents',
             '[blockDevice]' => 'block contents'
         ]]);
-        assert(
+        assertThat(
             filetype(vfsStream::url('root/topLevel/blockDevice')),
             equals('block')
         );

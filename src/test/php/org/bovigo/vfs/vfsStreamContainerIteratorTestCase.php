@@ -12,7 +12,7 @@ namespace org\bovigo\vfs;
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
@@ -97,10 +97,10 @@ class vfsStreamContainerIteratorTestCase extends TestCase
         $switchDotFiles();
         $dirIterator = $this->dir->getIterator();
         foreach ($dirs as $dir) {
-            assert($dirIterator->key(), equals($this->nameOf($dir)));
+            assertThat($dirIterator->key(), equals($this->nameOf($dir)));
             assertTrue($dirIterator->valid());
             if (!is_string($dir)) {
-                assert($dirIterator->current(), isSameAs($dir));
+                assertThat($dirIterator->current(), isSameAs($dir));
             }
 
             $dirIterator->next();

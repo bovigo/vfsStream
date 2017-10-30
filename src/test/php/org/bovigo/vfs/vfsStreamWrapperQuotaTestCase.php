@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
@@ -44,8 +44,8 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      */
     public function writeLessThanQuotaWritesEverything()
     {
-        assert(file_put_contents(vfsStream::url('root/file.txt'), '123456789'), equals(9));
-        assert($this->root->getChild('file.txt')->getContent(), equals('123456789'));
+        assertThat(file_put_contents(vfsStream::url('root/file.txt'), '123456789'), equals(9));
+        assertThat($this->root->getChild('file.txt')->getContent(), equals('123456789'));
     }
 
     /**
@@ -53,8 +53,8 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      */
     public function writeUpToQotaWritesEverything()
     {
-        assert(file_put_contents(vfsStream::url('root/file.txt'), '1234567890'), equals(10));
-        assert($this->root->getChild('file.txt')->getContent(), equals('1234567890'));
+        assertThat(file_put_contents(vfsStream::url('root/file.txt'), '1234567890'), equals(10));
+        assertThat($this->root->getChild('file.txt')->getContent(), equals('1234567890'));
     }
 
     /**
@@ -67,7 +67,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
         })->triggers()
           ->withMessage('file_put_contents(): Only 10 of 11 bytes written, possibly out of free disk space');
 
-        assert($this->root->getChild('file.txt')->getContent(), equals('1234567890'));
+        assertThat($this->root->getChild('file.txt')->getContent(), equals('1234567890'));
     }
 
     /**
@@ -83,7 +83,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
         })->triggers()
           ->withMessage('file_put_contents(): Only 7 of 11 bytes written, possibly out of free disk space');
 
-        assert($this->root->getChild('file.txt')->getContent(), equals('1234567'));
+        assertThat($this->root->getChild('file.txt')->getContent(), equals('1234567'));
     }
 
     /**
@@ -95,8 +95,8 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertTrue(ftruncate($fp, 9));
         fclose($fp);
-        assert($this->root->getChild('file.txt')->size(), equals(9));
-        assert(
+        assertThat($this->root->getChild('file.txt')->size(), equals(9));
+        assertThat(
             $this->root->getChild('file.txt')->getContent(),
             equals("\0\0\0\0\0\0\0\0\0")
         );
@@ -111,8 +111,8 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertTrue(ftruncate($fp, 10));
         fclose($fp);
-        assert($this->root->getChild('file.txt')->size(), equals(10));
-        assert(
+        assertThat($this->root->getChild('file.txt')->size(), equals(10));
+        assertThat(
             $this->root->getChild('file.txt')->getContent(),
             equals("\0\0\0\0\0\0\0\0\0\0")
         );
@@ -127,8 +127,8 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertTrue(ftruncate($fp, 11));
         fclose($fp);
-        assert($this->root->getChild('file.txt')->size(), equals(10));
-        assert(
+        assertThat($this->root->getChild('file.txt')->size(), equals(10));
+        assertThat(
             $this->root->getChild('file.txt')->getContent(),
             equals("\0\0\0\0\0\0\0\0\0\0")
         );
@@ -148,8 +148,8 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertTrue(ftruncate($fp, 11));
         fclose($fp);
-        assert($this->root->getChild('file.txt')->size(), equals(7));
-        assert(
+        assertThat($this->root->getChild('file.txt')->size(), equals(7));
+        assertThat(
             $this->root->getChild('file.txt')->getContent(),
             equals("\0\0\0\0\0\0\0")
         );
@@ -169,8 +169,8 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertFalse(ftruncate($fp, 11));
         fclose($fp);
-        assert($this->root->getChild('file.txt')->size(), equals(0));
-        assert(
+        assertThat($this->root->getChild('file.txt')->size(), equals(0));
+        assertThat(
             $this->root->getChild('file.txt')->getContent(),
             equals('')
         );

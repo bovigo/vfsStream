@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
@@ -48,7 +48,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
      */
     public function shouldContainThreeSubdirectories()
     {
-        assert(
+        assertThat(
             $this->rootDirectory->getChild('var/log/app')->getChildren(),
             isOfSize(3)
         );
@@ -60,7 +60,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     public function shouldContainSubdirectoryFoo()
     {
         assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('foo'));
-        assert(
+        assertThat(
             $this->rootDirectory->getChild('var/log/app')->getChild('foo'),
             isInstanceOf(vfsStreamDirectory::class)
         );
@@ -72,7 +72,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     public function shouldContainSubdirectoryApp1()
     {
         assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app1'));
-        assert(
+        assertThat(
             $this->rootDirectory->getChild('var/log/app')->getChild('app1'),
             isInstanceOf(vfsStreamDirectory::class)
         );
@@ -84,7 +84,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     public function shouldContainSubdirectoryApp2()
     {
         assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app2'));
-        assert(
+        assertThat(
             $this->rootDirectory->getChild('var/log/app')->getChild('app2'),
             isInstanceOf(vfsStreamDirectory::class)
         );

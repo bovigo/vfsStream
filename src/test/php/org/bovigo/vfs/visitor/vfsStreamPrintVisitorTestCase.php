@@ -14,7 +14,7 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
@@ -52,7 +52,7 @@ class vfsStreamPrintVisitorTestCase extends TestCase
         $output       = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
         $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
         $printVisitor->visitFile(vfsStream::newFile('bar.txt'));
-        assert($output->getContent(), equals("- bar.txt\n"));
+        assertThat($output->getContent(), equals("- bar.txt\n"));
     }
 
     /**
@@ -63,7 +63,7 @@ class vfsStreamPrintVisitorTestCase extends TestCase
         $output       = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
         $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
         $printVisitor->visitBlockDevice(vfsStream::newBlock('bar'));
-        assert($output->getContent(), equals("- [bar]\n"));
+        assertThat($output->getContent(), equals("- [bar]\n"));
     }
 
     /**
@@ -74,7 +74,7 @@ class vfsStreamPrintVisitorTestCase extends TestCase
         $output       = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
         $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
         $printVisitor->visitDirectory(vfsStream::newDirectory('baz'));
-        assert($output->getContent(), equals("- baz\n"));
+        assertThat($output->getContent(), equals("- baz\n"));
     }
 
     /**
@@ -93,7 +93,7 @@ class vfsStreamPrintVisitorTestCase extends TestCase
         );
         $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
         $printVisitor->visitDirectory($root);
-        assert(
+        assertThat(
             file_get_contents('vfs://root/foo.txt'),
             equals("- root\n  - test\n    - foo\n      - test.txt\n    - baz.txt\n  - foo.txt\n")
         );

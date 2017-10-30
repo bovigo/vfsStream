@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
@@ -56,7 +56,7 @@ class vfsStreamExLockTestCase extends TestCase
         fwrite($fp, "another string\n");
         flock($fp, LOCK_UN);
         fclose($fp);
-        assert(
+        assertThat(
             file_get_contents(vfsStream::url('root/testfile')),
             equals("another string\n")
         );

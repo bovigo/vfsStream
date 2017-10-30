@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 /**
@@ -45,7 +45,7 @@ class vfsStreamWrapperDirSeparatorTestCase extends TestCase
         vfsStream::newFile('foo/bar/baz.txt')
                  ->at($this->root)
                  ->withContent('test');
-        assert(file_get_contents('vfs://root/foo\bar\baz.txt'), equals('test'));
+        assertThat(file_get_contents('vfs://root/foo\bar\baz.txt'), equals('test'));
     }
 
 

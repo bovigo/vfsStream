@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
@@ -41,7 +41,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
         $file = vfsStream::newFile('foo.txt')
              ->at($this->root)
              ->lastModified(100);
-        assert(filemtime($file->url()), equals($file->filemtime()));
+        assertThat(filemtime($file->url()), equals($file->filemtime()));
     }
 
     /**
@@ -52,7 +52,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
         $file = vfsStream::newFile('foo.txt')
              ->at($this->root)
              ->lastAccessed(100);
-        assert(fileatime($file->url()), equals($file->fileatime()));
+        assertThat(fileatime($file->url()), equals($file->fileatime()));
     }
 
     /**
@@ -63,7 +63,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
         $file = vfsStream::newFile('foo.txt')
              ->at($this->root)
              ->lastAttributeModified(100);
-        assert(filectime($file->url()), equals($file->filectime()));
+        assertThat(filectime($file->url()), equals($file->filectime()));
     }
 
     /**
@@ -79,9 +79,9 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
              ->lastAccessed(100)
              ->lastAttributeModified(100);
         fclose(fopen($file->url(), 'rb'));
-        assert(fileatime($file->url()), equals(time(), 2));
-        assert(filemtime($file->url()), equals(100));
-        assert(filectime($file->url()), equals(100));
+        assertThat(fileatime($file->url()), equals(time(), 2));
+        assertThat(filemtime($file->url()), equals(100));
+        assertThat(filectime($file->url()), equals(100));
     }
 
     /**
@@ -97,9 +97,9 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
              ->lastAccessed(100)
              ->lastAttributeModified(100);
         file_get_contents($file->url());
-        assert(fileatime($file->url()), equals(time(), 2));
-        assert(filemtime($file->url()), equals(100));
-        assert(filectime($file->url()), equals(100));
+        assertThat(fileatime($file->url()), equals(time(), 2));
+        assertThat(filemtime($file->url()), equals(100));
+        assertThat(filectime($file->url()), equals(100));
     }
 
     /**
@@ -115,9 +115,9 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
              ->lastAccessed(100)
              ->lastAttributeModified(100);
         fclose(fopen($file->url(), 'wb'));
-        assert(fileatime($file->url()), equals(time(), 2));
-        assert(filemtime($file->url()), equals(time(), 2));
-        assert(filectime($file->url()), equals(100));
+        assertThat(fileatime($file->url()), equals(time(), 2));
+        assertThat(filemtime($file->url()), equals(time(), 2));
+        assertThat(filectime($file->url()), equals(100));
     }
 
     /**
@@ -136,9 +136,9 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
         sleep(2);
         fread($fp, 1024);
         fclose($fp);
-        assert(filemtime($file->url()), equals(100));
-        assert(fileatime($file->url()), equals($openTime + 2, 1));
-        assert(filectime($file->url()), equals(100));
+        assertThat(filemtime($file->url()), equals(100));
+        assertThat(fileatime($file->url()), equals($openTime + 2, 1));
+        assertThat(filectime($file->url()), equals(100));
     }
 
     /**
@@ -157,9 +157,9 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
         sleep(2);
         fwrite($fp, 'test');
         fclose($fp);
-        assert(filemtime($file->url()), equals($openTime + 2, 1));
-        assert(fileatime($file->url()), equals($openTime, 1));
-        assert(filectime($file->url()), equals(100));
+        assertThat(filemtime($file->url()), equals($openTime + 2, 1));
+        assertThat(fileatime($file->url()), equals($openTime, 1));
+        assertThat(filectime($file->url()), equals(100));
     }
 
     /**
@@ -170,9 +170,9 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
     {
         $url = vfsStream::url('root/foo.txt');
         file_put_contents($url, 'test');
-        assert(filemtime($url), equals(time(), 1));
-        assert(fileatime($url), equals(filectime($url)));
-        assert(fileatime($url), equals(filemtime($url)));
+        assertThat(filemtime($url), equals(time(), 1));
+        assertThat(fileatime($url), equals(filectime($url)));
+        assertThat(fileatime($url), equals(filemtime($url)));
     }
 
     /**
@@ -183,9 +183,9 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
     {
         $url = vfsStream::url('root/foo.txt');
         file_put_contents($url, 'test');
-        assert($this->root->filemtime(), equals(time(), 1));
-        assert($this->root->filemtime(), equals(time(), 1));
-        assert($this->root->fileatime(), equals(50));
+        assertThat($this->root->filemtime(), equals(time(), 1));
+        assertThat($this->root->filemtime(), equals(time(), 1));
+        assertThat($this->root->fileatime(), equals(50));
     }
 
     /**
@@ -221,9 +221,9 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
             ->lastAccessed(100)
             ->lastAttributeModified(100);
         unlink($file->url());
-        assert($this->root->filemtime(), equals(time(), 1));
-        assert($this->root->filemtime(), equals(time(), 1));
-        assert($this->root->fileatime(), equals(100));
+        assertThat($this->root->filemtime(), equals(time(), 1));
+        assertThat($this->root->filemtime(), equals(time(), 1));
+        assertThat($this->root->fileatime(), equals(100));
     }
 
     /**
@@ -247,12 +247,12 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
             ->lastAccessed(100)
             ->lastAttributeModified(100);
         rename($file->url(), vfsStream::url('root/target/baz.txt'));
-        assert($source->filemtime(), equals(time(), 1));
-        assert($source->filectime(), equals(time(), 1));
-        assert($source->fileatime(), equals(100));
-        assert($target->filemtime(), equals(time(), 1));
-        assert($target->filectime(), equals(time(), 1));
-        assert($target->fileatime(), equals(200));
+        assertThat($source->filemtime(), equals(time(), 1));
+        assertThat($source->filectime(), equals(time(), 1));
+        assertThat($source->fileatime(), equals(100));
+        assertThat($target->filemtime(), equals(time(), 1));
+        assertThat($target->filectime(), equals(time(), 1));
+        assertThat($target->fileatime(), equals(200));
     }
 
     /**
@@ -269,9 +269,9 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
             ->lastAttributeModified(300);
         $target = vfsStream::url('root/target/baz.txt');
         rename($file->url(), $target);
-        assert(filemtime($target), equals(300));
-        assert(fileatime($target), equals(300));
-        assert(filectime($target), equals(300));
+        assertThat(filemtime($target), equals(300));
+        assertThat(fileatime($target), equals(300));
+        assertThat(filectime($target), equals(300));
     }
 
     /**

@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 /**
@@ -46,7 +46,7 @@ class Issue104TestCase extends TestCase
      */
     public function vfsStreamCanHandleUrlEncodedPath()
     {
-        assert(
+        assertThat(
             file_get_contents(vfsStream::url('root/foo bar/schema.xsd')),
             equals($this->content)
         );

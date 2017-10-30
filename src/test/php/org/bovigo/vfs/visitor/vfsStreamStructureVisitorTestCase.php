@@ -12,7 +12,7 @@ namespace org\bovigo\vfs\visitor;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
@@ -35,7 +35,7 @@ class vfsStreamStructureVisitorTestCase extends TestCase
      */
     public function visitFileCreatesStructureForFile()
     {
-        assert(
+        assertThat(
             $this->structureVisitor->visitFile(
                 vfsStream::newFile('foo.txt')->withContent('test')
             )->getStructure(),
@@ -48,7 +48,7 @@ class vfsStreamStructureVisitorTestCase extends TestCase
      */
     public function visitFileCreatesStructureForBlock()
     {
-        assert(
+        assertThat(
             $this->structureVisitor->visitBlockDevice(
                 vfsStream::newBlock('foo')->withContent('test')
             )->getStructure(),
@@ -61,7 +61,7 @@ class vfsStreamStructureVisitorTestCase extends TestCase
      */
     public function visitDirectoryCreatesStructureForDirectory()
     {
-        assert(
+        assertThat(
             $this->structureVisitor->visitDirectory(
                   vfsStream::newDirectory('baz')
             )->getStructure(),
@@ -82,7 +82,7 @@ class vfsStreamStructureVisitorTestCase extends TestCase
                     'foo.txt' => ''
         ]];
         $root = vfsStream::setup('root', null, $structure['root']);
-        assert(
+        assertThat(
             $this->structureVisitor->visitDirectory($root)->getStructure(),
             equals($structure)
         );

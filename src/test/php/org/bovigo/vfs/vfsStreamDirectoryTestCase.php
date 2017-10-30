@@ -12,7 +12,7 @@ namespace org\bovigo\vfs;
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
@@ -54,7 +54,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function isOfTypeDir()
     {
-        assert($this->dir->getType(), equals(vfsStreamContent::TYPE_DIR));
+        assertThat($this->dir->getType(), equals(vfsStreamContent::TYPE_DIR));
     }
 
     /**
@@ -86,7 +86,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function hasGivenName()
     {
-        assert($this->dir->getName(), equals('foo'));
+        assertThat($this->dir->getName(), equals('foo'));
     }
 
     /**
@@ -95,7 +95,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     public function canBeRenamed()
     {
         $this->dir->rename('bar');
-        assert($this->dir->getName(), equals('bar'));
+        assertThat($this->dir->getName(), equals('bar'));
         assertFalse($this->dir->appliesTo('foo'));
         assertFalse($this->dir->appliesTo('foo/bar'));
         assertTrue($this->dir->appliesTo('bar'));
@@ -183,7 +183,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     {
         $content = $this->createChild();
         $this->dir->addChild($content);
-        assert($this->dir->getChild('bar'), isSameAs($content));
+        assertThat($this->dir->getChild('bar'), isSameAs($content));
     }
 
     /**
@@ -193,7 +193,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     {
         $content = $this->createChild();
         $this->dir->addChild($content);
-        assert($this->dir->getChildren(), equals([$content]));
+        assertThat($this->dir->getChildren(), equals([$content]));
     }
 
     /**
@@ -201,7 +201,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function sizeOfDirectoryIs0()
     {
-        assert($this->dir->size(), equals(0));
+        assertThat($this->dir->size(), equals(0));
     }
 
     /**
@@ -210,7 +210,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     public function sizeOfDirectoryIsAlways0()
     {
         $this->dir->addChild($this->createChild());
-        assert($this->dir->size(), equals(0));
+        assertThat($this->dir->size(), equals(0));
     }
 
     /**
@@ -218,7 +218,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function summarizedSizeIs0WhenNoChildrenAdded()
     {
-        assert($this->dir->sizeSummarized(), equals(0));
+        assertThat($this->dir->sizeSummarized(), equals(0));
     }
 
     /**
@@ -227,7 +227,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     public function summarizedSizeContainsSizeOfChildren()
     {
         $this->dir->addChild($this->createChild());
-        assert($this->dir->sizeSummarized(), equals(5));
+        assertThat($this->dir->sizeSummarized(), equals(5));
     }
 
     /**
@@ -238,7 +238,7 @@ class vfsStreamDirectoryTestCase extends TestCase
         $subdir  = vfsStream::newDirectory('subdir');
         $subdir->addChild($this->createChild());
         $this->dir->addChild($subdir);
-        assert($this->dir->sizeSummarized(), equals(5));
+        assertThat($this->dir->sizeSummarized(), equals(5));
     }
 
     /**
@@ -261,7 +261,7 @@ class vfsStreamDirectoryTestCase extends TestCase
         $content2 = $this->createChild();
         $this->dir->addChild($this->createChild());
         $this->dir->addChild($content2);
-        assert($this->dir->getChild('bar'), isSameAs($content2));
+        assertThat($this->dir->getChild('bar'), isSameAs($content2));
     }
 
     /**
@@ -294,7 +294,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function defaultPermissions()
     {
-        assert($this->dir->getPermissions(), equals(0777));
+        assertThat($this->dir->getPermissions(), equals(0777));
     }
 
 
@@ -304,7 +304,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function permissionsCanBeChanged()
     {
-        assert($this->dir->chmod(0755)->getPermissions(), equals(0755));
+        assertThat($this->dir->chmod(0755)->getPermissions(), equals(0755));
     }
 
     /**
@@ -313,7 +313,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function permissionsCanBeSetOnCreation()
     {
-        assert(vfsStream::newDirectory('foo', 0755)->getPermissions(), equals(0755));
+        assertThat(vfsStream::newDirectory('foo', 0755)->getPermissions(), equals(0755));
     }
 
     /**
@@ -322,7 +322,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function currentUserIsDefaultOwner()
     {
-        assert($this->dir->getUser(), equals(vfsStream::getCurrentUser()));
+        assertThat($this->dir->getUser(), equals(vfsStream::getCurrentUser()));
         assertTrue($this->dir->isOwnedByUser(vfsStream::getCurrentUser()));
     }
 
@@ -333,7 +333,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     public function ownerCanBeChanged()
     {
         $this->dir->chown(vfsStream::OWNER_USER_1);
-        assert($this->dir->getUser(), equals(vfsStream::OWNER_USER_1));
+        assertThat($this->dir->getUser(), equals(vfsStream::OWNER_USER_1));
         assertTrue($this->dir->isOwnedByUser(vfsStream::OWNER_USER_1));
     }
 
@@ -343,7 +343,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      */
     public function currentGroupIsDefaultGroup()
     {
-        assert($this->dir->getGroup(), equals(vfsStream::getCurrentGroup()));
+        assertThat($this->dir->getGroup(), equals(vfsStream::getCurrentGroup()));
         assertTrue($this->dir->isOwnedByGroup(vfsStream::getCurrentGroup()));
     }
 
@@ -354,7 +354,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     public function groupCanBeChanged()
     {
         $this->dir->chgrp(vfsStream::GROUP_USER_1);
-        assert($this->dir->getGroup(), equals(vfsStream::GROUP_USER_1));
+        assertThat($this->dir->getGroup(), equals(vfsStream::GROUP_USER_1));
         assertTrue($this->dir->isOwnedByGroup(vfsStream::GROUP_USER_1));
     }
 }

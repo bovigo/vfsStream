@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
@@ -31,7 +31,7 @@ class vfsStreamZipTestCase extends TestCase
         vfsStream::setup();
         $zip = new \ZipArchive();
         if (DIRECTORY_SEPARATOR == '\\') {
-            assert(
+            assertThat(
                 $zip->open(vfsStream::url('root/test.zip'), \ZipArchive::CREATE),
                 equals(\ZipArchive::ER_READ)
             );

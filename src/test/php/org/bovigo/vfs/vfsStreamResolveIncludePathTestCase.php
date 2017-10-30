@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\predicate\equals;
 /**
@@ -43,7 +43,7 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
     public function knownFileCanBeResolved()
     {
         file_put_contents('vfs://root/a/path/knownFile.php', '<?php ?>');
-        assert(
+        assertThat(
             stream_resolve_include_path('path/knownFile.php'),
             equals('vfs://root/a/path/knownFile.php')
         );

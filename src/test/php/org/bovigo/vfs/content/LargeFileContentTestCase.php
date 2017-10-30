@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs\content;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 /**
@@ -42,7 +42,7 @@ class LargeFileContentTestCase extends TestCase
      */
     public function hasSizeOriginallyGiven()
     {
-        assert($this->largeFileContent->size(), equals(100));
+        assertThat($this->largeFileContent->size(), equals(100));
     }
 
     /**
@@ -50,7 +50,7 @@ class LargeFileContentTestCase extends TestCase
      */
     public function contentIsFilledUpWithSpacesIfNoDataWritten()
     {
-        assert($this->largeFileContent->content(), equals(str_repeat(' ', 100)));
+        assertThat($this->largeFileContent->content(), equals(str_repeat(' ', 100)));
     }
 
     /**
@@ -58,7 +58,7 @@ class LargeFileContentTestCase extends TestCase
      */
     public function readReturnsSpacesWhenNothingWrittenAtOffset()
     {
-        assert($this->largeFileContent->read(10), equals(str_repeat(' ', 10)));
+        assertThat($this->largeFileContent->read(10), equals(str_repeat(' ', 10)));
     }
 
     /**
@@ -68,7 +68,7 @@ class LargeFileContentTestCase extends TestCase
     {
         $this->largeFileContent->write('foobarbaz');
         $this->largeFileContent->seek(0, SEEK_SET);
-        assert($this->largeFileContent->read(10), equals('foobarbaz '));
+        assertThat($this->largeFileContent->read(10), equals('foobarbaz '));
     }
 
     /**
@@ -76,7 +76,7 @@ class LargeFileContentTestCase extends TestCase
      */
     public function writeReturnsAmounfOfWrittenBytes()
     {
-        assert($this->largeFileContent->write('foobarbaz'), equals(9));
+        assertThat($this->largeFileContent->write('foobarbaz'), equals(9));
     }
 
     /**
@@ -85,7 +85,7 @@ class LargeFileContentTestCase extends TestCase
     public function writesDataAtStartWhenOffsetNotMoved()
     {
         $this->largeFileContent->write('foobarbaz');
-        assert(
+        assertThat(
             $this->largeFileContent->content(),
             equals('foobarbaz' . str_repeat(' ', 91))
         );
@@ -97,7 +97,7 @@ class LargeFileContentTestCase extends TestCase
     public function writeDataAtStartDoesNotIncreaseSize()
     {
         $this->largeFileContent->write('foobarbaz');
-        assert($this->largeFileContent->size(), equals(100));
+        assertThat($this->largeFileContent->size(), equals(100));
     }
 
     /**
@@ -107,7 +107,7 @@ class LargeFileContentTestCase extends TestCase
     {
         $this->largeFileContent->seek(50, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
-        assert(
+        assertThat(
             $this->largeFileContent->content(),
             equals(str_repeat(' ', 50) . 'foobarbaz' . str_repeat(' ', 41))
         );
@@ -120,7 +120,7 @@ class LargeFileContentTestCase extends TestCase
     {
         $this->largeFileContent->seek(50, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
-        assert($this->largeFileContent->size(), equals(100));
+        assertThat($this->largeFileContent->size(), equals(100));
     }
 
     /**
@@ -130,7 +130,7 @@ class LargeFileContentTestCase extends TestCase
     {
         $this->largeFileContent->seek(95, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
-        assert(
+        assertThat(
             $this->largeFileContent->content(),
             equals(str_repeat(' ', 95) . 'foobarbaz')
         );
@@ -143,7 +143,7 @@ class LargeFileContentTestCase extends TestCase
     {
         $this->largeFileContent->seek(95, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
-        assert($this->largeFileContent->size(), equals(104));
+        assertThat($this->largeFileContent->size(), equals(104));
     }
 
     /**
@@ -153,7 +153,7 @@ class LargeFileContentTestCase extends TestCase
     {
         $this->largeFileContent->seek(0, SEEK_END);
         $this->largeFileContent->write('foobarbaz');
-        assert(
+        assertThat(
             $this->largeFileContent->content(),
             equals(str_repeat(' ', 100) . 'foobarbaz')
         );
@@ -166,7 +166,7 @@ class LargeFileContentTestCase extends TestCase
     {
         $this->largeFileContent->seek(0, SEEK_END);
         $this->largeFileContent->write('foobarbaz');
-        assert($this->largeFileContent->size(), equals(109));
+        assertThat($this->largeFileContent->size(), equals(109));
     }
 
     /**
@@ -175,7 +175,7 @@ class LargeFileContentTestCase extends TestCase
     public function truncateReducesSize()
     {
         assertTrue($this->largeFileContent->truncate(50));
-        assert($this->largeFileContent->size(), equals(50));
+        assertThat($this->largeFileContent->size(), equals(50));
     }
 
     /**
@@ -186,7 +186,7 @@ class LargeFileContentTestCase extends TestCase
         $this->largeFileContent->seek(45, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
         $this->largeFileContent->truncate(50);
-        assert(
+        assertThat(
             $this->largeFileContent->content(),
             equals(str_repeat(' ', 45) . 'fooba')
         );
@@ -197,7 +197,7 @@ class LargeFileContentTestCase extends TestCase
      */
     public function createInstanceWithKilobytes()
     {
-        assert(LargeFileContent::withKilobytes(100)->size(), equals(100 * 1024));
+        assertThat(LargeFileContent::withKilobytes(100)->size(), equals(100 * 1024));
     }
 
     /**
@@ -205,7 +205,7 @@ class LargeFileContentTestCase extends TestCase
      */
     public function createInstanceWithMegabytes()
     {
-        assert(LargeFileContent::withMegabytes(100)->size(), equals(100 * 1024 * 1024));
+        assertThat(LargeFileContent::withMegabytes(100)->size(), equals(100 * 1024 * 1024));
     }
 
     /**
@@ -213,6 +213,6 @@ class LargeFileContentTestCase extends TestCase
      */
     public function createInstanceWithGigabytes()
     {
-        assert(LargeFileContent::withGigabytes(100)->size(), equals(100 * 1024 * 1024 * 1024));
+        assertThat(LargeFileContent::withGigabytes(100)->size(), equals(100 * 1024 * 1024 * 1024));
     }
 }

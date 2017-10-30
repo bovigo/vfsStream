@@ -12,7 +12,7 @@ namespace org\bovigo\vfs;
 require_once __DIR__ . '/vfsStreamWrapperBaseTestCase.php';
 
 use function bovigo\assert\{
-    assert,
+    assertThat,
     assertFalse,
     assertNotNull,
     assertNull,
@@ -43,7 +43,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     public function mkdirDoesNotOverwriteExistingRoot($newRoot)
     {
         assertFalse(mkdir(vfsStream::url($newRoot), 0777, true));
-        assert(vfsStreamWrapper::getRoot(), isSameAs($this->root));
+        assertThat(vfsStreamWrapper::getRoot(), isSameAs($this->root));
     }
 
     /**
@@ -73,7 +73,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     public function mkdirNonRecursivelyWithDefaultPermissions()
     {
         assertTrue(mkdir($this->root->url() . '/another'));
-        assert($this->root->getChild('another')->getPermissions(), equals(0777));
+        assertThat($this->root->getChild('another')->getPermissions(), equals(0777));
     }
 
     public function mkdirChildren(): array
@@ -90,7 +90,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     {
         assertTrue(mkdir($this->root->url() . '/another/more', 0775, true));
         assertTrue($this->root->hasChild($child));
-        assert($this->root->getChild($child)->getPermissions(), equals(0775));
+        assertThat($this->root->getChild($child)->getPermissions(), equals(0775));
     }
 
     /**
@@ -113,8 +113,8 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         vfsStreamWrapper::register();
         assertTrue(@mkdir(vfsStream::url('root')));
         $root = vfsStreamWrapper::getRoot();
-        assert($root->getName(), equals('root'));
-        assert($root->getPermissions(), equals(0777));
+        assertThat($root->getName(), equals('root'));
+        assertThat($root->getPermissions(), equals(0777));
     }
 
     /**
@@ -126,8 +126,8 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         vfsStreamWrapper::register();
         assertTrue(@mkdir(vfsStream::url('root'), 0755));
         $root = vfsStreamWrapper::getRoot();
-        assert($root->getName(), equals('root'));
-        assert($root->getPermissions(), equals(0755));
+        assertThat($root->getName(), equals('root'));
+        assertThat($root->getPermissions(), equals(0755));
     }
 
     /**
@@ -203,7 +203,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
     {
         $subdir  = vfsStream::url('root/a/0');
         mkdir($subdir, 0777, true);
-        assert($subdir, isExistingDirectory());
+        assertThat($subdir, isExistingDirectory());
     }
 
     /**
@@ -353,7 +353,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function accessWithDoubleDotReturnsCorrectContent()
     {
-        assert(
+        assertThat(
             file_get_contents(vfsStream::url('root/subdir/../file2')),
             equals('file 2')
         );
@@ -365,7 +365,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function accessWithExcessDoubleDotsReturnsCorrectContent()
     {
-        assert(
+        assertThat(
             file_get_contents(vfsStream::url('root/../../../../subdir/../file2')),
             equals('file 2')
         );
@@ -380,7 +380,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         $this->root->chown(vfsStream::OWNER_USER_1);
         assertTrue(is_dir(vfsStream::url('root/..')));
         $stat = stat(vfsStream::url('root/..'));
-        assert($stat['uid'], equals(vfsStream::OWNER_USER_1));
+        assertThat($stat['uid'], equals(vfsStream::OWNER_USER_1));
     }
 
 

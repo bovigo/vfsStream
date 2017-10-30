@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 require_once __DIR__ . '/vfsStreamWrapperBaseTestCase.php';
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isOfSize;
@@ -41,7 +41,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
 
     private function assertDirectoryCount(int $expectedCount, int $actualCount)
     {
-        assert(
+        assertThat(
             $actualCount,
             equals($expectedCount),
             'Directory root contains ' . $expectedCount . ' children, but got ' . $actualCount . ' children while iterating over directory contents'
@@ -178,8 +178,8 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
             closedir($handle);
         }
 
-        assert($list1, equals($list2));
-        assert($list1, isOfSize(2));
+        assertThat($list1, equals($list2));
+        assertThat($list1, isOfSize(2));
     }
 
     /**
@@ -213,8 +213,8 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
 
         closedir($handle1);
         closedir($handle2);
-        assert($list1, equals($list2));
-        assert($list1, isOfSize(2));
+        assertThat($list1, equals($list2));
+        assertThat($list1, isOfSize(2));
     }
 
     /**
@@ -248,7 +248,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
             $pathes[] = $fullFileName;
         }
 
-        assert($pathes, equals([
+        assertThat($pathes, equals([
             'vfs://root'.DIRECTORY_SEPARATOR.'.',
             'vfs://root'.DIRECTORY_SEPARATOR.'..',
             'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'.',
@@ -296,7 +296,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
             $pathes[] = $fullFileName;
         }
 
-        assert($pathes, equals([
+        assertThat($pathes, equals([
             'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory'.DIRECTORY_SEPARATOR.'test.php',
             'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory'.DIRECTORY_SEPARATOR.'other.php',
             'vfs://root'.DIRECTORY_SEPARATOR.'Core'.DIRECTORY_SEPARATOR.'AbstractFactory'.DIRECTORY_SEPARATOR.'Invalid.csv',

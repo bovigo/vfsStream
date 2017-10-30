@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\predicate\equals;
 /**
@@ -75,7 +75,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     public function setWriteBufferDoesNotWork()
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
-        assert(stream_set_write_buffer($fp, 512), equals(-1));
+        assertThat(stream_set_write_buffer($fp, 512), equals(-1));
         fclose($fp);
     }
 }
