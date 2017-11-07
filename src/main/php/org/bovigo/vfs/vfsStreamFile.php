@@ -90,7 +90,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * Setting content with this method does not change the time when the file
      * was last modified.
      *
-     * @param   string]FileContent  $content
+     * @param   string|FileContent  $content
      * @return  vfsStreamFile
      * @throws  \InvalidArgumentException
      */
