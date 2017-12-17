@@ -519,8 +519,8 @@ class vfsStreamWrapper
                 }
 
                 $currentTime = time();
-                $content->lastModified(((isset($var[0])) ? ($var[0]) : ($currentTime)))
-                        ->lastAccessed(((isset($var[1])) ? ($var[1]) : ($currentTime)));
+                $content->lastModified($var[0] ?? $currentTime)
+                        ->lastAccessed($var[1] ?? $currentTime);
                 return true;
 
             case STREAM_META_OWNER_NAME:
