@@ -116,11 +116,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
 
         $result = '';
         for ($i = 0; $i < $count; $i++) {
-            if (isset($this->content[$i + $offset])) {
-                $result .= $this->content[$i + $offset];
-            } else {
-                $result .= ' ';
-            }
+            $result .= $this->content[$i + $offset] ?? ' ';
         }
 
         return $result;
