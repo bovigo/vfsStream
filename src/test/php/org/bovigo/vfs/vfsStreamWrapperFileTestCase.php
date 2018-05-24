@@ -130,7 +130,7 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         return [
             [2, SEEK_SET, 2],
             [1, SEEK_CUR, 1],
-            [1, SEEK_END, 7],
+            [1, SEEK_END, 6],
         ];
     }
 

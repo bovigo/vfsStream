@@ -219,9 +219,9 @@ class vfsStreamFileTestCase extends TestCase
     {
       return [
           [0, SEEK_SET, 0, 'foobarbaz'],
-          [5, SEEK_SET, 5, 'rbaz'],
+          [5, SEEK_SET, 0, 'rbaz'],
           [0, SEEK_END, 0, ''],
-          [2, SEEK_END, 2, ''],
+          [2, SEEK_END, 0, ''],
       ];
     }
 
@@ -242,9 +242,9 @@ class vfsStreamFileTestCase extends TestCase
     {
         $this->file->seek(5, SEEK_SET);
         assertTrue($this->file->seek(0, SEEK_CUR));
-        assertThat($this->file->getBytesRead(), equals(5));
+        assertThat($this->file->getBytesRead(), equals(0));
         assertTrue($this->file->seek(2, SEEK_CUR));
-        assertThat($this->file->getBytesRead(), equals(7));
+        assertThat($this->file->getBytesRead(), equals(0));
     }
 
     /**
@@ -257,9 +257,20 @@ class vfsStreamFileTestCase extends TestCase
         assertThat($this->file->getBytesRead(), equals(0));
     }
 
+    public function seekReads(): array
+    {
+        return [
+            [0, SEEK_SET, 0, 'foobarbaz'],
+            [5, SEEK_SET, 5, 'rbaz'],
+            [0, SEEK_END, 0, ''],
+            [2, SEEK_END, 0, ''],
+            [-2, SEEK_END, -2, 'az'],
+        ];
+    }
+
     /**
      * @test
-     * @dataProvider  seeks
+     * @dataProvider  seekReads
      */
     public function seekRead(int $offset, $whence, int $expected, string $remaining)
     {
