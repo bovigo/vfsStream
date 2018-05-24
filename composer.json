@@ -27,6 +27,9 @@
     "autoload": {
         "psr-0": { "org\\bovigo\\vfs\\": "src/main/php" }
     },
+    "autoload-dev": {
+        "psr-4": { "org\\bovigo\\vfs\\test\\": "src/test/php/org/bovigo/vfs" }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "2.0.x-dev"
