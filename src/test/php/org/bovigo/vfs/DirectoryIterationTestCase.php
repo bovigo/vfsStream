@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs;
-require_once __DIR__ . '/vfsStreamWrapperBaseTestCase.php';
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;

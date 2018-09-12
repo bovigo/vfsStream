@@ -25,7 +25,10 @@
         "bovigo/assert": "^3.1"
     },
     "autoload": {
-        "psr-0": { "org\\bovigo\\vfs\\": "src/main/php" }
+        "psr-4": { "org\\bovigo\\vfs\\": "src/main/php/org/bovigo/vfs" }
+    },
+    "autoload-dev": {
+       "psr-4": { "org\\bovigo\\vfs\\": "src/test/php/org/bovigo/vfs" }
     },
     "extra": {
         "branch-alias": {
