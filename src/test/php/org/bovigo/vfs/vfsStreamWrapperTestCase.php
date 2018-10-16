@@ -255,11 +255,18 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @test
      */
-    public function directoriesAreNeverExecutable()
+    public function directoriesAreSometimesExecutable()
     {
         $this->root->chmod(0766);
-        assertFalse(is_executable($this->root->url()));
-        assertFalse(is_executable($this->root->url() . '/.'));
+        // Inconsistent behavior has been fixed in 7.3
+        // see https://github.com/php/php-src/commit/94b4abdbc4d
+        if (PHP_VERSION_ID >= 70300) {
+            assertTrue(is_executable($this->root->url()));
+            assertTrue(is_executable($this->root->url() . '/.'));
+        } else {
+            assertFalse(is_executable($this->root->url()));
+            assertFalse(is_executable($this->root->url() . '/.'));
+        }
     }
 
     /**
