@@ -12,9 +12,9 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/mikey179/vfsStream/issues",
-        "source": "https://github.com/mikey179/vfsStream/tree/master",
-        "wiki": "https://github.com/mikey179/vfsStream/wiki"
+        "issues": "https://github.com/bovigo/vfsStream/issues",
+        "source": "https://github.com/bovigo/vfsStream/tree/master",
+        "wiki": "https://github.com/bovigo/vfsStream/wiki"
     },
     "require": {
         "php": "^7.1"
