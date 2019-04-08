@@ -1,5 +1,5 @@
 {
-    "name": "mikey179/vfsStream",
+    "name": "mikey179/vfsstream",
     "type": "library",
     "homepage": "http://vfs.bovigo.org/",
     "description": "Virtual file system to mock the real file system in unit tests.",
