@@ -12,6 +12,8 @@ php:
 matrix:
   fast_finish: true
   include:
+    - php: 5.3
+      dist: precise
     # test against the latest HHVM version by using a newer image
     - php: hhvm
       sudo: true
