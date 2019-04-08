@@ -23,10 +23,10 @@ matrix:
 
 install:
   - composer install
-  - composer require satooshi/php-coveralls
 
 script:
   - vendor/bin/phpunit --coverage-text
 
-after_script:
-  - travis_retry vendor/bin/coveralls
+after_success:
+  - composer require php-coveralls/php-coveralls
+  - travis_retry vendor/bin/php-coveralls
