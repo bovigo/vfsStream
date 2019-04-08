@@ -18,5 +18,5 @@ script:
   - vendor/bin/phpunit --coverage-text
 
 after_success:
-  - composer require satooshi/php-coveralls
-  - travis_retry vendor/bin/coveralls
+  - composer require php-coveralls/php-coveralls
+  - travis_retry vendor/bin/php-coveralls
