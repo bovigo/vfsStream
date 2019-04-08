@@ -7,6 +7,12 @@
   * all methods of `org\bovigo\vfs\visitor\vfsStreamVisitor` are now declared with `self` as return type
 
 
+1.6.6 (2019-04-08)
+------------------
+
+   * backported #174 from master, original PR provided by @localheinz
+
+
 1.6.5 (2017-08-01)
 ------------------
 
