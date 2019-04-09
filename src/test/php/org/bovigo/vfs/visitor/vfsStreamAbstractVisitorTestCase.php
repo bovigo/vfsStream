@@ -37,7 +37,7 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->abstractVisitor = NewInstance::of(vfsStreamAbstractVisitor::class);
     }

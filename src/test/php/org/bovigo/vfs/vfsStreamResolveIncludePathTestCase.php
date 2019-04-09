@@ -24,7 +24,7 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
 {
     protected $backupIncludePath;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->backupIncludePath = get_include_path();
         vfsStream::setup();
@@ -32,7 +32,7 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
         set_include_path('vfs://root/a' . PATH_SEPARATOR . $this->backupIncludePath);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         set_include_path($this->backupIncludePath);
     }

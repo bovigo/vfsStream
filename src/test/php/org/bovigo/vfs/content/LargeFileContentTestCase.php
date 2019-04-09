@@ -32,7 +32,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->largeFileContent = new LargeFileContent(100);
     }

@@ -20,7 +20,7 @@ class vfsStreamWrapperWithoutRootTestCase extends TestCase
     /**
      * set up test environment but without root
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         vfsStreamWrapper::register();
     }

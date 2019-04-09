@@ -32,7 +32,7 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $root = vfsStream::setup();
         $this->largeFile = vfsStream::newFile('large.txt')

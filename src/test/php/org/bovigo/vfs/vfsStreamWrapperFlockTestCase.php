@@ -32,7 +32,7 @@ class vfsStreamWrapperFlockTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->root = vfsStream::setup();
     }
