@@ -45,7 +45,7 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->dir = new vfsStreamDirectory('foo');
         $this->child1 = NewInstance::of(vfsStreamContent::class)->returns([
@@ -62,7 +62,7 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     /**
      * clean up test environment
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         vfsStream::enableDotfiles();
     }

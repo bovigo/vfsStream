@@ -33,7 +33,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->root = vfsStream::setup();
         vfsStream::setQuota(10);

@@ -30,7 +30,7 @@ class vfsStreamTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp()
+    public function setUp(): void
     {
         vfsStreamWrapper::register();
     }

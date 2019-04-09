@@ -43,7 +43,7 @@ abstract class vfsStreamWrapperBaseTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->root   = vfsStream::setup();
         $this->subdir = vfsStream::newDirectory('subdir')->at($this->root);
