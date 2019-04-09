@@ -23,7 +23,7 @@ class Issue104TestCase extends TestCase
 {
     private $content;
 
-    public function setup(): void
+    protected function setUp(): void
     {
       $this->content = '<xs:schema targetNamespace="http://www.example.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
                           <xs:complexType name="myType"></xs:complexType>

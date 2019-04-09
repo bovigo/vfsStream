@@ -26,7 +26,7 @@ class vfsStreamStructureVisitorTestCase extends TestCase
 {
     private $structureVisitor;
 
-    public function setup(): void
+    protected function setUp(): void
     {
         $this->structureVisitor = new vfsStreamStructureVisitor();
     }

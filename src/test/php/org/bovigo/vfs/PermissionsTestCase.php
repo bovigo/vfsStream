@@ -28,7 +28,7 @@ class PermissionsTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setup(): void
+    protected function setUp(): void
     {
         $this->root = vfsStream::setup(
             'root',
