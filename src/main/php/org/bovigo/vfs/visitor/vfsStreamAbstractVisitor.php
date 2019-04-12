@@ -9,8 +9,10 @@ declare(strict_types=1);
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs\visitor;
-use org\bovigo\vfs\vfsStreamContent;
 use org\bovigo\vfs\vfsStreamBlock;
+use org\bovigo\vfs\vfsStreamContent;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamFile;
 
 /**
  * Abstract base class providing an implementation for the visit() method.
@@ -29,24 +31,16 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
      */
     public function visit(vfsStreamContent $content): vfsStreamVisitor
     {
-        switch ($content->getType()) {
-            case vfsStreamContent::TYPE_BLOCK:
-                $this->visitBlockDevice($content);
-                break;
-
-            case vfsStreamContent::TYPE_FILE:
-                $this->visitFile($content);
-                break;
-
-            case vfsStreamContent::TYPE_DIR:
-                if (!$content->isDot()) {
-                    $this->visitDirectory($content);
-                }
-
-                break;
-
-            default:
-                throw new \InvalidArgumentException('Unknown content type ' . $content->getType() . ' for ' . $content->getName());
+        if ($content instanceof vfsStreamBlock) {
+            $this->visitBlockDevice($content);
+        } elseif ($content instanceof vfsStreamFile) {
+            $this->visitFile($content);
+        } elseif ($content instanceof vfsStreamDirectory) {
+            if (!$content->isDot()) {
+                $this->visitDirectory($content);
+            }
+        } else {
+            throw new \InvalidArgumentException('Unknown content type ' . $content->getType() . ' for ' . $content->getName());
         }
 
         return $this;

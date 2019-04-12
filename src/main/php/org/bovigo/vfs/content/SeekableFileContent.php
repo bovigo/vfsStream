@@ -94,7 +94,7 @@ abstract class SeekableFileContent implements FileContent
      * writes an amount of data
      *
      * @param   string  $data
-     * @return  amount of written bytes
+     * @return  int     amount of written bytes
      */
     public function write(string $data): int
     {
@@ -133,6 +133,6 @@ abstract class SeekableFileContent implements FileContent
     public function readUntilEnd(): string
     {
         $data = substr($this->content(), $this->offset);
-        return (false === $data) ? '' : $data;
+        return (!$data) ? '' : $data;
     }
 }

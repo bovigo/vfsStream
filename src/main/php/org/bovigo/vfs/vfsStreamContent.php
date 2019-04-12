@@ -80,7 +80,7 @@ interface vfsStreamContent
      * sets the last modification time of the stream content
      *
      * @param   int  $filemtime
-     * @return  vfsStreamContent
+     * @return  self
      */
     public function lastModified(int $filemtime): self;
 
@@ -95,7 +95,7 @@ interface vfsStreamContent
      * adds content to given container
      *
      * @param   vfsStreamContainer  $container
-     * @return  vfsStreamContent
+     * @return  self
      */
     public function at(vfsStreamContainer $container): self;
 
@@ -103,7 +103,7 @@ interface vfsStreamContent
      * change file mode to given permissions
      *
      * @param   int  $permissions
-     * @return  vfsStreamContent
+     * @return  self
      */
     public function chmod(int $permissions): self;
 
@@ -145,7 +145,7 @@ interface vfsStreamContent
      * change owner of file to given user
      *
      * @param   int  $user
-     * @return  vfsStreamContent
+     * @return  self
      */
     public function chown(int $user): self;
 
@@ -168,7 +168,7 @@ interface vfsStreamContent
      * change owner group of file to given group
      *
      * @param   int  $group
-     * @return  vfsStreamContent
+     * @return  self
      */
     public function chgrp(int $group): self;
 

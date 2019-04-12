@@ -26,8 +26,8 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * constructor
      *
-     * @param   string  $name
-     * @param   int     $permissions  optional
+     * @param   string    $name
+     * @param   int|null  $permissions  optional
      * @throws  vfsStreamException
      */
     public function __construct(string $name, int $permissions = null)
@@ -171,7 +171,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      * returns the child with the given name
      *
      * @param   string  $name
-     * @return  vfsStreamContent
+     * @return  vfsStreamContent|null
      */
     public function getChild(string $name): ?vfsStreamContent
     {

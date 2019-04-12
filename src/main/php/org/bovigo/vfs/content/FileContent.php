@@ -58,7 +58,7 @@ interface FileContent
      * writes an amount of data
      *
      * @param   string  $data
-     * @return  amount of written bytes
+     * @return  int     amount of written bytes
      */
     public function write(string $data): int;
 

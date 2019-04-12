@@ -43,7 +43,7 @@ class Quota
     /**
      * create with unlimited space
      *
-     * @return  Quota
+     * @return  self
      */
     public static function unlimited(): self
     {

@@ -147,7 +147,7 @@ class vfsStreamWrapper
      * sets the root content
      *
      * @param   vfsStreamContainer  $root
-     * @return  vfsStreamContainer
+     * @return  vfsStreamContainer|null
      */
     public static function setRoot(vfsStreamContainer $root): ?vfsStreamContainer
     {
@@ -159,7 +159,7 @@ class vfsStreamWrapper
     /**
      * returns the root content
      *
-     * @return  vfsStreamContainer
+     * @return  vfsStreamContainer|null
      */
     public static function getRoot(): ?vfsStreamContainer
     {
@@ -181,7 +181,7 @@ class vfsStreamWrapper
      * returns content for given path
      *
      * @param   string  $path
-     * @return  vfsStreamContent
+     * @return  vfsStreamContent|null
      */
     protected function getContent(string $path): ?vfsStreamContent
     {
@@ -216,7 +216,7 @@ class vfsStreamWrapper
      *
      * @param   string  $path
      * @param   int     $type
-     * @return  vfsStreamContent
+     * @return  vfsStreamContent|null
      */
     protected function getContentOfType(string $path, int $type): ?vfsStreamContent
     {
@@ -272,10 +272,10 @@ class vfsStreamWrapper
     /**
      * open the stream
      *
-     * @param   string  $path         the path to open
-     * @param   string  $mode         mode for opening
-     * @param   int     $options      options for opening
-     * @param   string  $opened_path  full path that was actually opened
+     * @param   string       $path         the path to open
+     * @param   string       $mode         mode for opening
+     * @param   int          $options      options for opening
+     * @param   string|null  $opened_path  full path that was actually opened
      * @return  bool
      */
     public function stream_open(string $path, string $mode, int $options, string $opened_path = null): bool
@@ -292,8 +292,12 @@ class vfsStreamWrapper
 
         $this->mode    = $this->calculateMode($mode, $extended);
         $path          = $this->resolvePath(vfsStream::path($path));
-        $this->content = $this->getContentOfType($path, vfsStreamContent::TYPE_FILE);
-        if (null !== $this->content) {
+        $this->content = null;
+
+        /** @var vfsStreamFile|null $content */
+        $content = $this->getContentOfType($path, vfsStreamContent::TYPE_FILE);
+        if (null !== $content) {
+            $this->content = $content;
             if (self::WRITE === $mode) {
                 if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
                     trigger_error('File ' . $path . ' already exists, can not open with mode x', E_USER_WARNING);
@@ -338,10 +342,10 @@ class vfsStreamWrapper
     /**
      * creates a file at given path
      *
-     * @param   string  $path     the path to open
-     * @param   string  $mode     mode for opening
-     * @param   string  $options  options for opening
-     * @return  bool|vfsStreamFile
+     * @param   string       $path     the path to open
+     * @param   string|null  $mode     mode for opening
+     * @param   int|null     $options  options for opening
+     * @return  vfsStreamFile|false
      */
     private function createFile(string $path, string $mode = null, int $options = null)
     {
@@ -354,6 +358,7 @@ class vfsStreamWrapper
             return false;
         }
 
+        /** @var vfsStreamDirectory|null $dir */
         $dir = $this->getContentOfType($names['dirname'], vfsStreamContent::TYPE_DIR);
         if (null === $dir) {
             if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
@@ -385,7 +390,10 @@ class vfsStreamWrapper
             return false;
         }
 
-        return vfsStream::newFile($names['basename'])->at($dir);
+        /** @var vfsStreamFile $file */
+        $file = vfsStream::newFile($names['basename'])->at($dir);
+
+        return $file;
     }
 
     /**
@@ -506,7 +514,9 @@ class vfsStreamWrapper
      */
     public function stream_metadata(string $path, int $option, $var): bool
     {
-        $path    = $this->resolvePath(vfsStream::path($path));
+        $path = $this->resolvePath(vfsStream::path($path));
+
+        /** @var vfsStreamAbstractContent|null $content */
         $content = $this->getContent($path);
         switch ($option) {
             case STREAM_META_TOUCH:
@@ -519,8 +529,8 @@ class vfsStreamWrapper
                 }
 
                 $currentTime = time();
-                $content->lastModified($var[0] ?? $currentTime)
-                        ->lastAccessed($var[1] ?? $currentTime);
+                $content->lastModified($var[0] ?? $currentTime);
+                $content->lastAccessed($var[1] ?? $currentTime);
                 return true;
 
             case STREAM_META_OWNER_NAME:
@@ -763,7 +773,9 @@ class vfsStreamWrapper
             return true;
         }
 
-        $names   = $this->splitPath($path);
+        $names = $this->splitPath($path);
+
+        /** @var vfsStreamDirectory $content */
         $content = $this->getContent($names['dirname']);
         if (!$content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
             return false;
@@ -786,13 +798,15 @@ class vfsStreamWrapper
         $srcRealPath = $this->resolvePath(vfsStream::path($path_from));
         $dstRealPath = $this->resolvePath(vfsStream::path($path_to));
         $srcContent  = $this->getContent($srcRealPath);
-        if (null == $srcContent) {
-            trigger_error(' No such file or directory', E_USER_WARNING);
+        if (null === $srcContent) {
+            trigger_error('No such file or directory', E_USER_WARNING);
             return false;
         }
         $dstNames = $this->splitPath($dstRealPath);
+
+        /** @var vfsStreamDirectory|null $dstParentContent */
         $dstParentContent = $this->getContent($dstNames['dirname']);
-        if (null == $dstParentContent) {
+        if (null === $dstParentContent) {
             trigger_error('No such file or directory', E_USER_WARNING);
             return false;
         }
@@ -887,7 +901,9 @@ class vfsStreamWrapper
      */
     public function rmdir(string $path, int $options): bool
     {
-        $path  = $this->resolvePath(vfsStream::path($path));
+        $path = $this->resolvePath(vfsStream::path($path));
+
+        /** @var vfsStreamDirectory|null $child */
         $child = $this->getContentOfType($path, vfsStreamContent::TYPE_DIR);
         if (null === $child) {
             return false;
@@ -906,7 +922,9 @@ class vfsStreamWrapper
         }
 
         $names = $this->splitPath($path);
-        $dir   = $this->getContentOfType($names['dirname'], vfsStreamContent::TYPE_DIR);
+
+        /** @var vfsStreamDirectory $dir */
+        $dir = $this->getContentOfType($names['dirname'], vfsStreamContent::TYPE_DIR);
         if ($dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
             return false;
         }
@@ -925,8 +943,16 @@ class vfsStreamWrapper
     public function dir_opendir(string $path, int $options): bool
     {
         $path      = $this->resolvePath(vfsStream::path($path));
-        $this->dir = $this->getContentOfType($path, vfsStreamContent::TYPE_DIR);
-        if (null === $this->dir || $this->dir->isReadable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
+        $this->dir = null;
+
+        /** @var vfsStreamDirectory|null $dir */
+        $dir = $this->getContentOfType($path, vfsStreamContent::TYPE_DIR);
+        if (null === $dir) {
+            return false;
+        }
+
+        $this->dir = $dir;
+        if (!$this->dir->isReadable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
             return false;
         }
 
@@ -980,6 +1006,7 @@ class vfsStreamWrapper
      */
     public function url_stat(string $path, int $flags)
     {
+        /** @var vfsStreamAbstractContent|null $content */
         $content = $this->getContent($this->resolvePath(vfsStream::path($path)));
         if (null === $content) {
             if (($flags & STREAM_URL_STAT_QUIET) != STREAM_URL_STAT_QUIET) {

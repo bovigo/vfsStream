@@ -10,8 +10,6 @@ declare(strict_types=1);
  */
 namespace org\bovigo\vfs\visitor;
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;

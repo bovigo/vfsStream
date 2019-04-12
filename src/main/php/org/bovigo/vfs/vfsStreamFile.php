@@ -40,8 +40,8 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * constructor
      *
-     * @param  string  $name
-     * @param  int     $permissions  optional
+     * @param  string    $name
+     * @param  int|null  $permissions  optional
      */
     public function __construct(string $name, int $permissions = null)
     {
@@ -190,7 +190,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * Using this method changes the time when the file was last modified.
      *
      * @param   string  $data
-     * @return  amount of written bytes
+     * @return  int     amount of written bytes
      */
     public function write(string $data): int
     {

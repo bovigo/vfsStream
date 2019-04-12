@@ -17,7 +17,7 @@ class DotDirectory extends vfsStreamDirectory
     /**
      * returns iterator for the children
      *
-     * @return  vfsStreamContainerIterator
+     * @return  \Iterator
      */
     public function getIterator(): \Iterator
     {

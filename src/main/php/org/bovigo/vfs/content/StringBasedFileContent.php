@@ -63,7 +63,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
     protected function doRead(int $offset, int $count): string
     {
         $data = substr($this->content, $offset, $count);
-        return (false === $data) ? '' : $data;
+        return (!$data) ? '' : $data;
     }
 
     /**

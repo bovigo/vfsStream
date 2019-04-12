@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @package  org\bovigo\vfs
  */
 namespace org\bovigo\vfs\visitor;
-use org\bovigo\vfs\vfsStreamContent;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use org\bovigo\vfs\vfsStreamBlock;
@@ -40,12 +39,14 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      *
      * If no file pointer given it will fall back to STDOUT.
      *
-     * @param   resource  $out  optional
+     * @param   resource|null  $out  optional
      * @throws  \InvalidArgumentException
      * @api
      */
-    public function __construct($out = STDOUT)
+    public function __construct($out = null)
     {
+        $out = $out ?? STDOUT;
+
         if (is_resource($out) === false || get_resource_type($out) !== 'stream') {
             throw new \InvalidArgumentException('Given filepointer is not a resource of type stream');
         }
