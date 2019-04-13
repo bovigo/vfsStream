@@ -25,7 +25,7 @@ class vfsStreamExLockTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $root = vfsStream::setup();
         vfsStream::newFile('testfile')->at($root);

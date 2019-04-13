@@ -33,7 +33,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->root = vfsStream::setup();
         vfsStream::newFile('foo.txt')->at($this->root);

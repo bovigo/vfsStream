@@ -25,7 +25,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * clean up test environment
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         vfsStream::enableDotfiles();
     }

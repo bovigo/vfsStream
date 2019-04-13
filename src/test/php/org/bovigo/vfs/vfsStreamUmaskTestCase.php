@@ -22,12 +22,12 @@ use function bovigo\assert\predicate\equals;
  */
 class vfsStreamUmaskTestCase extends TestCase
 {
-    public function setUp()
+    protected function setUp(): void
     {
         vfsStream::umask(0000);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         vfsStream::umask(0000);
     }

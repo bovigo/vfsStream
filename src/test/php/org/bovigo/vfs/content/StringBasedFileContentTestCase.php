@@ -34,7 +34,7 @@ class StringBasedFileContentTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->stringBasedFileContent = new StringBasedFileContent('foobarbaz');
     }

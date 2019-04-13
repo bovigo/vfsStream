@@ -32,7 +32,7 @@ class vfsStreamWrapperDirSeparatorTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->root = vfsStream::setup();
     }

@@ -40,7 +40,7 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends TestCase
     /**
      * clean up test environment
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         TestvfsStreamWrapper::unregister();
     }

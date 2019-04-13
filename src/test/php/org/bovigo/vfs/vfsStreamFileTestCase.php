@@ -34,7 +34,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * set up test environment
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->file = vfsStream::newFile('foo');
     }

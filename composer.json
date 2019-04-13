@@ -17,12 +17,12 @@
         "wiki": "https://github.com/bovigo/vfsStream/wiki"
     },
     "require": {
-        "php": "^7.1"
+        "php": "^7.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.4",
-        "bovigo/callmap": "^4.0",
-        "bovigo/assert": "^3.1"
+        "phpunit/phpunit": "^8.0",
+        "bovigo/callmap": "^5.0",
+        "bovigo/assert": "^5.0"
     },
     "autoload": {
         "psr-4": { "org\\bovigo\\vfs\\": "src/main/php/org/bovigo/vfs" }
