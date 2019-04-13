@@ -19,7 +19,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
     /**
      * actual content
      *
-     * @type  string
+     * @var  string
      */
     private $content;
 

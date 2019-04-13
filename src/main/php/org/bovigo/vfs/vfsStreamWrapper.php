@@ -50,43 +50,43 @@ class vfsStreamWrapper
     /**
      * switch whether class has already been registered as stream wrapper or not
      *
-     * @type  bool
+     * @var  bool
      */
     protected static $registered = false;
     /**
      * root content
      *
-     * @type  vfsStreamContent
+     * @var  vfsStreamContent
      */
     protected static $root;
     /**
      * disk space quota
      *
-     * @type  Quota
+     * @var  Quota
      */
     private static $quota;
     /**
      * file mode: read only, write only, all
      *
-     * @type  int
+     * @var  int
      */
     protected $mode;
     /**
      * shortcut to file container
      *
-     * @type  vfsStreamFile
+     * @var  vfsStreamFile
      */
     protected $content;
     /**
      * shortcut to directory container
      *
-     * @type  vfsStreamDirectory
+     * @var  vfsStreamDirectory
      */
     protected $dir;
     /**
      * shortcut to directory container iterator
      *
-     * @type  vfsStreamDirectory
+     * @var  vfsStreamDirectory
      */
     protected $dirIterator;
 

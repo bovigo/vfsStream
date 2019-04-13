@@ -19,7 +19,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * list of directory children
      *
-     * @type  vfsStreamContent[]
+     * @var  vfsStreamContent[]
      */
     protected $children = [];
 

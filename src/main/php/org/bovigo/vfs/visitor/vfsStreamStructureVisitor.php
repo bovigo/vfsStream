@@ -24,13 +24,13 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * collected structure
      *
-     * @type  array
+     * @var  array
      */
     protected $structure = [];
     /**
      * poiting to currently iterated directory
      *
-     * @type  array
+     * @var  array
      */
     protected $current;
 

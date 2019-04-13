@@ -21,19 +21,19 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * content of the file
      *
-     * @type  FileContent
+     * @var  FileContent
      */
     private $content;
     /**
      * Resource id which exclusively locked this file
      *
-     * @type  string
+     * @var  string
      */
     protected $exclusiveLock;
     /**
      * Resources ids which currently holds shared lock to this file
      *
-     * @type  bool[string]
+     * @var  bool[string]
      */
     protected $sharedLock = [];
 

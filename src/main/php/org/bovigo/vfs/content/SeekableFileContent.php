@@ -19,7 +19,7 @@ abstract class SeekableFileContent implements FileContent
     /**
      * current position within content
      *
-     * @type  int
+     * @var  int
      */
     private $offset = 0;
 
