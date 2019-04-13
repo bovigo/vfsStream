@@ -27,3 +27,4 @@ install:
 test_script:
   - php .\php\composer.phar install
   - vendor/bin/phpunit.bat --coverage-text
+  - vendor/bin/phpstan.bat analyse
