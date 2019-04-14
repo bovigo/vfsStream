@@ -132,7 +132,6 @@ abstract class SeekableFileContent implements FileContent
      */
     public function readUntilEnd(): string
     {
-        $data = substr($this->content(), $this->offset);
-        return (!$data) ? '' : $data;
+        return substr($this->content(), $this->offset);
     }
 }
