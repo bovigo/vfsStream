@@ -20,8 +20,8 @@ class vfsStreamBlock extends vfsStreamFile
     /**
      * constructor
      *
-     * @param  string  $name
-     * @param  int     $permissions  optional
+     * @param  string    $name
+     * @param  int|null  $permissions  optional
      */
     public function __construct(string $name, int $permissions = null)
     {

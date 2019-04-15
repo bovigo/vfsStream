@@ -1,2 +1,5 @@
 /docs
 /vendor
+phpstan.neon
+phpunit.xml
+phpdoc.xml

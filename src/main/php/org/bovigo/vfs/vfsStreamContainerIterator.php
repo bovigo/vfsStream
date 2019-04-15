@@ -47,7 +47,7 @@ class vfsStreamContainerIterator implements \Iterator
     /**
      * returns the current child
      *
-     * @return  vfsStreamContent
+     * @return  vfsStreamContent|null
      */
     public function current()
     {
@@ -62,7 +62,7 @@ class vfsStreamContainerIterator implements \Iterator
     /**
      * returns the name of the current child
      *
-     * @return  string
+     * @return  string|null
      */
     public function key()
     {

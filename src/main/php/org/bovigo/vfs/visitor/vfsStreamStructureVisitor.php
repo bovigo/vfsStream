@@ -101,7 +101,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * resets structure so visitor could be reused
      *
-     * @return  vfsStreamStructureVisitor
+     * @return  self
      */
     public function reset(): self
     {

@@ -15,6 +15,7 @@ install:
 
 script:
   - vendor/bin/phpunit --coverage-text
+  - vendor/bin/phpstan analyze
 
 after_success:
   - composer require php-coveralls/php-coveralls

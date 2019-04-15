@@ -41,7 +41,7 @@ interface vfsStreamContainer extends \IteratorAggregate
      * returns the child with the given name
      *
      * @param   string  $name
-     * @return  vfsStreamContent
+     * @return  vfsStreamContent|null
      */
     public function getChild(string $name): ?vfsStreamContent;
 

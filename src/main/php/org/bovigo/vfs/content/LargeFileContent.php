@@ -52,7 +52,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
      * create large file with given size in kilobyte
      *
      * @param   int  $kilobyte
-     * @return  LargeFileContent
+     * @return  self
      */
     public static function withKilobytes(int $kilobyte): self
     {
@@ -63,7 +63,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
      * create large file with given size in megabyte
      *
      * @param   int  $megabyte
-     * @return  LargeFileContent
+     * @return  self
      */
     public static function withMegabytes(int $megabyte): self
     {
@@ -74,7 +74,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
      * create large file with given size in gigabyte
      *
      * @param   int  $gigabyte
-     * @return  LargeFileContent
+     * @return  self
      */
     public static function withGigabytes(int $gigabyte): self
     {
