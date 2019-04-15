@@ -39,15 +39,13 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      *
      * If no file pointer given it will fall back to STDOUT.
      *
-     * @param   resource|null  $out  optional
+     * @param   resource  $out  optional
      * @throws  \InvalidArgumentException
      * @api
      */
-    public function __construct($out = null)
+    public function __construct($out = STDOUT)
     {
-        $out = $out ?? STDOUT;
-
-        if (is_resource($out) === false || get_resource_type($out) !== 'stream') {
+        if (!is_resource($out) || get_resource_type($out) !== 'stream') {
             throw new \InvalidArgumentException('Given filepointer is not a resource of type stream');
         }
 
