@@ -69,4 +69,22 @@ interface FileContent
      * @return  bool
      */
     public function truncate(int $size): bool;
+
+    /**
+     * Returns the current position within the file.
+     *
+     * @return  int
+     * @api
+     */
+    public function bytesRead(): int;
+
+    /**
+     * Returns the content until its end from current offset.
+     *
+     * Using this method changes the time when the file was last accessed.
+     *
+     * @return  string
+     * @api
+     */
+    public function readUntilEnd(): string;
 }
