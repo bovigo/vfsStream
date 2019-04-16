@@ -21,19 +21,19 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * content of the file
      *
-     * @type  FileContent
+     * @var  FileContent
      */
     private $content;
     /**
      * Resource id which exclusively locked this file
      *
-     * @type  string
+     * @var  string|null
      */
     protected $exclusiveLock;
     /**
      * Resources ids which currently holds shared lock to this file
      *
-     * @type  bool[string]
+     * @var  array<string, bool>
      */
     protected $sharedLock = [];
 
@@ -176,7 +176,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * Using this method changes the time when the file was last accessed.
      *
      * @return  string
-     * @deprecated  since 1.3.0
+     * @api  since 1.3.0
      */
     public function readUntilEnd(): string
     {
@@ -226,7 +226,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * returns the current position within the file
      *
      * @return  int
-     * @deprecated  since 1.3.0
+     * @api  since 1.3.0
      */
     public function getBytesRead(): int
     {
@@ -366,7 +366,8 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  string
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function getResourceId($resource): string {
+    public function getResourceId($resource): string
+    {
         if (is_resource($resource)) {
             $data = stream_get_meta_data($resource);
             $resource = $data['wrapper_data'];

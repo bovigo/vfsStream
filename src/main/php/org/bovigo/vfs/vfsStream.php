@@ -50,13 +50,13 @@ class vfsStream
     /**
      * initial umask setting
      *
-     * @type  int
+     * @var  int
      */
     protected static $umask  = 0000;
     /**
      * switch whether dotfiles are enabled in directory listings
      *
-     * @type  bool
+     * @var  bool
      */
     private static $dotFiles = true;
 

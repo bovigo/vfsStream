@@ -19,7 +19,7 @@ abstract class SeekableFileContent implements FileContent
     /**
      * current position within content
      *
-     * @type  int
+     * @var  int
      */
     private $offset = 0;
 
@@ -117,7 +117,7 @@ abstract class SeekableFileContent implements FileContent
      * for backwards compatibility with vfsStreamFile::bytesRead()
      *
      * @return  int
-     * @deprecated
+     * @api
      */
     public function bytesRead(): int
     {
@@ -128,7 +128,7 @@ abstract class SeekableFileContent implements FileContent
      * for backwards compatibility with vfsStreamFile::readUntilEnd()
      *
      * @return  string
-     * @deprecated
+     * @api
      */
     public function readUntilEnd(): string
     {

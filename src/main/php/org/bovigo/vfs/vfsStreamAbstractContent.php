@@ -17,63 +17,63 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * name of the container
      *
-     * @type  string
+     * @var  string
      */
     protected $name;
     /**
      * type of the container
      *
-     * @type  string
+     * @var  int
      */
     protected $type;
     /**
      * timestamp of last access
      *
-     * @type  int
+     * @var  int
      */
     protected $lastAccessed;
     /**
      * timestamp of last attribute modification
      *
-     * @type  int
+     * @var  int
      */
     protected $lastAttributeModified;
     /**
      * timestamp of last modification
      *
-     * @type  int
+     * @var  int
      */
     protected $lastModified;
     /**
      * permissions for content
      *
-     * @type  int
+     * @var  int
      */
     protected $permissions;
     /**
      * owner of the file
      *
-     * @type  int
+     * @var  int
      */
     protected $user;
     /**
      * owner group of the file
      *
-     * @type  int
+     * @var  int
      */
     protected $group;
     /**
      * path to to this content
      *
-     * @type  string
+     * @var  string|null
      */
     private $parentPath;
 
     /**
      * constructor
      *
-     * @param  string  $name
-     * @param  int     $permissions  optional
+     * @param  string    $name
+     * @param  int|null  $permissions  optional
      */
     public function __construct(string $name, int $permissions = null)
     {

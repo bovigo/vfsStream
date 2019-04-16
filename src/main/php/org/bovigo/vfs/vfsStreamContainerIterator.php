@@ -17,7 +17,7 @@ class vfsStreamContainerIterator implements \Iterator
     /**
      * list of children from container to iterate over
      *
-     * @type  vfsStreamContent[]
+     * @var  vfsStreamContent[]
      */
     protected $children;
 

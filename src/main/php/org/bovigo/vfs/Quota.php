@@ -26,7 +26,7 @@ class Quota
      *
      * A value of -1 is treated as unlimited.
      *
-     * @type  int
+     * @var  int
      */
     private $amount;
 

@@ -24,13 +24,13 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     /**
      * target to write output to
      *
-     * @type  resource
+     * @var  resource
      */
     protected $out;
     /**
      * current depth in directory tree
      *
-     * @type  int
+     * @var  int
      */
     protected $depth = 0;
 
