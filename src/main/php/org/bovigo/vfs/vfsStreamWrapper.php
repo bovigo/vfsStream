@@ -56,7 +56,7 @@ class vfsStreamWrapper
     /**
      * root content
      *
-     * @var  vfsStreamContent
+     * @var  vfsStreamDirectory|null
      */
     protected static $root;
     /**
@@ -74,19 +74,19 @@ class vfsStreamWrapper
     /**
      * shortcut to file container
      *
-     * @var  vfsStreamFile
+     * @var  vfsStreamFile|null
      */
     protected $content;
     /**
      * shortcut to directory container
      *
-     * @var  vfsStreamDirectory
+     * @var  vfsStreamDirectory|null
      */
     protected $dir;
     /**
      * shortcut to directory container iterator
      *
-     * @var  vfsStreamDirectory
+     * @var  vfsStreamContainerIterator|null
      */
     protected $dirIterator;
 
@@ -146,10 +146,10 @@ class vfsStreamWrapper
     /**
      * sets the root content
      *
-     * @param   vfsStreamContainer  $root
-     * @return  vfsStreamContainer|null
+     * @param   vfsStreamDirectory  $root
+     * @return  vfsStreamDirectory
      */
-    public static function setRoot(vfsStreamContainer $root): ?vfsStreamContainer
+    public static function setRoot(vfsStreamDirectory $root): vfsStreamDirectory
     {
         self::$root = $root;
         clearstatcache();
@@ -159,9 +159,9 @@ class vfsStreamWrapper
     /**
      * returns the root content
      *
-     * @return  vfsStreamContainer|null
+     * @return  vfsStreamDirectory|null
      */
-    public static function getRoot(): ?vfsStreamContainer
+    public static function getRoot(): ?vfsStreamDirectory
     {
         return self::$root;
     }

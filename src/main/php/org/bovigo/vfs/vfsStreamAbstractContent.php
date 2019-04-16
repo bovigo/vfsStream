@@ -23,7 +23,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * type of the container
      *
-     * @var  string
+     * @var  int
      */
     protected $type;
     /**
@@ -65,15 +65,15 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * path to to this content
      *
-     * @var  string
+     * @var  string|null
      */
     private $parentPath;
 
     /**
      * constructor
      *
-     * @param  string  $name
-     * @param  int     $permissions  optional
+     * @param  string    $name
+     * @param  int|null  $permissions  optional
      */
     public function __construct(string $name, int $permissions = null)
     {

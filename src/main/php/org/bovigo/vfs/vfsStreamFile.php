@@ -27,13 +27,13 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * Resource id which exclusively locked this file
      *
-     * @var  string
+     * @var  string|null
      */
     protected $exclusiveLock;
     /**
      * Resources ids which currently holds shared lock to this file
      *
-     * @var  bool[string]
+     * @var  array<string, bool>
      */
     protected $sharedLock = [];
 
@@ -366,7 +366,8 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * @return  string
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function getResourceId($resource): string {
+    public function getResourceId($resource): string
+    {
         if (is_resource($resource)) {
             $data = stream_get_meta_data($resource);
             $resource = $data['wrapper_data'];

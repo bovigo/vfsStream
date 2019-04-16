@@ -73,7 +73,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     {
         $size = 0;
         foreach ($this->children as $child) {
-            if ($child->getType() === vfsStreamContent::TYPE_DIR) {
+            if ($child instanceof self) {
                 $size += $child->sizeSummarized();
             } else {
                 $size += $child->size();
@@ -181,7 +181,11 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
                 return $child;
             }
 
-            if ($child->appliesTo($childName) === true && $child->hasChild($childName) === true) {
+            if (!$child instanceof vfsStreamContainer) {
+                continue;
+            }
+
+            if ($child->appliesTo($childName) && $child->hasChild($childName)) {
                 return $child->getChild($childName);
             }
         }
