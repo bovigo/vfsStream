@@ -176,7 +176,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * Using this method changes the time when the file was last accessed.
      *
      * @return  string
-     * @deprecated  since 1.3.0
+     * @api  since 1.3.0
      */
     public function readUntilEnd(): string
     {
@@ -226,7 +226,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * returns the current position within the file
      *
      * @return  int
-     * @deprecated  since 1.3.0
+     * @api  since 1.3.0
      */
     public function getBytesRead(): int
     {
