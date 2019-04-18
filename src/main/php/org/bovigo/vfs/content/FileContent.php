@@ -74,7 +74,7 @@ interface FileContent
      * Returns the current position within the file.
      *
      * @return  int
-     * @api
+     * @internal
      */
     public function bytesRead(): int;
 
@@ -84,7 +84,7 @@ interface FileContent
      * Using this method changes the time when the file was last accessed.
      *
      * @return  string
-     * @api
+     * @internal
      */
     public function readUntilEnd(): string;
 }
