@@ -32,10 +32,6 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      */
     public function __construct(string $name, int $permissions = null)
     {
-        if (strstr($name, '/') !== false) {
-            throw new vfsStreamException('Directory name can not contain /.');
-        }
-
         $this->type = vfsStreamContent::TYPE_DIR;
         parent::__construct($name, $permissions);
     }
@@ -82,22 +78,6 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
 
         return $size;
     }
-
-    /**
-     * renames the content
-     *
-     * @param   string  $newName
-     * @throws  vfsStreamException
-     */
-    public function rename(string $newName)
-    {
-        if (strstr($newName, '/') !== false) {
-            throw new vfsStreamException('Directory name can not contain /.');
-        }
-
-        parent::rename($newName);
-    }
-
 
     /**
      * sets parent path

@@ -13,7 +13,10 @@ use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for org\bovigo\vfs\vfsStreamAbstractContent.
  */
@@ -28,6 +31,16 @@ class vfsStreamAbstractContentTestCase extends TestCase
                 'getDefaultPermissions' => 0777,
                 'size'                  => 0
             ]);
+    }
+
+    /**
+     * @test
+     */
+    public function invalidCharacterInNameThrowsException()
+    {
+        expect(function () {
+            NewInstance::of(vfsStreamAbstractContent::class, ['foo/bar']);
+        })->throws(vfsStreamException::class);
     }
 
     /**
@@ -688,5 +701,29 @@ class vfsStreamAbstractContentTestCase extends TestCase
         ));
         assertFalse($content->isExecutable(self::OTHER, vfsStream::getCurrentGroup()));
         assertTrue($content->isExecutable(self::OTHER, self::OTHER));
+    }
+
+    /**
+     * @test
+     */
+    public function canBeRenamed()
+    {
+        $content = $this->createContent(0600);
+        $content->rename('bar');
+        assertThat($content->getName(), equals('bar'));
+        assertFalse($content->appliesTo('foo'));
+        assertFalse($content->appliesTo('foo/bar'));
+        assertTrue($content->appliesTo('bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function renameToInvalidNameThrowsException()
+    {
+        $content = $this->createContent(0600);
+        expect(function () use ($content) {
+            $content->rename('foo/baz');
+        })->throws(vfsStreamException::class);
     }
 }

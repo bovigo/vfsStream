@@ -42,8 +42,10 @@ class vfsStreamWrapperDirSeparatorTestCase extends TestCase
      */
     public function fileCanBeAccessedUsingWinDirSeparator()
     {
-        vfsStream::newFile('foo/bar/baz.txt')
-                 ->at($this->root)
+        $structure = ['foo' => ['bar' => []]];
+        vfsStream::create($structure, $this->root);
+        vfsStream::newFile('baz.txt')
+                 ->at($this->root->getChild('foo')->getChild('bar'))
                  ->withContent('test');
         assertThat(file_get_contents('vfs://root/foo\bar\baz.txt'), equals('test'));
     }
