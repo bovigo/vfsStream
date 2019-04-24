@@ -42,6 +42,15 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
+    public function invalidCharacterInNameThrowsException()
+    {
+        expect(function() { new vfsStreamFile('foo/bar'); })
+            ->throws(vfsStreamException::class);
+    }
+
+    /**
+     * @test
+     */
     public function isOfTypeFile()
     {
         assertThat($this->file->getType(), equals(vfsStreamContent::TYPE_FILE));
@@ -89,6 +98,15 @@ class vfsStreamFileTestCase extends TestCase
         assertFalse($this->file->appliesTo('foo'));
         assertFalse($this->file->appliesTo('foo/bar'));
         assertTrue($this->file->appliesTo('bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function renameToInvalidNameThrowsException()
+    {
+        expect(function() { $this->file->rename('foo/baz'); })
+            ->throws(vfsStreamException::class);
     }
 
     /**

@@ -77,6 +77,10 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      */
     public function __construct(string $name, int $permissions = null)
     {
+        if (strstr($name, '/') !== false) {
+            throw new vfsStreamException('Name can not contain /.');
+        }
+
         $this->name = "{$name}";
         $time       = time();
         if (null === $permissions) {
@@ -116,6 +120,10 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      */
     public function rename(string $newName)
     {
+        if (strstr($newName, '/') !== false) {
+            throw new vfsStreamException('Name can not contain /.');
+        }
+
         $this->name = "{$newName}";
     }
 
