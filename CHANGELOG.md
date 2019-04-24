@@ -6,7 +6,7 @@
   * raised minimum required PHP version to 7.2.0
   * all methods of `org\bovigo\vfs\visitor\vfsStreamVisitor` are now declared with `self` as return type
   * `vfsStreamWrapper::setRoot()` and `vsfStreamWrapper::getRoot()` method signatures now require and return `org\bovigo\vfs\vfsStreamDirectory` vice `org\bovigo\vfs\vfsStreamContainer`.
-  * `vfsStream::newFile()` and `org\bovigo\vfs\vfsStreamFile` will throw an exception if the filename contains a forward slash (`/`).
+  * `vfsStream::newFile()`, `vfsStream::newBlock()`, `org\bovigo\vfs\vfsStreamFile`, and `org\bovigo\vfs\vfsStreamBlock` will throw an exception if the filename contains a forward slash (`/`).
 
 
 1.6.6 (2019-04-08)
