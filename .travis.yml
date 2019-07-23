@@ -4,12 +4,14 @@ language: php
 php:
   - 7.2
   - 7.3
+  - 7.4snapshot
   - nightly
 
 matrix:
   fast_finish: true
   allow_failures:
     - php: nightly
+    - php: 7.4snapshot
 
 install:
   - composer install
