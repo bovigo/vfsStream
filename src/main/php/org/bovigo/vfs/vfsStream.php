@@ -353,7 +353,7 @@ class vfsStream
      */
     public static function newDirectory(string $name, int $permissions = null): vfsStreamDirectory
     {
-        if ('/' === $name{0}) {
+        if ('/' === substr($name, 0, 1)) {
             $name = substr($name, 1);
         }
 
