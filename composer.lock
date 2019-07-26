@@ -54,16 +54,16 @@
         },
         {
             "name": "bovigo/callmap",
-            "version": "v5.0.0",
+            "version": "v5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/callmap.git",
-                "reference": "0dbf2c234469bf18f4cc06d31962b6141923754b"
+                "reference": "b97de0d67ad0e7cba74d1f7a7d6019d90aead877"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/callmap/zipball/0dbf2c234469bf18f4cc06d31962b6141923754b",
-                "reference": "0dbf2c234469bf18f4cc06d31962b6141923754b",
+                "url": "https://api.github.com/repos/bovigo/callmap/zipball/b97de0d67ad0e7cba74d1f7a7d6019d90aead877",
+                "reference": "b97de0d67ad0e7cba74d1f7a7d6019d90aead877",
                 "shasum": ""
             },
             "require": {
@@ -98,7 +98,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Allows to stub and mock method calls by applying a callmap.",
-            "time": "2019-04-08T12:25:45+00:00"
+            "time": "2019-07-25T08:00:41+00:00"
         },
         {
             "name": "composer/xdebug-handler",
