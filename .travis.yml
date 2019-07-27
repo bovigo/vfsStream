@@ -2,17 +2,26 @@ sudo: false
 language: php
 
 php:
+  - 7.4snapshot
+  - 7.3
+  - 7.2
   - 7.1
   - 7.0
   - 5.6
-  - 5.4
-  - 5.5
+  - nightly
 
 matrix:
   fast_finish: true
   include:
+    - php: 5.5
+      dist: precise
+    - php: 5.4
+      dist: precise
     - php: 5.3
       dist: precise
+  allow_failures:
+    - php: nightly
+    - php: 7.4snapshot
 
 install:
   - composer install
