@@ -11,7 +11,7 @@ namespace org\bovigo\vfs;
 /**
  * Test for org\bovigo\vfs\vfsStreamContainerIterator.
  */
-class vfsStreamContainerIteratorTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamContainerIteratorTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
@@ -38,12 +38,12 @@ class vfsStreamContainerIteratorTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->dir = new vfsStreamDirectory('foo');
-        $this->mockChild1 = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $this->mockChild1 = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $this->mockChild1->expects($this->any())
                          ->method('getName')
                          ->will($this->returnValue('bar'));
         $this->dir->addChild($this->mockChild1);
-        $this->mockChild2 = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $this->mockChild2 = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $this->mockChild2->expects($this->any())
                          ->method('getName')
                          ->will($this->returnValue('baz'));

@@ -14,7 +14,7 @@ namespace org\bovigo\vfs;
  * @since       0.9.0
  * @group       issue_2
  */
-class vfsStreamGlobTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamGlobTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * @test

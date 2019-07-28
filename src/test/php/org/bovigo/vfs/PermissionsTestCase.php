@@ -13,7 +13,7 @@ namespace org\bovigo\vfs;
  *
  * @group  permissions
  */
-class PermissionsTestCase extends \PHPUnit_Framework_TestCase
+class PermissionsTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * @type  vfsStreamDirectory

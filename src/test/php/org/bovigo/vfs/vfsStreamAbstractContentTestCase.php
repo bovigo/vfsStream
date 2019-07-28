@@ -37,7 +37,7 @@ class TestvfsStreamAbstractContent extends vfsStreamAbstractContent
 /**
  * Test for org\bovigo\vfs\vfsStreamAbstractContent.
  */
-class vfsStreamAbstractContentTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * @test

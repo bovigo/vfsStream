@@ -13,7 +13,7 @@ namespace org\bovigo\vfs;
  *
  * @group  zip
  */
-class vfsStreamZipTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamZipTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * set up test environment

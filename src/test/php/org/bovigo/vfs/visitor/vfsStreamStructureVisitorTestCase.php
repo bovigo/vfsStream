@@ -16,7 +16,7 @@ use org\bovigo\vfs\vfsStream;
  * @see    https://github.com/mikey179/vfsStream/issues/10
  * @group  issue_10
  */
-class vfsStreamStructureVisitorTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamStructureVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * @test

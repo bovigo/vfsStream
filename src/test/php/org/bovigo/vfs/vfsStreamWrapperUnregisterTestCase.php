@@ -12,7 +12,7 @@ namespace org\bovigo\vfs;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
-class vfsStreamWrapperUnregisterTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperUnregisterTestCase extends \BC_PHPUnit_Framework_TestCase
 {
 
     /**
@@ -29,22 +29,22 @@ class vfsStreamWrapperUnregisterTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Unregistering a third party wrapper for vfs:// fails.
-     * 
+     *
      * @test
      * @expectedException org\bovigo\vfs\vfsStreamException
      * @runInSeparateProcess
      */
     public function unregisterThirdPartyVfsScheme()
     {
-        // Unregister possible registered URL wrapper. 
+        // Unregister possible registered URL wrapper.
         vfsStreamWrapper::unregister();
 
-        $mock = $this->getMock('org\\bovigo\\vfs\\vfsStreamWrapper');
+        $mock = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamWrapper');
         stream_wrapper_register(vfsStream::SCHEME, get_class($mock));
-        
+
         vfsStreamWrapper::unregister();
     }
-    
+
     /**
      * Unregistering when not in registered state will fail.
      *
@@ -66,9 +66,9 @@ class vfsStreamWrapperUnregisterTestCase extends \PHPUnit_Framework_TestCase
      */
     public function unregisterWhenNotRegistered()
     {
-        // Unregister possible registered URL wrapper. 
+        // Unregister possible registered URL wrapper.
         vfsStreamWrapper::unregister();
-        
+
         $this->assertNotContains(vfsStream::SCHEME, stream_get_wrappers());
         vfsStreamWrapper::unregister();
     }

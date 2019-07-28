@@ -14,7 +14,7 @@ namespace org\bovigo\vfs;
  * @group   lock_fpc
  * @author  https://github.com/iwyg
  */
-class vfsStreamExLockTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamExLockTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * set up test environment

@@ -14,7 +14,7 @@ namespace org\bovigo\vfs;
  * @since  0.9.0
  * @group  issue_3
  */
-class vfsStreamWrapperSelectStreamTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperSelectStreamTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * @test

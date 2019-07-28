@@ -11,7 +11,7 @@ namespace org\bovigo\vfs;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
-class vfsStreamWrapperWithoutRootTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperWithoutRootTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * set up test environment

@@ -10,7 +10,7 @@
 namespace org\bovigo\vfs;
 
 
-class vfsStreamDirectoryIssue134TestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamDirectoryIssue134TestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * access to root directory

@@ -14,7 +14,7 @@ namespace org\bovigo\vfs;
  * @since  0.9.0
  * @group  issue_8
  */
-class vfsStreamWrapperDirSeparatorTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperDirSeparatorTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * root diretory

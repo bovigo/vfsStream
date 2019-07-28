@@ -11,7 +11,7 @@ namespace org\bovigo\vfs;
 /**
  * Test for org\bovigo\vfs\vfsStreamBlock.
  */
-class vfsStreamBlockTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamBlockTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * The block device being tested.

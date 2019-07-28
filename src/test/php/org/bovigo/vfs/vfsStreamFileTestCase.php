@@ -11,7 +11,7 @@ namespace org\bovigo\vfs;
 /**
  * Test for org\bovigo\vfs\vfsStreamFile.
  */
-class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamFileTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
@@ -313,7 +313,7 @@ class vfsStreamFileTestCase extends \PHPUnit_Framework_TestCase
      */
     public function withContentAcceptsAnyFileContentInstance()
     {
-        $mockFileContent = $this->getMock('org\bovigo\vfs\content\FileContent');
+        $mockFileContent = $this->bc_getMock('org\bovigo\vfs\content\FileContent');
         $mockFileContent->expects($this->once())
                         ->method('content')
                         ->will($this->returnValue('foobarbaz'));

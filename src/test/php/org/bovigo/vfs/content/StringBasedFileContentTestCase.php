@@ -14,7 +14,7 @@ namespace org\bovigo\vfs\content;
  * @since  1.3.0
  * @group  issue_79
  */
-class StringBasedFileContentTestCase extends \PHPUnit_Framework_TestCase
+class StringBasedFileContentTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * instance to test

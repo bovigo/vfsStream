@@ -17,7 +17,7 @@ use org\bovigo\vfs\content\LargeFileContent;
  * @since       1.3.0
  * @group       issue_79
  */
-class vfsStreamWrapperLargeFileTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperLargeFileTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * large file to test

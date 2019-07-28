@@ -15,7 +15,7 @@ namespace org\bovigo\vfs;
  * @group  issue_128
  * @since  1.6.2
  */
-class FilenameTestCase extends \PHPUnit_Framework_TestCase
+class FilenameTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     private $rootDir;
     private $lostAndFound;

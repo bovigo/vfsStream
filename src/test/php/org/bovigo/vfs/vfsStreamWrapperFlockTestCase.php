@@ -17,7 +17,7 @@ namespace org\bovigo\vfs;
  * @see         https://github.com/mikey179/vfsStream/issues/6
  * @group       issue_6
  */
-class vfsStreamWrapperFlockTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperFlockTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * root directory

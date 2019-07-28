@@ -18,7 +18,7 @@ use org\bovigo\vfs\vfsStreamBlock;
  * @see    https://github.com/mikey179/vfsStream/issues/10
  * @group  issue_10
  */
-class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamAbstractVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
@@ -32,7 +32,7 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->abstractVisitor = $this->getMock('org\\bovigo\\vfs\\visitor\\vfsStreamAbstractVisitor',
+        $this->abstractVisitor = $this->bc_getMock('org\\bovigo\\vfs\\visitor\\vfsStreamAbstractVisitor',
                                                 array('visitFile', 'visitDirectory')
                                  );
     }
@@ -43,7 +43,7 @@ class vfsStreamAbstractVisitorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function visitThrowsInvalidArgumentExceptionOnUnknownContentType()
     {
-        $mockContent = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockContent = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockContent->expects($this->any())
                     ->method('getType')
                     ->will($this->returnValue('invalid'));
