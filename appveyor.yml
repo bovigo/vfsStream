@@ -3,7 +3,6 @@ shallow_clone: true
 
 cache:
   - .\php -> appveyor.yml
-  - vendor -> composer.lock
 
 init:
   - set PATH=%PATH%;.\php

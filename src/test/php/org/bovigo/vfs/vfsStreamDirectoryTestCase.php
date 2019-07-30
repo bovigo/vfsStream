@@ -11,7 +11,7 @@ namespace org\bovigo\vfs;
 /**
  * Test for org\bovigo\vfs\vfsStreamDirectory.
  */
-class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamDirectoryTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
@@ -94,7 +94,7 @@ class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasChildrenReturnsTrueIfAtLeastOneChildPresent()
     {
-        $mockChild = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockChild = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild->expects($this->any())
                   ->method('appliesTo')
                   ->will($this->returnValue(false));
@@ -134,7 +134,7 @@ class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
      */
     public function nonExistingChild()
     {
-        $mockChild = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockChild = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild->expects($this->any())
                   ->method('appliesTo')
                   ->will($this->returnValue(false));
@@ -152,7 +152,7 @@ class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
      */
     public function childHandling()
     {
-        $mockChild = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockChild = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild->expects($this->any())
                   ->method('getType')
                   ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
@@ -186,7 +186,7 @@ class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
      */
     public function childHandlingWithSubdirectory()
     {
-        $mockChild = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockChild = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild->expects($this->any())
                   ->method('getType')
                   ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
@@ -219,14 +219,14 @@ class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
      */
     public function addChildReplacesChildWithSameName_Bug_5()
     {
-        $mockChild1 = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockChild1 = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild1->expects($this->any())
                    ->method('getType')
                    ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
         $mockChild1->expects($this->any())
                    ->method('getName')
                    ->will($this->returnValue('bar'));
-        $mockChild2 = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockChild2 = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild2->expects($this->any())
                    ->method('getType')
                    ->will($this->returnValue(vfsStreamContent::TYPE_FILE));
@@ -251,7 +251,7 @@ class vfsStreamDirectoryTestCase extends \PHPUnit_Framework_TestCase
      */
     public function explicitTestForSeparatorWithNestedPaths_Bug_24()
     {
-        $mockChild = $this->getMock('org\\bovigo\\vfs\\vfsStreamContent');
+        $mockChild = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $mockChild->expects($this->any())
                   ->method('getType')
                   ->will($this->returnValue(vfsStreamContent::TYPE_FILE));

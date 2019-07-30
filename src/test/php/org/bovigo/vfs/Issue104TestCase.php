@@ -13,7 +13,7 @@ namespace org\bovigo\vfs;
  * @group  issue_128
  * @since  1.5.0
  */
-class Issue104TestCase extends \PHPUnit_Framework_TestCase
+class Issue104TestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * @test

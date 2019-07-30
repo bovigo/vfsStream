@@ -14,7 +14,7 @@ namespace org\bovigo\vfs;
  * @since  0.9.0
  * @group  issue_5
  */
-class vfsStreamResolveIncludePathTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamResolveIncludePathTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * include path to restore after test run

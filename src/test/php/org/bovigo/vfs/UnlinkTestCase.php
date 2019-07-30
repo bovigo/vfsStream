@@ -13,7 +13,7 @@ namespace org\bovigo\vfs;
  *
  * @group  unlink
  */
-class UnlinkTestCase extends \PHPUnit_Framework_TestCase
+class UnlinkTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * @test

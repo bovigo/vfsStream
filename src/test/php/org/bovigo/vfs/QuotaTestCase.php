@@ -13,7 +13,7 @@ namespace org\bovigo\vfs;
  *
  * @group  issue_35
  */
-class QuotaTestCase extends \PHPUnit_Framework_TestCase
+class QuotaTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * instance to test

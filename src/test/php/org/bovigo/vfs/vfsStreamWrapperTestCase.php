@@ -211,12 +211,22 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      *
      * @test
      */
-    public function directoriesAndNonExistingFilesAreNeverExecutable()
+    public function directoriesAndNonExistingFilesAreSometimesExecutable()
     {
-        $this->assertFalse(is_executable($this->fooURL));
-        $this->assertFalse(is_executable($this->fooURL . '/.'));
-        $this->assertFalse(is_executable($this->barURL));
-        $this->assertFalse(is_executable($this->barURL . '/.'));
+        // Inconsistent behavior has been fixed in 7.3
+        // see https://github.com/php/php-src/commit/94b4abdbc4d
+        if (PHP_VERSION_ID >= 70300) {
+            $this->assertTrue(is_executable($this->fooURL));
+            $this->assertTrue(is_executable($this->fooURL . '/.'));
+            $this->assertTrue(is_executable($this->barURL));
+            $this->assertTrue(is_executable($this->barURL . '/.'));
+        } else {
+            $this->assertFalse(is_executable($this->fooURL));
+            $this->assertFalse(is_executable($this->fooURL . '/.'));
+            $this->assertFalse(is_executable($this->barURL));
+            $this->assertFalse(is_executable($this->barURL . '/.'));
+        }
+
         $this->assertFalse(is_executable($this->fooURL . '/another'));
         $this->assertFalse(is_executable(vfsStream::url('another')));
     }

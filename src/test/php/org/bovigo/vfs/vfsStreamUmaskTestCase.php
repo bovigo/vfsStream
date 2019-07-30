@@ -15,7 +15,7 @@ namespace org\bovigo\vfs;
  * @group  umask
  * @since  0.8.0
  */
-class vfsStreamUmaskTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamUmaskTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * set up test environment

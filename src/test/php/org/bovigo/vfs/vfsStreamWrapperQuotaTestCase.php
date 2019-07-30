@@ -13,7 +13,7 @@ namespace org\bovigo\vfs;
  *
  * @group  issue_35
  */
-class vfsStreamWrapperQuotaTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperQuotaTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * access to root

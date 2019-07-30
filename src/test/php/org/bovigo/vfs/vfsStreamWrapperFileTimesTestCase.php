@@ -13,7 +13,7 @@ namespace org\bovigo\vfs;
  *
  * @since  0.9.0
  */
-class vfsStreamWrapperFileTimesTestCase extends \PHPUnit_Framework_TestCase
+class vfsStreamWrapperFileTimesTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * URL of foo.txt file
