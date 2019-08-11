@@ -9,6 +9,12 @@
   * `vfsStream::newFile()`, `vfsStream::newBlock()`, `org\bovigo\vfs\vfsStreamFile`, and `org\bovigo\vfs\vfsStreamBlock` will throw an exception if the filename contains a forward slash (`/`).
 
 
+1.6.7 (2019-07-31)
+------------------
+
+   * fix PHP 7.4 deprecation warnings (backported #189 from master)
+
+
 1.6.6 (2019-04-08)
 ------------------
 
