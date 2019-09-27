@@ -1,6 +1,8 @@
 2.0.0 (20??-??-??)
 ------------------
 
+   * Add inode support
+
 ### BC breaks
 
   * raised minimum required PHP version to 7.2.0

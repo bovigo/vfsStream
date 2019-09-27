@@ -13,7 +13,9 @@ use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for unlink() functionality.
  *
@@ -58,5 +60,28 @@ class UnlinkTestCase extends TestCase
         expect(function() { assertFalse(unlink('vfs://root/foo.txt')); })
             ->triggers()
             ->withMessage('unlink(vfs://root/foo.txt): No such file or directory');
+    }
+
+    /**
+     * @test
+     * @group  issue_119
+     */
+    public function unlinkMaintainsInode()
+    {
+        $root = vfsStream::setup('root');
+        $path = $root->url().'/test';
+        file_put_contents($path, uniqid());
+
+        $handle = fopen($path, 'r');
+        $before = fstat($handle);
+
+        unlink($path);
+
+        // Prove that we're not getting cached stats
+        clearstatcache();
+
+        $after = fstat($handle);
+
+        assertThat($after, equals($before));
     }
 }

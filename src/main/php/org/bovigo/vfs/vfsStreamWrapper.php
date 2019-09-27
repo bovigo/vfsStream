@@ -654,7 +654,7 @@ class vfsStreamWrapper
     {
         $fileStat = [
             'dev'     => 0,
-            'ino'     => 0,
+            'ino'     => spl_object_id($this->content),
             'mode'    => $this->content->getType() | $this->content->getPermissions(),
             'nlink'   => 0,
             'uid'     => $this->content->getUser(),
@@ -1019,7 +1019,7 @@ class vfsStreamWrapper
 
         $fileStat = [
             'dev'     => 0,
-            'ino'     => 0,
+            'ino'     => spl_object_id($content),
             'mode'    => $content->getType() | $content->getPermissions(),
             'nlink'   => 0,
             'uid'     => $content->getUser(),
