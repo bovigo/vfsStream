@@ -26,6 +26,7 @@ use function bovigo\assert\predicate\equals;
  */
 class vfsStreamStructureVisitorTestCase extends TestCase
 {
+    /** @var vfsStreamStructureVisitor */
     private $structureVisitor;
 
     protected function setUp() : void

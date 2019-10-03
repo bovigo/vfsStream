@@ -27,7 +27,7 @@ class QuotaTestCase extends TestCase
     /**
      * instance to test
      *
-     * @type  Quota
+     * @var Quota
      */
     private $quota;
 

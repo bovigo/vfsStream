@@ -1,14 +1,51 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs;
+
+use const E_USER_WARNING;
+use const LOCK_NB;
+use const LOCK_UN;
+use const STREAM_META_ACCESS;
+use const STREAM_META_GROUP;
+use const STREAM_META_GROUP_NAME;
+use const STREAM_META_OWNER;
+use const STREAM_META_OWNER_NAME;
+use const STREAM_META_TOUCH;
+use const STREAM_OPTION_BLOCKING;
+use const STREAM_OPTION_READ_TIMEOUT;
+use const STREAM_OPTION_WRITE_BUFFER;
+use const STREAM_REPORT_ERRORS;
+use const STREAM_URL_STAT_QUIET;
+use function array_merge;
+use function array_pop;
+use function array_values;
+use function clearstatcache;
+use function count;
+use function explode;
+use function implode;
+use function in_array;
+use function spl_object_id;
+use function str_replace;
+use function stream_get_wrappers;
+use function stream_wrapper_register;
+use function stream_wrapper_unregister;
+use function strlen;
+use function strpos;
+use function strrpos;
+use function strstr;
+use function substr;
+use function time;
+use function trigger_error;
+
 /**
  * Stream wrapper to mock file system requests.
  */
@@ -17,36 +54,36 @@ class vfsStreamWrapper
     /**
      * open file for reading
      */
-    const READ                   = 'r';
+    public const READ = 'r';
     /**
      * truncate file
      */
-    const TRUNCATE               = 'w';
+    public const TRUNCATE = 'w';
     /**
      * set file pointer to end, append new data
      */
-    const APPEND                 = 'a';
+    public const APPEND = 'a';
     /**
      * set file pointer to start, overwrite existing data
      */
-    const WRITE                  = 'x';
+    public const WRITE = 'x';
     /**
      * set file pointer to start, overwrite existing data; or create file if
      * does not exist
      */
-    const WRITE_NEW              = 'c';
+    public const WRITE_NEW = 'c';
     /**
      * file mode: read only
      */
-    const READONLY               = 0;
+    public const READONLY = 0;
     /**
      * file mode: write only
      */
-    const WRITEONLY              = 1;
+    public const WRITEONLY = 1;
     /**
      * file mode: read and write
      */
-    const ALL                    = 2;
+    public const ALL = 2;
     /**
      * switch whether class has already been registered as stream wrapper or not
      *
@@ -101,16 +138,18 @@ class vfsStreamWrapper
      *
      * @throws  vfsStreamException
      */
-    public static function register()
+    public static function register() : void
     {
         self::$root  = null;
         self::$quota = Quota::unlimited();
-        if (true === self::$registered) {
+        if (self::$registered === true) {
             return;
         }
 
-        if (@stream_wrapper_register(vfsStream::SCHEME, __CLASS__) === false) {
-            throw new vfsStreamException('A handler has already been registered for the ' . vfsStream::SCHEME . ' protocol.');
+        if (@stream_wrapper_register(vfsStream::SCHEME, self::class) === false) {
+            throw new vfsStreamException(
+                'A handler has already been registered for the ' . vfsStream::SCHEME . ' protocol.'
+            );
         }
 
         self::$registered = true;
@@ -125,19 +164,26 @@ class vfsStreamWrapper
      * registered with this class, a vfsStreamException will be thrown.
      *
      * @throws vfsStreamException
+     *
      * @since  1.6.0
      */
-    public static function unregister()
+    public static function unregister() : void
     {
-        if (!self::$registered) {
+        if (! self::$registered) {
             if (in_array(vfsStream::SCHEME, stream_get_wrappers())) {
-                throw new vfsStreamException('The URL wrapper for the protocol ' . vfsStream::SCHEME . ' was not registered with this version of vfsStream.');
+                throw new vfsStreamException(
+                    'The URL wrapper for the protocol ' . vfsStream::SCHEME .
+                    ' was not registered with this version of vfsStream.'
+                );
             }
+
             return;
         }
 
-        if (!@stream_wrapper_unregister(vfsStream::SCHEME)) {
-            throw new vfsStreamException('Failed to unregister the URL wrapper for the ' . vfsStream::SCHEME . ' protocol.');
+        if (! @stream_wrapper_unregister(vfsStream::SCHEME)) {
+            throw new vfsStreamException(
+                'Failed to unregister the URL wrapper for the ' . vfsStream::SCHEME . ' protocol.'
+            );
         }
 
         self::$registered = false;
@@ -145,23 +191,19 @@ class vfsStreamWrapper
 
     /**
      * sets the root content
-     *
-     * @param   vfsStreamDirectory  $root
-     * @return  vfsStreamDirectory
      */
-    public static function setRoot(vfsStreamDirectory $root): vfsStreamDirectory
+    public static function setRoot(vfsStreamDirectory $root) : vfsStreamDirectory
     {
         self::$root = $root;
         clearstatcache();
+
         return self::$root;
     }
 
     /**
      * returns the root content
-     *
-     * @return  vfsStreamDirectory|null
      */
-    public static function getRoot(): ?vfsStreamDirectory
+    public static function getRoot() : ?vfsStreamDirectory
     {
         return self::$root;
     }
@@ -169,23 +211,19 @@ class vfsStreamWrapper
     /**
      * sets quota for disk space
      *
-     * @param  Quota  $quota
      * @since  1.1.0
      */
-    public static function setQuota(Quota $quota)
+    public static function setQuota(Quota $quota) : void
     {
         self::$quota = $quota;
     }
 
     /**
      * returns content for given path
-     *
-     * @param   string  $path
-     * @return  vfsStreamContent|null
      */
-    protected function getContent(string $path): ?vfsStreamContent
+    protected function getContent(string $path) : ?vfsStreamContent
     {
-        if (null === self::$root) {
+        if (self::$root === null) {
             return null;
         }
 
@@ -202,26 +240,19 @@ class vfsStreamWrapper
 
     /**
      * helper method to detect whether given path is in root path
-     *
-     * @param   string  $path
-     * @return  bool
      */
-    private function isInRoot(string $path): bool
+    private function isInRoot(string $path) : bool
     {
         return substr($path, 0, strlen(self::$root->getName())) === self::$root->getName();
     }
 
     /**
      * returns content for given path but only when it is of given type
-     *
-     * @param   string  $path
-     * @param   int     $type
-     * @return  vfsStreamContent|null
      */
-    protected function getContentOfType(string $path, int $type): ?vfsStreamContent
+    protected function getContentOfType(string $path, int $type) : ?vfsStreamContent
     {
         $content = $this->getContent($path);
-        if (null !== $content && $content->getType() === $type) {
+        if ($content !== null && $content->getType() === $type) {
             return $content;
         }
 
@@ -231,38 +262,36 @@ class vfsStreamWrapper
     /**
      * splits path into its dirname and the basename
      *
-     * @param   string  $path
      * @return  string[]
      */
-    protected function splitPath(string $path): array
+    protected function splitPath(string $path) : array
     {
         $lastSlashPos = strrpos($path, '/');
-        if (false === $lastSlashPos) {
+        if ($lastSlashPos === false) {
             return ['dirname' => '', 'basename' => $path];
         }
 
         return [
-            'dirname'  => substr($path, 0, $lastSlashPos),
-            'basename' => substr($path, $lastSlashPos + 1)
+            'dirname' => substr($path, 0, $lastSlashPos),
+            'basename' => substr($path, $lastSlashPos + 1),
         ];
     }
 
     /**
      * helper method to resolve a path from /foo/bar/. to /foo/bar
-     *
-     * @param   string  $path
-     * @return  string
      */
-    protected function resolvePath(string $path): string
+    protected function resolvePath(string $path) : string
     {
-        $newPath  = [];
+        $newPath = [];
         foreach (explode('/', $path) as $pathPart) {
-            if ('.' !== $pathPart) {
-                if ('..' !== $pathPart) {
-                    $newPath[] = $pathPart;
-                } elseif (count($newPath) > 1) {
-                    array_pop($newPath);
-                }
+            if ($pathPart === '.') {
+                continue;
+            }
+
+            if ($pathPart !== '..') {
+                $newPath[] = $pathPart;
+            } elseif (count($newPath) > 1) {
+                array_pop($newPath);
             }
         }
 
@@ -272,19 +301,21 @@ class vfsStreamWrapper
     /**
      * open the stream
      *
-     * @param   string       $path         the path to open
-     * @param   string       $mode         mode for opening
-     * @param   int          $options      options for opening
-     * @param   string|null  $opened_path  full path that was actually opened
-     * @return  bool
+     * @param string      $path        the path to open
+     * @param string      $mode        mode for opening
+     * @param int         $options     options for opening
+     * @param string|null $opened_path full path that was actually opened
      */
-    public function stream_open(string $path, string $mode, int $options, string $opened_path = null): bool
+    public function stream_open(string $path, string $mode, int $options, ?string $opened_path = null) : bool
     {
-        $extended = ((strstr($mode, '+') !== false) ? (true) : (false));
+        $extended = (strstr($mode, '+') !== false ? (true) : (false));
         $mode     = str_replace(['t', 'b', '+'], '', $mode);
         if (in_array($mode, ['r', 'w', 'a', 'x', 'c']) === false) {
             if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
-                trigger_error('Illegal mode ' . $mode . ', use r, w, a, x  or c, flavoured with t, b and/or +', E_USER_WARNING);
+                trigger_error(
+                    'Illegal mode ' . $mode . ', use r, w, a, x  or c, flavoured with t, b and/or +',
+                    E_USER_WARNING
+                );
             }
 
             return false;
@@ -296,32 +327,35 @@ class vfsStreamWrapper
 
         /** @var vfsStreamFile|null $content */
         $content = $this->getContentOfType($path, vfsStreamContent::TYPE_FILE);
-        if (null !== $content) {
+        if ($content !== null) {
             $this->content = $content;
-            if (self::WRITE === $mode) {
+            if ($mode === self::WRITE) {
                 if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
-                    trigger_error('File ' . $path . ' already exists, can not open with mode x', E_USER_WARNING);
+                    trigger_error(
+                        'File ' . $path . ' already exists, can not open with mode x',
+                        E_USER_WARNING
+                    );
                 }
 
                 return false;
             }
 
-            if (
-                (self::TRUNCATE === $mode || self::APPEND === $mode) &&
+            if (($mode === self::TRUNCATE || $mode === self::APPEND) &&
                 $this->content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false
             ) {
                 return false;
             }
 
-            if (self::TRUNCATE === $mode) {
+            if ($mode === self::TRUNCATE) {
                 $this->content->openWithTruncate();
-            } elseif (self::APPEND === $mode) {
+            } elseif ($mode === self::APPEND) {
                 $this->content->openForAppend();
             } else {
-                if (!$this->content->isReadable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
+                if (! $this->content->isReadable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
                     if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
                         trigger_error('Permission denied', E_USER_WARNING);
                     }
+
                     return false;
                 }
                 $this->content->open();
@@ -331,23 +365,25 @@ class vfsStreamWrapper
         }
 
         $content = $this->createFile($path, $mode, $options);
-        if (false === $content) {
+        if ($content === false) {
             return false;
         }
 
         $this->content = $content;
+
         return true;
     }
 
     /**
      * creates a file at given path
      *
-     * @param   string       $path     the path to open
-     * @param   string|null  $mode     mode for opening
-     * @param   int|null     $options  options for opening
+     * @param string      $path    the path to open
+     * @param string|null $mode    mode for opening
+     * @param int|null    $options options for opening
+     *
      * @return  vfsStreamFile|false
      */
-    private function createFile(string $path, string $mode = null, int $options = null)
+    private function createFile(string $path, ?string $mode = null, ?int $options = null)
     {
         $names = $this->splitPath($path);
         if (empty($names['dirname']) === true) {
@@ -360,23 +396,32 @@ class vfsStreamWrapper
 
         /** @var vfsStreamDirectory|null $dir */
         $dir = $this->getContentOfType($names['dirname'], vfsStreamContent::TYPE_DIR);
-        if (null === $dir) {
+        if ($dir === null) {
             if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
                 trigger_error('Directory ' . $names['dirname'] . ' does not exist', E_USER_WARNING);
             }
 
             return false;
-        } elseif ($dir->hasChild($names['basename']) === true) {
+        }
+
+        if ($dir->hasChild($names['basename']) === true) {
             if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
-                trigger_error('Directory ' . $names['dirname'] . ' already contains a director named ' . $names['basename'], E_USER_WARNING);
+                trigger_error(
+                    'Directory ' . $names['dirname'] . ' already contains a director named ' .
+                    $names['basename'],
+                    E_USER_WARNING
+                );
             }
 
             return false;
         }
 
-        if (self::READ === $mode) {
+        if ($mode === self::READ) {
             if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
-                trigger_error('Can not open non-existing file ' . $path . ' for reading', E_USER_WARNING);
+                trigger_error(
+                    'Can not open non-existing file ' . $path . ' for reading',
+                    E_USER_WARNING
+                );
             }
 
             return false;
@@ -384,7 +429,10 @@ class vfsStreamWrapper
 
         if ($dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
             if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
-                trigger_error('Can not create new file in non-writable path ' . $names['dirname'], E_USER_WARNING);
+                trigger_error(
+                    'Can not create new file in non-writable path ' . $names['dirname'],
+                    E_USER_WARNING
+                );
             }
 
             return false;
@@ -399,17 +447,16 @@ class vfsStreamWrapper
     /**
      * calculates the file mode
      *
-     * @param   string  $mode      opening mode: r, w, a or x
-     * @param   bool    $extended  true if + was set with opening mode
-     * @return  int
+     * @param string $mode     opening mode: r, w, a or x
+     * @param bool   $extended true if + was set with opening mode
      */
-    protected function calculateMode(string $mode, bool $extended): int
+    protected function calculateMode(string $mode, bool $extended) : int
     {
-        if (true === $extended) {
+        if ($extended === true) {
             return self::ALL;
         }
 
-        if (self::READ === $mode) {
+        if ($mode === self::READ) {
             return self::READONLY;
         }
 
@@ -421,7 +468,7 @@ class vfsStreamWrapper
      *
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
-    public function stream_close()
+    public function stream_close() : void
     {
         $this->content->lock($this, LOCK_UN);
     }
@@ -429,12 +476,11 @@ class vfsStreamWrapper
     /**
      * read the stream up to $count bytes
      *
-     * @param   int     $count  amount of bytes to read
-     * @return  string
+     * @param int $count amount of bytes to read
      */
-    public function stream_read(int $count): string
+    public function stream_read(int $count) : string
     {
-        if (self::WRITEONLY === $this->mode) {
+        if ($this->mode === self::WRITEONLY) {
             return '';
         }
 
@@ -448,12 +494,11 @@ class vfsStreamWrapper
     /**
      * writes data into the stream
      *
-     * @param   string  $data
      * @return  int     amount of bytes written
      */
-    public function stream_write(string $data): int
+    public function stream_write(string $data) : int
     {
-        if (self::READONLY === $this->mode) {
+        if ($this->mode === self::READONLY) {
             return 0;
         }
 
@@ -471,13 +516,13 @@ class vfsStreamWrapper
     /**
      * truncates a file to a given length
      *
-     * @param   int  $size  length to truncate file to
-     * @return  bool
+     * @param int $size length to truncate file to
+     *
      * @since   1.1.0
      */
-    public function stream_truncate(int $size): bool
+    public function stream_truncate(int $size) : bool
     {
-        if (self::READONLY === $this->mode) {
+        if ($this->mode === self::READONLY) {
             return false;
         }
 
@@ -491,7 +536,7 @@ class vfsStreamWrapper
 
         if (self::$quota->isLimited() && $this->content->size() < $size) {
             $maxSize = self::$quota->spaceLeft(self::$root->sizeSummarized());
-            if (0 === $maxSize) {
+            if ($maxSize === 0) {
                 return false;
             }
 
@@ -506,13 +551,11 @@ class vfsStreamWrapper
     /**
      * sets metadata like owner, user or permissions
      *
-     * @param   string  $path
-     * @param   int     $option
-     * @param   mixed   $var
-     * @return  bool
+     * @param mixed $var
+     *
      * @since   1.1.0
      */
-    public function stream_metadata(string $path, int $option, $var): bool
+    public function stream_metadata(string $path, int $option, $var) : bool
     {
         $path = $this->resolvePath(vfsStream::path($path));
 
@@ -520,10 +563,10 @@ class vfsStreamWrapper
         $content = $this->getContent($path);
         switch ($option) {
             case STREAM_META_TOUCH:
-                if (null === $content) {
+                if ($content === null) {
                     $content = $this->createFile($path, null, STREAM_REPORT_ERRORS);
                     // file creation may not be allowed at provided path
-                    if (false === $content) {
+                    if ($content === false) {
                         return false;
                     }
                 }
@@ -531,47 +574,48 @@ class vfsStreamWrapper
                 $currentTime = time();
                 $content->lastModified($var[0] ?? $currentTime);
                 $content->lastAccessed($var[1] ?? $currentTime);
-                return true;
 
+                return true;
             case STREAM_META_OWNER_NAME:
                 return false;
-
             case STREAM_META_OWNER:
-                if (null === $content) {
+                if ($content === null) {
                     return false;
                 }
 
                 return $this->doPermChange(
                     $path,
                     $content,
-                    function() use ($content, $var) { $content->chown($var); }
+                    static function () use ($content, $var) : void {
+                        $content->chown($var);
+                    }
                 );
-
             case STREAM_META_GROUP_NAME:
                 return false;
-
             case STREAM_META_GROUP:
-                if (null === $content) {
+                if ($content === null) {
                     return false;
                 }
 
                 return $this->doPermChange(
                     $path,
                     $content,
-                    function() use ($content, $var) { $content->chgrp($var); }
+                    static function () use ($content, $var) : void {
+                        $content->chgrp($var);
+                    }
                 );
-
             case STREAM_META_ACCESS:
-                if (null === $content) {
+                if ($content === null) {
                     return false;
                 }
 
                 return $this->doPermChange(
                     $path,
                     $content,
-                    function() use ($content, $var) { $content->chmod($var); }
+                    static function () use ($content, $var) : void {
+                        $content->chmod($var);
+                    }
                 );
-
             default:
                 return false;
         }
@@ -579,68 +623,54 @@ class vfsStreamWrapper
 
     /**
      * executes given permission change when necessary rights allow such a change
-     *
-     * @param   string                    $path
-     * @param   vfsStreamAbstractContent  $content
-     * @param   callable                  $change
-     * @return  bool
      */
-    private function doPermChange(string $path, vfsStreamAbstractContent $content, callable $change): bool
+    private function doPermChange(string $path, vfsStreamAbstractContent $content, callable $change) : bool
     {
-        if (!$content->isOwnedByUser(vfsStream::getCurrentUser())) {
+        if (! $content->isOwnedByUser(vfsStream::getCurrentUser())) {
             return false;
         }
 
         if (self::$root->getName() !== $path) {
-            $names   = $this->splitPath($path);
+            $names  = $this->splitPath($path);
             $parent = $this->getContent($names['dirname']);
-            if (!$parent->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
+            if (! $parent->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
                 return false;
             }
         }
 
         $change();
+
         return true;
     }
 
     /**
      * checks whether stream is at end of file
-     *
-     * @return  bool
      */
-    public function stream_eof(): bool
+    public function stream_eof() : bool
     {
         return $this->content->eof();
     }
 
     /**
      * returns the current position of the stream
-     *
-     * @return  int
      */
-    public function stream_tell(): int
+    public function stream_tell() : int
     {
         return $this->content->getBytesRead();
     }
 
     /**
      * seeks to the given offset
-     *
-     * @param   int   $offset
-     * @param   int   $whence
-     * @return  bool
      */
-    public function stream_seek(int $offset, int $whence): bool
+    public function stream_seek(int $offset, int $whence) : bool
     {
         return $this->content->seek($offset, $whence);
     }
 
     /**
      * flushes unstored data into storage
-     *
-     * @return  bool
      */
-    public function stream_flush(): bool
+    public function stream_flush() : bool
     {
         return true;
     }
@@ -648,25 +678,26 @@ class vfsStreamWrapper
     /**
      * returns status of stream
      *
-     * @return  array
+     * @return  mixed[]
      */
-    public function stream_stat(): array
+    public function stream_stat() : array
     {
         $fileStat = [
-            'dev'     => 0,
-            'ino'     => spl_object_id($this->content),
-            'mode'    => $this->content->getType() | $this->content->getPermissions(),
-            'nlink'   => 0,
-            'uid'     => $this->content->getUser(),
-            'gid'     => $this->content->getGroup(),
-            'rdev'    => 0,
-            'size'    => $this->content->size(),
-            'atime'   => $this->content->fileatime(),
-            'mtime'   => $this->content->filemtime(),
-            'ctime'   => $this->content->filectime(),
+            'dev' => 0,
+            'ino' => spl_object_id($this->content),
+            'mode' => $this->content->getType() | $this->content->getPermissions(),
+            'nlink' => 0,
+            'uid' => $this->content->getUser(),
+            'gid' => $this->content->getGroup(),
+            'rdev' => 0,
+            'size' => $this->content->size(),
+            'atime' => $this->content->fileatime(),
+            'mtime' => $this->content->filemtime(),
+            'ctime' => $this->content->filectime(),
             'blksize' => -1,
-            'blocks'  => -1
+            'blocks' => -1,
         ];
+
         return array_merge(array_values($fileStat), $fileStat);
     }
 
@@ -676,12 +707,11 @@ class vfsStreamWrapper
      * Please note that this method always returns false as there is no
      * underlaying resource to return.
      *
-     * @param   int  $cast_as
-     * @since   0.9.0
      * @see     https://github.com/mikey179/vfsStream/issues/3
-     * @return  bool
+     *
+     * @since   0.9.0
      */
-    public function stream_cast(int $cast_as): bool
+    public function stream_cast(int $cast_as) : bool
     {
         return false;
     }
@@ -689,17 +719,16 @@ class vfsStreamWrapper
     /**
      * set lock status for stream
      *
-     * @param   int   $operation
-     * @return  bool
-     * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/31
      * @see     https://github.com/mikey179/vfsStream/issues/40
+     *
+     * @since   0.10.0
      */
-    public function stream_lock(int $operation): bool
+    public function stream_lock(int $operation) : bool
     {
-        if ((LOCK_NB & $operation) == LOCK_NB) {
-            $operation = $operation - LOCK_NB;
+        if ((LOCK_NB & $operation) === LOCK_NB) {
+            $operation -= LOCK_NB;
         }
 
         return $this->content->lock($this, $operation);
@@ -708,15 +737,11 @@ class vfsStreamWrapper
     /**
      * sets options on the stream
      *
-     * @param   int   $option  key of option to set
-     * @param   int   $arg1
-     * @param   int   $arg2
-     * @return  bool
-     * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/15
      * @see     http://www.php.net/manual/streamwrapper.stream-set-option.php
      */
-    public function stream_set_option(int $option, $arg1, $arg2)
+    //phpcs:ignore SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+    public function stream_set_option(int $option, $arg1, $arg2) : bool
     {
         switch ($option) {
             case STREAM_OPTION_BLOCKING:
@@ -737,21 +762,20 @@ class vfsStreamWrapper
 
     /**
      * remove the data under the given path
-     *
-     * @param   string  $path
-     * @return  bool
      */
-    public function unlink(string $path): bool
+    public function unlink(string $path) : bool
     {
         $realPath = $this->resolvePath(vfsStream::path($path));
         $content  = $this->getContent($realPath);
-        if (null === $content) {
+        if ($content === null) {
             trigger_error('unlink(' . $path . '): No such file or directory', E_USER_WARNING);
+
             return false;
         }
 
         if ($content->getType() !== vfsStreamContent::TYPE_FILE) {
             trigger_error('unlink(' . $path . '): Operation not permitted', E_USER_WARNING);
+
             return false;
         }
 
@@ -760,16 +784,14 @@ class vfsStreamWrapper
 
     /**
      * removes a path
-     *
-     * @param   string  $path
-     * @return  bool
      */
-    protected function doUnlink(string $path): bool
+    protected function doUnlink(string $path) : bool
     {
         if (self::$root->getName() === $path) {
             // delete root? very brave. :)
             self::$root = null;
             clearstatcache();
+
             return true;
         }
 
@@ -777,51 +799,53 @@ class vfsStreamWrapper
 
         /** @var vfsStreamDirectory $content */
         $content = $this->getContent($names['dirname']);
-        if (!$content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
+        if (! $content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
             return false;
         }
 
         clearstatcache();
+
         return $content->removeChild($names['basename']);
     }
 
     /**
      * rename from one path to another
      *
-     * @param   string  $path_from
-     * @param   string  $path_to
-     * @return  bool
      * @author  Benoit Aubuchon
      */
-    public function rename(string $path_from, string $path_to): bool
+    public function rename(string $path_from, string $path_to) : bool
     {
         $srcRealPath = $this->resolvePath(vfsStream::path($path_from));
         $dstRealPath = $this->resolvePath(vfsStream::path($path_to));
         $srcContent  = $this->getContent($srcRealPath);
-        if (null === $srcContent) {
+        if ($srcContent === null) {
             trigger_error('No such file or directory', E_USER_WARNING);
+
             return false;
         }
         $dstNames = $this->splitPath($dstRealPath);
 
         /** @var vfsStreamDirectory|null $dstParentContent */
         $dstParentContent = $this->getContent($dstNames['dirname']);
-        if (null === $dstParentContent) {
+        if ($dstParentContent === null) {
             trigger_error('No such file or directory', E_USER_WARNING);
+
             return false;
         }
-        if (!$dstParentContent->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
+        if (! $dstParentContent->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
             trigger_error('Permission denied', E_USER_WARNING);
+
             return false;
         }
         if ($dstParentContent->getType() !== vfsStreamContent::TYPE_DIR) {
             trigger_error('Target is not a directory', E_USER_WARNING);
+
             return false;
         }
 
         // remove old source first, so we can rename later
         // (renaming first would lead to not being able to remove the old path)
-        if (!$this->doUnlink($srcRealPath)) {
+        if (! $this->doUnlink($srcRealPath)) {
             return false;
         }
 
@@ -830,18 +854,14 @@ class vfsStreamWrapper
         $dstContent->rename($dstNames['basename']);
         // Copying to the destination
         $dstParentContent->addChild($dstContent);
+
         return true;
     }
 
     /**
      * creates a new directory
-     *
-     * @param   string  $path
-     * @param   int     $mode
-     * @param   int     $options
-     * @return  bool
      */
-    public function mkdir(string $path, int $mode, int $options): bool
+    public function mkdir(string $path, int $mode, int $options) : bool
     {
         $umask = vfsStream::umask();
         if (0 < $umask) {
@@ -851,13 +871,15 @@ class vfsStreamWrapper
         }
 
         $path = $this->resolvePath(vfsStream::path($path));
-        if (null !== $this->getContent($path)) {
+        if ($this->getContent($path) !== null) {
             trigger_error('mkdir(): Path vfs://' . $path . ' exists', E_USER_WARNING);
+
             return false;
         }
 
-        if (null === self::$root) {
+        if (self::$root === null) {
             self::$root = vfsStream::newDirectory($path, $permissions);
+
             return true;
         }
 
@@ -867,45 +889,43 @@ class vfsStreamWrapper
         $dir      = null;
         $i        = 0;
         while ($dir === null && $i < $maxDepth) {
-            $dir     = $this->getContent($names['dirname']);
-            $names   = $this->splitPath($names['dirname']);
-            if (null == $dir) {
+            $dir   = $this->getContent($names['dirname']);
+            $names = $this->splitPath($names['dirname']);
+            if ($dir === null) {
                 $newDirs = $names['basename'] . '/' . $newDirs;
             }
 
             $i++;
         }
 
-        if (null === $dir
-          || $dir->getType() !== vfsStreamContent::TYPE_DIR
-          || $dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
+        if ($dir === null
+            || $dir->getType() !== vfsStreamContent::TYPE_DIR
+            || $dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
             return false;
         }
 
-        $recursive = ((STREAM_MKDIR_RECURSIVE & $options) !== 0) ? (true) : (false);
-        if (strpos($newDirs, '/') !== false && false === $recursive) {
+        $recursive = (STREAM_MKDIR_RECURSIVE & $options) !== 0 ? (true) : (false);
+        if (strpos($newDirs, '/') !== false && $recursive === false) {
             return false;
         }
 
         vfsStream::newDirectory($newDirs, $permissions)->at($dir);
+
         return true;
     }
 
     /**
      * removes a directory
      *
-     * @param   string  $path
-     * @param   int     $options
-     * @return  bool
      * @todo    consider $options with STREAM_MKDIR_RECURSIVE
      */
-    public function rmdir(string $path, int $options): bool
+    public function rmdir(string $path, int $options) : bool
     {
         $path = $this->resolvePath(vfsStream::path($path));
 
         /** @var vfsStreamDirectory|null $child */
         $child = $this->getContentOfType($path, vfsStreamContent::TYPE_DIR);
-        if (null === $child) {
+        if ($child === null) {
             return false;
         }
 
@@ -918,6 +938,7 @@ class vfsStreamWrapper
             // delete root? very brave. :)
             self::$root = null;
             clearstatcache();
+
             return true;
         }
 
@@ -930,33 +951,31 @@ class vfsStreamWrapper
         }
 
         clearstatcache();
+
         return $dir->removeChild($child->getName());
     }
 
     /**
      * opens a directory
-     *
-     * @param   string  $path
-     * @param   int     $options
-     * @return  bool
      */
-    public function dir_opendir(string $path, int $options): bool
+    public function dir_opendir(string $path, int $options) : bool
     {
         $path      = $this->resolvePath(vfsStream::path($path));
         $this->dir = null;
 
         /** @var vfsStreamDirectory|null $dir */
         $dir = $this->getContentOfType($path, vfsStreamContent::TYPE_DIR);
-        if (null === $dir) {
+        if ($dir === null) {
             return false;
         }
 
         $this->dir = $dir;
-        if (!$this->dir->isReadable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
+        if (! $this->dir->isReadable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
             return false;
         }
 
         $this->dirIterator = $this->dir->getIterator();
+
         return true;
     }
 
@@ -968,70 +987,69 @@ class vfsStreamWrapper
     public function dir_readdir()
     {
         $dir = $this->dirIterator->current();
-        if (null === $dir) {
+        if ($dir === null) {
             return false;
         }
 
         $this->dirIterator->next();
+
         return $dir->getName();
     }
 
     /**
      * reset directory iteration
-     *
-     * @return  bool
      */
-    public function dir_rewinddir()
+    public function dir_rewinddir() : void
     {
-        return $this->dirIterator->rewind();
+        $this->dirIterator->rewind();
     }
 
     /**
      * closes directory
-     *
-     * @return  bool
      */
-    public function dir_closedir(): bool
+    public function dir_closedir() : bool
     {
         $this->dirIterator = null;
+
         return true;
     }
 
     /**
      * returns status of url
      *
-     * @param   string  $path   path of url to return status for
-     * @param   int     $flags  flags set by the stream API
-     * @return  array|bool
+     * @param string $path  path of url to return status for
+     * @param int    $flags flags set by the stream API
+     *
+     * @return  mixed[]|bool
      */
     public function url_stat(string $path, int $flags)
     {
         /** @var vfsStreamAbstractContent|null $content */
         $content = $this->getContent($this->resolvePath(vfsStream::path($path)));
-        if (null === $content) {
-            if (($flags & STREAM_URL_STAT_QUIET) != STREAM_URL_STAT_QUIET) {
+        if ($content === null) {
+            if (($flags & STREAM_URL_STAT_QUIET) !== STREAM_URL_STAT_QUIET) {
                 trigger_error(' No such file or directory: ' . $path, E_USER_WARNING);
             }
 
             return false;
-
         }
 
         $fileStat = [
-            'dev'     => 0,
-            'ino'     => spl_object_id($content),
-            'mode'    => $content->getType() | $content->getPermissions(),
-            'nlink'   => 0,
-            'uid'     => $content->getUser(),
-            'gid'     => $content->getGroup(),
-            'rdev'    => 0,
-            'size'    => $content->size(),
-            'atime'   => $content->fileatime(),
-            'mtime'   => $content->filemtime(),
-            'ctime'   => $content->filectime(),
+            'dev' => 0,
+            'ino' => spl_object_id($content),
+            'mode' => $content->getType() | $content->getPermissions(),
+            'nlink' => 0,
+            'uid' => $content->getUser(),
+            'gid' => $content->getGroup(),
+            'rdev' => 0,
+            'size' => $content->size(),
+            'atime' => $content->fileatime(),
+            'mtime' => $content->filemtime(),
+            'ctime' => $content->filectime(),
             'blksize' => -1,
-            'blocks'  => -1
+            'blocks' => -1,
         ];
+
         return array_merge(array_values($fileStat), $fileStat);
     }
 }

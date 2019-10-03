@@ -26,7 +26,7 @@ use function touch;
  */
 class PermissionsTestCase extends TestCase
 {
-    /** @type  vfsStreamDirectory */
+    /** @var vfsStreamDirectory */
     private $root;
 
     /**

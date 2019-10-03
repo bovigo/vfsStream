@@ -30,7 +30,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * instance to test
      *
-     * @type  LargeFileContent
+     * @var LargeFileContent
      */
     private $largeFileContent;
 

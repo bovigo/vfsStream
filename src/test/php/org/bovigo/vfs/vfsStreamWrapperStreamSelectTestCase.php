@@ -23,7 +23,7 @@ use function stream_select;
  * @since  0.9.0
  * @group  issue_3
  */
-class vfsStreamWrapperSelectStreamTestCase extends TestCase
+class vfsStreamWrapperStreamSelectTestCase extends TestCase
 {
     /**
      * @test

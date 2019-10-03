@@ -29,19 +29,19 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     /**
      * instance to test
      *
-     * @type  vfsStreamDirectory
+     * @var vfsStreamDirectory
      */
     private $dir;
     /**
      * child one
      *
-     * @type  vfsStreamContent
+     * @var vfsStreamContent
      */
     private $child1;
     /**
      * child two
      *
-     * @type  vfsStreamContent
+     * @var vfsStreamContent
      */
     private $child2;
 
@@ -66,6 +66,9 @@ class vfsStreamContainerIteratorTestCase extends TestCase
         vfsStream::enableDotfiles();
     }
 
+    /**
+     * @return string[][]
+     */
     public function provideSwitchWithExpectations() : array
     {
         return [
@@ -74,6 +77,9 @@ class vfsStreamContainerIteratorTestCase extends TestCase
         ];
     }
 
+    /**
+     * @param string|vfsStreamContent $dir
+     */
     private function nameOf($dir) : string
     {
         if (is_string($dir)) {
@@ -84,7 +90,7 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     }
 
     /**
-     * @param  array $dirNames
+     * @param  mixed[] $dirs
      *
      * @test
      * @dataProvider  provideSwitchWithExpectations

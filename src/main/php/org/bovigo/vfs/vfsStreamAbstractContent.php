@@ -88,7 +88,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
             throw new vfsStreamException('Name can not contain /.');
         }
 
-        $this->name = "{$name}";
+        $this->name = $name;
         $time       = time();
         if ($permissions === null) {
             $permissions = $this->getDefaultPermissions() & ~vfsStream::umask();
@@ -125,7 +125,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
             throw new vfsStreamException('Name can not contain /.');
         }
 
-        $this->name = "{$newName}";
+        $this->name = $newName;
     }
 
     /**

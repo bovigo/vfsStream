@@ -34,7 +34,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     /**
      * byte array of written content
      *
-     * @var  array
+     * @var string[]
      */
     private $content = [];
     /**

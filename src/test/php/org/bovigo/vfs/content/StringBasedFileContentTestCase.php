@@ -32,7 +32,7 @@ class StringBasedFileContentTestCase extends TestCase
     /**
      * instance to test
      *
-     * @type  StringBasedFileContent
+     * @var StringBasedFileContent
      */
     private $stringBasedFileContent;
 

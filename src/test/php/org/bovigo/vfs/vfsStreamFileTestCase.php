@@ -243,6 +243,9 @@ class vfsStreamFileTestCase extends TestCase
         assertFalse($this->file->seek(0, 55));
     }
 
+    /**
+     * @return mixed[][]
+     */
     public function seeks() : array
     {
         return [
@@ -257,7 +260,7 @@ class vfsStreamFileTestCase extends TestCase
      * @test
      * @dataProvider  seeks
      */
-    public function seekEmptyFile(int $offset, $whence, int $expected) : void
+    public function seekEmptyFile(int $offset, int $whence, int $expected) : void
     {
         assertTrue($this->file->seek($offset, $whence));
         assertThat($this->file->getBytesRead(), equals($expected));
@@ -289,7 +292,7 @@ class vfsStreamFileTestCase extends TestCase
      * @test
      * @dataProvider  seeks
      */
-    public function seekRead(int $offset, $whence, int $expected, string $remaining) : void
+    public function seekRead(int $offset, int $whence, int $expected, string $remaining) : void
     {
         $this->file->setContent('foobarbaz');
         if ($whence === SEEK_END) {

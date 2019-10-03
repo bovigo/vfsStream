@@ -26,13 +26,13 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * collected structure
      *
-     * @var  array
+     * @var  string[]
      */
     protected $structure = [];
     /**
      * poiting to currently iterated directory
      *
-     * @var  array
+     * @var  mixed[]
      */
     protected $current;
 
@@ -92,7 +92,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * returns structure of visited contents
      *
-     * @return  array
+     * @return string[]
      * @api
      */
     public function getStructure() : array

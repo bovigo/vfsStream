@@ -32,7 +32,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * access to root
      *
-     * @type  vfsStreamDirectory
+     * @var vfsStreamDirectory
      */
     private $root;
 

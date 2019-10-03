@@ -26,7 +26,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
 {
     private const OTHER = -1;
 
-    private function createContent($permissions) : vfsStreamContent
+    private function createContent(int $permissions) : vfsStreamContent
     {
         return NewInstance::of(vfsStreamAbstractContent::class, ['foo', $permissions])
             ->returns([

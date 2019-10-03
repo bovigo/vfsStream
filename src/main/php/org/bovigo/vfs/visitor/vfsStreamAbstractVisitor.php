@@ -41,7 +41,9 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
                 $this->visitDirectory($content);
             }
         } else {
-            throw new InvalidArgumentException('Unknown content type ' . $content->getType() . ' for ' . $content->getName());
+            throw new InvalidArgumentException(
+                'Unknown content type ' . $content->getType() . ' for ' . $content->getName()
+            );
         }
 
         return $this;

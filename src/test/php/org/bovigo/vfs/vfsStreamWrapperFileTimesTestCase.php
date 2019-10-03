@@ -35,6 +35,7 @@ use function unlink;
  */
 class vfsStreamWrapperFileTimesTestCase extends TestCase
 {
+    /** @var vfsStreamDirectory */
     private $root;
 
     /**
@@ -294,6 +295,8 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
      */
     // public function changeFileAttributesChangesAttributeTimeOfFileItself()
     // {
-    //     $this->markTestSkipped('Changing file attributes via stream wrapper for self-defined streams is not supported by PHP.');
+    //     $this->markTestSkipped(
+    //        'Changing file attributes via stream wrapper for self-defined streams is not supported by PHP.'
+    //     );
     // }
 }

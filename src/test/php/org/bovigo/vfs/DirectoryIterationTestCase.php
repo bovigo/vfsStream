@@ -44,6 +44,9 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
         vfsStream::enableDotfiles();
     }
 
+    /**
+     * @return string[][]
+     */
     public function provideSwitchWithExpectations() : array
     {
         return [
@@ -57,12 +60,13 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
         assertThat(
             $actualCount,
             equals($expectedCount),
-            'Directory root contains ' . $expectedCount . ' children, but got ' . $actualCount . ' children while iterating over directory contents'
+            'Directory root contains ' . $expectedCount . ' children, but got ' . $actualCount
+            . ' children while iterating over directory contents'
         );
     }
 
     /**
-     * @param  string[] $expectedDirectories
+     * @param string[] $expectedDirectories
      *
      * @test
      * @dataProvider  provideSwitchWithExpectations
@@ -90,7 +94,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * @param  string[] $expectedDirectories
+     * @param string[] $expectedDirectories
      *
      * @test
      * @dataProvider  provideSwitchWithExpectations
@@ -118,7 +122,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * @param  string[] $expectedDirectories
+     * @param string[] $expectedDirectories
      *
      * @test
      * @dataProvider  provideSwitchWithExpectations
@@ -149,7 +153,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * @param  string[] $expectedDirectories
+     * @param string[] $expectedDirectories
      *
      * @test
      * @dataProvider  provideSwitchWithExpectations
@@ -159,11 +163,12 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     public function directoryIteration_Bug_4(callable $switchDotFiles, array $expectedDirectories) : void
     {
         $switchDotFiles();
-        $dir   = $this->root->url();
-        $list1 = [];
-        if ($handle = opendir($dir)) {
+        $dir    = $this->root->url();
+        $list1  = [];
+        $handle = opendir($dir);
+        if ($handle !== false) {
             while (($listItem = readdir($handle)) !== false) {
-                if ($listItem  === '.' || $listItem === '..') {
+                if ($listItem === '.' || $listItem === '..') {
                     continue;
                 }
 
@@ -177,10 +182,11 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
             closedir($handle);
         }
 
-        $list2 = [];
-        if ($handle = opendir($dir)) {
+        $list2  = [];
+        $handle = opendir($dir);
+        if ($handle !== false) {
             while (($listItem = readdir($handle)) !== false) {
-                if ($listItem  === '.' || $listItem === '..') {
+                if ($listItem === '.' || $listItem === '..') {
                     continue;
                 }
 
@@ -199,7 +205,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     }
 
     /**
-     * @param  string[] $expectedDirectories
+     * @param string[] $expectedDirectories
      *
      * @test
      * @dataProvider  provideSwitchWithExpectations
@@ -207,23 +213,27 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     public function directoryIterationShouldBeIndependent(callable $switchDotFiles, array $expectedDirectories) : void
     {
         $switchDotFiles();
-        $list1   = [];
-        $list2   = [];
-        $handle1 = opendir($this->root->url());
-        if (($listItem = readdir($handle1)) !== false) {
+        $list1    = [];
+        $list2    = [];
+        $handle1  = opendir($this->root->url());
+        $listItem = readdir($handle1);
+        if ($listItem !== false) {
             $list1[] = $listItem;
         }
 
-        $handle2 = opendir($this->root->url());
-        if (($listItem = readdir($handle2)) !== false) {
+        $handle2  = opendir($this->root->url());
+        $listItem = readdir($handle2);
+        if ($listItem !== false) {
             $list2[] = $listItem;
         }
 
-        if (($listItem = readdir($handle1)) !== false) {
+        $listItem = readdir($handle1);
+        if ($listItem !== false) {
             $list1[] = $listItem;
         }
 
-        if (($listItem = readdir($handle2)) !== false) {
+        $listItem = readdir($handle2);
+        if ($listItem !== false) {
             $list2[] = $listItem;
         }
 
@@ -244,11 +254,11 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
         $structure = [
             'Core' => [
                 'AbstractFactory' => [
-                    'test.php'    => 'some text content',
-                    'other.php'   => 'Some more text content',
+                    'test.php' => 'some text content',
+                    'other.php' => 'Some more text content',
                     'Invalid.csv' => 'Something else',
                 ],
-                'AnEmptyFolder'   => [],
+                'AnEmptyFolder' => [],
                 'badlocation.php' => 'some bad content',
             ],
         ];
@@ -264,21 +274,22 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
             $pathes[] = $fullFileName;
         }
 
+        $cordDir = 'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR;
         assertThat($pathes, equals([
             'vfs://root' . DIRECTORY_SEPARATOR . '.',
             'vfs://root' . DIRECTORY_SEPARATOR . '..',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . '.',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . '..',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AbstractFactory' . DIRECTORY_SEPARATOR . '.',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AbstractFactory' . DIRECTORY_SEPARATOR . '..',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'test.php',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'other.php',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'Invalid.csv',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AbstractFactory',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AnEmptyFolder' . DIRECTORY_SEPARATOR . '.',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AnEmptyFolder' . DIRECTORY_SEPARATOR . '..',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AnEmptyFolder',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'badlocation.php',
+            $cordDir . '.',
+            $cordDir . '..',
+            $cordDir . 'AbstractFactory' . DIRECTORY_SEPARATOR . '.',
+            $cordDir . 'AbstractFactory' . DIRECTORY_SEPARATOR . '..',
+            $cordDir . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'test.php',
+            $cordDir . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'other.php',
+            $cordDir . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'Invalid.csv',
+            $cordDir . 'AbstractFactory',
+            $cordDir . 'AnEmptyFolder' . DIRECTORY_SEPARATOR . '.',
+            $cordDir . 'AnEmptyFolder' . DIRECTORY_SEPARATOR . '..',
+            $cordDir . 'AnEmptyFolder',
+            $cordDir . 'badlocation.php',
             'vfs://root' . DIRECTORY_SEPARATOR . 'Core',
         ]));
     }
@@ -294,11 +305,11 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
         $structure = [
             'Core' => [
                 'AbstractFactory' => [
-                    'test.php'    => 'some text content',
-                    'other.php'   => 'Some more text content',
+                    'test.php' => 'some text content',
+                    'other.php' => 'Some more text content',
                     'Invalid.csv' => 'Something else',
                 ],
-                'AnEmptyFolder'   => [],
+                'AnEmptyFolder' => [],
                 'badlocation.php' => 'some bad content',
             ],
         ];
@@ -314,14 +325,18 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
             $pathes[] = $fullFileName;
         }
 
-        assertThat($pathes, equals([
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'test.php',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'other.php',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'Invalid.csv',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AbstractFactory',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AnEmptyFolder',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'badlocation.php',
-            'vfs://root' . DIRECTORY_SEPARATOR . 'Core',
-        ]));
+        $coreDir = 'vfs://root' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR;
+        assertThat(
+            $pathes,
+            equals([
+                $coreDir . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'test.php',
+                $coreDir . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'other.php',
+                $coreDir . 'AbstractFactory' . DIRECTORY_SEPARATOR . 'Invalid.csv',
+                $coreDir . 'AbstractFactory',
+                $coreDir . 'AnEmptyFolder',
+                $coreDir . 'badlocation.php',
+                'vfs://root' . DIRECTORY_SEPARATOR . 'Core',
+            ])
+        );
     }
 }

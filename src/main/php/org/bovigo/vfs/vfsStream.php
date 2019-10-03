@@ -11,21 +11,31 @@ declare(strict_types=1);
 
 namespace org\bovigo\vfs;
 
+use DirectoryIterator;
 use InvalidArgumentException;
 use org\bovigo\vfs\content\FileContent;
 use org\bovigo\vfs\content\LargeFileContent;
 use org\bovigo\vfs\visitor\vfsStreamVisitor;
 use function array_map;
 use function explode;
+use function file_get_contents;
+use function filetype;
+use function function_exists;
+use function implode;
 use function is_array;
 use function is_string;
-use function join;
+use function octdec;
+use function posix_getgid;
+use function posix_getuid;
+use function preg_match;
 use function rawurldecode;
+use function sprintf;
 use function str_replace;
 use function strlen;
+use function strpos;
 use function substr;
 use function trim;
-use function preg_match;
+
 /**
  * Some utility methods for vfsStream.
  *
@@ -77,11 +87,11 @@ class vfsStream
     /**
      * prepends the scheme to the given URL
      *
-     * @param   string $path path to translate to vfsStream url
+     * @param string $path path to translate to vfsStream url
      */
     public static function url(string $path) : string
     {
-        return self::SCHEME . '://' . join(
+        return self::SCHEME . '://' . implode(
             '/',
             array_map(
                 'rawurlencode',    // ensure singe path parts are correctly urlencoded
@@ -96,7 +106,7 @@ class vfsStream
     /**
      * restores the path from the url
      *
-     * @param   string $url vfsStream url to translate into path
+     * @param string $url vfsStream url to translate into path
      */
     public static function path(string $url) : string
     {
@@ -115,8 +125,8 @@ class vfsStream
      *
      * If no value is given only the current umask setting is returned.
      *
-     * @since   0.8.0
-     * @param   int|null $umask new umask setting
+     * @since 0.8.0
+     * @param int|null $umask new umask setting
      */
     public static function umask(?int $umask = null) : int
     {
@@ -170,12 +180,15 @@ class vfsStream
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
      *
-     * @param   string   $rootDirName name of root directory
-     * @param   int|null $permissions file permissions of root directory
-     * @param   array    $structure   directory structure to add under root directory
+     * @param string     $rootDirName name of root directory
+     * @param int|null   $permissions file permissions of root directory
+     * @param string[][] $structure   directory structure to add under root directory
      */
-    public static function setup(string $rootDirName = 'root', ?int $permissions = null, array $structure = []) : vfsStreamDirectory
-    {
+    public static function setup(
+        string $rootDirName = 'root',
+        ?int $permissions = null,
+        array $structure = []
+    ) : vfsStreamDirectory {
         vfsStreamWrapper::register();
 
         return self::create($structure, vfsStreamWrapper::setRoot(self::newDirectory($rootDirName, $permissions)));
@@ -218,8 +231,8 @@ class vfsStream
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
      *
-     * @param   array                   $structure directory structure to add under root directory
-     * @param   vfsStreamDirectory|null $baseDir   base directory to add structure to
+     * @param string[][]              $structure directory structure to add under root directory
+     * @param vfsStreamDirectory|null $baseDir   base directory to add structure to
      *
      * @throws InvalidArgumentException
      */
@@ -239,8 +252,8 @@ class vfsStream
     /**
      * helper method to create subdirectories recursively
      *
-     * @param   array              $structure subdirectory structure to add
-     * @param   vfsStreamDirectory $baseDir   directory to add the structure to
+     * @param mixed[]            $structure subdirectory structure to add
+     * @param vfsStreamDirectory $baseDir   directory to add the structure to
      */
     protected static function addStructure(array $structure, vfsStreamDirectory $baseDir) : vfsStreamDirectory
     {
@@ -281,16 +294,19 @@ class vfsStream
      * @since   0.11.0
      * @see     https://github.com/mikey179/vfsStream/issues/4
      *
-     * @param   string                  $path        path to copy the structure from
-     * @param   vfsStreamDirectory|null $baseDir     directory to add the structure to
-     * @param   int                     $maxFileSize maximum file size of files to copy content from
+     * @param string                  $path        path to copy the structure from
+     * @param vfsStreamDirectory|null $baseDir     directory to add the structure to
+     * @param int                     $maxFileSize maximum file size of files to copy content from
      *
      * @throws InvalidArgumentException
      */
-    public static function copyFromFileSystem(string $path, ?vfsStreamDirectory $baseDir = null, int $maxFileSize = 1048576) : vfsStreamDirectory
-    {
+    public static function copyFromFileSystem(
+        string $path,
+        ?vfsStreamDirectory $baseDir = null,
+        int $maxFileSize = 1048576
+    ) : vfsStreamDirectory {
         if ($baseDir === null) {
-            /** @var vfsStreamDirectory|null $baseDir **/
+            /** @var vfsStreamDirectory|null $baseDir * */
             $baseDir = vfsStreamWrapper::getRoot();
         }
 
@@ -298,7 +314,7 @@ class vfsStream
             throw new InvalidArgumentException('No baseDir given and no root directory set.');
         }
 
-        $dir = new \DirectoryIterator($path);
+        $dir = new DirectoryIterator($path);
         foreach ($dir as $fileinfo) {
             switch (filetype($fileinfo->getPathname())) {
                 case 'file':
@@ -345,8 +361,8 @@ class vfsStream
     /**
      * returns a new file with given name
      *
-     * @param   string   $name        name of file to create
-     * @param   int|null $permissions permissions of file to create
+     * @param string   $name        name of file to create
+     * @param int|null $permissions permissions of file to create
      */
     public static function newFile(string $name, ?int $permissions = null) : vfsStreamFile
     {
@@ -360,8 +376,8 @@ class vfsStream
      * The returned directory will always be the parent directory of this
      * directory structure.
      *
-     * @param   string   $name        name of directory to create
-     * @param   int|null $permissions permissions of directory to create
+     * @param string   $name        name of directory to create
+     * @param int|null $permissions permissions of directory to create
      */
     public static function newDirectory(string $name, ?int $permissions = null) : vfsStreamDirectory
     {
@@ -387,8 +403,8 @@ class vfsStream
     /**
      * returns a new block with the given name
      *
-     * @param   string   $name        name of the block device
-     * @param   int|null $permissions permissions of block to create
+     * @param string   $name        name of the block device
+     * @param int|null $permissions permissions of block to create
      */
     public static function newBlock(string $name, ?int $permissions = null) : vfsStreamBlock
     {
@@ -426,8 +442,8 @@ class vfsStream
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/10
      *
-     * @param   vfsStreamVisitor      $visitor the visitor who inspects
-     * @param   vfsStreamContent|null $content directory structure to inspect
+     * @param vfsStreamVisitor      $visitor the visitor who inspects
+     * @param vfsStreamContent|null $content directory structure to inspect
      *
      * @throws InvalidArgumentException
      */

@@ -25,10 +25,12 @@ use function file_get_contents;
  */
 class Issue104TestCase extends TestCase
 {
+    /** @var string */
     private $content;
 
     protected function setUp() : void
     {
+        // phpcs:ignore Generic.Files.LineLength.TooLong
         $this->content = '<xs:schema targetNamespace="http://www.example.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
                           <xs:complexType name="myType"></xs:complexType>
                         </xs:schema>';

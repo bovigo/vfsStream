@@ -30,7 +30,10 @@ use function mkdir;
  */
 class FilenameTestCase extends TestCase
 {
+    /** @var string */
     private $rootDir;
+
+    /** @var string */
     private $lostAndFound;
 
     /**

@@ -30,6 +30,7 @@ use function stream_resolve_include_path;
  */
 class vfsStreamResolveIncludePathTestCase extends TestCase
 {
+    /** @var string */
     protected $backupIncludePath;
 
     protected function setUp() : void

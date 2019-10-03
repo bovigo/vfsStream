@@ -12,10 +12,10 @@ declare(strict_types=1);
 namespace org\bovigo\vfs;
 
 use const E_USER_WARNING;
-use function bovigo\assert\assertThat;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNotNull;
 use function bovigo\assert\assertNull;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
@@ -34,8 +34,11 @@ use function unlink;
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper around mkdir().
  */
-class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
+class vfsStreamWrapperDirTestCase extends vfsStreamWrapperBaseTestCase
 {
+    /**
+     * @return string[][]
+     */
     public function newRoots() : array
     {
         return [
@@ -48,7 +51,7 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @dataProvider  newRoots
      */
-    public function mkdirDoesNotOverwriteExistingRoot($newRoot) : void
+    public function mkdirDoesNotOverwriteExistingRoot(string $newRoot) : void
     {
         assertFalse(mkdir(vfsStream::url($newRoot), 0777, true));
         assertThat(vfsStreamWrapper::getRoot(), isSameAs($this->root));
@@ -84,6 +87,9 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         assertThat($this->root->getChild('another')->getPermissions(), equals(0777));
     }
 
+    /**
+     * @return string[][]
+     */
     public function mkdirChildren() : array
     {
         return [['another'], ['another/more']];
@@ -230,6 +236,9 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         assertFalse(@dir($restricted->url()));
     }
 
+    /**
+     * @return string[][]
+     */
     public function directories() : array
     {
         return [
@@ -249,6 +258,9 @@ class vfsStreamWrapperMkDirTestCase extends vfsStreamWrapperBaseTestCase
         assertTrue(is_dir($directory));
     }
 
+    /**
+     * @return string[][]
+     */
     public function nonDirectories() : array
     {
         return [

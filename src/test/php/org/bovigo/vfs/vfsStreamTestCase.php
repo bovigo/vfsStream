@@ -43,6 +43,9 @@ class vfsStreamTestCase extends TestCase
         vfsStreamWrapper::register();
     }
 
+    /**
+     * @return string[][]
+     */
     public function pathes() : array
     {
         return [
@@ -56,11 +59,14 @@ class vfsStreamTestCase extends TestCase
      * @test
      * @dataProvider pathes
      */
-    public function pathToUrlConversion($path, $url) : void
+    public function pathToUrlConversion(string $path, string $url) : void
     {
         assertThat(vfsStream::url($path), equals($url));
     }
 
+    /**
+     * @return string[][]
+     */
     public function urls() : array
     {
         return [
@@ -79,11 +85,14 @@ class vfsStreamTestCase extends TestCase
      * @test
      * @dataProvider urls
      */
-    public function urlToPathConversion($url, $path) : void
+    public function urlToPathConversion(string $url, string $path) : void
     {
         assertThat(vfsStream::path($url), equals($path));
     }
 
+    /**
+     * @return mixed[][]
+     */
     public function createDirectories() : array
     {
         return [
@@ -96,8 +105,10 @@ class vfsStreamTestCase extends TestCase
      * @test
      * @dataProvider createDirectories
      */
-    public function newDirectoryCreatesStructureWhenNameContainsSlashes($root, $permissions) : void
-    {
+    public function newDirectoryCreatesStructureWhenNameContainsSlashes(
+        vfsStreamDirectory $root,
+        int $permissions
+    ) : void {
         assertThat($root->getPermissions(), equals($permissions));
 
         assertTrue($root->hasChild('bar'));
@@ -644,6 +655,7 @@ class vfsStreamTestCase extends TestCase
         $structure = [
             'topLevel' => [
                 'thisIsAFile' => 'file contents',
+                //phpcs:ignore Squiz.Arrays.ArrayDeclaration.NoKeySpecified
                 vfsStream::newFile('anotherFile'),
             ],
         ];

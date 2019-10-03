@@ -38,6 +38,7 @@ class TestvfsStreamWrapper extends vfsStreamWrapper
         self::$registered = false;
     }
 }
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
