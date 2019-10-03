@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ruleset name="phpDocumentor">
+ <description>The coding standard for phpDocumentor.</description>
+
+    <file>src/main/php/org/bovigo/vfs</file>
+    <file>src/test/php/org/bovigo/vfs</file>
+    <arg value="p"/>
+    <rule ref="Doctrine">
+    </rule>
+</ruleset>
