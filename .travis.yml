@@ -12,6 +12,9 @@ env:
   - DEPENDENCIES=lowest
   - DEPENDENCIES=highest
 
+cache:
+  directories:
+    - $HOME/.composer/cache/files
 
 matrix:
   fast_finish: true
