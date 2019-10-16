@@ -29,7 +29,7 @@ class TestvfsStreamWrapper extends vfsStreamWrapper
     /**
      * unregisters vfsStreamWrapper
      */
-    public static function unregister() : void
+    public static function unregister(): void
     {
         if (in_array(vfsStream::SCHEME, stream_get_wrappers()) === true) {
             stream_wrapper_unregister(vfsStream::SCHEME);
@@ -47,7 +47,7 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends TestCase
     /**
      * clean up test environment
      */
-    protected function tearDown() : void
+    protected function tearDown(): void
     {
         TestvfsStreamWrapper::unregister();
     }
@@ -55,14 +55,14 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends TestCase
     /**
      * @test
      */
-    public function registerOverAnotherStreamWrapperThrowsException() : void
+    public function registerOverAnotherStreamWrapperThrowsException(): void
     {
         TestvfsStreamWrapper::unregister();
         stream_wrapper_register(
             vfsStream::SCHEME,
             NewInstance::classname(vfsStreamWrapper::class)
         );
-        expect(static function () : void {
+        expect(static function (): void {
             vfsStreamWrapper::register();
         })
           ->throws(vfsStreamException::class);

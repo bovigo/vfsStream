@@ -28,7 +28,7 @@ class vfsStreamGlobTestCase extends TestCase
     /**
      * @test
      */
-    public function globDoesNotWorkWithVfsStreamUrls() : void
+    public function globDoesNotWorkWithVfsStreamUrls(): void
     {
         $root = vfsStream::setup('example');
         mkdir(vfsStream::url('example/test/'), 0777, true);

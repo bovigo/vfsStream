@@ -50,7 +50,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      *
      * @since   0.8.0
      */
-    protected function getDefaultPermissions() : int
+    protected function getDefaultPermissions(): int
     {
         return 0777;
     }
@@ -61,7 +61,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      * The size of a directory is always 0 bytes. To calculate the summarized
      * size of all children in the directory use sizeSummarized().
      */
-    public function size() : int
+    public function size(): int
     {
         return 0;
     }
@@ -69,7 +69,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * returns summarized size of directory and its children
      */
-    public function sizeSummarized() : int
+    public function sizeSummarized(): int
     {
         $size = 0;
         foreach ($this->children as $child) {
@@ -87,9 +87,10 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      * sets parent path
      *
      * @internal  only to be set by parent
+     *
      * @since   1.2.0
      */
-    public function setParentPath(string $parentPath) : void
+    public function setParentPath(string $parentPath): void
     {
         parent::setParentPath($parentPath);
         foreach ($this->children as $child) {
@@ -100,7 +101,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * adds child to the directory
      */
-    public function addChild(vfsStreamContent $child) : void
+    public function addChild(vfsStreamContent $child): void
     {
         $child->setParentPath($this->path());
         $this->children[$child->getName()] = $child;
@@ -110,7 +111,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * removes child from the directory
      */
-    public function removeChild(string $name) : bool
+    public function removeChild(string $name): bool
     {
         foreach ($this->children as $key => $child) {
             if ($child->appliesTo($name)) {
@@ -128,17 +129,17 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * updates internal timestamps
      */
-    protected function updateModifications() : void
+    protected function updateModifications(): void
     {
-        $time                        = time();
+        $time = time();
         $this->lastAttributeModified = $time;
-        $this->lastModified          = $time;
+        $this->lastModified = $time;
     }
 
     /**
      * checks whether the container contains a child with the given name
      */
-    public function hasChild(string $name) : bool
+    public function hasChild(string $name): bool
     {
         return $this->getChild($name) !== null;
     }
@@ -146,7 +147,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * returns the child with the given name
      */
-    public function getChild(string $name) : ?vfsStreamContent
+    public function getChild(string $name): ?vfsStreamContent
     {
         $childName = $this->getRealChildName($name);
         foreach ($this->children as $child) {
@@ -169,7 +170,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * helper method to detect the real child name
      */
-    protected function getRealChildName(string $name) : string
+    protected function getRealChildName(string $name): string
     {
         if ($this->appliesTo($name) === true) {
             return self::getChildName($name, $this->name);
@@ -181,7 +182,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * helper method to calculate the child name
      */
-    protected static function getChildName(string $name, string $ownName) : string
+    protected static function getChildName(string $name, string $ownName): string
     {
         if ($name === $ownName) {
             return $name;
@@ -195,7 +196,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      *
      * @since   0.10.0
      */
-    public function hasChildren() : bool
+    public function hasChildren(): bool
     {
         return count($this->children) > 0;
     }
@@ -205,7 +206,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      *
      * @return  vfsStreamContent[]
      */
-    public function getChildren() : array
+    public function getChildren(): array
     {
         return array_values($this->children);
     }
@@ -215,7 +216,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      *
      * @return  vfsStreamContainerIterator
      */
-    public function getIterator() : Iterator
+    public function getIterator(): Iterator
     {
         return new vfsStreamContainerIterator($this->children);
     }
@@ -223,7 +224,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * checks whether dir is a dot dir
      */
-    public function isDot() : bool
+    public function isDot(): bool
     {
         return $this->name === '.' || $this->name === '..';
     }

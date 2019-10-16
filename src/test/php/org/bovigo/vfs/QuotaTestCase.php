@@ -34,7 +34,7 @@ class QuotaTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->quota = new Quota(10);
     }
@@ -42,7 +42,7 @@ class QuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function unlimitedQuotaIsNotLimited() : void
+    public function unlimitedQuotaIsNotLimited(): void
     {
         assertFalse(Quota::unlimited()->isLimited());
     }
@@ -50,7 +50,7 @@ class QuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function limitedQuotaIsLimited() : void
+    public function limitedQuotaIsLimited(): void
     {
         assertTrue($this->quota->isLimited());
     }
@@ -58,7 +58,7 @@ class QuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function unlimitedQuotaHasAlwaysSpaceLeft() : void
+    public function unlimitedQuotaHasAlwaysSpaceLeft(): void
     {
         assertThat(Quota::unlimited()->spaceLeft(303), equals(303));
     }
@@ -66,7 +66,7 @@ class QuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function hasNoSpaceLeftWhenUsedSpaceIsLargerThanQuota() : void
+    public function hasNoSpaceLeftWhenUsedSpaceIsLargerThanQuota(): void
     {
         assertThat($this->quota->spaceLeft(11), equals(0));
     }
@@ -74,7 +74,7 @@ class QuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function hasNoSpaceLeftWhenUsedSpaceIsEqualToQuota() : void
+    public function hasNoSpaceLeftWhenUsedSpaceIsEqualToQuota(): void
     {
         assertThat($this->quota->spaceLeft(10), equals(0));
     }
@@ -82,7 +82,7 @@ class QuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function hasSpaceLeftWhenUsedSpaceIsLowerThanQuota() : void
+    public function hasSpaceLeftWhenUsedSpaceIsLowerThanQuota(): void
     {
         assertThat($this->quota->spaceLeft(9), equals(1));
     }

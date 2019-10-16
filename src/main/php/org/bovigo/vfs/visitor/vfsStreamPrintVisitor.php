@@ -24,8 +24,9 @@ use function str_repeat;
 /**
  * Visitor which traverses a content structure recursively to print it to an output stream.
  *
- * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
+ *
+ * @since  0.10.0
  */
 class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
 {
@@ -47,10 +48,11 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      *
      * If no file pointer given it will fall back to STDOUT.
      *
-     * @api
      * @param   resource $out optional
      *
      * @throws InvalidArgumentException
+     *
+     * @api
      */
     public function __construct($out = STDOUT)
     {
@@ -66,7 +68,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      *
      * @return  vfsStreamPrintVisitor
      */
-    public function visitFile(vfsStreamFile $file) : vfsStreamVisitor
+    public function visitFile(vfsStreamFile $file): vfsStreamVisitor
     {
         $this->printContent($file->getName());
 
@@ -78,7 +80,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      *
      * @return  vfsStreamPrintVisitor
      */
-    public function visitBlockDevice(vfsStreamBlock $block) : vfsStreamVisitor
+    public function visitBlockDevice(vfsStreamBlock $block): vfsStreamVisitor
     {
         $name = '[' . $block->getName() . ']';
         $this->printContent($name);
@@ -91,7 +93,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
      *
      * @return  vfsStreamPrintVisitor
      */
-    public function visitDirectory(vfsStreamDirectory $dir) : vfsStreamVisitor
+    public function visitDirectory(vfsStreamDirectory $dir): vfsStreamVisitor
     {
         $this->printContent($dir->getName());
         $this->depth++;
@@ -107,7 +109,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     /**
      * helper method to print the content
      */
-    protected function printContent(string $name) : void
+    protected function printContent(string $name): void
     {
         fwrite($this->out, str_repeat('  ', $this->depth) . '- ' . $name . "\n");
     }

@@ -30,7 +30,7 @@ class vfsStreamDirectoryIssue134TestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->rootDirectory = vfsStream::newDirectory('/');
         $this->rootDirectory->addChild(vfsStream::newDirectory('var/log/app'));
@@ -40,7 +40,7 @@ class vfsStreamDirectoryIssue134TestCase extends TestCase
      * @test
      * @small
      */
-    public function shouldSaveDirectoryNameAsStringInternal() : void
+    public function shouldSaveDirectoryNameAsStringInternal(): void
     {
         $dir = $this->rootDirectory->getChild('var/log/app');
         $dir->addChild(vfsStream::newDirectory(80));
@@ -51,7 +51,7 @@ class vfsStreamDirectoryIssue134TestCase extends TestCase
      * @test
      * @small
      */
-    public function shouldRenameDirectoryNameAsStringInternal() : void
+    public function shouldRenameDirectoryNameAsStringInternal(): void
     {
         $dir = $this->rootDirectory->getChild('var/log/app');
         $dir->addChild(vfsStream::newDirectory(80));

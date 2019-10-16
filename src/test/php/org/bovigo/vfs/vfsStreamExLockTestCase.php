@@ -34,7 +34,7 @@ class vfsStreamExLockTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $root = vfsStream::setup();
         vfsStream::newFile('testfile')->at($root);
@@ -47,9 +47,9 @@ class vfsStreamExLockTestCase extends TestCase
      *
      * @test
      */
-    public function filePutContentsWithLockShouldReportError() : void
+    public function filePutContentsWithLockShouldReportError(): void
     {
-        expect(static function () : void {
+        expect(static function (): void {
             file_put_contents(vfsStream::url('root/testfile'), "some string\n", LOCK_EX);
         })->triggers()
           ->withMessage('file_put_contents(): Exclusive locks may only be set for regular files');
@@ -58,7 +58,7 @@ class vfsStreamExLockTestCase extends TestCase
     /**
      * @test
      */
-    public function flockShouldPass() : void
+    public function flockShouldPass(): void
     {
         $fp = fopen(vfsStream::url('root/testfile'), 'w');
         flock($fp, LOCK_EX);

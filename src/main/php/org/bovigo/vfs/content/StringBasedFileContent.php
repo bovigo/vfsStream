@@ -40,7 +40,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
     /**
      * returns actual content
      */
-    public function content() : string
+    public function content(): string
     {
         return $this->content;
     }
@@ -48,7 +48,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
     /**
      * returns size of content
      */
-    public function size() : int
+    public function size(): int
     {
         return strlen($this->content);
     }
@@ -56,7 +56,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
     /**
      * actual reading of length starting at given offset
      */
-    protected function doRead(int $offset, int $count) : string
+    protected function doRead(int $offset, int $count): string
     {
         /** @var string|false $data */
         $data = substr($this->content, $offset, $count);
@@ -67,7 +67,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
     /**
      * actual writing of data with specified length at given offset
      */
-    protected function doWrite(string $data, int $offset, int $length) : void
+    protected function doWrite(string $data, int $offset, int $length): void
     {
         $this->content = substr($this->content, 0, $offset)
                        . $data
@@ -79,7 +79,7 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
      *
      * @param   int $size length to truncate file to
      */
-    public function truncate(int $size) : bool
+    public function truncate(int $size): bool
     {
         if ($size > $this->size()) {
             // Pad with null-chars if we're "truncating up"

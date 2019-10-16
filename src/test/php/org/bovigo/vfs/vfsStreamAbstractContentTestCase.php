@@ -26,21 +26,21 @@ class vfsStreamAbstractContentTestCase extends TestCase
 {
     private const OTHER = -1;
 
-    private function createContent(int $permissions) : vfsStreamContent
+    private function createContent(int $permissions): vfsStreamContent
     {
         return NewInstance::of(vfsStreamAbstractContent::class, ['foo', $permissions])
             ->returns([
                 'getDefaultPermissions' => 0777,
-                'size'                  => 0,
+                'size' => 0,
             ]);
     }
 
     /**
      * @test
      */
-    public function invalidCharacterInNameThrowsException() : void
+    public function invalidCharacterInNameThrowsException(): void
     {
-        expect(static function () : void {
+        expect(static function (): void {
             NewInstance::of(vfsStreamAbstractContent::class, ['foo/bar']);
         })->throws(vfsStreamException::class);
     }
@@ -50,7 +50,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function noPermissionsForEveryone() : void
+    public function noPermissionsForEveryone(): void
     {
         $content = $this->createContent(0000);
         assertFalse($content->isReadable(
@@ -80,7 +80,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function executePermissionsForUser() : void
+    public function executePermissionsForUser(): void
     {
         $content = $this->createContent(0100);
         assertFalse($content->isReadable(
@@ -110,7 +110,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function executePermissionsForGroup() : void
+    public function executePermissionsForGroup(): void
     {
         $content = $this->createContent(0010);
         assertFalse($content->isReadable(
@@ -140,7 +140,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function executePermissionsForOther() : void
+    public function executePermissionsForOther(): void
     {
         $content = $this->createContent(0001);
         assertFalse($content->isReadable(
@@ -170,7 +170,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function writePermissionsForUser() : void
+    public function writePermissionsForUser(): void
     {
         $content = $this->createContent(0200);
         assertFalse($content->isReadable(
@@ -200,7 +200,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function writePermissionsForGroup() : void
+    public function writePermissionsForGroup(): void
     {
         $content = $this->createContent(0020);
         assertFalse($content->isReadable(
@@ -230,7 +230,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function writePermissionsForOther() : void
+    public function writePermissionsForOther(): void
     {
         $content = $this->createContent(0002);
         assertFalse($content->isReadable(
@@ -260,7 +260,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function executeAndWritePermissionsForUser() : void
+    public function executeAndWritePermissionsForUser(): void
     {
         $content = $this->createContent(0300);
         assertFalse($content->isReadable(
@@ -290,7 +290,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function executeAndWritePermissionsForGroup() : void
+    public function executeAndWritePermissionsForGroup(): void
     {
         $content = $this->createContent(0030);
         assertFalse($content->isReadable(
@@ -320,7 +320,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function executeAndWritePermissionsForOther() : void
+    public function executeAndWritePermissionsForOther(): void
     {
         $content = $this->createContent(0003);
         assertFalse($content->isReadable(
@@ -350,7 +350,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function readPermissionsForUser() : void
+    public function readPermissionsForUser(): void
     {
         $content = $this->createContent(0400);
         assertTrue($content->isReadable(
@@ -380,7 +380,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function readPermissionsForGroup() : void
+    public function readPermissionsForGroup(): void
     {
         $content = $this->createContent(0040);
         assertFalse($content->isReadable(
@@ -410,7 +410,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function readPermissionsForOther() : void
+    public function readPermissionsForOther(): void
     {
         $content = $this->createContent(0004);
         assertFalse($content->isReadable(
@@ -440,7 +440,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function readAndExecutePermissionsForUser() : void
+    public function readAndExecutePermissionsForUser(): void
     {
         $content = $this->createContent(0500);
         assertTrue($content->isReadable(
@@ -470,7 +470,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function readAndExecutePermissionsForGroup() : void
+    public function readAndExecutePermissionsForGroup(): void
     {
         $content = $this->createContent(0050);
         assertFalse($content->isReadable(
@@ -500,7 +500,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function readAndExecutePermissionsForOther() : void
+    public function readAndExecutePermissionsForOther(): void
     {
         $content = $this->createContent(0005);
         assertFalse($content->isReadable(
@@ -530,7 +530,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function readAndWritePermissionsForUser() : void
+    public function readAndWritePermissionsForUser(): void
     {
         $content = $this->createContent(0600);
         assertTrue($content->isReadable(
@@ -560,7 +560,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function readAndWritePermissionsForGroup() : void
+    public function readAndWritePermissionsForGroup(): void
     {
         $content = $this->createContent(0060);
         assertFalse($content->isReadable(
@@ -590,7 +590,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function readAndWritePermissionsForOther() : void
+    public function readAndWritePermissionsForOther(): void
     {
         $content = $this->createContent(0006);
         assertFalse($content->isReadable(
@@ -620,7 +620,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function allPermissionsForUser() : void
+    public function allPermissionsForUser(): void
     {
         $content = $this->createContent(0700);
         assertTrue($content->isReadable(
@@ -650,7 +650,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function allPermissionsForGroup() : void
+    public function allPermissionsForGroup(): void
     {
         $content = $this->createContent(0070);
         assertFalse($content->isReadable(
@@ -680,7 +680,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
-    public function allPermissionsForOther() : void
+    public function allPermissionsForOther(): void
     {
         $content = $this->createContent(0007);
         assertFalse($content->isReadable(
@@ -708,7 +708,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
     /**
      * @test
      */
-    public function canBeRenamed() : void
+    public function canBeRenamed(): void
     {
         $content = $this->createContent(0600);
         $content->rename('bar');
@@ -721,10 +721,10 @@ class vfsStreamAbstractContentTestCase extends TestCase
     /**
      * @test
      */
-    public function renameToInvalidNameThrowsException() : void
+    public function renameToInvalidNameThrowsException(): void
     {
         $content = $this->createContent(0600);
-        expect(static function () use ($content) : void {
+        expect(static function () use ($content): void {
             $content->rename('foo/baz');
         })->throws(vfsStreamException::class);
     }

@@ -47,7 +47,7 @@ class vfsStreamContainerIterator implements Iterator
     /**
      * resets children pointer
      */
-    public function rewind() : void
+    public function rewind(): void
     {
         reset($this->children);
     }
@@ -55,7 +55,7 @@ class vfsStreamContainerIterator implements Iterator
     /**
      * returns the current child
      */
-    public function current() : ?vfsStreamContent
+    public function current(): ?vfsStreamContent
     {
         $child = current($this->children);
         if ($child === false) {
@@ -68,7 +68,7 @@ class vfsStreamContainerIterator implements Iterator
     /**
      * returns the name of the current child
      */
-    public function key() : ?string
+    public function key(): ?string
     {
         $child = current($this->children);
         if ($child === false) {
@@ -81,7 +81,7 @@ class vfsStreamContainerIterator implements Iterator
     /**
      * iterates to next child
      */
-    public function next() : void
+    public function next(): void
     {
         next($this->children);
     }
@@ -89,7 +89,7 @@ class vfsStreamContainerIterator implements Iterator
     /**
      * checks if the current value is valid
      */
-    public function valid() : bool
+    public function valid(): bool
     {
         return current($this->children) !== false;
     }

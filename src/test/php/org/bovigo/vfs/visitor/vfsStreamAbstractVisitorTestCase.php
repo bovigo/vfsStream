@@ -24,9 +24,9 @@ use function bovigo\callmap\verify;
 /**
  * Test for org\bovigo\vfs\visitor\vfsStreamAbstractVisitor.
  *
- * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  *
+ * @since  0.10.0
  * @group  issue_10
  */
 class vfsStreamAbstractVisitorTestCase extends TestCase
@@ -41,7 +41,7 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->abstractVisitor = NewInstance::of(vfsStreamAbstractVisitor::class);
     }
@@ -49,13 +49,13 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitThrowsInvalidArgumentExceptionOnUnknownContentType() : void
+    public function visitThrowsInvalidArgumentExceptionOnUnknownContentType(): void
     {
         $content = NewInstance::of(vfsStreamContent::class)->returns([
             'getName' => 'foo.txt',
             'getType' => -1,
         ]);
-        expect(function () use ($content) : void {
+        expect(function () use ($content): void {
             $this->abstractVisitor->visit($content);
         })
           ->throws(InvalidArgumentException::class);
@@ -64,7 +64,7 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitWithFileCallsVisitFile() : void
+    public function visitWithFileCallsVisitFile(): void
     {
         $file = new vfsStreamFile('foo.txt');
         $this->abstractVisitor->visit($file);
@@ -74,7 +74,7 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitWithBlockEventuallyCallsVisitFile() : void
+    public function visitWithBlockEventuallyCallsVisitFile(): void
     {
         $block = new vfsStreamBlock('foo');
         $this->abstractVisitor->visit($block);
@@ -84,7 +84,7 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitWithDirectoryCallsVisitDirectory() : void
+    public function visitWithDirectoryCallsVisitDirectory(): void
     {
         $dir = new vfsStreamDirectory('bar');
         $this->abstractVisitor->visit($dir);

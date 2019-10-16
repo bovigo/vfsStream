@@ -18,8 +18,9 @@ use org\bovigo\vfs\vfsStreamFile;
 /**
  * Visitor which traverses a content structure recursively to create an array structure from it.
  *
- * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
+ *
+ * @since  0.10.0
  */
 class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
 {
@@ -51,7 +52,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      *
      * @return  vfsStreamStructureVisitor
      */
-    public function visitFile(vfsStreamFile $file) : vfsStreamVisitor
+    public function visitFile(vfsStreamFile $file): vfsStreamVisitor
     {
         $this->current[$file->getName()] = $file->getContent();
 
@@ -63,7 +64,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      *
      * @return  vfsStreamStructureVisitor
      */
-    public function visitBlockDevice(vfsStreamBlock $block) : vfsStreamVisitor
+    public function visitBlockDevice(vfsStreamBlock $block): vfsStreamVisitor
     {
         $this->current['[' . $block->getName() . ']'] = $block->getContent();
 
@@ -75,7 +76,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      *
      * @return  vfsStreamStructureVisitor
      */
-    public function visitDirectory(vfsStreamDirectory $dir) : vfsStreamVisitor
+    public function visitDirectory(vfsStreamDirectory $dir): vfsStreamVisitor
     {
         $this->current[$dir->getName()] = [];
         $tmp                            =& $this->current;
@@ -93,9 +94,10 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
      * returns structure of visited contents
      *
      * @return string[]
+     *
      * @api
      */
-    public function getStructure() : array
+    public function getStructure(): array
     {
         return $this->structure;
     }
@@ -103,7 +105,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * resets structure so visitor could be reused
      */
-    public function reset() : self
+    public function reset(): self
     {
         $this->structure = [];
         $this->current   =& $this->structure;

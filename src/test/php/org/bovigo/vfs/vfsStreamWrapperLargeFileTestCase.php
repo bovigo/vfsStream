@@ -43,9 +43,9 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
-        $root            = vfsStream::setup();
+        $root = vfsStream::setup();
         $this->largeFile = vfsStream::newFile('large.txt')
             ->withContent(LargeFileContent::withGigabytes(100))
             ->at($root);
@@ -54,7 +54,7 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * @test
      */
-    public function hasLargeFileSize() : void
+    public function hasLargeFileSize(): void
     {
         if (PHP_INT_MAX === 2147483647) {
             $this->markTestSkipped('Requires 64-bit version of PHP');
@@ -66,9 +66,9 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * @test
      */
-    public function canReadFromLargeFile() : void
+    public function canReadFromLargeFile(): void
     {
-        $fp   = fopen($this->largeFile->url(), 'rb');
+        $fp = fopen($this->largeFile->url(), 'rb');
         $data = fread($fp, 15);
         fclose($fp);
         assertThat($data, equals(str_repeat(' ', 15)));
@@ -77,7 +77,7 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * @test
      */
-    public function canWriteIntoLargeFile() : void
+    public function canWriteIntoLargeFile(): void
     {
         $fp = fopen($this->largeFile->url(), 'rb+');
         fseek($fp, 100 * 1024 * 1024, SEEK_SET);

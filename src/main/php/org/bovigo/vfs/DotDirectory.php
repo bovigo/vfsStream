@@ -22,7 +22,7 @@ class DotDirectory extends vfsStreamDirectory
     /**
      * returns iterator for the children
      */
-    public function getIterator() : Iterator
+    public function getIterator(): Iterator
     {
         return new ArrayIterator([]);
     }
@@ -30,7 +30,7 @@ class DotDirectory extends vfsStreamDirectory
     /**
      * checks whether dir is a dot dir
      */
-    public function isDot() : bool
+    public function isDot(): bool
     {
         return true;
     }

@@ -24,9 +24,9 @@ use function stream_set_write_buffer;
 /**
  * Test for stream_set_option() implementation.
  *
- * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/15
  *
+ * @since  0.10.0
  * @group  issue_15
  */
 class vfsStreamWrapperSetOptionTestCase extends TestCase
@@ -41,7 +41,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->root = vfsStream::setup();
         vfsStream::newFile('foo.txt')->at($this->root);
@@ -50,7 +50,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     /**
      * @test
      */
-    public function setBlockingDoesNotWork() : void
+    public function setBlockingDoesNotWork(): void
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
         assertFalse(stream_set_blocking($fp, true));
@@ -60,7 +60,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     /**
      * @test
      */
-    public function removeBlockingDoesNotWork() : void
+    public function removeBlockingDoesNotWork(): void
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
         assertFalse(stream_set_blocking($fp, false));
@@ -70,7 +70,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     /**
      * @test
      */
-    public function setTimeoutDoesNotWork() : void
+    public function setTimeoutDoesNotWork(): void
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
         assertFalse(stream_set_timeout($fp, 1));
@@ -80,7 +80,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     /**
      * @test
      */
-    public function setWriteBufferDoesNotWork() : void
+    public function setWriteBufferDoesNotWork(): void
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
         assertThat(stream_set_write_buffer($fp, 512), equals(-1));

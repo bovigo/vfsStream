@@ -34,9 +34,9 @@ abstract class SeekableFileContent implements FileContent
     /**
      * reads the given amount of bytes from content
      */
-    public function read(int $count) : string
+    public function read(int $count): string
     {
-        $data          = $this->doRead($this->offset, $count);
+        $data = $this->doRead($this->offset, $count);
         $this->offset += $count;
 
         return $data;
@@ -45,12 +45,12 @@ abstract class SeekableFileContent implements FileContent
     /**
      * actual reading of given byte count starting at given offset
      */
-    abstract protected function doRead(int $offset, int $count) : string;
+    abstract protected function doRead(int $offset, int $count): string;
 
     /**
      * seeks to the given offset
      */
-    public function seek(int $offset, int $whence) : bool
+    public function seek(int $offset, int $whence): bool
     {
         $newOffset = $this->offset;
         switch ($whence) {
@@ -82,7 +82,7 @@ abstract class SeekableFileContent implements FileContent
     /**
      * checks whether pointer is at end of file
      */
-    public function eof() : bool
+    public function eof(): bool
     {
         return $this->size() <= $this->offset;
     }
@@ -92,7 +92,7 @@ abstract class SeekableFileContent implements FileContent
      *
      * @return  int     amount of written bytes
      */
-    public function write(string $data) : int
+    public function write(string $data): int
     {
         $dataLength = strlen($data);
         $this->doWrite($data, $this->offset, $dataLength);
@@ -104,14 +104,14 @@ abstract class SeekableFileContent implements FileContent
     /**
      * actual writing of data with specified length at given offset
      */
-    abstract protected function doWrite(string $data, int $offset, int $length) : void;
+    abstract protected function doWrite(string $data, int $offset, int $length): void;
 
     /**
      * for backwards compatibility with vfsStreamFile::bytesRead()
      *
      * @internal
      */
-    public function bytesRead() : int
+    public function bytesRead(): int
     {
         return $this->offset;
     }
@@ -121,7 +121,7 @@ abstract class SeekableFileContent implements FileContent
      *
      * @internal
      */
-    public function readUntilEnd() : string
+    public function readUntilEnd(): string
     {
         /** @var string|false $data */
         $data = substr($this->content(), $this->offset);

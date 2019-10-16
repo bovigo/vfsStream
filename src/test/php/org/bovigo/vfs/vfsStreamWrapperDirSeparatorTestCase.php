@@ -37,7 +37,7 @@ class vfsStreamWrapperDirSeparatorTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->root = vfsStream::setup();
     }
@@ -45,7 +45,7 @@ class vfsStreamWrapperDirSeparatorTestCase extends TestCase
     /**
      * @test
      */
-    public function fileCanBeAccessedUsingWinDirSeparator() : void
+    public function fileCanBeAccessedUsingWinDirSeparator(): void
     {
         $structure = ['foo' => ['bar' => []]];
         vfsStream::create($structure, $this->root);
@@ -58,7 +58,7 @@ class vfsStreamWrapperDirSeparatorTestCase extends TestCase
     /**
      * @test
      */
-    public function directoryCanBeCreatedUsingWinDirSeparator() : void
+    public function directoryCanBeCreatedUsingWinDirSeparator(): void
     {
         mkdir('vfs://root/dir\bar\foo', 0777, true);
         assertTrue($this->root->hasChild('dir'));
@@ -69,7 +69,7 @@ class vfsStreamWrapperDirSeparatorTestCase extends TestCase
     /**
      * @test
      */
-    public function directoryExitsTestUsingTrailingWinDirSeparator() : void
+    public function directoryExitsTestUsingTrailingWinDirSeparator(): void
     {
         $structure = ['dir' => ['bar' => []]];
         vfsStream::create($structure, $this->root);

@@ -26,7 +26,7 @@ class vfsStreamWrapperWithoutRootTestCase extends TestCase
     /**
      * set up test environment but without root
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         vfsStreamWrapper::register();
     }
@@ -34,7 +34,7 @@ class vfsStreamWrapperWithoutRootTestCase extends TestCase
     /**
      * @test
      */
-    public function canNotOpenDirectory() : void
+    public function canNotOpenDirectory(): void
     {
         assertFalse(@dir(vfsStream::url('foo')));
     }
@@ -42,7 +42,7 @@ class vfsStreamWrapperWithoutRootTestCase extends TestCase
     /**
      * @test
      */
-    public function canNotUnlink() : void
+    public function canNotUnlink(): void
     {
         assertFalse(@unlink(vfsStream::url('foo')));
     }
@@ -50,7 +50,7 @@ class vfsStreamWrapperWithoutRootTestCase extends TestCase
     /**
      * @test
      */
-    public function canNotOpen() : void
+    public function canNotOpen(): void
     {
         assertFalse(@fopen(vfsStream::url('foo'), 'r'));
     }
@@ -58,7 +58,7 @@ class vfsStreamWrapperWithoutRootTestCase extends TestCase
     /**
      * @test
      */
-    public function canNotRename() : void
+    public function canNotRename(): void
     {
         assertFalse(@rename(vfsStream::url('foo'), vfsStream::url('bar')));
     }

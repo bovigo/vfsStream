@@ -28,7 +28,7 @@ class vfsStreamWrapperUnregisterTestCase extends TestCase
     /**
      * @test
      */
-    public function unregisterRegisteredUrlWrapper() : void
+    public function unregisterRegisteredUrlWrapper(): void
     {
         vfsStreamWrapper::register();
         vfsStreamWrapper::unregister();
@@ -39,7 +39,7 @@ class vfsStreamWrapperUnregisterTestCase extends TestCase
      * @test
      * @runInSeparateProcess
      */
-    public function canNotUnregisterThirdPartyVfsScheme() : void
+    public function canNotUnregisterThirdPartyVfsScheme(): void
     {
         // Unregister possible registered URL wrapper.
         vfsStreamWrapper::unregister();
@@ -48,7 +48,7 @@ class vfsStreamWrapperUnregisterTestCase extends TestCase
             vfsStream::SCHEME,
             NewInstance::classname(vfsStreamWrapper::class)
         );
-        expect(static function () : void {
+        expect(static function (): void {
             vfsStreamWrapper::unregister();
         })
           ->throws(vfsStreamException::class);
@@ -58,11 +58,11 @@ class vfsStreamWrapperUnregisterTestCase extends TestCase
      * @test
      * @runInSeparateProcess
      */
-    public function canNotUnregisterWhenNotInRegisteredState() : void
+    public function canNotUnregisterWhenNotInRegisteredState(): void
     {
         vfsStreamWrapper::register();
         stream_wrapper_unregister(vfsStream::SCHEME);
-        expect(static function () : void {
+        expect(static function (): void {
             vfsStreamWrapper::unregister();
         })
           ->throws(vfsStreamException::class);
@@ -71,11 +71,11 @@ class vfsStreamWrapperUnregisterTestCase extends TestCase
     /**
      * @test
      */
-    public function unregisterWhenNotRegisteredDoesNotFail() : void
+    public function unregisterWhenNotRegisteredDoesNotFail(): void
     {
         // Unregister possible registered URL wrapper.
         vfsStreamWrapper::unregister();
-        expect(static function () : void {
+        expect(static function (): void {
             vfsStreamWrapper::unregister();
         })
           ->doesNotThrow();

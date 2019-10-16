@@ -48,9 +48,9 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
-        $this->dir    = new vfsStreamDirectory('foo');
+        $this->dir = new vfsStreamDirectory('foo');
         $this->child1 = NewInstance::of(vfsStreamContent::class)->returns(['getName' => 'bar']);
 
         $this->dir->addChild($this->child1);
@@ -61,7 +61,7 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     /**
      * clean up test environment
      */
-    protected function tearDown() : void
+    protected function tearDown(): void
     {
         vfsStream::enableDotfiles();
     }
@@ -69,7 +69,7 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     /**
      * @return string[][]
      */
-    public function provideSwitchWithExpectations() : array
+    public function provideSwitchWithExpectations(): array
     {
         return [
             [[vfsStream::class, 'disableDotfiles'], []],
@@ -80,7 +80,7 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     /**
      * @param string|vfsStreamContent $dir
      */
-    private function nameOf($dir) : string
+    private function nameOf($dir): string
     {
         if (is_string($dir)) {
             return $dir;
@@ -95,7 +95,7 @@ class vfsStreamContainerIteratorTestCase extends TestCase
      * @test
      * @dataProvider  provideSwitchWithExpectations
      */
-    public function iteration(callable $switchDotFiles, array $dirs) : void
+    public function iteration(callable $switchDotFiles, array $dirs): void
     {
         $dirs[] = $this->child1;
         $dirs[] = $this->child2;

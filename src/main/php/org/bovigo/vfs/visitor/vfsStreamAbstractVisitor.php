@@ -20,8 +20,9 @@ use org\bovigo\vfs\vfsStreamFile;
 /**
  * Abstract base class providing an implementation for the visit() method.
  *
- * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
+ *
+ * @since  0.10.0
  */
 abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
 {
@@ -30,7 +31,7 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
      *
      * @throws InvalidArgumentException
      */
-    public function visit(vfsStreamContent $content) : vfsStreamVisitor
+    public function visit(vfsStreamContent $content): vfsStreamVisitor
     {
         if ($content instanceof vfsStreamBlock) {
             $this->visitBlockDevice($content);
@@ -52,7 +53,7 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
     /**
      * visit a block device and process it
      */
-    public function visitBlockDevice(vfsStreamBlock $block) : vfsStreamVisitor
+    public function visitBlockDevice(vfsStreamBlock $block): vfsStreamVisitor
     {
         return $this->visitFile($block);
     }

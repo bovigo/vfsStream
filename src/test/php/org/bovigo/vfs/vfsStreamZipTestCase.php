@@ -30,7 +30,7 @@ class vfsStreamZipTestCase extends TestCase
      * @test
      * @requires extension zip
      */
-    public function zipExtensionDoesNotSupportUserlandStreams() : void
+    public function zipExtensionDoesNotSupportUserlandStreams(): void
     {
         vfsStream::setup();
         $zip = new ZipArchive();
@@ -44,7 +44,7 @@ class vfsStreamZipTestCase extends TestCase
             assertTrue($zip->addFromString('testfile1.txt', "#1 This is a test string added as testfile1.txt.\n"));
             assertTrue($zip->addFromString('testfile2.txt', "#2 This is a test string added as testfile2.txt.\n"));
             $zip->setArchiveComment('a test');
-            expect(static function () use ($zip) : void {
+            expect(static function () use ($zip): void {
                 $zip->close();
             })
               ->triggers()

@@ -89,29 +89,30 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
         }
 
         $this->name = $name;
-        $time       = time();
+        $time = time();
         if ($permissions === null) {
             $permissions = $this->getDefaultPermissions() & ~vfsStream::umask();
         }
 
-        $this->lastAccessed          = $time;
+        $this->lastAccessed = $time;
         $this->lastAttributeModified = $time;
-        $this->lastModified          = $time;
-        $this->permissions           = $permissions;
-        $this->user                  = vfsStream::getCurrentUser();
-        $this->group                 = vfsStream::getCurrentGroup();
+        $this->lastModified = $time;
+        $this->permissions = $permissions;
+        $this->user = vfsStream::getCurrentUser();
+        $this->group = vfsStream::getCurrentGroup();
     }
 
     /**
      * returns default permissions for concrete implementation
+     *
      * @since   0.8.0
      */
-    abstract protected function getDefaultPermissions() : int;
+    abstract protected function getDefaultPermissions(): int;
 
     /**
      * returns the file name of the content
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -119,7 +120,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * renames the content
      */
-    public function rename(string $newName) : void
+    public function rename(string $newName): void
     {
         if (strstr($newName, '/') !== false) {
             throw new vfsStreamException('Name can not contain /.');
@@ -131,7 +132,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * checks whether the container can be applied to given name
      */
-    public function appliesTo(string $name) : bool
+    public function appliesTo(string $name): bool
     {
         if ($name === $this->name) {
             return true;
@@ -145,7 +146,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * returns the type of the container
      */
-    public function getType() : int
+    public function getType(): int
     {
         return $this->type;
     }
@@ -153,7 +154,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * sets the last modification time of the stream content
      */
-    public function lastModified(int $filemtime) : vfsStreamContent
+    public function lastModified(int $filemtime): vfsStreamContent
     {
         $this->lastModified = $filemtime;
 
@@ -163,16 +164,17 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * returns the last modification time of the stream content
      */
-    public function filemtime() : int
+    public function filemtime(): int
     {
         return $this->lastModified;
     }
 
     /**
      * sets last access time of the stream content
+     *
      * @since   0.9
      */
-    public function lastAccessed(int $fileatime) : vfsStreamContent
+    public function lastAccessed(int $fileatime): vfsStreamContent
     {
         $this->lastAccessed = $fileatime;
 
@@ -181,18 +183,20 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
 
     /**
      * returns the last access time of the stream content
+     *
      * @since   0.9
      */
-    public function fileatime() : int
+    public function fileatime(): int
     {
         return $this->lastAccessed;
     }
 
     /**
      * sets the last attribute modification time of the stream content
+     *
      * @since   0.9
      */
-    public function lastAttributeModified(int $filectime) : vfsStreamContent
+    public function lastAttributeModified(int $filectime): vfsStreamContent
     {
         $this->lastAttributeModified = $filectime;
 
@@ -201,9 +205,10 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
 
     /**
      * returns the last attribute modification time of the stream content
+     *
      * @since   0.9
      */
-    public function filectime() : int
+    public function filectime(): int
     {
         return $this->lastAttributeModified;
     }
@@ -211,7 +216,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * adds content to given container
      */
-    public function at(vfsStreamContainer $container) : vfsStreamContent
+    public function at(vfsStreamContainer $container): vfsStreamContent
     {
         $container->addChild($this);
 
@@ -221,9 +226,9 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * change file mode to given permissions
      */
-    public function chmod(int $permissions) : vfsStreamContent
+    public function chmod(int $permissions): vfsStreamContent
     {
-        $this->permissions           = $permissions;
+        $this->permissions = $permissions;
         $this->lastAttributeModified = time();
         clearstatcache();
 
@@ -233,7 +238,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * returns permissions
      */
-    public function getPermissions() : int
+    public function getPermissions(): int
     {
         return $this->permissions;
     }
@@ -244,7 +249,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int $user  id of user to check for
      * @param   int $group id of group to check for
      */
-    public function isReadable(int $user, int $group) : bool
+    public function isReadable(int $user, int $group): bool
     {
         if ($this->user === $user) {
             $check = 0400;
@@ -263,7 +268,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int $user  id of user to check for
      * @param   int $group id of group to check for
      */
-    public function isWritable(int $user, int $group) : bool
+    public function isWritable(int $user, int $group): bool
     {
         if ($this->user === $user) {
             $check = 0200;
@@ -282,7 +287,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * @param   int $user  id of user to check for
      * @param   int $group id of group to check for
      */
-    public function isExecutable(int $user, int $group) : bool
+    public function isExecutable(int $user, int $group): bool
     {
         if ($this->user === $user) {
             $check = 0100;
@@ -298,9 +303,9 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * change owner of file to given user
      */
-    public function chown(int $user) : vfsStreamContent
+    public function chown(int $user): vfsStreamContent
     {
-        $this->user                  = $user;
+        $this->user = $user;
         $this->lastAttributeModified = time();
 
         return $this;
@@ -309,7 +314,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * checks whether file is owned by given user
      */
-    public function isOwnedByUser(int $user) : bool
+    public function isOwnedByUser(int $user): bool
     {
         return $this->user === $user;
     }
@@ -317,7 +322,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * returns owner of file
      */
-    public function getUser() : int
+    public function getUser(): int
     {
         return $this->user;
     }
@@ -325,9 +330,9 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * change owner group of file to given group
      */
-    public function chgrp(int $group) : vfsStreamContent
+    public function chgrp(int $group): vfsStreamContent
     {
-        $this->group                 = $group;
+        $this->group = $group;
         $this->lastAttributeModified = time();
 
         return $this;
@@ -336,7 +341,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * checks whether file is owned by group
      */
-    public function isOwnedByGroup(int $group) : bool
+    public function isOwnedByGroup(int $group): bool
     {
         return $this->group === $group;
     }
@@ -344,7 +349,7 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     /**
      * returns owner group of file
      */
-    public function getGroup() : int
+    public function getGroup(): int
     {
         return $this->group;
     }
@@ -353,9 +358,10 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * sets parent path
      *
      * @internal  only to be set by parent
+     *
      * @since   1.2.0
      */
-    public function setParentPath(string $parentPath) : void
+    public function setParentPath(string $parentPath): void
     {
         $this->parentPath = $parentPath;
     }
@@ -364,18 +370,20 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
      * removes parent path
      *
      * @internal  only to be set by parent
+     *
      * @since   2.0.0
      */
-    public function removeParentPath() : void
+    public function removeParentPath(): void
     {
         $this->parentPath = null;
     }
 
     /**
      * returns path to this content
+     *
      * @since   1.2.0
      */
-    public function path() : string
+    public function path(): string
     {
         if ($this->parentPath === null) {
             return $this->name;
@@ -386,9 +394,10 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
 
     /**
      * returns complete vfsStream url for this content
+     *
      * @since   1.2.0
      */
-    public function url() : string
+    public function url(): string
     {
         return vfsStream::url($this->path());
     }

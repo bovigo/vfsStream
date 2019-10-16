@@ -26,12 +26,12 @@ use function mkdir;
  */
 class vfsStreamUmaskTestCase extends TestCase
 {
-    protected function setUp() : void
+    protected function setUp(): void
     {
         vfsStream::umask(0000);
     }
 
-    protected function tearDown() : void
+    protected function tearDown(): void
     {
         vfsStream::umask(0000);
     }
@@ -39,7 +39,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function gettingUmaskSettingDoesNotChangeUmaskSetting() : void
+    public function gettingUmaskSettingDoesNotChangeUmaskSetting(): void
     {
         assertThat(vfsStream::umask(), equals(0000));
     }
@@ -47,7 +47,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function changingUmaskSettingReturnsOldUmaskSetting() : void
+    public function changingUmaskSettingReturnsOldUmaskSetting(): void
     {
         assertThat(vfsStream::umask(0022), equals(0000));
     }
@@ -55,7 +55,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function createFileWithDefaultUmaskSetting() : void
+    public function createFileWithDefaultUmaskSetting(): void
     {
         $file = vfsStream::newFile('foo');
         assertThat($file->getPermissions(), equals(0666));
@@ -64,7 +64,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function createFileWithDifferentUmaskSetting() : void
+    public function createFileWithDifferentUmaskSetting(): void
     {
         vfsStream::umask(0022);
         $file = vfsStream::newFile('foo');
@@ -74,7 +74,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function createDirectoryWithDefaultUmaskSetting() : void
+    public function createDirectoryWithDefaultUmaskSetting(): void
     {
         $directory = vfsStream::newDirectory('foo');
         assertThat($directory->getPermissions(), equals(0777));
@@ -83,7 +83,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function createDirectoryWithDifferentUmaskSetting() : void
+    public function createDirectoryWithDifferentUmaskSetting(): void
     {
         vfsStream::umask(0022);
         $directory = vfsStream::newDirectory('foo');
@@ -93,7 +93,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function createFileUsingStreamWithDefaultUmaskSetting() : void
+    public function createFileUsingStreamWithDefaultUmaskSetting(): void
     {
         $root = vfsStream::setup();
         file_put_contents(vfsStream::url('root/newfile.txt'), 'file content');
@@ -103,7 +103,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function createFileUsingStreamWithDifferentUmaskSetting() : void
+    public function createFileUsingStreamWithDifferentUmaskSetting(): void
     {
         $root = vfsStream::setup();
         vfsStream::umask(0022);
@@ -114,7 +114,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function createDirectoryUsingStreamWithDefaultUmaskSetting() : void
+    public function createDirectoryUsingStreamWithDefaultUmaskSetting(): void
     {
         $root = vfsStream::setup();
         mkdir(vfsStream::url('root/newdir'));
@@ -124,7 +124,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function createDirectoryUsingStreamWithDifferentUmaskSetting() : void
+    public function createDirectoryUsingStreamWithDifferentUmaskSetting(): void
     {
         $root = vfsStream::setup();
         vfsStream::umask(0022);
@@ -135,7 +135,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function createDirectoryUsingStreamWithExplicit0() : void
+    public function createDirectoryUsingStreamWithExplicit0(): void
     {
         $root = vfsStream::setup();
         vfsStream::umask(0022);
@@ -146,7 +146,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function createDirectoryUsingStreamWithDifferentUmaskSettingButExplicit0777() : void
+    public function createDirectoryUsingStreamWithDifferentUmaskSettingButExplicit0777(): void
     {
         $root = vfsStream::setup();
         vfsStream::umask(0022);
@@ -157,7 +157,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function createDirectoryUsingStreamWithDifferentUmaskSettingButExplicitModeRequestedByCall() : void
+    public function createDirectoryUsingStreamWithDifferentUmaskSettingButExplicitModeRequestedByCall(): void
     {
         $root = vfsStream::setup();
         vfsStream::umask(0022);
@@ -168,7 +168,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function defaultUmaskSettingDoesNotInfluenceSetup() : void
+    public function defaultUmaskSettingDoesNotInfluenceSetup(): void
     {
         $root = vfsStream::setup();
         assertThat($root->getPermissions(), equals(0777));
@@ -177,7 +177,7 @@ class vfsStreamUmaskTestCase extends TestCase
     /**
      * @test
      */
-    public function umaskSettingShouldBeRespectedBySetup() : void
+    public function umaskSettingShouldBeRespectedBySetup(): void
     {
         vfsStream::umask(0022);
         $root = vfsStream::setup();

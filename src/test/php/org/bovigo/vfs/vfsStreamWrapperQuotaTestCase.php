@@ -39,7 +39,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->root = vfsStream::setup();
         vfsStream::setQuota(10);
@@ -48,7 +48,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function writeLessThanQuotaWritesEverything() : void
+    public function writeLessThanQuotaWritesEverything(): void
     {
         assertThat(file_put_contents(vfsStream::url('root/file.txt'), '123456789'), equals(9));
         assertThat($this->root->getChild('file.txt')->getContent(), equals('123456789'));
@@ -57,7 +57,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function writeUpToQotaWritesEverything() : void
+    public function writeUpToQotaWritesEverything(): void
     {
         assertThat(file_put_contents(vfsStream::url('root/file.txt'), '1234567890'), equals(10));
         assertThat($this->root->getChild('file.txt')->getContent(), equals('1234567890'));
@@ -66,9 +66,9 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function writeMoreThanQotaWritesOnlyUpToQuota() : void
+    public function writeMoreThanQotaWritesOnlyUpToQuota(): void
     {
-        expect(static function () : void {
+        expect(static function (): void {
             file_put_contents(vfsStream::url('root/file.txt'), '12345678901');
         })->triggers()
           ->withMessage('file_put_contents(): Only 10 of 11 bytes written, possibly out of free disk space');
@@ -79,12 +79,12 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function considersAllFilesForQuota() : void
+    public function considersAllFilesForQuota(): void
     {
         vfsStream::newFile('foo.txt')
              ->withContent('foo')
              ->at(vfsStream::newDirectory('bar')->at($this->root));
-        expect(static function () : void {
+        expect(static function (): void {
             file_put_contents(vfsStream::url('root/file.txt'), '12345678901');
         })->triggers()
           ->withMessage('file_put_contents(): Only 7 of 11 bytes written, possibly out of free disk space');
@@ -96,7 +96,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      * @test
      * @group  issue_33
      */
-    public function truncateToLessThanQuotaWritesEverything() : void
+    public function truncateToLessThanQuotaWritesEverything(): void
     {
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertTrue(ftruncate($fp, 9));
@@ -112,7 +112,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      * @test
      * @group  issue_33
      */
-    public function truncateUpToQotaWritesEverything() : void
+    public function truncateUpToQotaWritesEverything(): void
     {
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertTrue(ftruncate($fp, 10));
@@ -128,7 +128,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      * @test
      * @group  issue_33
      */
-    public function truncateToMoreThanQotaWritesOnlyUpToQuota() : void
+    public function truncateToMoreThanQotaWritesOnlyUpToQuota(): void
     {
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertTrue(ftruncate($fp, 11));
@@ -144,7 +144,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      * @test
      * @group  issue_33
      */
-    public function truncateConsidersAllFilesForQuota() : void
+    public function truncateConsidersAllFilesForQuota(): void
     {
         vfsStream::newFile('bar.txt')
                  ->withContent('bar')
@@ -164,7 +164,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      * @test
      * @group  issue_33
      */
-    public function canNotTruncateToGreaterLengthWhenDiscQuotaReached() : void
+    public function canNotTruncateToGreaterLengthWhenDiscQuotaReached(): void
     {
         vfsStream::newFile('bar.txt')
                  ->withContent('1234567890')

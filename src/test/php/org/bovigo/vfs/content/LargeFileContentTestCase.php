@@ -37,7 +37,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->largeFileContent = new LargeFileContent(100);
     }
@@ -45,7 +45,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function hasSizeOriginallyGiven() : void
+    public function hasSizeOriginallyGiven(): void
     {
         assertThat($this->largeFileContent->size(), equals(100));
     }
@@ -53,7 +53,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function contentIsFilledUpWithSpacesIfNoDataWritten() : void
+    public function contentIsFilledUpWithSpacesIfNoDataWritten(): void
     {
         assertThat($this->largeFileContent->content(), equals(str_repeat(' ', 100)));
     }
@@ -61,7 +61,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function readReturnsSpacesWhenNothingWrittenAtOffset() : void
+    public function readReturnsSpacesWhenNothingWrittenAtOffset(): void
     {
         assertThat($this->largeFileContent->read(10), equals(str_repeat(' ', 10)));
     }
@@ -69,7 +69,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function readReturnsContentFilledWithSpaces() : void
+    public function readReturnsContentFilledWithSpaces(): void
     {
         $this->largeFileContent->write('foobarbaz');
         $this->largeFileContent->seek(0, SEEK_SET);
@@ -79,7 +79,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writeReturnsAmounfOfWrittenBytes() : void
+    public function writeReturnsAmounfOfWrittenBytes(): void
     {
         assertThat($this->largeFileContent->write('foobarbaz'), equals(9));
     }
@@ -87,7 +87,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writesDataAtStartWhenOffsetNotMoved() : void
+    public function writesDataAtStartWhenOffsetNotMoved(): void
     {
         $this->largeFileContent->write('foobarbaz');
         assertThat(
@@ -99,7 +99,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writeDataAtStartDoesNotIncreaseSize() : void
+    public function writeDataAtStartDoesNotIncreaseSize(): void
     {
         $this->largeFileContent->write('foobarbaz');
         assertThat($this->largeFileContent->size(), equals(100));
@@ -108,7 +108,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writesDataAtOffsetWhenOffsetMoved() : void
+    public function writesDataAtOffsetWhenOffsetMoved(): void
     {
         $this->largeFileContent->seek(50, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
@@ -121,7 +121,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writeDataInBetweenDoesNotIncreaseSize() : void
+    public function writeDataInBetweenDoesNotIncreaseSize(): void
     {
         $this->largeFileContent->seek(50, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
@@ -131,7 +131,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writesDataOverEndWhenOffsetAndDataLengthLargerThanSize() : void
+    public function writesDataOverEndWhenOffsetAndDataLengthLargerThanSize(): void
     {
         $this->largeFileContent->seek(95, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
@@ -144,7 +144,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writeDataOverLastOffsetIncreasesSize() : void
+    public function writeDataOverLastOffsetIncreasesSize(): void
     {
         $this->largeFileContent->seek(95, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
@@ -154,7 +154,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writesDataAfterEndWhenOffsetAfterEnd() : void
+    public function writesDataAfterEndWhenOffsetAfterEnd(): void
     {
         $this->largeFileContent->seek(0, SEEK_END);
         $this->largeFileContent->write('foobarbaz');
@@ -167,7 +167,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writeDataAfterLastOffsetIncreasesSize() : void
+    public function writeDataAfterLastOffsetIncreasesSize(): void
     {
         $this->largeFileContent->seek(0, SEEK_END);
         $this->largeFileContent->write('foobarbaz');
@@ -177,7 +177,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function truncateReducesSize() : void
+    public function truncateReducesSize(): void
     {
         assertTrue($this->largeFileContent->truncate(50));
         assertThat($this->largeFileContent->size(), equals(50));
@@ -186,7 +186,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function truncateRemovesWrittenContentAfterOffset() : void
+    public function truncateRemovesWrittenContentAfterOffset(): void
     {
         $this->largeFileContent->seek(45, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
@@ -200,7 +200,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function createInstanceWithKilobytes() : void
+    public function createInstanceWithKilobytes(): void
     {
         assertThat(LargeFileContent::withKilobytes(100)->size(), equals(100 * 1024));
     }
@@ -208,7 +208,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function createInstanceWithMegabytes() : void
+    public function createInstanceWithMegabytes(): void
     {
         assertThat(LargeFileContent::withMegabytes(100)->size(), equals(100 * 1024 * 1024));
     }
@@ -216,7 +216,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function createInstanceWithGigabytes() : void
+    public function createInstanceWithGigabytes(): void
     {
         assertThat(LargeFileContent::withGigabytes(100)->size(), equals(100 * 1024 * 1024 * 1024));
     }

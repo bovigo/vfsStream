@@ -34,7 +34,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->rootDirectory = vfsStream::newDirectory('/');
         $this->rootDirectory->addChild(vfsStream::newDirectory('var/log/app'));
@@ -47,7 +47,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     /**
      * @test
      */
-    public function shouldContainThreeSubdirectories() : void
+    public function shouldContainThreeSubdirectories(): void
     {
         assertThat(
             $this->rootDirectory->getChild('var/log/app')->getChildren(),
@@ -58,7 +58,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     /**
      * @test
      */
-    public function shouldContainSubdirectoryFoo() : void
+    public function shouldContainSubdirectoryFoo(): void
     {
         assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('foo'));
         assertThat(
@@ -70,7 +70,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     /**
      * @test
      */
-    public function shouldContainSubdirectoryApp1() : void
+    public function shouldContainSubdirectoryApp1(): void
     {
         assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app1'));
         assertThat(
@@ -82,7 +82,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     /**
      * @test
      */
-    public function shouldContainSubdirectoryApp2() : void
+    public function shouldContainSubdirectoryApp2(): void
     {
         assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app2'));
         assertThat(

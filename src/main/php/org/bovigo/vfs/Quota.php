@@ -14,8 +14,9 @@ namespace org\bovigo\vfs;
 /**
  * Represents a quota for disk space.
  *
- * @since     1.1.0
  * @internal
+ *
+ * @since     1.1.0
  */
 class Quota
 {
@@ -45,7 +46,7 @@ class Quota
     /**
      * create with unlimited space
      */
-    public static function unlimited() : self
+    public static function unlimited(): self
     {
         return new self(self::UNLIMITED);
     }
@@ -53,7 +54,7 @@ class Quota
     /**
      * checks if a quota is set
      */
-    public function isLimited() : bool
+    public function isLimited(): bool
     {
         return self::UNLIMITED < $this->amount;
     }
@@ -61,7 +62,7 @@ class Quota
     /**
      * checks if given used space exceeda quota limit
      */
-    public function spaceLeft(int $usedSpace) : int
+    public function spaceLeft(int $usedSpace): int
     {
         if ($this->amount === self::UNLIMITED) {
             return $usedSpace;

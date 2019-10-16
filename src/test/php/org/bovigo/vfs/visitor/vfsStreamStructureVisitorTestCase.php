@@ -19,9 +19,9 @@ use function bovigo\assert\predicate\equals;
 /**
  * Test for org\bovigo\vfs\visitor\vfsStreamStructureVisitor.
  *
- * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  *
+ * @since  0.10.0
  * @group  issue_10
  */
 class vfsStreamStructureVisitorTestCase extends TestCase
@@ -29,7 +29,7 @@ class vfsStreamStructureVisitorTestCase extends TestCase
     /** @var vfsStreamStructureVisitor */
     private $structureVisitor;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->structureVisitor = new vfsStreamStructureVisitor();
     }
@@ -37,7 +37,7 @@ class vfsStreamStructureVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitFileCreatesStructureForFile() : void
+    public function visitFileCreatesStructureForFile(): void
     {
         assertThat(
             $this->structureVisitor->visitFile(
@@ -50,7 +50,7 @@ class vfsStreamStructureVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitFileCreatesStructureForBlock() : void
+    public function visitFileCreatesStructureForBlock(): void
     {
         assertThat(
             $this->structureVisitor->visitBlockDevice(
@@ -63,7 +63,7 @@ class vfsStreamStructureVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitDirectoryCreatesStructureForDirectory() : void
+    public function visitDirectoryCreatesStructureForDirectory(): void
     {
         assertThat(
             $this->structureVisitor->visitDirectory(
@@ -76,18 +76,18 @@ class vfsStreamStructureVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitRecursiveDirectoryStructure() : void
+    public function visitRecursiveDirectoryStructure(): void
     {
         $structure = [
             'root' => [
                 'test' => [
-                    'foo'     => ['test.txt' => 'hello'],
+                    'foo' => ['test.txt' => 'hello'],
                     'baz.txt' => 'world',
                 ],
                 'foo.txt' => '',
             ],
         ];
-        $root      = vfsStream::setup('root', null, $structure['root']);
+        $root = vfsStream::setup('root', null, $structure['root']);
         assertThat(
             $this->structureVisitor->visitDirectory($root)->getStructure(),
             equals($structure)

@@ -57,7 +57,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     /**
      * create large file with given size in kilobyte
      */
-    public static function withKilobytes(int $kilobyte) : self
+    public static function withKilobytes(int $kilobyte): self
     {
         return new self($kilobyte * 1024);
     }
@@ -65,7 +65,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     /**
      * create large file with given size in megabyte
      */
-    public static function withMegabytes(int $megabyte) : self
+    public static function withMegabytes(int $megabyte): self
     {
         return self::withKilobytes($megabyte * 1024);
     }
@@ -73,7 +73,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     /**
      * create large file with given size in gigabyte
      */
-    public static function withGigabytes(int $gigabyte) : self
+    public static function withGigabytes(int $gigabyte): self
     {
         return self::withMegabytes($gigabyte * 1024);
     }
@@ -81,7 +81,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     /**
      * returns actual content
      */
-    public function content() : string
+    public function content(): string
     {
         return $this->doRead(0, $this->size);
     }
@@ -89,7 +89,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     /**
      * returns size of content
      */
-    public function size() : int
+    public function size(): int
     {
         return $this->size;
     }
@@ -97,7 +97,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     /**
      * actual reading of given byte count starting at given offset
      */
-    protected function doRead(int $offset, int $count) : string
+    protected function doRead(int $offset, int $count): string
     {
         if (($offset + $count) > $this->size) {
             $count = $this->size - $offset;
@@ -114,7 +114,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     /**
      * actual writing of data with specified length at given offset
      */
-    protected function doWrite(string $data, int $offset, int $length) : void
+    protected function doWrite(string $data, int $offset, int $length): void
     {
         for ($i = 0; $i < $length; $i++) {
             $this->content[$i + $offset] = substr($data, $i, 1);
@@ -132,7 +132,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
      *
      * @param   int $size length to truncate file to
      */
-    public function truncate(int $size) : bool
+    public function truncate(int $size): bool
     {
         $this->size = $size;
         foreach (array_filter(

@@ -37,7 +37,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->dir = vfsStream::newDirectory('foo');
     }
@@ -45,9 +45,9 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function invalidCharacterInNameThrowsException() : void
+    public function invalidCharacterInNameThrowsException(): void
     {
-        expect(static function () : void {
+        expect(static function (): void {
             new vfsStreamDirectory('foo/bar');
         })
             ->throws(vfsStreamException::class);
@@ -56,7 +56,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function isOfTypeDir() : void
+    public function isOfTypeDir(): void
     {
         assertThat($this->dir->getType(), equals(vfsStreamContent::TYPE_DIR));
     }
@@ -64,7 +64,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function appliesForSelf() : void
+    public function appliesForSelf(): void
     {
         assertTrue($this->dir->appliesTo('foo'));
     }
@@ -72,7 +72,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function appliesForSubDirectories() : void
+    public function appliesForSubDirectories(): void
     {
         assertTrue($this->dir->appliesTo('foo/bar'));
     }
@@ -80,7 +80,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function doesNotApplyForOtherNames() : void
+    public function doesNotApplyForOtherNames(): void
     {
         assertFalse($this->dir->appliesTo('bar'));
     }
@@ -88,7 +88,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function hasGivenName() : void
+    public function hasGivenName(): void
     {
         assertThat($this->dir->getName(), equals('foo'));
     }
@@ -96,7 +96,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function canBeRenamed() : void
+    public function canBeRenamed(): void
     {
         $this->dir->rename('bar');
         assertThat($this->dir->getName(), equals('bar'));
@@ -108,9 +108,9 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function renameToInvalidNameThrowsvfsStreamException() : void
+    public function renameToInvalidNameThrowsvfsStreamException(): void
     {
-        expect(function () : void {
+        expect(function (): void {
             $this->dir->rename('foo/baz');
         })
             ->throws(vfsStreamException::class);
@@ -120,7 +120,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      * @test
      * @since  0.10.0
      */
-    public function hasNoChildrenByDefault() : void
+    public function hasNoChildrenByDefault(): void
     {
         assertFalse($this->dir->hasChildren());
     }
@@ -129,11 +129,11 @@ class vfsStreamDirectoryTestCase extends TestCase
      * @test
      * @since  0.10.0
      */
-    public function hasChildrenReturnsTrueIfAtLeastOneChildPresent() : void
+    public function hasChildrenReturnsTrueIfAtLeastOneChildPresent(): void
     {
         $content = NewInstance::of(vfsStreamContent::class)->returns([
             'appliesTo' => false,
-            'getName'   => 'baz',
+            'getName' => 'baz',
         ]);
         $this->dir->addChild($content);
         assertTrue($this->dir->hasChildren());
@@ -142,7 +142,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function hasChildReturnsFalseForNonExistingChild() : void
+    public function hasChildReturnsFalseForNonExistingChild(): void
     {
         assertFalse($this->dir->hasChild('bar'));
     }
@@ -150,7 +150,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function getChildReturnsNullForNonExistingChild() : void
+    public function getChildReturnsNullForNonExistingChild(): void
     {
         assertNull($this->dir->getChild('bar'));
     }
@@ -158,27 +158,27 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function removeChildReturnsFalseForNonExistingChild() : void
+    public function removeChildReturnsFalseForNonExistingChild(): void
     {
         assertFalse($this->dir->removeChild('bar'));
     }
 
-    private function createChild() : vfsStreamContent
+    private function createChild(): vfsStreamContent
     {
         return NewInstance::of(vfsStreamContent::class)->returns([
-            'getType'   => vfsStreamContent::TYPE_FILE,
+            'getType' => vfsStreamContent::TYPE_FILE,
             'appliesTo' => static function ($name) {
                 return $name === 'bar';
             },
-            'getName'   => 'bar',
-            'size'      => 5,
+            'getName' => 'bar',
+            'size' => 5,
         ]);
     }
 
     /**
      * @test
      */
-    public function hasChildAfterItHasBeenAdded() : void
+    public function hasChildAfterItHasBeenAdded(): void
     {
         $this->dir->addChild($this->createChild());
         assertTrue($this->dir->hasChild('bar'));
@@ -187,7 +187,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function returnsAddedInstance() : void
+    public function returnsAddedInstance(): void
     {
         $content = $this->createChild();
         $this->dir->addChild($content);
@@ -197,7 +197,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function returnsListOfAll() : void
+    public function returnsListOfAll(): void
     {
         $content = $this->createChild();
         $this->dir->addChild($content);
@@ -207,7 +207,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function sizeOfDirectoryIs0() : void
+    public function sizeOfDirectoryIs0(): void
     {
         assertThat($this->dir->size(), equals(0));
     }
@@ -215,7 +215,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function sizeOfDirectoryIsAlways0() : void
+    public function sizeOfDirectoryIsAlways0(): void
     {
         $this->dir->addChild($this->createChild());
         assertThat($this->dir->size(), equals(0));
@@ -224,7 +224,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function summarizedSizeIs0WhenNoChildrenAdded() : void
+    public function summarizedSizeIs0WhenNoChildrenAdded(): void
     {
         assertThat($this->dir->sizeSummarized(), equals(0));
     }
@@ -232,7 +232,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function summarizedSizeContainsSizeOfChildren() : void
+    public function summarizedSizeContainsSizeOfChildren(): void
     {
         $this->dir->addChild($this->createChild());
         assertThat($this->dir->sizeSummarized(), equals(5));
@@ -241,7 +241,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function summarizedSizeContainsSizeOfChildrenIncludingSubdirectories() : void
+    public function summarizedSizeContainsSizeOfChildrenIncludingSubdirectories(): void
     {
         $subdir = vfsStream::newDirectory('subdir');
         $subdir->addChild($this->createChild());
@@ -252,7 +252,7 @@ class vfsStreamDirectoryTestCase extends TestCase
     /**
      * @test
      */
-    public function childCanBeRemoved() : void
+    public function childCanBeRemoved(): void
     {
         $this->dir->addChild($this->createChild());
         assertTrue($this->dir->removeChild('bar'));
@@ -264,7 +264,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      * @group  regression
      * @group  bug_5
      */
-    public function addChildReplacesChildWithSameName_Bug_5() : void
+    public function addChildReplacesChildWithSameName_Bug_5(): void
     {
         $content2 = $this->createChild();
         $this->dir->addChild($this->createChild());
@@ -281,7 +281,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      * @group bug_24
      * @group regression
      */
-    public function explicitTestForSeparatorWithNestedPaths_Bug_24() : void
+    public function explicitTestForSeparatorWithNestedPaths_Bug_24(): void
     {
         $subdir1 = vfsStream::newDirectory('subdir1');
         $this->dir->addChild($subdir1);
@@ -300,7 +300,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function defaultPermissions() : void
+    public function defaultPermissions(): void
     {
         assertThat($this->dir->getPermissions(), equals(0777));
     }
@@ -309,7 +309,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function permissionsCanBeChanged() : void
+    public function permissionsCanBeChanged(): void
     {
         assertThat($this->dir->chmod(0755)->getPermissions(), equals(0755));
     }
@@ -318,7 +318,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function permissionsCanBeSetOnCreation() : void
+    public function permissionsCanBeSetOnCreation(): void
     {
         assertThat(vfsStream::newDirectory('foo', 0755)->getPermissions(), equals(0755));
     }
@@ -327,7 +327,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function currentUserIsDefaultOwner() : void
+    public function currentUserIsDefaultOwner(): void
     {
         assertThat($this->dir->getUser(), equals(vfsStream::getCurrentUser()));
         assertTrue($this->dir->isOwnedByUser(vfsStream::getCurrentUser()));
@@ -337,7 +337,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function ownerCanBeChanged() : void
+    public function ownerCanBeChanged(): void
     {
         $this->dir->chown(vfsStream::OWNER_USER_1);
         assertThat($this->dir->getUser(), equals(vfsStream::OWNER_USER_1));
@@ -348,7 +348,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function currentGroupIsDefaultGroup() : void
+    public function currentGroupIsDefaultGroup(): void
     {
         assertThat($this->dir->getGroup(), equals(vfsStream::getCurrentGroup()));
         assertTrue($this->dir->isOwnedByGroup(vfsStream::getCurrentGroup()));
@@ -358,7 +358,7 @@ class vfsStreamDirectoryTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function groupCanBeChanged() : void
+    public function groupCanBeChanged(): void
     {
         $this->dir->chgrp(vfsStream::GROUP_USER_1);
         assertThat($this->dir->getGroup(), equals(vfsStream::GROUP_USER_1));

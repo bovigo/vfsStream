@@ -21,33 +21,34 @@ interface vfsStreamContainer extends IteratorAggregate
     /**
      * adds child to the directory
      */
-    public function addChild(vfsStreamContent $child) : void;
+    public function addChild(vfsStreamContent $child): void;
 
     /**
      * removes child from the directory
      */
-    public function removeChild(string $name) : bool;
+    public function removeChild(string $name): bool;
 
     /**
      * checks whether the container contains a child with the given name
      */
-    public function hasChild(string $name) : bool;
+    public function hasChild(string $name): bool;
 
     /**
      * returns the child with the given name
      */
-    public function getChild(string $name) : ?vfsStreamContent;
+    public function getChild(string $name): ?vfsStreamContent;
 
     /**
      * checks whether directory contains any children
+     *
      * @since   0.10.0
      */
-    public function hasChildren() : bool;
+    public function hasChildren(): bool;
 
     /**
      * returns a list of children for this directory
      *
      * @return  vfsStreamContent[]
      */
-    public function getChildren() : array;
+    public function getChildren(): array;
 }

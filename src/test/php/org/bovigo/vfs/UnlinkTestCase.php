@@ -35,10 +35,10 @@ class UnlinkTestCase extends TestCase
      * @test
      * @group  issue_51
      */
-    public function canUnlinkNonWritableFileFromWritableDirectory() : void
+    public function canUnlinkNonWritableFileFromWritableDirectory(): void
     {
         $structure = ['test_directory' => ['test.file' => '']];
-        $root      = vfsStream::setup('root', null, $structure);
+        $root = vfsStream::setup('root', null, $structure);
         $root->getChild('test_directory')->chmod(0777);
         $root->getChild('test_directory')->getChild('test.file')->chmod(0444);
         assertTrue(@unlink(vfsStream::url('root/test_directory/test.file')));
@@ -48,10 +48,10 @@ class UnlinkTestCase extends TestCase
      * @test
      * @group  issue_51
      */
-    public function canNotUnlinkWritableFileFromNonWritableDirectory() : void
+    public function canNotUnlinkWritableFileFromNonWritableDirectory(): void
     {
         $structure = ['test_directory' => ['test.file' => '']];
-        $root      = vfsStream::setup('root', null, $structure);
+        $root = vfsStream::setup('root', null, $structure);
         $root->getChild('test_directory')->chmod(0444);
         $root->getChild('test_directory')->getChild('test.file')->chmod(0777);
         assertFalse(@unlink(vfsStream::url('root/test_directory/test.file')));
@@ -62,10 +62,10 @@ class UnlinkTestCase extends TestCase
      * @since  1.4.0
      * @group  issue_68
      */
-    public function unlinkNonExistingFileTriggersError() : void
+    public function unlinkNonExistingFileTriggersError(): void
     {
         vfsStream::setup();
-        expect(static function () : void {
+        expect(static function (): void {
             assertFalse(unlink('vfs://root/foo.txt'));
         })
             ->triggers()
@@ -76,7 +76,7 @@ class UnlinkTestCase extends TestCase
      * @test
      * @group  issue_119
      */
-    public function unlinkMaintainsInode() : void
+    public function unlinkMaintainsInode(): void
     {
         $root = vfsStream::setup('root');
         $path = $root->url() . '/test';

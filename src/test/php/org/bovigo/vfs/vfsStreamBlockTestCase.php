@@ -27,7 +27,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function isOfTypeBlock() : void
+    public function isOfTypeBlock(): void
     {
         assertThat((new vfsStreamBlock('foo'))->getType(), equals(vfsStreamContent::TYPE_BLOCK));
     }
@@ -35,7 +35,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function appliesForSelf() : void
+    public function appliesForSelf(): void
     {
         assertTrue((new vfsStreamBlock('foo'))->appliesTo('foo'));
     }
@@ -43,7 +43,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function doesNotApplyForSubDirectories() : void
+    public function doesNotApplyForSubDirectories(): void
     {
         assertFalse((new vfsStreamBlock('foo'))->appliesTo('foo/bar'));
     }
@@ -51,7 +51,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function doesNotApplyForOtherNames() : void
+    public function doesNotApplyForOtherNames(): void
     {
         assertFalse((new vfsStreamBlock('foo'))->appliesTo('bar'));
     }
@@ -59,7 +59,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function hasGivenName() : void
+    public function hasGivenName(): void
     {
         assertThat((new vfsStreamBlock('foo'))->getName(), equals('foo'));
     }
@@ -69,7 +69,7 @@ class vfsStreamBlockTestCase extends TestCase
      *
      * @test
      */
-    public function external() : void
+    public function external(): void
     {
         $root = vfsStream::setup('root');
         $root->addChild(vfsStream::newBlock('foo'));
@@ -81,11 +81,11 @@ class vfsStreamBlockTestCase extends TestCase
      *
      * @test
      */
-    public function addStructure() : void
+    public function addStructure(): void
     {
         vfsStream::create([
             'topLevel' => [
-                'thisIsAFile'   => 'file contents',
+                'thisIsAFile' => 'file contents',
                 '[blockDevice]' => 'block contents',
             ],
         ]);
@@ -98,13 +98,13 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function createWithEmptyNameThrowsException() : void
+    public function createWithEmptyNameThrowsException(): void
     {
-        expect(static function () : void {
+        expect(static function (): void {
             vfsStream::create([
                 'topLevel' => [
                     'thisIsAFile' => 'file contents',
-                    '[]'          => 'block contents',
+                    '[]' => 'block contents',
                 ],
             ]);
         })->throws(vfsStreamException::class);

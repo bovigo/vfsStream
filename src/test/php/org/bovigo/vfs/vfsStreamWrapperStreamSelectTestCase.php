@@ -28,14 +28,14 @@ class vfsStreamWrapperStreamSelectTestCase extends TestCase
     /**
      * @test
      */
-    public function selectStreamDoesNotWork() : void
+    public function selectStreamDoesNotWork(): void
     {
-        $root   = vfsStream::setup();
-        $file   = vfsStream::newFile('foo.txt')->at($root)->withContent('testContent');
-        $read   = [fopen(vfsStream::url('root/foo.txt'), 'rb')];
-        $write  = [];
+        $root = vfsStream::setup();
+        $file = vfsStream::newFile('foo.txt')->at($root)->withContent('testContent');
+        $read = [fopen(vfsStream::url('root/foo.txt'), 'rb')];
+        $write = [];
         $except = [];
-        expect(static function () use ($read, $write, $except) : void {
+        expect(static function () use ($read, $write, $except): void {
             stream_select($read, $write, $except, 1);
         })->triggers(E_WARNING)
           ->withMessage('stream_select(): No stream arrays were passed');

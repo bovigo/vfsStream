@@ -21,48 +21,48 @@ interface FileContent
     /**
      * returns actual content
      */
-    public function content() : string;
+    public function content(): string;
 
     /**
      * returns size of content
      */
-    public function size() : int;
+    public function size(): int;
 
     /**
      * reads the given amount of bytes from content
      */
-    public function read(int $count) : string;
+    public function read(int $count): string;
 
     /**
      * seeks to the given offset
      */
-    public function seek(int $offset, int $whence) : bool;
+    public function seek(int $offset, int $whence): bool;
 
     /**
      * checks whether pointer is at end of file
      */
-    public function eof() : bool;
+    public function eof(): bool;
 
     /**
      * writes an amount of data
      *
      * @return  int     amount of written bytes
      */
-    public function write(string $data) : int;
+    public function write(string $data): int;
 
     /**
      * Truncates a file to a given length
      *
      * @param   int $size length to truncate file to
      */
-    public function truncate(int $size) : bool;
+    public function truncate(int $size): bool;
 
     /**
      * Returns the current position within the file.
      *
      * @internal
      */
-    public function bytesRead() : int;
+    public function bytesRead(): int;
 
     /**
      * Returns the content until its end from current offset.
@@ -71,5 +71,5 @@ interface FileContent
      *
      * @internal
      */
-    public function readUntilEnd() : string;
+    public function readUntilEnd(): string;
 }

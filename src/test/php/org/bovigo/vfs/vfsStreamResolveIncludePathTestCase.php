@@ -33,7 +33,7 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
     /** @var string */
     protected $backupIncludePath;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->backupIncludePath = get_include_path();
         vfsStream::setup();
@@ -41,7 +41,7 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
         set_include_path('vfs://root/a' . PATH_SEPARATOR . $this->backupIncludePath);
     }
 
-    protected function tearDown() : void
+    protected function tearDown(): void
     {
         set_include_path($this->backupIncludePath);
     }
@@ -49,7 +49,7 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
     /**
      * @test
      */
-    public function knownFileCanBeResolved() : void
+    public function knownFileCanBeResolved(): void
     {
         file_put_contents('vfs://root/a/path/knownFile.php', '<?php ?>');
         assertThat(
@@ -61,7 +61,7 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
     /**
      * @test
      */
-    public function unknownFileCanNotBeResolvedYieldsFalse() : void
+    public function unknownFileCanNotBeResolvedYieldsFalse(): void
     {
         assertFalse(@stream_resolve_include_path('path/unknownFile.php'));
     }

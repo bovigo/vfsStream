@@ -39,7 +39,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * clean up test environment
      */
-    protected function tearDown() : void
+    protected function tearDown(): void
     {
         vfsStream::enableDotfiles();
     }
@@ -47,7 +47,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return string[][]
      */
-    public function provideSwitchWithExpectations() : array
+    public function provideSwitchWithExpectations(): array
     {
         return [
             [[vfsStream::class, 'disableDotfiles'], ['subdir', 'file2']],
@@ -55,7 +55,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
         ];
     }
 
-    private function assertDirectoryCount(int $expectedCount, int $actualCount) : void
+    private function assertDirectoryCount(int $expectedCount, int $actualCount): void
     {
         assertThat(
             $actualCount,
@@ -71,11 +71,11 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @dataProvider  provideSwitchWithExpectations
      */
-    public function directoryIteration(callable $switchDotFiles, array $expectedDirectories) : void
+    public function directoryIteration(callable $switchDotFiles, array $expectedDirectories): void
     {
         $switchDotFiles();
         $dir = dir($this->root->url());
-        $i   = 0;
+        $i = 0;
         while (($entry = $dir->read()) !== false) {
             $i++;
             assertTrue(in_array($entry, $expectedDirectories));
@@ -99,11 +99,11 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @dataProvider  provideSwitchWithExpectations
      */
-    public function directoryIterationWithDot(callable $switchDotFiles, array $expectedDirectories) : void
+    public function directoryIterationWithDot(callable $switchDotFiles, array $expectedDirectories): void
     {
         $switchDotFiles();
         $dir = dir($this->root->url() . '/.');
-        $i   = 0;
+        $i = 0;
         while (($entry = $dir->read()) !== false) {
             $i++;
             assertTrue(in_array($entry, $expectedDirectories));
@@ -129,11 +129,11 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
      * @group  regression
      * @group  bug_2
      */
-    public function directoryIterationWithOpenDir_Bug_2(callable $switchDotFiles, array $expectedDirectories) : void
+    public function directoryIterationWithOpenDir_Bug_2(callable $switchDotFiles, array $expectedDirectories): void
     {
         $switchDotFiles();
         $handle = opendir($this->root->url());
-        $i      = 0;
+        $i = 0;
         while (($entry = readdir($handle)) !== false) {
             $i++;
             assertTrue(in_array($entry, $expectedDirectories));
@@ -160,11 +160,11 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
      * @group  regression
      * @group  bug_4
      */
-    public function directoryIteration_Bug_4(callable $switchDotFiles, array $expectedDirectories) : void
+    public function directoryIteration_Bug_4(callable $switchDotFiles, array $expectedDirectories): void
     {
         $switchDotFiles();
-        $dir    = $this->root->url();
-        $list1  = [];
+        $dir = $this->root->url();
+        $list1 = [];
         $handle = opendir($dir);
         if ($handle !== false) {
             while (($listItem = readdir($handle)) !== false) {
@@ -182,7 +182,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
             closedir($handle);
         }
 
-        $list2  = [];
+        $list2 = [];
         $handle = opendir($dir);
         if ($handle !== false) {
             while (($listItem = readdir($handle)) !== false) {
@@ -210,18 +210,18 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @dataProvider  provideSwitchWithExpectations
      */
-    public function directoryIterationShouldBeIndependent(callable $switchDotFiles, array $expectedDirectories) : void
+    public function directoryIterationShouldBeIndependent(callable $switchDotFiles, array $expectedDirectories): void
     {
         $switchDotFiles();
-        $list1    = [];
-        $list2    = [];
-        $handle1  = opendir($this->root->url());
+        $list1 = [];
+        $list2 = [];
+        $handle1 = opendir($this->root->url());
         $listItem = readdir($handle1);
         if ($listItem !== false) {
             $list1[] = $listItem;
         }
 
-        $handle2  = opendir($this->root->url());
+        $handle2 = opendir($this->root->url());
         $listItem = readdir($handle2);
         if ($listItem !== false) {
             $list2[] = $listItem;
@@ -247,7 +247,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @group  issue_50
      */
-    public function recursiveDirectoryIterationWithDotsEnabled() : void
+    public function recursiveDirectoryIterationWithDotsEnabled(): void
     {
         vfsStream::enableDotfiles();
         vfsStream::setup();
@@ -262,14 +262,14 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
                 'badlocation.php' => 'some bad content',
             ],
         ];
-        $root      = vfsStream::create($structure);
-        $rootPath  = vfsStream::url($root->getName());
+        $root = vfsStream::create($structure);
+        $rootPath = vfsStream::url($root->getName());
 
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($rootPath),
             RecursiveIteratorIterator::CHILD_FIRST
         );
-        $pathes   = [];
+        $pathes = [];
         foreach ($iterator as $fullFileName => $fileSPLObject) {
             $pathes[] = $fullFileName;
         }
@@ -298,7 +298,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @group  issue_50
      */
-    public function recursiveDirectoryIterationWithDotsDisabled() : void
+    public function recursiveDirectoryIterationWithDotsDisabled(): void
     {
         vfsStream::disableDotfiles();
         vfsStream::setup();
@@ -313,14 +313,14 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
                 'badlocation.php' => 'some bad content',
             ],
         ];
-        $root      = vfsStream::create($structure);
-        $rootPath  = vfsStream::url($root->getName());
+        $root = vfsStream::create($structure);
+        $rootPath = vfsStream::url($root->getName());
 
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($rootPath),
             RecursiveIteratorIterator::CHILD_FIRST
         );
-        $pathes   = [];
+        $pathes = [];
         foreach ($iterator as $fullFileName => $fileSPLObject) {
             $pathes[] = $fullFileName;
         }

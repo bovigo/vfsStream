@@ -39,10 +39,10 @@ class FilenameTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         vfsStream::setup('root');
-        $this->rootDir      = vfsStream::url('root');
+        $this->rootDir = vfsStream::url('root');
         $this->lostAndFound = $this->rootDir . '/lost+found/';
         mkdir($this->lostAndFound);
     }
@@ -50,10 +50,10 @@ class FilenameTestCase extends TestCase
     /**
      * @test
      */
-    public function worksWithCorrectName() : void
+    public function worksWithCorrectName(): void
     {
         $results = [];
-        $it      = new RecursiveDirectoryIterator($this->lostAndFound);
+        $it = new RecursiveDirectoryIterator($this->lostAndFound);
         foreach ($it as $f) {
             $results[] = $f->getPathname();
         }
@@ -67,9 +67,9 @@ class FilenameTestCase extends TestCase
     /**
      * @test
      */
-    public function doesNotWorkWithInvalidName() : void
+    public function doesNotWorkWithInvalidName(): void
     {
-        expect(function () : void {
+        expect(function (): void {
             new RecursiveDirectoryIterator($this->rootDir . '/lost found/');
         })->throws(UnexpectedValueException::class)
           ->message(contains('failed to open dir'));
@@ -78,10 +78,10 @@ class FilenameTestCase extends TestCase
     /**
      * @test
      */
-    public function returnsCorrectNames() : void
+    public function returnsCorrectNames(): void
     {
         $results = [];
-        $it      = new RecursiveDirectoryIterator($this->rootDir);
+        $it = new RecursiveDirectoryIterator($this->rootDir);
         foreach ($it as $f) {
             $results[] = $f->getPathname();
         }
