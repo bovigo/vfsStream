@@ -94,7 +94,7 @@ class vfsStream
         return self::SCHEME . '://' . implode(
             '/',
             array_map(
-                'rawurlencode',    // ensure singe path parts are correctly urlencoded
+                'rawurlencode',    // ensure single path parts are correctly urlencoded
                 explode(
                     '/',
                     str_replace('\\', '/', $path)  // ensure correct directory separator
