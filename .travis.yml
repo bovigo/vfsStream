@@ -23,20 +23,17 @@ matrix:
     - php: 7.4snapshot
 
 install:
-  - composer install
+  - phpenv config-rm xdebug.ini
+  - if [ "$DEPENDENCIES" = "default" ]; then composer install --prefer-dist; fi;
+  - if [ "$DEPENDENCIES" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
+  - if [ "$DEPENDENCIES" = "highest" ]; then composer update --prefer-dist -n; fi;
+  - composer show
+
+script:
+  - vendor/bin/phpunit
 
 jobs:
   include:
-    - stage: test
-      before_script:
-        - phpenv config-rm xdebug.ini
-        - if [ "$DEPENDENCIES" = "default" ]; then composer install --prefer-dist; fi;
-        - if [ "$DEPENDENCIES" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
-        - if [ "$DEPENDENCIES" = "highest" ]; then composer update --prefer-dist -n; fi;
-        - composer show
-      script:
-        - vendor/bin/phpunit
-
     - stage: analyze
       name: phpstan
       script:
