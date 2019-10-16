@@ -310,7 +310,7 @@ class vfsStream
         int $maxFileSize = 1048576
     ): vfsStreamDirectory {
         if ($baseDir === null) {
-            /** @var vfsStreamDirectory|null $baseDir * */
+            /** @var vfsStreamDirectory|null $baseDir **/
             $baseDir = vfsStreamWrapper::getRoot();
         }
 
