@@ -1,21 +1,29 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs;
-use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assertTrue;
+namespace org\bovigo\vfs;
+
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertThat;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
+use function clearstatcache;
+use function file_put_contents;
+use function fopen;
+use function fstat;
+use function uniqid;
+use function unlink;
+
 /**
  * Test for unlink() functionality.
  *
@@ -27,7 +35,7 @@ class UnlinkTestCase extends TestCase
      * @test
      * @group  issue_51
      */
-    public function canUnlinkNonWritableFileFromWritableDirectory()
+    public function canUnlinkNonWritableFileFromWritableDirectory(): void
     {
         $structure = ['test_directory' => ['test.file' => '']];
         $root = vfsStream::setup('root', null, $structure);
@@ -40,7 +48,7 @@ class UnlinkTestCase extends TestCase
      * @test
      * @group  issue_51
      */
-    public function canNotUnlinkWritableFileFromNonWritableDirectory()
+    public function canNotUnlinkWritableFileFromNonWritableDirectory(): void
     {
         $structure = ['test_directory' => ['test.file' => '']];
         $root = vfsStream::setup('root', null, $structure);
@@ -54,10 +62,12 @@ class UnlinkTestCase extends TestCase
      * @since  1.4.0
      * @group  issue_68
      */
-    public function unlinkNonExistingFileTriggersError()
+    public function unlinkNonExistingFileTriggersError(): void
     {
         vfsStream::setup();
-        expect(function() { assertFalse(unlink('vfs://root/foo.txt')); })
+        expect(static function (): void {
+            assertFalse(unlink('vfs://root/foo.txt'));
+        })
             ->triggers()
             ->withMessage('unlink(vfs://root/foo.txt): No such file or directory');
     }
@@ -66,10 +76,10 @@ class UnlinkTestCase extends TestCase
      * @test
      * @group  issue_119
      */
-    public function unlinkMaintainsInode()
+    public function unlinkMaintainsInode(): void
     {
         $root = vfsStream::setup('root');
-        $path = $root->url().'/test';
+        $path = $root->url() . '/test';
         file_put_contents($path, uniqid());
 
         $handle = fopen($path, 'r');

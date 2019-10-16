@@ -1,18 +1,24 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs;
-use PHPUnit\Framework\TestCase;
 
+namespace org\bovigo\vfs;
+
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\expect;
+use function chgrp;
+use function chmod;
+use function chown;
+use function touch;
+
 /**
  * Test for permissions related functionality.
  *
@@ -20,9 +26,7 @@ use function bovigo\assert\expect;
  */
 class PermissionsTestCase extends TestCase
 {
-    /**
-     * @type  vfsStreamDirectory
-     */
+    /** @var vfsStreamDirectory */
     private $root;
 
     /**
@@ -41,7 +45,7 @@ class PermissionsTestCase extends TestCase
      * @test
      * @group  issue_52
      */
-    public function canNotChangePermissionWhenDirectoryNotWriteable()
+    public function canNotChangePermissionWhenDirectoryNotWriteable(): void
     {
         $this->root->getChild('test_directory')->chmod(0444);
         assertFalse(@chmod(vfsStream::url('root/test_directory/test.file'), 0777));
@@ -51,7 +55,7 @@ class PermissionsTestCase extends TestCase
      * @test
      * @group  issue_53
      */
-    public function canNotChangePermissionWhenFileNotOwned()
+    public function canNotChangePermissionWhenFileNotOwned(): void
     {
         $this->root->getChild('test_directory')->getChild('test.file')->chown(vfsStream::OWNER_USER_1);
         assertFalse(@chmod(vfsStream::url('root/test_directory/test.file'), 0777));
@@ -61,7 +65,7 @@ class PermissionsTestCase extends TestCase
      * @test
      * @group  issue_52
      */
-    public function canNotChangeOwnerWhenDirectoryNotWriteable()
+    public function canNotChangeOwnerWhenDirectoryNotWriteable(): void
     {
         $this->root->getChild('test_directory')->chmod(0444);
         assertFalse(@chown(vfsStream::url('root/test_directory/test.file'), vfsStream::OWNER_USER_2));
@@ -71,7 +75,7 @@ class PermissionsTestCase extends TestCase
      * @test
      * @group  issue_53
      */
-    public function canNotChangeOwnerWhenFileNotOwned()
+    public function canNotChangeOwnerWhenFileNotOwned(): void
     {
         $this->root->getChild('test_directory')->getChild('test.file')->chown(vfsStream::OWNER_USER_1);
         assertFalse(@chown(vfsStream::url('root/test_directory/test.file'), vfsStream::OWNER_USER_2));
@@ -81,7 +85,7 @@ class PermissionsTestCase extends TestCase
      * @test
      * @group  issue_52
      */
-    public function canNotChangeGroupWhenDirectoryNotWriteable()
+    public function canNotChangeGroupWhenDirectoryNotWriteable(): void
     {
         $this->root->getChild('test_directory')->chmod(0444);
         assertFalse(@chgrp(vfsStream::url('root/test_directory/test.file'), vfsStream::GROUP_USER_2));
@@ -91,7 +95,7 @@ class PermissionsTestCase extends TestCase
      * @test
      * @group  issue_53
      */
-    public function canNotChangeGroupWhenFileNotOwned()
+    public function canNotChangeGroupWhenFileNotOwned(): void
     {
         $this->root->getChild('test_directory')->getChild('test.file')->chown(vfsStream::OWNER_USER_1);
         assertFalse(@chgrp(vfsStream::url('root/test_directory/test.file'), vfsStream::GROUP_USER_2));
@@ -102,10 +106,12 @@ class PermissionsTestCase extends TestCase
      * @group  issue_107
      * @since  1.5.0
      */
-    public function touchOnNonWriteableDirectoryTriggersError()
+    public function touchOnNonWriteableDirectoryTriggersError(): void
     {
         $this->root->chmod(0555);
-        expect(function() { touch($this->root->url() . '/touch.txt'); })
+        expect(function (): void {
+            touch($this->root->url() . '/touch.txt');
+        })
             ->triggers()
             ->withMessage('Can not create new file in non-writable path root');
     }
@@ -115,7 +121,7 @@ class PermissionsTestCase extends TestCase
      * @group  issue_107
      * @since  1.5.0
      */
-    public function touchOnNonWriteableDirectoryDoesNotCreateFile()
+    public function touchOnNonWriteableDirectoryDoesNotCreateFile(): void
     {
         $this->root->chmod(0555);
         assertFalse(@touch($this->root->url() . '/touch.txt'));

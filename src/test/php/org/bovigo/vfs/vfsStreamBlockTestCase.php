@@ -1,21 +1,24 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs;
-use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assertThat;
+namespace org\bovigo\vfs;
+
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
+use function filetype;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamBlock.
  */
@@ -24,7 +27,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function isOfTypeBlock()
+    public function isOfTypeBlock(): void
     {
         assertThat((new vfsStreamBlock('foo'))->getType(), equals(vfsStreamContent::TYPE_BLOCK));
     }
@@ -32,7 +35,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function appliesForSelf()
+    public function appliesForSelf(): void
     {
         assertTrue((new vfsStreamBlock('foo'))->appliesTo('foo'));
     }
@@ -40,7 +43,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function doesNotApplyForSubDirectories()
+    public function doesNotApplyForSubDirectories(): void
     {
         assertFalse((new vfsStreamBlock('foo'))->appliesTo('foo/bar'));
     }
@@ -48,7 +51,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function doesNotApplyForOtherNames()
+    public function doesNotApplyForOtherNames(): void
     {
         assertFalse((new vfsStreamBlock('foo'))->appliesTo('bar'));
     }
@@ -56,7 +59,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function hasGivenName()
+    public function hasGivenName(): void
     {
         assertThat((new vfsStreamBlock('foo'))->getName(), equals('foo'));
     }
@@ -66,7 +69,7 @@ class vfsStreamBlockTestCase extends TestCase
      *
      * @test
      */
-    public function external()
+    public function external(): void
     {
         $root = vfsStream::setup('root');
         $root->addChild(vfsStream::newBlock('foo'));
@@ -78,12 +81,14 @@ class vfsStreamBlockTestCase extends TestCase
      *
      * @test
      */
-    public function addStructure()
+    public function addStructure(): void
     {
-        vfsStream::create(['topLevel' => [
-            'thisIsAFile'   => 'file contents',
-            '[blockDevice]' => 'block contents'
-        ]]);
+        vfsStream::create([
+            'topLevel' => [
+                'thisIsAFile' => 'file contents',
+                '[blockDevice]' => 'block contents',
+            ],
+        ]);
         assertThat(
             filetype(vfsStream::url('root/topLevel/blockDevice')),
             equals('block')
@@ -93,13 +98,15 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
-    public function createWithEmptyNameThrowsException()
+    public function createWithEmptyNameThrowsException(): void
     {
-        expect(function() {
-            vfsStream::create(['topLevel' => [
-                'thisIsAFile' => 'file contents',
-                '[]'          => 'block contents'
-            ]]);
+        expect(static function (): void {
+            vfsStream::create([
+                'topLevel' => [
+                    'thisIsAFile' => 'file contents',
+                    '[]' => 'block contents',
+                ],
+            ]);
         })->throws(vfsStreamException::class);
     }
 }

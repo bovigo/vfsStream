@@ -1,39 +1,43 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs\visitor;
+
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
-
 use function bovigo\assert\assertThat;
-use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
+
 /**
  * Test for org\bovigo\vfs\visitor\vfsStreamStructureVisitor.
  *
- * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
+ *
+ * @since  0.10.0
  * @group  issue_10
  */
 class vfsStreamStructureVisitorTestCase extends TestCase
 {
+    /** @var vfsStreamStructureVisitor */
     private $structureVisitor;
 
     protected function setUp(): void
     {
         $this->structureVisitor = new vfsStreamStructureVisitor();
     }
+
     /**
      * @test
      */
-    public function visitFileCreatesStructureForFile()
+    public function visitFileCreatesStructureForFile(): void
     {
         assertThat(
             $this->structureVisitor->visitFile(
@@ -46,7 +50,7 @@ class vfsStreamStructureVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitFileCreatesStructureForBlock()
+    public function visitFileCreatesStructureForBlock(): void
     {
         assertThat(
             $this->structureVisitor->visitBlockDevice(
@@ -59,11 +63,11 @@ class vfsStreamStructureVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitDirectoryCreatesStructureForDirectory()
+    public function visitDirectoryCreatesStructureForDirectory(): void
     {
         assertThat(
             $this->structureVisitor->visitDirectory(
-                  vfsStream::newDirectory('baz')
+                vfsStream::newDirectory('baz')
             )->getStructure(),
             equals(['baz' => []])
         );
@@ -72,15 +76,17 @@ class vfsStreamStructureVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitRecursiveDirectoryStructure()
+    public function visitRecursiveDirectoryStructure(): void
     {
         $structure = [
-          'root' => ['test' => [
-                        'foo'     => ['test.txt' => 'hello'],
-                        'baz.txt' => 'world'
-                    ],
-                    'foo.txt' => ''
-        ]];
+            'root' => [
+                'test' => [
+                    'foo' => ['test.txt' => 'hello'],
+                    'baz.txt' => 'world',
+                ],
+                'foo.txt' => '',
+            ],
+        ];
         $root = vfsStream::setup('root', null, $structure['root']);
         assertThat(
             $this->structureVisitor->visitDirectory($root)->getStructure(),

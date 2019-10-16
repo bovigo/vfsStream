@@ -1,17 +1,23 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs;
-use PHPUnit\Framework\TestCase;
 
+namespace org\bovigo\vfs;
+
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
+use function dir;
+use function fopen;
+use function rename;
+use function unlink;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
@@ -28,7 +34,7 @@ class vfsStreamWrapperWithoutRootTestCase extends TestCase
     /**
      * @test
      */
-    public function canNotOpenDirectory()
+    public function canNotOpenDirectory(): void
     {
         assertFalse(@dir(vfsStream::url('foo')));
     }
@@ -36,7 +42,7 @@ class vfsStreamWrapperWithoutRootTestCase extends TestCase
     /**
      * @test
      */
-    public function canNotUnlink()
+    public function canNotUnlink(): void
     {
         assertFalse(@unlink(vfsStream::url('foo')));
     }
@@ -44,7 +50,7 @@ class vfsStreamWrapperWithoutRootTestCase extends TestCase
     /**
      * @test
      */
-    public function canNotOpen()
+    public function canNotOpen(): void
     {
         assertFalse(@fopen(vfsStream::url('foo'), 'r'));
     }
@@ -52,7 +58,7 @@ class vfsStreamWrapperWithoutRootTestCase extends TestCase
     /**
      * @test
      */
-    public function canNotRename()
+    public function canNotRename(): void
     {
         assertFalse(@rename(vfsStream::url('foo'), vfsStream::url('bar')));
     }

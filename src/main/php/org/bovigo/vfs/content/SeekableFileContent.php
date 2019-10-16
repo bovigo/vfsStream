@@ -1,14 +1,22 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs\content;
+
+use const SEEK_CUR;
+use const SEEK_END;
+use const SEEK_SET;
+use function strlen;
+use function substr;
+
 /**
  * Default implementation for file contents based on simple strings.
  *
@@ -25,32 +33,22 @@ abstract class SeekableFileContent implements FileContent
 
     /**
      * reads the given amount of bytes from content
-     *
-     * @param   int     $count
-     * @return  string
      */
     public function read(int $count): string
     {
         $data = $this->doRead($this->offset, $count);
         $this->offset += $count;
+
         return $data;
     }
 
     /**
      * actual reading of given byte count starting at given offset
-     *
-     * @param   int  $offset
-     * @param   int  $count
-     * @return  string
      */
-    protected abstract function doRead(int $offset, int $count): string;
+    abstract protected function doRead(int $offset, int $count): string;
 
     /**
      * seeks to the given offset
-     *
-     * @param   int   $offset
-     * @param   int   $whence
-     * @return  bool
      */
     public function seek(int $offset, int $whence): bool
     {
@@ -77,13 +75,12 @@ abstract class SeekableFileContent implements FileContent
         }
 
         $this->offset = $newOffset;
+
         return true;
     }
 
     /**
      * checks whether pointer is at end of file
-     *
-     * @return  bool
      */
     public function eof(): bool
     {
@@ -93,30 +90,25 @@ abstract class SeekableFileContent implements FileContent
     /**
      * writes an amount of data
      *
-     * @param   string  $data
      * @return  int     amount of written bytes
      */
     public function write(string $data): int
     {
-        $dataLength    = strlen($data);
+        $dataLength = strlen($data);
         $this->doWrite($data, $this->offset, $dataLength);
         $this->offset += $dataLength;
+
         return $dataLength;
     }
 
     /**
      * actual writing of data with specified length at given offset
-     *
-     * @param   string  $data
-     * @param   int     $offset
-     * @param   int     $length
      */
-    protected abstract function doWrite(string $data, int $offset, int $length);
+    abstract protected function doWrite(string $data, int $offset, int $length): void;
 
     /**
      * for backwards compatibility with vfsStreamFile::bytesRead()
      *
-     * @return  int
      * @internal
      */
     public function bytesRead(): int
@@ -127,13 +119,13 @@ abstract class SeekableFileContent implements FileContent
     /**
      * for backwards compatibility with vfsStreamFile::readUntilEnd()
      *
-     * @return  string
      * @internal
      */
     public function readUntilEnd(): string
     {
         /** @var string|false $data */
         $data = substr($this->content(), $this->offset);
-        return (false === $data) ? '' : $data;
+
+        return $data === false ? '' : $data;
     }
 }

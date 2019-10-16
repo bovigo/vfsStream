@@ -1,24 +1,30 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs;
+
 use bovigo\callmap\NewInstance;
+use InvalidArgumentException;
 use org\bovigo\vfs\content\FileContent;
 use PHPUnit\Framework\TestCase;
-
-use function bovigo\assert\assertThat;
+use const SEEK_CUR;
+use const SEEK_END;
+use const SEEK_SET;
 use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamFile.
  */
@@ -42,16 +48,18 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function invalidCharacterInNameThrowsException()
+    public function invalidCharacterInNameThrowsException(): void
     {
-        expect(function() { new vfsStreamFile('foo/bar'); })
+        expect(static function (): void {
+            new vfsStreamFile('foo/bar');
+        })
             ->throws(vfsStreamException::class);
     }
 
     /**
      * @test
      */
-    public function isOfTypeFile()
+    public function isOfTypeFile(): void
     {
         assertThat($this->file->getType(), equals(vfsStreamContent::TYPE_FILE));
     }
@@ -59,7 +67,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function appliesForSelf()
+    public function appliesForSelf(): void
     {
         assertTrue($this->file->appliesTo('foo'));
     }
@@ -67,7 +75,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function doesNotApplyForSubDirectories()
+    public function doesNotApplyForSubDirectories(): void
     {
         assertFalse($this->file->appliesTo('foo/bar'));
     }
@@ -75,7 +83,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function doesNotApplyForOtherNames()
+    public function doesNotApplyForOtherNames(): void
     {
         assertFalse($this->file->appliesTo('bar'));
     }
@@ -83,7 +91,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function hasGivenName()
+    public function hasGivenName(): void
     {
         assertThat($this->file->getName(), equals('foo'));
     }
@@ -91,7 +99,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function canBeRenamed()
+    public function canBeRenamed(): void
     {
         $this->file->rename('bar');
         assertThat($this->file->getName(), equals('bar'));
@@ -103,24 +111,26 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function renameToInvalidNameThrowsException()
+    public function renameToInvalidNameThrowsException(): void
     {
-        expect(function() { $this->file->rename('foo/baz'); })
+        expect(function (): void {
+            $this->file->rename('foo/baz');
+        })
             ->throws(vfsStreamException::class);
     }
 
     /**
      * @test
      */
-    public function hasNoContentByDefault()
+    public function hasNoContentByDefault(): void
     {
-      assertEmptyString($this->file->getContent());
+        assertEmptyString($this->file->getContent());
     }
 
     /**
      * @test
      */
-    public function contentCanBeChanged()
+    public function contentCanBeChanged(): void
     {
         $this->file->setContent('bar');
         assertThat($this->file->getContent(), equals('bar'));
@@ -129,7 +139,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function isAtEofWhenEmpty()
+    public function isAtEofWhenEmpty(): void
     {
         assertTrue($this->file->eof());
     }
@@ -137,7 +147,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function fileSizeIs0WhenEmpty()
+    public function fileSizeIs0WhenEmpty(): void
     {
         assertThat($this->file->size(), equals(0));
     }
@@ -145,7 +155,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function readFromEmptyFileReturnsEmptyString()
+    public function readFromEmptyFileReturnsEmptyString(): void
     {
         assertEmptyString($this->file->read(5));
     }
@@ -153,7 +163,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function readFromEmptyFileMovesPointer()
+    public function readFromEmptyFileMovesPointer(): void
     {
         $this->file->read(5);
         assertThat($this->file->getBytesRead(), equals(5));
@@ -162,7 +172,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function reportsAmountOfBytesReadEvenWhenEmpty()
+    public function reportsAmountOfBytesReadEvenWhenEmpty(): void
     {
         $this->file->read(5);
         assertThat($this->file->getBytesRead(), equals(5));
@@ -171,7 +181,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function isNotAtEofWhenNotAllContentRead()
+    public function isNotAtEofWhenNotAllContentRead(): void
     {
         $this->file->setContent('foobarbaz');
         assertFalse($this->file->eof());
@@ -180,7 +190,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function fileSizeEqualsSizeOfContent()
+    public function fileSizeEqualsSizeOfContent(): void
     {
         $this->file->setContent('foobarbaz');
         assertThat($this->file->size(), equals(9));
@@ -189,7 +199,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function readDoesNotChangeFileSize()
+    public function readDoesNotChangeFileSize(): void
     {
         $this->file->setContent('foobarbaz');
         $this->file->read(3);
@@ -199,7 +209,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function partialReads()
+    public function partialReads(): void
     {
         $this->file->setContent('foobarbaz');
         assertThat($this->file->read(3), equals('foo'));
@@ -218,7 +228,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function readAfterEofReturnsEmptyString()
+    public function readAfterEofReturnsEmptyString(): void
     {
         $this->file->setContent('foobarbaz');
         $this->file->read(9);
@@ -228,26 +238,29 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function seekWithInvalidSeekCommandReturnsFalse()
+    public function seekWithInvalidSeekCommandReturnsFalse(): void
     {
         assertFalse($this->file->seek(0, 55));
     }
 
+    /**
+     * @return mixed[][]
+     */
     public function seeks(): array
     {
-      return [
-          [0, SEEK_SET, 0, 'foobarbaz'],
-          [5, SEEK_SET, 5, 'rbaz'],
-          [0, SEEK_END, 0, ''],
-          [2, SEEK_END, 2, ''],
-      ];
+        return [
+            [0, SEEK_SET, 0, 'foobarbaz'],
+            [5, SEEK_SET, 5, 'rbaz'],
+            [0, SEEK_END, 0, ''],
+            [2, SEEK_END, 2, ''],
+        ];
     }
 
     /**
      * @test
      * @dataProvider  seeks
      */
-    public function seekEmptyFile(int $offset, $whence, int $expected)
+    public function seekEmptyFile(int $offset, int $whence, int $expected): void
     {
         assertTrue($this->file->seek($offset, $whence));
         assertThat($this->file->getBytesRead(), equals($expected));
@@ -256,7 +269,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function seekEmptyFileWithSEEK_CUR()
+    public function seekEmptyFileWithSEEK_CUR(): void
     {
         $this->file->seek(5, SEEK_SET);
         assertTrue($this->file->seek(0, SEEK_CUR));
@@ -269,7 +282,7 @@ class vfsStreamFileTestCase extends TestCase
      * @test
      * @since 1.6.5
      */
-    public function seekEmptyFileBeforeBeginningDoesNotChangeOffset()
+    public function seekEmptyFileBeforeBeginningDoesNotChangeOffset(): void
     {
         assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
         assertThat($this->file->getBytesRead(), equals(0));
@@ -279,11 +292,11 @@ class vfsStreamFileTestCase extends TestCase
      * @test
      * @dataProvider  seeks
      */
-    public function seekRead(int $offset, $whence, int $expected, string $remaining)
+    public function seekRead(int $offset, int $whence, int $expected, string $remaining): void
     {
         $this->file->setContent('foobarbaz');
-        if (SEEK_END === $whence) {
-          $expected += 9;
+        if ($whence === SEEK_END) {
+            $expected += 9;
         }
 
         assertTrue($this->file->seek($offset, $whence));
@@ -294,7 +307,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function seekFileWithSEEK_CUR()
+    public function seekFileWithSEEK_CUR(): void
     {
         $this->file->setContent('foobarbaz');
         $this->file->seek(5, SEEK_SET);
@@ -310,7 +323,7 @@ class vfsStreamFileTestCase extends TestCase
      * @test
      * @since 1.6.5
      */
-    public function seekFileBeforeBeginningDoesNotChangeOffset()
+    public function seekFileBeforeBeginningDoesNotChangeOffset(): void
     {
         $this->file->setContent('foobarbaz');
         assertFalse($this->file->seek(-5, SEEK_SET), 'Seek before beginning of file');
@@ -322,7 +335,7 @@ class vfsStreamFileTestCase extends TestCase
      *
      * @test
      */
-    public function writeReturnsAmountsOfBytesWritten()
+    public function writeReturnsAmountsOfBytesWritten(): void
     {
         assertThat($this->file->write('foo'), equals(3));
     }
@@ -330,7 +343,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function writeEmptyFile()
+    public function writeEmptyFile(): void
     {
         $this->file->write('foo');
         $this->file->write('bar');
@@ -340,7 +353,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @test
      */
-    public function write()
+    public function write(): void
     {
         $this->file->setContent('foobarbaz');
         $this->file->seek(3, SEEK_SET);
@@ -352,17 +365,16 @@ class vfsStreamFileTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function defaultPermissions()
+    public function defaultPermissions(): void
     {
         assertThat($this->file->getPermissions(), equals(0666));
     }
-
 
     /**
      * @test
      * @group  permissions
      */
-    public function permissionsCanBeChanged()
+    public function permissionsCanBeChanged(): void
     {
         assertThat($this->file->chmod(0600)->getPermissions(), equals(0600));
     }
@@ -371,7 +383,7 @@ class vfsStreamFileTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function permissionsCanBeSetOnCreation()
+    public function permissionsCanBeSetOnCreation(): void
     {
         assertThat(vfsStream::newFile('foo', 0644)->getPermissions(), equals(0644));
     }
@@ -380,7 +392,7 @@ class vfsStreamFileTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function currentUserIsDefaultOwner()
+    public function currentUserIsDefaultOwner(): void
     {
         assertThat($this->file->getUser(), equals(vfsStream::getCurrentUser()));
         assertTrue($this->file->isOwnedByUser(vfsStream::getCurrentUser()));
@@ -390,7 +402,7 @@ class vfsStreamFileTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function ownerCanBeChanged()
+    public function ownerCanBeChanged(): void
     {
         $this->file->chown(vfsStream::OWNER_USER_1);
         assertThat($this->file->getUser(), equals(vfsStream::OWNER_USER_1));
@@ -401,7 +413,7 @@ class vfsStreamFileTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function currentGroupIsDefaultGroup()
+    public function currentGroupIsDefaultGroup(): void
     {
         assertThat($this->file->getGroup(), equals(vfsStream::getCurrentGroup()));
         assertTrue($this->file->isOwnedByGroup(vfsStream::getCurrentGroup()));
@@ -411,7 +423,7 @@ class vfsStreamFileTestCase extends TestCase
      * @test
      * @group  permissions
      */
-    public function groupCanBeChanged()
+    public function groupCanBeChanged(): void
     {
         $this->file->chgrp(vfsStream::GROUP_USER_1);
         assertThat($this->file->getGroup(), equals(vfsStream::GROUP_USER_1));
@@ -423,9 +435,9 @@ class vfsStreamFileTestCase extends TestCase
      * @group  issue_33
      * @since  1.1.0
      */
-    public function truncateRemovesSuperflouosContent()
+    public function truncateRemovesSuperflouosContent(): void
     {
-        $this->file->write("lorem ipsum");
+        $this->file->write('lorem ipsum');
         assertTrue($this->file->truncate(5));
         assertThat($this->file->getContent(), equals('lorem'));
     }
@@ -435,9 +447,9 @@ class vfsStreamFileTestCase extends TestCase
      * @group  issue_33
      * @since  1.1.0
      */
-    public function truncateToGreaterSizeAddsZeroBytes()
+    public function truncateToGreaterSizeAddsZeroBytes(): void
     {
-        $this->file->write("lorem ipsum");
+        $this->file->write('lorem ipsum');
         assertTrue($this->file->truncate(25));
         assertThat(
             $this->file->getContent(),
@@ -450,14 +462,12 @@ class vfsStreamFileTestCase extends TestCase
      * @group  issue_79
      * @since  1.3.0
      */
-    public function withContentAcceptsAnyFileContentInstance()
+    public function withContentAcceptsAnyFileContentInstance(): void
     {
-        $fileContent = NewInstance::of(FileContent::class)->returns([
-            'content' => 'foobarbaz'
-        ]);
+        $fileContent = NewInstance::of(FileContent::class)->returns(['content' => 'foobarbaz']);
         assertThat(
-                $this->file->withContent($fileContent)->getContent(),
-                equals('foobarbaz')
+            $this->file->withContent($fileContent)->getContent(),
+            equals('foobarbaz')
         );
     }
 
@@ -466,9 +476,11 @@ class vfsStreamFileTestCase extends TestCase
      * @group  issue_79
      * @since  1.3.0
      */
-    public function withContentThrowsInvalidArgumentExceptionWhenContentIsNoStringAndNoFileContent()
+    public function withContentThrowsInvalidArgumentExceptionWhenContentIsNoStringAndNoFileContent(): void
     {
-        expect(function() { $this->file->withContent(313); })
-          ->throws(\InvalidArgumentException::class);
+        expect(function (): void {
+            $this->file->withContent(313);
+        })
+          ->throws(InvalidArgumentException::class);
     }
 }

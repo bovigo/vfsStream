@@ -6,13 +6,13 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs;
-use PHPUnit\Framework\TestCase;
 
+namespace org\bovigo\vfs;
+
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertNotNull;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamDirectory.
  *
@@ -34,27 +34,24 @@ class vfsStreamDirectoryIssue134TestCase extends TestCase
     {
         $this->rootDirectory = vfsStream::newDirectory('/');
         $this->rootDirectory->addChild(vfsStream::newDirectory('var/log/app'));
-
     }
 
     /**
      * @test
      * @small
      */
-    public function shouldSaveDirectoryNameAsStringInternal()
+    public function shouldSaveDirectoryNameAsStringInternal(): void
     {
         $dir = $this->rootDirectory->getChild('var/log/app');
         $dir->addChild(vfsStream::newDirectory(80));
         assertNotNull($this->rootDirectory->getChild('var/log/app/80'));
     }
 
-
-
     /**
      * @test
      * @small
      */
-    public function shouldRenameDirectoryNameAsStringInternal()
+    public function shouldRenameDirectoryNameAsStringInternal(): void
     {
         $dir = $this->rootDirectory->getChild('var/log/app');
         $dir->addChild(vfsStream::newDirectory(80));

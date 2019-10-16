@@ -1,14 +1,23 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs;
+
+use Iterator;
+use function array_values;
+use function count;
+use function strlen;
+use function substr;
+use function time;
+
 /**
  * Directory container.
  *
@@ -26,11 +35,11 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * constructor
      *
-     * @param   string    $name
-     * @param   int|null  $permissions  optional
+     * @param   int|null $permissions optional
+     *
      * @throws  vfsStreamException
      */
-    public function __construct(string $name, int $permissions = null)
+    public function __construct(string $name, ?int $permissions = null)
     {
         $this->type = vfsStreamContent::TYPE_DIR;
         parent::__construct($name, $permissions);
@@ -39,7 +48,6 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * returns default permissions for concrete implementation
      *
-     * @return  int
      * @since   0.8.0
      */
     protected function getDefaultPermissions(): int
@@ -52,8 +60,6 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      *
      * The size of a directory is always 0 bytes. To calculate the summarized
      * size of all children in the directory use sizeSummarized().
-     *
-     * @return  int
      */
     public function size(): int
     {
@@ -62,8 +68,6 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
 
     /**
      * returns summarized size of directory and its children
-     *
-     * @return  int
      */
     public function sizeSummarized(): int
     {
@@ -82,11 +86,11 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * sets parent path
      *
-     * @param  string  $parentPath
      * @internal  only to be set by parent
+     *
      * @since   1.2.0
      */
-    public function setParentPath(string $parentPath)
+    public function setParentPath(string $parentPath): void
     {
         parent::setParentPath($parentPath);
         foreach ($this->children as $child) {
@@ -96,10 +100,8 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
 
     /**
      * adds child to the directory
-     *
-     * @param  vfsStreamContent  $child
      */
-    public function addChild(vfsStreamContent $child)
+    public function addChild(vfsStreamContent $child): void
     {
         $child->setParentPath($this->path());
         $this->children[$child->getName()] = $child;
@@ -108,9 +110,6 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
 
     /**
      * removes child from the directory
-     *
-     * @param   string  $name
-     * @return  bool
      */
     public function removeChild(string $name): bool
     {
@@ -119,6 +118,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
                 $child->removeParentPath();
                 unset($this->children[$key]);
                 $this->updateModifications();
+
                 return true;
             }
         }
@@ -129,29 +129,23 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * updates internal timestamps
      */
-    protected function updateModifications()
+    protected function updateModifications(): void
     {
         $time = time();
         $this->lastAttributeModified = $time;
-        $this->lastModified          = $time;
+        $this->lastModified = $time;
     }
 
     /**
      * checks whether the container contains a child with the given name
-     *
-     * @param   string  $name
-     * @return  bool
      */
     public function hasChild(string $name): bool
     {
-        return ($this->getChild($name) !== null);
+        return $this->getChild($name) !== null;
     }
 
     /**
      * returns the child with the given name
-     *
-     * @param   string  $name
-     * @return  vfsStreamContent|null
      */
     public function getChild(string $name): ?vfsStreamContent
     {
@@ -161,7 +155,7 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
                 return $child;
             }
 
-            if (!$child instanceof vfsStreamContainer) {
+            if (! $child instanceof vfsStreamContainer) {
                 continue;
             }
 
@@ -175,9 +169,6 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
 
     /**
      * helper method to detect the real child name
-     *
-     * @param   string  $name
-     * @return  string
      */
     protected function getRealChildName(string $name): string
     {
@@ -190,10 +181,6 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
 
     /**
      * helper method to calculate the child name
-     *
-     * @param   string  $name
-     * @param   string  $ownName
-     * @return  string
      */
     protected static function getChildName(string $name, string $ownName): string
     {
@@ -207,12 +194,11 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * checks whether directory contains any children
      *
-     * @return  bool
      * @since   0.10.0
      */
     public function hasChildren(): bool
     {
-        return (count($this->children) > 0);
+        return count($this->children) > 0;
     }
 
     /**
@@ -230,22 +216,16 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
      *
      * @return  vfsStreamContainerIterator
      */
-    public function getIterator(): \Iterator
+    public function getIterator(): Iterator
     {
         return new vfsStreamContainerIterator($this->children);
     }
 
     /**
      * checks whether dir is a dot dir
-     *
-     * @return  bool
      */
     public function isDot(): bool
     {
-        if ('.' === $this->name || '..' === $this->name) {
-            return true;
-        }
-
-        return false;
+        return $this->name === '.' || $this->name === '..';
     }
 }

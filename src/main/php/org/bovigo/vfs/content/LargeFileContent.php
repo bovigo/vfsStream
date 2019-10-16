@@ -1,14 +1,20 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs\content;
+
+use function array_filter;
+use function array_keys;
+use function substr;
+
 /**
  * File content implementation to mock large files.
  *
@@ -28,7 +34,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     /**
      * byte array of written content
      *
-     * @var  array
+     * @var string[]
      */
     private $content = [];
     /**
@@ -41,18 +47,15 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     /**
      * constructor
      *
-     * @param  int  $size  file size in bytes
+     * @param  int $size file size in bytes
      */
-    public function __construct($size)
+    public function __construct(int $size)
     {
         $this->size = $size;
     }
 
     /**
      * create large file with given size in kilobyte
-     *
-     * @param   int  $kilobyte
-     * @return  self
      */
     public static function withKilobytes(int $kilobyte): self
     {
@@ -61,9 +64,6 @@ class LargeFileContent extends SeekableFileContent implements FileContent
 
     /**
      * create large file with given size in megabyte
-     *
-     * @param   int  $megabyte
-     * @return  self
      */
     public static function withMegabytes(int $megabyte): self
     {
@@ -72,9 +72,6 @@ class LargeFileContent extends SeekableFileContent implements FileContent
 
     /**
      * create large file with given size in gigabyte
-     *
-     * @param   int  $gigabyte
-     * @return  self
      */
     public static function withGigabytes(int $gigabyte): self
     {
@@ -83,8 +80,6 @@ class LargeFileContent extends SeekableFileContent implements FileContent
 
     /**
      * returns actual content
-     *
-     * @return  string
      */
     public function content(): string
     {
@@ -93,8 +88,6 @@ class LargeFileContent extends SeekableFileContent implements FileContent
 
     /**
      * returns size of content
-     *
-     * @return  int
      */
     public function size(): int
     {
@@ -103,10 +96,6 @@ class LargeFileContent extends SeekableFileContent implements FileContent
 
     /**
      * actual reading of given byte count starting at given offset
-     *
-     * @param   int  $offset
-     * @param   int  $count
-     * @return  string
      */
     protected function doRead(int $offset, int $count): string
     {
@@ -124,12 +113,8 @@ class LargeFileContent extends SeekableFileContent implements FileContent
 
     /**
      * actual writing of data with specified length at given offset
-     *
-     * @param   string  $data
-     * @param   int     $offset
-     * @param   int     $length
      */
-    protected function doWrite(string $data, int $offset, int $length)
+    protected function doWrite(string $data, int $offset, int $length): void
     {
         for ($i = 0; $i < $length; $i++) {
             $this->content[$i + $offset] = substr($data, $i, 1);
@@ -145,18 +130,17 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     /**
      * Truncates a file to a given length
      *
-     * @param   int  $size length to truncate file to
-     * @return  bool
+     * @param   int $size length to truncate file to
      */
     public function truncate(int $size): bool
     {
         $this->size = $size;
-        foreach (array_filter(array_keys($this->content),
-                              function($pos) use ($size)
-                              {
-                                  return $pos >= $size;
-                              }
-                ) as $removePos) {
+        foreach (array_filter(
+            array_keys($this->content),
+            static function ($pos) use ($size) {
+                                    return $pos >= $size;
+            }
+        ) as $removePos) {
             unset($this->content[$removePos]);
         }
 

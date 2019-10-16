@@ -1,25 +1,32 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs\visitor;
+
+use InvalidArgumentException;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
-
 use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
+use function file_get_contents;
+use function fopen;
+use function xml_parser_create;
+
 /**
  * Test for org\bovigo\vfs\visitor\vfsStreamPrintVisitor.
  *
- * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
+ *
+ * @since  0.10.0
  * @group  issue_10
  */
 class vfsStreamPrintVisitorTestCase extends TestCase
@@ -27,27 +34,31 @@ class vfsStreamPrintVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function constructWithNonResourceThrowsInvalidArgumentException()
+    public function constructWithNonResourceThrowsInvalidArgumentException(): void
     {
-        expect(function() { new vfsStreamPrintVisitor('invalid'); })
-            ->throws(\InvalidArgumentException::class);
+        expect(static function (): void {
+            new vfsStreamPrintVisitor('invalid');
+        })
+            ->throws(InvalidArgumentException::class);
     }
 
     /**
      * @test
      */
-    public function constructWithNonStreamResourceThrowsInvalidArgumentException()
+    public function constructWithNonStreamResourceThrowsInvalidArgumentException(): void
     {
-        expect(function() { new vfsStreamPrintVisitor(xml_parser_create()); })
-            ->throws(\InvalidArgumentException::class);
+        expect(static function (): void {
+            new vfsStreamPrintVisitor(xml_parser_create());
+        })
+            ->throws(InvalidArgumentException::class);
     }
 
     /**
      * @test
      */
-    public function visitFileWritesFileNameToStream()
+    public function visitFileWritesFileNameToStream(): void
     {
-        $output       = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
+        $output = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
         $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
         $printVisitor->visitFile(vfsStream::newFile('bar.txt'));
         assertThat($output->getContent(), equals("- bar.txt\n"));
@@ -56,9 +67,9 @@ class vfsStreamPrintVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitFileWritesBlockDeviceToStream()
+    public function visitFileWritesBlockDeviceToStream(): void
     {
-        $output       = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
+        $output = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
         $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
         $printVisitor->visitBlockDevice(vfsStream::newBlock('bar'));
         assertThat($output->getContent(), equals("- [bar]\n"));
@@ -67,9 +78,9 @@ class vfsStreamPrintVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitDirectoryWritesDirectoryNameToStream()
+    public function visitDirectoryWritesDirectoryNameToStream(): void
     {
-        $output       = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
+        $output = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
         $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
         $printVisitor->visitDirectory(vfsStream::newDirectory('baz'));
         assertThat($output->getContent(), equals("- baz\n"));
@@ -78,16 +89,18 @@ class vfsStreamPrintVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitRecursiveDirectoryStructure()
+    public function visitRecursiveDirectoryStructure(): void
     {
         $root = vfsStream::setup(
             'root',
-             null,
-             ['test'    => ['foo'     => ['test.txt' => 'hello'],
-                            'baz.txt' => 'world'
-                           ],
-              'foo.txt' => ''
-             ]
+            null,
+            [
+                'test' => [
+                    'foo' => ['test.txt' => 'hello'],
+                    'baz.txt' => 'world',
+                ],
+                'foo.txt' => '',
+            ]
         );
         $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
         $printVisitor->visitDirectory($root);

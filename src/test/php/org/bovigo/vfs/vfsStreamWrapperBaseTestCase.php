@@ -1,15 +1,18 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs;
+
 use PHPUnit\Framework\TestCase;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
@@ -45,7 +48,7 @@ abstract class vfsStreamWrapperBaseTestCase extends TestCase
      */
     protected function setUp(): void
     {
-        $this->root   = vfsStream::setup();
+        $this->root = vfsStream::setup();
         $this->subdir = vfsStream::newDirectory('subdir')->at($this->root);
         $this->fileInSubdir = vfsStream::newFile('file1')
             ->withContent('file 1')

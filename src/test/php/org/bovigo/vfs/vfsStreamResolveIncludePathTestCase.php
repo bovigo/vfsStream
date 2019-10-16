@@ -1,19 +1,27 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs;
-use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assertThat;
+namespace org\bovigo\vfs;
+
+use PHPUnit\Framework\TestCase;
+use const PATH_SEPARATOR;
 use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
+use function file_put_contents;
+use function get_include_path;
+use function mkdir;
+use function set_include_path;
+use function stream_resolve_include_path;
+
 /**
  * Test for org\bovigo\vfs\vfsStream.
  *
@@ -22,6 +30,7 @@ use function bovigo\assert\predicate\equals;
  */
 class vfsStreamResolveIncludePathTestCase extends TestCase
 {
+    /** @var string */
     protected $backupIncludePath;
 
     protected function setUp(): void
@@ -40,7 +49,7 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
     /**
      * @test
      */
-    public function knownFileCanBeResolved()
+    public function knownFileCanBeResolved(): void
     {
         file_put_contents('vfs://root/a/path/knownFile.php', '<?php ?>');
         assertThat(
@@ -52,7 +61,7 @@ class vfsStreamResolveIncludePathTestCase extends TestCase
     /**
      * @test
      */
-    public function unknownFileCanNotBeResolvedYieldsFalse()
+    public function unknownFileCanNotBeResolvedYieldsFalse(): void
     {
         assertFalse(@stream_resolve_include_path('path/unknownFile.php'));
     }

@@ -1,18 +1,24 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs;
+
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
-
 use function bovigo\assert\expect;
+use function in_array;
+use function stream_get_wrappers;
+use function stream_wrapper_register;
+use function stream_wrapper_unregister;
+
 /**
  * Helper class for the test.
  *
@@ -23,7 +29,7 @@ class TestvfsStreamWrapper extends vfsStreamWrapper
     /**
      * unregisters vfsStreamWrapper
      */
-    public static function unregister()
+    public static function unregister(): void
     {
         if (in_array(vfsStream::SCHEME, stream_get_wrappers()) === true) {
             stream_wrapper_unregister(vfsStream::SCHEME);
@@ -32,6 +38,7 @@ class TestvfsStreamWrapper extends vfsStreamWrapper
         self::$registered = false;
     }
 }
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  */
@@ -48,14 +55,16 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends TestCase
     /**
      * @test
      */
-    public function registerOverAnotherStreamWrapperThrowsException()
+    public function registerOverAnotherStreamWrapperThrowsException(): void
     {
         TestvfsStreamWrapper::unregister();
         stream_wrapper_register(
             vfsStream::SCHEME,
             NewInstance::classname(vfsStreamWrapper::class)
         );
-        expect(function() { vfsStreamWrapper::register(); })
+        expect(static function (): void {
+            vfsStreamWrapper::register();
+        })
           ->throws(vfsStreamException::class);
     }
 }

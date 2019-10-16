@@ -1,20 +1,26 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs;
-use PHPUnit\Framework\TestCase;
 
+namespace org\bovigo\vfs;
+
+use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use UnexpectedValueException;
+use const DIRECTORY_SEPARATOR;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\contains;
 use function bovigo\assert\predicate\equals;
+use function mkdir;
+
 /**
  * Test for directory iteration.
  *
@@ -24,7 +30,10 @@ use function bovigo\assert\predicate\equals;
  */
 class FilenameTestCase extends TestCase
 {
+    /** @var string */
     private $rootDir;
+
+    /** @var string */
     private $lostAndFound;
 
     /**
@@ -41,46 +50,46 @@ class FilenameTestCase extends TestCase
     /**
      * @test
      */
-    public function worksWithCorrectName()
+    public function worksWithCorrectName(): void
     {
         $results = [];
-        $it = new \RecursiveDirectoryIterator($this->lostAndFound);
+        $it = new RecursiveDirectoryIterator($this->lostAndFound);
         foreach ($it as $f) {
             $results[] = $f->getPathname();
         }
 
         assertThat($results, equals([
             'vfs://root/lost+found' . DIRECTORY_SEPARATOR . '.',
-            'vfs://root/lost+found' . DIRECTORY_SEPARATOR . '..'
+            'vfs://root/lost+found' . DIRECTORY_SEPARATOR . '..',
         ]));
     }
 
     /**
      * @test
      */
-    public function doesNotWorkWithInvalidName()
+    public function doesNotWorkWithInvalidName(): void
     {
-        expect(function() {
-            new \RecursiveDirectoryIterator($this->rootDir . '/lost found/');
-        })->throws(\UnexpectedValueException::class)
+        expect(function (): void {
+            new RecursiveDirectoryIterator($this->rootDir . '/lost found/');
+        })->throws(UnexpectedValueException::class)
           ->message(contains('failed to open dir'));
     }
 
     /**
      * @test
      */
-    public function returnsCorrectNames()
+    public function returnsCorrectNames(): void
     {
         $results = [];
-        $it = new \RecursiveDirectoryIterator($this->rootDir);
+        $it = new RecursiveDirectoryIterator($this->rootDir);
         foreach ($it as $f) {
             $results[] = $f->getPathname();
         }
 
         assertThat($results, equals([
-          'vfs://root' . DIRECTORY_SEPARATOR . '.',
-          'vfs://root' . DIRECTORY_SEPARATOR . '..',
-          'vfs://root' . DIRECTORY_SEPARATOR . 'lost+found'
+            'vfs://root' . DIRECTORY_SEPARATOR . '.',
+            'vfs://root' . DIRECTORY_SEPARATOR . '..',
+            'vfs://root' . DIRECTORY_SEPARATOR . 'lost+found',
         ]));
     }
 }

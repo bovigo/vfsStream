@@ -1,19 +1,24 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs;
-use PHPUnit\Framework\TestCase;
 
+namespace org\bovigo\vfs;
+
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
+use function file_exists;
+use function file_get_contents;
+use function mkdir;
+
 /**
  * Test that using windows directory separator works correct.
  *
@@ -40,7 +45,7 @@ class vfsStreamWrapperDirSeparatorTestCase extends TestCase
     /**
      * @test
      */
-    public function fileCanBeAccessedUsingWinDirSeparator()
+    public function fileCanBeAccessedUsingWinDirSeparator(): void
     {
         $structure = ['foo' => ['bar' => []]];
         vfsStream::create($structure, $this->root);
@@ -50,11 +55,10 @@ class vfsStreamWrapperDirSeparatorTestCase extends TestCase
         assertThat(file_get_contents('vfs://root/foo\bar\baz.txt'), equals('test'));
     }
 
-
     /**
      * @test
      */
-    public function directoryCanBeCreatedUsingWinDirSeparator()
+    public function directoryCanBeCreatedUsingWinDirSeparator(): void
     {
         mkdir('vfs://root/dir\bar\foo', 0777, true);
         assertTrue($this->root->hasChild('dir'));
@@ -65,10 +69,10 @@ class vfsStreamWrapperDirSeparatorTestCase extends TestCase
     /**
      * @test
      */
-    public function directoryExitsTestUsingTrailingWinDirSeparator()
+    public function directoryExitsTestUsingTrailingWinDirSeparator(): void
     {
         $structure = ['dir' => ['bar' => []]];
         vfsStream::create($structure, $this->root);
-        assertTrue(file_exists(vfsStream::url('root/').'dir\\'));
+        assertTrue(file_exists(vfsStream::url('root/') . 'dir\\'));
     }
 }
