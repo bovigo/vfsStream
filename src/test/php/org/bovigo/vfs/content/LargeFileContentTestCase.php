@@ -1,19 +1,24 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs\content;
-use PHPUnit\Framework\TestCase;
 
+namespace org\bovigo\vfs\content;
+
+use PHPUnit\Framework\TestCase;
+use const SEEK_END;
+use const SEEK_SET;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
+use function str_repeat;
+
 /**
  * Test for org\bovigo\vfs\content\LargeFileContent.
  *
@@ -32,7 +37,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->largeFileContent = new LargeFileContent(100);
     }
@@ -40,7 +45,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function hasSizeOriginallyGiven()
+    public function hasSizeOriginallyGiven() : void
     {
         assertThat($this->largeFileContent->size(), equals(100));
     }
@@ -48,7 +53,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function contentIsFilledUpWithSpacesIfNoDataWritten()
+    public function contentIsFilledUpWithSpacesIfNoDataWritten() : void
     {
         assertThat($this->largeFileContent->content(), equals(str_repeat(' ', 100)));
     }
@@ -56,7 +61,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function readReturnsSpacesWhenNothingWrittenAtOffset()
+    public function readReturnsSpacesWhenNothingWrittenAtOffset() : void
     {
         assertThat($this->largeFileContent->read(10), equals(str_repeat(' ', 10)));
     }
@@ -64,7 +69,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function readReturnsContentFilledWithSpaces()
+    public function readReturnsContentFilledWithSpaces() : void
     {
         $this->largeFileContent->write('foobarbaz');
         $this->largeFileContent->seek(0, SEEK_SET);
@@ -74,7 +79,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writeReturnsAmounfOfWrittenBytes()
+    public function writeReturnsAmounfOfWrittenBytes() : void
     {
         assertThat($this->largeFileContent->write('foobarbaz'), equals(9));
     }
@@ -82,7 +87,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writesDataAtStartWhenOffsetNotMoved()
+    public function writesDataAtStartWhenOffsetNotMoved() : void
     {
         $this->largeFileContent->write('foobarbaz');
         assertThat(
@@ -94,7 +99,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writeDataAtStartDoesNotIncreaseSize()
+    public function writeDataAtStartDoesNotIncreaseSize() : void
     {
         $this->largeFileContent->write('foobarbaz');
         assertThat($this->largeFileContent->size(), equals(100));
@@ -103,7 +108,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writesDataAtOffsetWhenOffsetMoved()
+    public function writesDataAtOffsetWhenOffsetMoved() : void
     {
         $this->largeFileContent->seek(50, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
@@ -116,7 +121,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writeDataInBetweenDoesNotIncreaseSize()
+    public function writeDataInBetweenDoesNotIncreaseSize() : void
     {
         $this->largeFileContent->seek(50, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
@@ -126,7 +131,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writesDataOverEndWhenOffsetAndDataLengthLargerThanSize()
+    public function writesDataOverEndWhenOffsetAndDataLengthLargerThanSize() : void
     {
         $this->largeFileContent->seek(95, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
@@ -139,7 +144,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writeDataOverLastOffsetIncreasesSize()
+    public function writeDataOverLastOffsetIncreasesSize() : void
     {
         $this->largeFileContent->seek(95, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
@@ -149,7 +154,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writesDataAfterEndWhenOffsetAfterEnd()
+    public function writesDataAfterEndWhenOffsetAfterEnd() : void
     {
         $this->largeFileContent->seek(0, SEEK_END);
         $this->largeFileContent->write('foobarbaz');
@@ -162,7 +167,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function writeDataAfterLastOffsetIncreasesSize()
+    public function writeDataAfterLastOffsetIncreasesSize() : void
     {
         $this->largeFileContent->seek(0, SEEK_END);
         $this->largeFileContent->write('foobarbaz');
@@ -172,7 +177,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function truncateReducesSize()
+    public function truncateReducesSize() : void
     {
         assertTrue($this->largeFileContent->truncate(50));
         assertThat($this->largeFileContent->size(), equals(50));
@@ -181,7 +186,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function truncateRemovesWrittenContentAfterOffset()
+    public function truncateRemovesWrittenContentAfterOffset() : void
     {
         $this->largeFileContent->seek(45, SEEK_SET);
         $this->largeFileContent->write('foobarbaz');
@@ -195,7 +200,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function createInstanceWithKilobytes()
+    public function createInstanceWithKilobytes() : void
     {
         assertThat(LargeFileContent::withKilobytes(100)->size(), equals(100 * 1024));
     }
@@ -203,7 +208,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function createInstanceWithMegabytes()
+    public function createInstanceWithMegabytes() : void
     {
         assertThat(LargeFileContent::withMegabytes(100)->size(), equals(100 * 1024 * 1024));
     }
@@ -211,7 +216,7 @@ class LargeFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function createInstanceWithGigabytes()
+    public function createInstanceWithGigabytes() : void
     {
         assertThat(LargeFileContent::withGigabytes(100)->size(), equals(100 * 1024 * 1024 * 1024));
     }

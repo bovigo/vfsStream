@@ -1,23 +1,26 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs;
+
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
-
-use function bovigo\assert\assertThat;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isSameAs;
+use function is_string;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamContainerIterator.
  */
@@ -45,37 +48,33 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
-        $this->dir = new vfsStreamDirectory('foo');
-        $this->child1 = NewInstance::of(vfsStreamContent::class)->returns([
-           'getName' => 'bar'
-        ]);
+        $this->dir    = new vfsStreamDirectory('foo');
+        $this->child1 = NewInstance::of(vfsStreamContent::class)->returns(['getName' => 'bar']);
 
         $this->dir->addChild($this->child1);
-        $this->child2 = NewInstance::of(vfsStreamContent::class)->returns([
-           'getName' => 'baz'
-        ]);
+        $this->child2 = NewInstance::of(vfsStreamContent::class)->returns(['getName' => 'baz']);
         $this->dir->addChild($this->child2);
     }
 
     /**
      * clean up test environment
      */
-    protected function tearDown(): void
+    protected function tearDown() : void
     {
         vfsStream::enableDotfiles();
     }
 
-    public function provideSwitchWithExpectations(): array
+    public function provideSwitchWithExpectations() : array
     {
         return [
             [[vfsStream::class, 'disableDotfiles'], []],
-            [[vfsStream::class, 'enableDotfiles'], ['.', '..']]
+            [[vfsStream::class, 'enableDotfiles'], ['.', '..']],
         ];
     }
 
-    private function nameOf($dir): string
+    private function nameOf($dir) : string
     {
         if (is_string($dir)) {
             return $dir;
@@ -85,12 +84,12 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     }
 
     /**
-     * @param  callable  $switchDotFiles
-     * @param  array     $dirNames
+     * @param  array $dirNames
+     *
      * @test
      * @dataProvider  provideSwitchWithExpectations
      */
-    public function iteration(callable $switchDotFiles, array $dirs)
+    public function iteration(callable $switchDotFiles, array $dirs) : void
     {
         $dirs[] = $this->child1;
         $dirs[] = $this->child2;
@@ -99,7 +98,7 @@ class vfsStreamContainerIteratorTestCase extends TestCase
         foreach ($dirs as $dir) {
             assertThat($dirIterator->key(), equals($this->nameOf($dir)));
             assertTrue($dirIterator->valid());
-            if (!is_string($dir)) {
+            if (! is_string($dir)) {
                 assertThat($dirIterator->current(), isSameAs($dir));
             }
 

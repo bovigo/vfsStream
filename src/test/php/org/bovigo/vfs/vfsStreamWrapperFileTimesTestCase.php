@@ -1,18 +1,33 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs;
-use PHPUnit\Framework\TestCase;
 
+namespace org\bovigo\vfs;
+
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
+use function fclose;
+use function file_get_contents;
+use function file_put_contents;
+use function fileatime;
+use function filectime;
+use function filemtime;
+use function fopen;
+use function fread;
+use function fwrite;
+use function rename;
+use function sleep;
+use function time;
+use function unlink;
+
 /**
  * Test for org\bovigo\vfs\vfsStreamWrapper.
  *
@@ -25,7 +40,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->root = vfsStream::setup()
              ->lastModified(50)
@@ -36,7 +51,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
     /**
      * @test
      */
-    public function filemtimeEqualStreamTime()
+    public function filemtimeEqualStreamTime() : void
     {
         $file = vfsStream::newFile('foo.txt')
              ->at($this->root)
@@ -47,7 +62,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
     /**
      * @test
      */
-    public function fileatimeEqualStreamTime()
+    public function fileatimeEqualStreamTime() : void
     {
         $file = vfsStream::newFile('foo.txt')
              ->at($this->root)
@@ -58,7 +73,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
     /**
      * @test
      */
-    public function filectimeEqualStreamTime()
+    public function filectimeEqualStreamTime() : void
     {
         $file = vfsStream::newFile('foo.txt')
              ->at($this->root)
@@ -71,7 +86,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
      * @group  issue_7
      * @group  issue_26
      */
-    public function openFileChangesAttributeTimeOnly()
+    public function openFileChangesAttributeTimeOnly() : void
     {
         $file = vfsStream::newFile('foo.txt')
              ->at($this->root)
@@ -89,7 +104,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
      * @group  issue_7
      * @group  issue_26
      */
-    public function fileGetContentsChangesAttributeTimeOnly()
+    public function fileGetContentsChangesAttributeTimeOnly() : void
     {
         $file = vfsStream::newFile('foo.txt')
              ->at($this->root)
@@ -107,7 +122,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
      * @group  issue_7
      * @group  issue_26
      */
-    public function openFileWithTruncateChangesAttributeAndModificationTime()
+    public function openFileWithTruncateChangesAttributeAndModificationTime() : void
     {
         $file = vfsStream::newFile('foo.txt')
              ->at($this->root)
@@ -124,14 +139,14 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
      * @test
      * @group  issue_7
      */
-    public function readFileChangesAccessTime()
+    public function readFileChangesAccessTime() : void
     {
-        $file = vfsStream::newFile('foo.txt')
+        $file     = vfsStream::newFile('foo.txt')
              ->at($this->root)
              ->lastModified(100)
              ->lastAccessed(100)
              ->lastAttributeModified(100);
-        $fp = fopen($file->url(), 'rb');
+        $fp       = fopen($file->url(), 'rb');
         $openTime = time();
         sleep(2);
         fread($fp, 1024);
@@ -145,14 +160,14 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
      * @test
      * @group  issue_7
      */
-    public function writeFileChangesModificationTime()
+    public function writeFileChangesModificationTime() : void
     {
-        $file = vfsStream::newFile('foo.txt')
+        $file     = vfsStream::newFile('foo.txt')
              ->at($this->root)
              ->lastModified(100)
              ->lastAccessed(100)
              ->lastAttributeModified(100);
-        $fp = fopen($file->url(), 'wb');
+        $fp       = fopen($file->url(), 'wb');
         $openTime = time();
         sleep(2);
         fwrite($fp, 'test');
@@ -166,7 +181,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
      * @test
      * @group  issue_7
      */
-    public function createNewFileSetsAllTimesToCurrentTime()
+    public function createNewFileSetsAllTimesToCurrentTime() : void
     {
         $url = vfsStream::url('root/foo.txt');
         file_put_contents($url, 'test');
@@ -179,7 +194,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
      * @test
      * @group  issue_7
      */
-    public function createNewFileChangesAttributeAndModificationTimeOfContainingDirectory()
+    public function createNewFileChangesAttributeAndModificationTimeOfContainingDirectory() : void
     {
         $url = vfsStream::url('root/foo.txt');
         file_put_contents($url, 'test');
@@ -210,7 +225,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
      * @test
      * @group  issue_7
      */
-    public function removeFileChangesAttributeAndModificationTimeOfContainingDirectory()
+    public function removeFileChangesAttributeAndModificationTimeOfContainingDirectory() : void
     {
         $file = vfsStream::newFile('baz.txt')
             ->at($this->root)
@@ -230,7 +245,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
      * @test
      * @group  issue_7
      */
-    public function renameFileChangesAttributeAndModificationTimeOfAffectedDirectories()
+    public function renameFileChangesAttributeAndModificationTimeOfAffectedDirectories() : void
     {
         $target = vfsStream::newDirectory('target')
             ->at($this->root)
@@ -259,10 +274,10 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
      * @test
      * @group  issue_7
      */
-    public function renameFileDoesNotChangeFileTimesOfFileItself()
+    public function renameFileDoesNotChangeFileTimesOfFileItself() : void
     {
         vfsStream::newDirectory('target')->at($this->root);
-        $file = vfsStream::newFile('baz.txt')
+        $file   = vfsStream::newFile('baz.txt')
             ->at($this->root)
             ->lastModified(300)
             ->lastAccessed(300)
@@ -273,7 +288,6 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
         assertThat(fileatime($target), equals(300));
         assertThat(filectime($target), equals(300));
     }
-
     /**
      * @test
      * @group  issue_7

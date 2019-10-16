@@ -1,21 +1,27 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs;
-use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assertThat;
+namespace org\bovigo\vfs;
+
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
+use function fclose;
+use function file_put_contents;
+use function fopen;
+use function ftruncate;
+
 /**
  * Test for quota related functionality of org\bovigo\vfs\vfsStreamWrapper.
  *
@@ -33,7 +39,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->root = vfsStream::setup();
         vfsStream::setQuota(10);
@@ -42,7 +48,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function writeLessThanQuotaWritesEverything()
+    public function writeLessThanQuotaWritesEverything() : void
     {
         assertThat(file_put_contents(vfsStream::url('root/file.txt'), '123456789'), equals(9));
         assertThat($this->root->getChild('file.txt')->getContent(), equals('123456789'));
@@ -51,7 +57,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function writeUpToQotaWritesEverything()
+    public function writeUpToQotaWritesEverything() : void
     {
         assertThat(file_put_contents(vfsStream::url('root/file.txt'), '1234567890'), equals(10));
         assertThat($this->root->getChild('file.txt')->getContent(), equals('1234567890'));
@@ -60,9 +66,9 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function writeMoreThanQotaWritesOnlyUpToQuota()
+    public function writeMoreThanQotaWritesOnlyUpToQuota() : void
     {
-        expect(function() {
+        expect(static function () : void {
             file_put_contents(vfsStream::url('root/file.txt'), '12345678901');
         })->triggers()
           ->withMessage('file_put_contents(): Only 10 of 11 bytes written, possibly out of free disk space');
@@ -73,12 +79,12 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
     /**
      * @test
      */
-    public function considersAllFilesForQuota()
+    public function considersAllFilesForQuota() : void
     {
         vfsStream::newFile('foo.txt')
              ->withContent('foo')
              ->at(vfsStream::newDirectory('bar')->at($this->root));
-        expect(function() {
+        expect(static function () : void {
             file_put_contents(vfsStream::url('root/file.txt'), '12345678901');
         })->triggers()
           ->withMessage('file_put_contents(): Only 7 of 11 bytes written, possibly out of free disk space');
@@ -90,7 +96,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      * @test
      * @group  issue_33
      */
-    public function truncateToLessThanQuotaWritesEverything()
+    public function truncateToLessThanQuotaWritesEverything() : void
     {
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertTrue(ftruncate($fp, 9));
@@ -106,7 +112,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      * @test
      * @group  issue_33
      */
-    public function truncateUpToQotaWritesEverything()
+    public function truncateUpToQotaWritesEverything() : void
     {
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertTrue(ftruncate($fp, 10));
@@ -122,7 +128,7 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      * @test
      * @group  issue_33
      */
-    public function truncateToMoreThanQotaWritesOnlyUpToQuota()
+    public function truncateToMoreThanQotaWritesOnlyUpToQuota() : void
     {
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertTrue(ftruncate($fp, 11));
@@ -138,13 +144,12 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      * @test
      * @group  issue_33
      */
-    public function truncateConsidersAllFilesForQuota()
+    public function truncateConsidersAllFilesForQuota() : void
     {
         vfsStream::newFile('bar.txt')
                  ->withContent('bar')
                  ->at(vfsStream::newDirectory('bar')
-                               ->at($this->root)
-                   );
+                               ->at($this->root));
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertTrue(ftruncate($fp, 11));
         fclose($fp);
@@ -159,13 +164,12 @@ class vfsStreamWrapperQuotaTestCase extends TestCase
      * @test
      * @group  issue_33
      */
-    public function canNotTruncateToGreaterLengthWhenDiscQuotaReached()
+    public function canNotTruncateToGreaterLengthWhenDiscQuotaReached() : void
     {
         vfsStream::newFile('bar.txt')
                  ->withContent('1234567890')
                  ->at(vfsStream::newDirectory('bar')
-                               ->at($this->root)
-                   );
+                               ->at($this->root));
         $fp = fopen(vfsStream::url('root/file.txt'), 'w+');
         assertFalse(ftruncate($fp, 11));
         fclose($fp);

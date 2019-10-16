@@ -1,19 +1,30 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs;
+
 use org\bovigo\vfs\content\LargeFileContent;
 use PHPUnit\Framework\TestCase;
-
+use const PHP_INT_MAX;
+use const SEEK_SET;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
+use function fclose;
+use function filesize;
+use function fopen;
+use function fread;
+use function fseek;
+use function fwrite;
+use function str_repeat;
+
 /**
  * Test for large file mocks.
  *
@@ -32,9 +43,9 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
-        $root = vfsStream::setup();
+        $root            = vfsStream::setup();
         $this->largeFile = vfsStream::newFile('large.txt')
             ->withContent(LargeFileContent::withGigabytes(100))
             ->at($root);
@@ -43,9 +54,9 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * @test
      */
-    public function hasLargeFileSize()
+    public function hasLargeFileSize() : void
     {
-        if (PHP_INT_MAX == 2147483647) {
+        if (PHP_INT_MAX === 2147483647) {
             $this->markTestSkipped('Requires 64-bit version of PHP');
         }
 
@@ -55,7 +66,7 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * @test
      */
-    public function canReadFromLargeFile()
+    public function canReadFromLargeFile() : void
     {
         $fp   = fopen($this->largeFile->url(), 'rb');
         $data = fread($fp, 15);
@@ -66,7 +77,7 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * @test
      */
-    public function canWriteIntoLargeFile()
+    public function canWriteIntoLargeFile() : void
     {
         $fp = fopen($this->largeFile->url(), 'rb+');
         fseek($fp, 100 * 1024 * 1024, SEEK_SET);

@@ -1,28 +1,32 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs\visitor;
+
 use bovigo\callmap\NewInstance;
+use InvalidArgumentException;
+use org\bovigo\vfs\vfsStreamBlock;
 use org\bovigo\vfs\vfsStreamContent;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
-use org\bovigo\vfs\vfsStreamBlock;
 use PHPUnit\Framework\TestCase;
-
 use function bovigo\assert\expect;
 use function bovigo\callmap\verify;
+
 /**
  * Test for org\bovigo\vfs\visitor\vfsStreamAbstractVisitor.
  *
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
+ *
  * @group  issue_10
  */
 class vfsStreamAbstractVisitorTestCase extends TestCase
@@ -37,7 +41,7 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->abstractVisitor = NewInstance::of(vfsStreamAbstractVisitor::class);
     }
@@ -45,20 +49,22 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitThrowsInvalidArgumentExceptionOnUnknownContentType()
+    public function visitThrowsInvalidArgumentExceptionOnUnknownContentType() : void
     {
         $content = NewInstance::of(vfsStreamContent::class)->returns([
             'getName' => 'foo.txt',
-            'getType' => -1
+            'getType' => -1,
         ]);
-        expect(function() use ($content) { $this->abstractVisitor->visit($content); })
-          ->throws(\InvalidArgumentException::class);
+        expect(function () use ($content) : void {
+            $this->abstractVisitor->visit($content);
+        })
+          ->throws(InvalidArgumentException::class);
     }
 
     /**
      * @test
      */
-    public function visitWithFileCallsVisitFile()
+    public function visitWithFileCallsVisitFile() : void
     {
         $file = new vfsStreamFile('foo.txt');
         $this->abstractVisitor->visit($file);
@@ -68,7 +74,7 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitWithBlockEventuallyCallsVisitFile()
+    public function visitWithBlockEventuallyCallsVisitFile() : void
     {
         $block = new vfsStreamBlock('foo');
         $this->abstractVisitor->visit($block);
@@ -78,7 +84,7 @@ class vfsStreamAbstractVisitorTestCase extends TestCase
     /**
      * @test
      */
-    public function visitWithDirectoryCallsVisitDirectory()
+    public function visitWithDirectoryCallsVisitDirectory() : void
     {
         $dir = new vfsStreamDirectory('bar');
         $this->abstractVisitor->visit($dir);

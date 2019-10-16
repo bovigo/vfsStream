@@ -1,14 +1,16 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs;
+
 /**
  * Represents a quota for disk space.
  *
@@ -20,7 +22,7 @@ class Quota
     /**
      * unlimited quota
      */
-    const UNLIMITED   = -1;
+    public const UNLIMITED = -1;
     /**
      * quota in bytes
      *
@@ -33,7 +35,7 @@ class Quota
     /**
      * constructor
      *
-     * @param  int  $amount  quota in bytes
+     * @param  int $amount quota in bytes
      */
     public function __construct(int $amount)
     {
@@ -42,34 +44,26 @@ class Quota
 
     /**
      * create with unlimited space
-     *
-     * @return  self
      */
-    public static function unlimited(): self
+    public static function unlimited() : self
     {
         return new self(self::UNLIMITED);
     }
 
     /**
      * checks if a quota is set
-     *
-     * @return  bool
      */
-    public function isLimited(): bool
+    public function isLimited() : bool
     {
         return self::UNLIMITED < $this->amount;
     }
 
     /**
      * checks if given used space exceeda quota limit
-     *
-     *
-     * @param     int   $usedSpace
-     * @return    int
      */
-    public function spaceLeft(int $usedSpace): int
+    public function spaceLeft(int $usedSpace) : int
     {
-        if (self::UNLIMITED === $this->amount) {
+        if ($this->amount === self::UNLIMITED) {
             return $usedSpace;
         }
 

@@ -1,31 +1,40 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
-namespace org\bovigo\vfs;
-use PHPUnit\Framework\TestCase;
 
+namespace org\bovigo\vfs;
+
+use PHPUnit\Framework\TestCase;
+use const LOCK_EX;
+use const LOCK_UN;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
+use function fclose;
+use function file_get_contents;
+use function file_put_contents;
+use function flock;
+use function fopen;
+use function fwrite;
+
 /**
  * Test for LOCK_EX behaviour related to file_put_contents().
  *
  * @group   lock_fpc
- * @author  https://github.com/iwyg
  */
 class vfsStreamExLockTestCase extends TestCase
 {
     /**
      * set up test environment
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $root = vfsStream::setup();
         vfsStream::newFile('testfile')->at($root);
@@ -38,9 +47,9 @@ class vfsStreamExLockTestCase extends TestCase
      *
      * @test
      */
-    public function filePutContentsWithLockShouldReportError()
+    public function filePutContentsWithLockShouldReportError() : void
     {
-        expect(function() {
+        expect(static function () : void {
             file_put_contents(vfsStream::url('root/testfile'), "some string\n", LOCK_EX);
         })->triggers()
           ->withMessage('file_put_contents(): Exclusive locks may only be set for regular files');
@@ -49,7 +58,7 @@ class vfsStreamExLockTestCase extends TestCase
     /**
      * @test
      */
-    public function flockShouldPass()
+    public function flockShouldPass() : void
     {
         $fp = fopen(vfsStream::url('root/testfile'), 'w');
         flock($fp, LOCK_EX);

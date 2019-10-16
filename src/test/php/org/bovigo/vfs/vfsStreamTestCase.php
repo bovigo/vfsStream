@@ -1,27 +1,35 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs;
+
 use bovigo\callmap\NewInstance;
+use InvalidArgumentException;
 use org\bovigo\vfs\content\LargeFileContent;
 use org\bovigo\vfs\visitor\vfsStreamVisitor;
 use PHPUnit\Framework\TestCase;
-
-use function bovigo\assert\assertThat;
+use const DIRECTORY_SEPARATOR;
 use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isSameAs;
 use function bovigo\callmap\verify;
+use function dirname;
+use function file_exists;
+use function fileperms;
+use function realpath;
+
 /**
  * Test for org\bovigo\vfs\vfsStream.
  */
@@ -30,17 +38,17 @@ class vfsStreamTestCase extends TestCase
     /**
      * set up test environment
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         vfsStreamWrapper::register();
     }
 
-    public function pathes(): array
+    public function pathes() : array
     {
         return [
             ['foo', 'vfs://foo'],
             ['foo/bar.baz', 'vfs://foo/bar.baz'],
-            ['foo\bar.baz', 'vfs://foo/bar.baz']
+            ['foo\bar.baz', 'vfs://foo/bar.baz'],
         ];
     }
 
@@ -48,12 +56,12 @@ class vfsStreamTestCase extends TestCase
      * @test
      * @dataProvider pathes
      */
-    public function pathToUrlConversion($path, $url)
+    public function pathToUrlConversion($path, $url) : void
     {
         assertThat(vfsStream::url($path), equals($url));
     }
 
-    public function urls(): array
+    public function urls() : array
     {
         return [
             ['vfs://foo', 'foo'],
@@ -63,7 +71,7 @@ class vfsStreamTestCase extends TestCase
             ['vfs://foo/bar ', 'foo/bar'],
             ['vfs://foo/bar/', 'foo/bar'],
             ['vfs://foo/bar/ ', 'foo/bar'],
-            ['vfs://foo//bar', 'foo/bar']
+            ['vfs://foo//bar', 'foo/bar'],
         ];
     }
 
@@ -71,12 +79,12 @@ class vfsStreamTestCase extends TestCase
      * @test
      * @dataProvider urls
      */
-    public function urlToPathConversion($url, $path)
+    public function urlToPathConversion($url, $path) : void
     {
         assertThat(vfsStream::path($url), equals($path));
     }
 
-    public function createDirectories(): array
+    public function createDirectories() : array
     {
         return [
             [vfsStream::newDirectory('foo/bar/baz'), 0777],
@@ -88,7 +96,7 @@ class vfsStreamTestCase extends TestCase
      * @test
      * @dataProvider createDirectories
      */
-    public function newDirectoryCreatesStructureWhenNameContainsSlashes($root, $permissions)
+    public function newDirectoryCreatesStructureWhenNameContainsSlashes($root, $permissions) : void
     {
         assertThat($root->getPermissions(), equals($permissions));
 
@@ -111,7 +119,7 @@ class vfsStreamTestCase extends TestCase
      * @group  setup
      * @since  0.7.0
      */
-    public function setupRegistersStreamWrapper()
+    public function setupRegistersStreamWrapper() : void
     {
         $root = vfsStream::setup();
         assertThat(vfsStreamWrapper::getRoot(), isSameAs($root));
@@ -122,7 +130,7 @@ class vfsStreamTestCase extends TestCase
      * @group  setup
      * @since  0.7.0
      */
-    public function setupCreatesRootDirectoryWithDefaultName()
+    public function setupCreatesRootDirectoryWithDefaultName() : void
     {
         $root = vfsStream::setup();
         assertThat($root->getName(), equals('root'));
@@ -133,7 +141,7 @@ class vfsStreamTestCase extends TestCase
      * @group  setup
      * @since  0.7.0
      */
-    public function setupCreatesRootDirectoryWithDefaultPermissions()
+    public function setupCreatesRootDirectoryWithDefaultPermissions() : void
     {
         $root = vfsStream::setup();
         assertThat($root->getPermissions(), equals(0777));
@@ -144,7 +152,7 @@ class vfsStreamTestCase extends TestCase
      * @group  setup
      * @since  0.7.0
      */
-    public function setupCreatesRootDirectoryWithGivenNameAn()
+    public function setupCreatesRootDirectoryWithGivenNameAn() : void
     {
         $root = vfsStream::setup('foo');
         assertThat($root->getName(), equals('foo'));
@@ -155,7 +163,7 @@ class vfsStreamTestCase extends TestCase
      * @group  setup
      * @since  0.7.0
      */
-    public function setupCreatesRootDirectoryWithPermissions()
+    public function setupCreatesRootDirectoryWithPermissions() : void
     {
         $root = vfsStream::setup('foo', 0444);
         assertThat($root->getPermissions(), equals(0444));
@@ -167,7 +175,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_20
      * @since  0.10.0
      */
-    public function setupWithEmptyStructureIsEqualToSetup()
+    public function setupWithEmptyStructureIsEqualToSetup() : void
     {
         $root = vfsStream::setup('example', 0755, []);
         assertFalse($root->hasChildren());
@@ -179,7 +187,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_20
      * @since  0.10.0
      */
-    public function setupArraysAreTurnedIntoSubdirectories()
+    public function setupArraysAreTurnedIntoSubdirectories() : void
     {
         $root = vfsStream::setup('root', null, ['test' => []]);
         assertTrue($root->hasChildren());
@@ -197,7 +205,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_20
      * @since  0.10.0
      */
-    public function setupStringsAreTurnedIntoFilesWithContent()
+    public function setupStringsAreTurnedIntoFilesWithContent() : void
     {
         $root = vfsStream::setup('root', null, ['test.txt' => 'some content']);
         assertTrue($root->hasChildren());
@@ -211,14 +219,16 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_20
      * @since  0.10.0
      */
-    public function setupWorksRecursively()
+    public function setupWorksRecursively() : void
     {
         $root = vfsStream::setup(
             'root',
             null,
-            ['test' => ['foo'     => ['test.txt' => 'hello'],
-                        'baz.txt' => 'world'
-                        ]
+            [
+                'test' => [
+                    'foo'     => ['test.txt' => 'hello'],
+                    'baz.txt' => 'world',
+                ],
             ]
         );
         assertTrue($root->hasChildren());
@@ -236,11 +246,11 @@ class vfsStreamTestCase extends TestCase
     }
 
     /**
-    * @test
-    * @group  issue_17
-    * @group  issue_20
-    */
-    public function setupCastsNumericDirectoriesToStrings()
+     * @test
+     * @group  issue_17
+     * @group  issue_20
+     */
+    public function setupCastsNumericDirectoriesToStrings() : void
     {
         $root = vfsStream::setup(
             'root',
@@ -260,7 +270,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_20
      * @since  0.11.0
      */
-    public function createArraysAreTurnedIntoSubdirectories()
+    public function createArraysAreTurnedIntoSubdirectories() : void
     {
         $baseDir = vfsStream::create(['test' => []], vfsStream::newDirectory('baseDir'));
         assertTrue($baseDir->hasChildren());
@@ -274,7 +284,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_20
      * @since  0.11.0
      */
-    public function createArraysAreTurnedIntoSubdirectoriesOfRoot()
+    public function createArraysAreTurnedIntoSubdirectoriesOfRoot() : void
     {
         $root = vfsStream::setup();
         assertThat(vfsStream::create(['test' => []]), isSameAs($root));
@@ -292,10 +302,12 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_20
      * @since  0.11.0
      */
-    public function createThrowsExceptionIfNoBaseDirGivenAndNoRootSet()
+    public function createThrowsExceptionIfNoBaseDirGivenAndNoRootSet() : void
     {
-        expect(function() { vfsStream::create(['test' => []]); })
-          ->throws(\InvalidArgumentException::class);
+        expect(static function () : void {
+            vfsStream::create(['test' => []]);
+        })
+          ->throws(InvalidArgumentException::class);
     }
 
     /**
@@ -303,12 +315,14 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_20
      * @since  0.11.0
      */
-    public function createWorksRecursively()
+    public function createWorksRecursively() : void
     {
         $baseDir = vfsStream::create(
-            ['test' => ['foo'     => ['test.txt' => 'hello'],
-                        'baz.txt' => 'world'
-                       ]
+            [
+                'test' => [
+                    'foo'     => ['test.txt' => 'hello'],
+                    'baz.txt' => 'world',
+                ],
             ],
             vfsStream::newDirectory('baseDir')
         );
@@ -333,14 +347,15 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_20
      * @since  0.11.0
      */
-    public function createWorksRecursivelyWithRoot()
+    public function createWorksRecursivelyWithRoot() : void
     {
         $root = vfsStream::setup();
         assertThat(
             vfsStream::create([
-              'test' => ['foo'     => ['test.txt' => 'hello'],
-                         'baz.txt' => 'world'
-                        ]
+                'test' => [
+                    'foo'     => ['test.txt' => 'hello'],
+                    'baz.txt' => 'world',
+                ],
             ]),
             isSameAs($root)
         );
@@ -363,7 +378,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_20
      * @since  0.10.0
      */
-    public function createStringsAreTurnedIntoFilesWithContent()
+    public function createStringsAreTurnedIntoFilesWithContent() : void
     {
         $baseDir = vfsStream::create(
             ['test.txt' => 'some content'],
@@ -379,7 +394,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_20
      * @since  0.11.0
      */
-    public function createStringsAreTurnedIntoFilesWithContentWithRoot()
+    public function createStringsAreTurnedIntoFilesWithContentWithRoot() : void
     {
         $root = vfsStream::setup();
         vfsStream::create(['test.txt' => 'some content']);
@@ -389,11 +404,11 @@ class vfsStreamTestCase extends TestCase
     }
 
     /**
-    * @test
-    * @group  issue_20
-    * @since  0.11.0
-    */
-    public function createCastsNumericDirectoriesToStrings()
+     * @test
+     * @group issue_20
+     * @since 0.11.0
+     */
+    public function createCastsNumericDirectoriesToStrings() : void
     {
         $baseDir = vfsStream::create(
             [2011 => ['test.txt' => 'some content']],
@@ -406,11 +421,11 @@ class vfsStreamTestCase extends TestCase
     }
 
     /**
-    * @test
-    * @group  issue_20
-    * @since  0.11.0
-    */
-    public function createCastsNumericDirectoriesToStringsWithRoot()
+     * @test
+     * @group  issue_20
+     * @since  0.11.0
+     */
+    public function createCastsNumericDirectoriesToStringsWithRoot() : void
     {
         $root = vfsStream::setup();
         vfsStream::create([2011 => ['test.txt' => 'some content']]);
@@ -425,7 +440,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_10
      * @since  0.10.0
      */
-    public function inspectReturnsGivenVisitor()
+    public function inspectReturnsGivenVisitor() : void
     {
         $content = NewInstance::of(vfsStreamContent::class);
         $visitor = NewInstance::of(vfsStreamVisitor::class);
@@ -448,9 +463,8 @@ class vfsStreamTestCase extends TestCase
     /**
      * @test
      * @group  issue_10
-     * @since  0.10.0
      */
-    public function inspectWithoutContentGivesRootToVisitor()
+    public function inspectWithoutContentGivesRootToVisitor() : void
     {
         $root    = vfsStream::setup();
         $visitor = NewInstance::of(vfsStreamVisitor::class);
@@ -463,16 +477,18 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_10
      * @since  0.10.0
      */
-    public function inspectWithoutContentAndWithoutRootThrowsInvalidArgumentException()
+    public function inspectWithoutContentAndWithoutRootThrowsInvalidArgumentException() : void
     {
         $visitor = NewInstance::of(vfsStreamVisitor::class);
-        expect(function() use ($visitor) { vfsStream::inspect($visitor); })
-          ->throws(\InvalidArgumentException::class);
+        expect(static function () use ($visitor) : void {
+            vfsStream::inspect($visitor);
+        })
+          ->throws(InvalidArgumentException::class);
         verify($visitor, 'visit')->wasNeverCalled();
         verify($visitor, 'visitDirectory')->wasNeverCalled();
     }
 
-    private function fileSystemCopyDir(): string
+    private function fileSystemCopyDir() : string
     {
         return realpath(dirname(__FILE__) . '/../../../../resources/filesystemcopy');
     }
@@ -482,11 +498,11 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_4
      * @since  0.11.0
      */
-    public function copyFromFileSystemThrowsExceptionIfNoBaseDirGivenAndNoRootSet()
+    public function copyFromFileSystemThrowsExceptionIfNoBaseDirGivenAndNoRootSet() : void
     {
-        expect(function() {
+        expect(function () : void {
             vfsStream::copyFromFileSystem($this->fileSystemCopyDir());
-        })->throws(\InvalidArgumentException::class);
+        })->throws(InvalidArgumentException::class);
     }
 
     /**
@@ -494,7 +510,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_4
      * @since  0.11.0
      */
-    public function copyFromEmptyFolder()
+    public function copyFromEmptyFolder() : void
     {
         $baseDir = vfsStream::copyFromFileSystem(
             $this->fileSystemCopyDir() . '/emptyFolder',
@@ -509,7 +525,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_4
      * @since  0.11.0
      */
-    public function copyFromEmptyFolderWithRoot()
+    public function copyFromEmptyFolderWithRoot() : void
     {
         $root = vfsStream::setup();
         assertThat(
@@ -525,7 +541,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_4
      * @since  0.11.0
      */
-    public function copyFromWithSubFolders()
+    public function copyFromWithSubFolders() : void
     {
         $baseDir = vfsStream::copyFromFileSystem(
             $this->fileSystemCopyDir(),
@@ -540,25 +556,25 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_4
      * @since  0.11.0
      */
-    public function copyFromWithSubFoldersWithRoot()
+    public function copyFromWithSubFoldersWithRoot() : void
     {
         $root = vfsStream::setup();
         vfsStream::copyFromFileSystem($this->fileSystemCopyDir(), null, 3);
         $this->assertFileSystemCopy($root);
     }
 
-    private function assertFileSystemCopy(vfsStreamDirectory $baseDir)
+    private function assertFileSystemCopy(vfsStreamDirectory $baseDir) : void
     {
-      assertTrue($baseDir->hasChildren());
-      assertTrue($baseDir->hasChild('emptyFolder'));
-      assertTrue($baseDir->hasChild('withSubfolders'));
-      $subfolderDir = $baseDir->getChild('withSubfolders');
-      assertTrue($subfolderDir->hasChild('subfolder1'));
-      assertTrue($subfolderDir->getChild('subfolder1')->hasChild('file1.txt'));
-      assertThat($subfolderDir->getChild('subfolder1/file1.txt')->getContent(), equals('      '));
-      assertTrue($subfolderDir->hasChild('subfolder2'));
-      assertTrue($subfolderDir->hasChild('aFile.txt'));
-      assertThat($subfolderDir->getChild('aFile.txt')->getContent(), equals('foo'));
+        assertTrue($baseDir->hasChildren());
+        assertTrue($baseDir->hasChild('emptyFolder'));
+        assertTrue($baseDir->hasChild('withSubfolders'));
+        $subfolderDir = $baseDir->getChild('withSubfolders');
+        assertTrue($subfolderDir->hasChild('subfolder1'));
+        assertTrue($subfolderDir->getChild('subfolder1')->hasChild('file1.txt'));
+        assertThat($subfolderDir->getChild('subfolder1/file1.txt')->getContent(), equals('      '));
+        assertTrue($subfolderDir->hasChild('subfolder2'));
+        assertTrue($subfolderDir->hasChild('aFile.txt'));
+        assertThat($subfolderDir->getChild('aFile.txt')->getContent(), equals('foo'));
     }
 
     /**
@@ -567,7 +583,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_29
      * @since  0.11.2
      */
-    public function copyFromPreservesFilePermissions()
+    public function copyFromPreservesFilePermissions() : void
     {
         if (DIRECTORY_SEPARATOR !== '/') {
             $this->markTestSkipped('Only applicable on Linux style systems.');
@@ -593,7 +609,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_91
      * @since  1.5.0
      */
-    public function copyFromFileSystemMocksLargeFiles()
+    public function copyFromFileSystemMocksLargeFiles() : void
     {
         if (DIRECTORY_SEPARATOR !== '/') {
             $this->markTestSkipped('Only applicable on Linux style systems.');
@@ -613,7 +629,7 @@ class vfsStreamTestCase extends TestCase
      * @group  issue_121
      * @since  1.6.1
      */
-    public function createDirectoryWithTrailingSlashShouldNotCreateSubdirectoryWithEmptyName()
+    public function createDirectoryWithTrailingSlashShouldNotCreateSubdirectoryWithEmptyName() : void
     {
         $directory = vfsStream::newDirectory('foo/');
         assertFalse($directory->hasChildren());
@@ -623,7 +639,7 @@ class vfsStreamTestCase extends TestCase
      * @test
      * @group  issue_149
      */
-    public function addStructureHandlesVfsStreamFileObjects()
+    public function addStructureHandlesVfsStreamFileObjects() : void
     {
         $structure = [
             'topLevel' => [
@@ -641,7 +657,7 @@ class vfsStreamTestCase extends TestCase
      * @test
      * @group  issue_149
      */
-    public function createHandlesLargeFileContentObjects()
+    public function createHandlesLargeFileContentObjects() : void
     {
         $structure = [
             'topLevel' => [

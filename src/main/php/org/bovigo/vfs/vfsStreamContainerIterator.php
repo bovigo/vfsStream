@@ -1,18 +1,26 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of vfsStream.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  org\bovigo\vfs
  */
+
 namespace org\bovigo\vfs;
+
+use Iterator;
+use function array_unshift;
+use function current;
+use function next;
+use function reset;
+
 /**
  * Iterator for children of a directory container.
  */
-class vfsStreamContainerIterator implements \Iterator
+class vfsStreamContainerIterator implements Iterator
 {
     /**
      * list of children from container to iterate over
@@ -24,7 +32,7 @@ class vfsStreamContainerIterator implements \Iterator
     /**
      * constructor
      *
-     * @param  vfsStreamContent[]  $children
+     * @param  vfsStreamContent[] $children
      */
     public function __construct(array $children)
     {
@@ -39,20 +47,18 @@ class vfsStreamContainerIterator implements \Iterator
     /**
      * resets children pointer
      */
-    public function rewind()
+    public function rewind() : void
     {
         reset($this->children);
     }
 
     /**
      * returns the current child
-     *
-     * @return  vfsStreamContent|null
      */
-    public function current()
+    public function current() : ?vfsStreamContent
     {
         $child = current($this->children);
-        if (false === $child) {
+        if ($child === false) {
             return null;
         }
 
@@ -61,13 +67,11 @@ class vfsStreamContainerIterator implements \Iterator
 
     /**
      * returns the name of the current child
-     *
-     * @return  string|null
      */
-    public function key()
+    public function key() : ?string
     {
         $child = current($this->children);
-        if (false === $child) {
+        if ($child === false) {
             return null;
         }
 
@@ -77,18 +81,16 @@ class vfsStreamContainerIterator implements \Iterator
     /**
      * iterates to next child
      */
-    public function next()
+    public function next() : void
     {
         next($this->children);
     }
 
     /**
      * checks if the current value is valid
-     *
-     * @return  bool
      */
-    public function valid()
+    public function valid() : bool
     {
-        return (false !== current($this->children));
+        return current($this->children) !== false;
     }
 }
