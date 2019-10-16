@@ -28,9 +28,8 @@ install:
 jobs:
   include:
     - stage: test
-      before_install:
+      before_script:
         - phpenv config-rm xdebug.ini
-      install:
         - if [ "$DEPENDENCIES" = "default" ]; then composer install --prefer-dist; fi;
         - if [ "$DEPENDENCIES" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
         - if [ "$DEPENDENCIES" = "highest" ]; then composer update --prefer-dist -n; fi;
