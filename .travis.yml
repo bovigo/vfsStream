@@ -7,6 +7,12 @@ php:
   - 7.4snapshot
   - nightly
 
+env:
+  - DEPENDENCIES=default
+  - DEPENDENCIES=lowest
+  - DEPENDENCIES=highest
+
+
 matrix:
   fast_finish: true
   allow_failures:
@@ -16,10 +22,27 @@ matrix:
 install:
   - composer install
 
-script:
-  - vendor/bin/phpunit --coverage-text
-  - vendor/bin/phpstan analyze
-
-after_success:
-  - composer require php-coveralls/php-coveralls
-  - travis_retry vendor/bin/php-coveralls
+jobs:
+  include:
+    - stage: test
+      install:
+        - if [ "$DEPENDENCIES" = "default" ]; then composer install --prefer-dist; fi;
+        - if [ "$DEPENDENCIES" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
+        - if [ "$DEPENDENCIES" = "highest" ]; then composer update --prefer-dist -n; fi;
+        - composer show
+      script:
+        - vendor/bin/phpunit
+    - stage: analyze
+      name: phpstan
+      script:
+        - vendor/bin/phpstan analyze
+    - stage: analyze
+      name: Code style
+      script:
+        - vendor/bin/phpcs
+    - stage: analyze
+      name: code coverage
+      script:
+        - vendor/bin/phpunit --coverage-text
+        - composer require php-coveralls/php-coveralls
+        - travis_retry vendor/bin/php-coveralls
