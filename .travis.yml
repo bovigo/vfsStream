@@ -25,6 +25,8 @@ install:
 jobs:
   include:
     - stage: test
+      before_install:
+        - phpenv config-rm xdebug.ini
       install:
         - if [ "$DEPENDENCIES" = "default" ]; then composer install --prefer-dist; fi;
         - if [ "$DEPENDENCIES" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
@@ -32,14 +34,17 @@ jobs:
         - composer show
       script:
         - vendor/bin/phpunit
+
     - stage: analyze
       name: phpstan
       script:
         - vendor/bin/phpstan analyze
+
     - stage: analyze
       name: Code style
       script:
         - vendor/bin/phpcs
+
     - stage: analyze
       name: code coverage
       script:
