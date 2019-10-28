@@ -777,4 +777,13 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         $this->assertTrue(rename($this->baz1URL, $baz3URL));
         $this->assertEquals($baz3URL, $this->baz1->url());
     }
+
+    /**
+     * @test
+     */
+    public function fileCopy()
+    {
+        $baz3URL = vfsStream::url('foo/baz3');
+        $this->assertTrue(copy($this->baz1URL, $baz3URL));
+    }
 }
