@@ -22,6 +22,7 @@ use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isNotEqualTo;
 use function bovigo\assert\predicate\isExistingDirectory;
 use function bovigo\assert\predicate\isExistingFile;
 use function bovigo\assert\predicate\isNonExistingDirectory;
@@ -721,5 +722,16 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         // move root/subdir/file1 to root/baz3
         assertTrue(rename($this->fileInSubdir->url(), $baz3URL));
         assertThat($this->fileInSubdir->url(), equals($baz3URL));
+    }
+
+    /**
+     * @test
+     */
+    public function fileCopy()
+    {
+        $baz3URL = vfsStream::url('root/baz3');
+        assertTrue(copy($this->fileInSubdir->url(), $baz3URL));
+        assertTrue($this->root->hasChild('baz3'));
+        assertThat($baz3URL, isNotEqualTo($this->fileInSubdir->url()));
     }
 }
