@@ -1,3 +1,8 @@
+1.6.8 (2019-10-30)
+------------------
+
+   * Fix `StringBasedFileContent::doRead` to always return a string (#204)
+
 1.6.7 (2019-07-31)
 ------------------
 
