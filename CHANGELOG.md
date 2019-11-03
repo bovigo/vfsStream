@@ -10,6 +10,10 @@
   * `vfsStreamWrapper::setRoot()` and `vsfStreamWrapper::getRoot()` method signatures now require and return `org\bovigo\vfs\vfsStreamDirectory` vice `org\bovigo\vfs\vfsStreamContainer`.
   * `vfsStream::newFile()`, `vfsStream::newBlock()`, `org\bovigo\vfs\vfsStreamFile`, and `org\bovigo\vfs\vfsStreamBlock` will throw an exception if the filename contains a forward slash (`/`).
 
+1.6.8 (2019-10-30)
+------------------
+
+   * Fix `StringBasedFileContent::doRead` to always return a string (#204)
 
 1.6.7 (2019-07-31)
 ------------------
