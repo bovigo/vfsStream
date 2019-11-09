@@ -189,7 +189,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
      * Using this method changes the time when the file was last modified.
      *
      * @param   string  $data
-     * @return  amount of written bytes
+     * @return  int amount of written bytes
      */
     public function write($data)
     {
