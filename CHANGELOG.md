@@ -1,11 +1,12 @@
 2.0.0 (20??-??-??)
 ------------------
 
-   * Add inode support
+  * Add inode support
+  * Namespace changed from `org\bovigo\vfs` to `bovigo\vfs`
+    - The old namespace will still work, but has been deprecated. It will be removed in version 3.
 
 ### BC breaks
 
-  * Namespace changed from `org\bovigo\vfs` to `bovigo\vfs`
   * raised minimum required PHP version to 7.2.0
   * all methods of `bovigo\vfs\visitor\vfsStreamVisitor` are now declared with `self` as return type
   * `vfsStreamWrapper::setRoot()` and `vsfStreamWrapper::getRoot()` method signatures now require and return `bovigo\vfs\vfsStreamDirectory` vice `bovigo\vfs\vfsStreamContainer`.
