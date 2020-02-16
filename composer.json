@@ -31,7 +31,8 @@
     },
     "autoload": {
         "psr-4": {
-            "bovigo\\vfs\\": "src"
+            "bovigo\\vfs\\": "src",
+            "org\\bovigo\\vfs\\": "org/bovigo/vfs"
         }
     },
     "autoload-dev": {
