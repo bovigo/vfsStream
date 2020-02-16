@@ -13,6 +13,7 @@ namespace bovigo\vfs;
 
 use ArrayIterator;
 use Iterator;
+use function class_alias;
 
 /**
  * Directory container.

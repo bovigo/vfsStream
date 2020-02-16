@@ -13,6 +13,7 @@ namespace bovigo\vfs;
 
 use Iterator;
 use function array_values;
+use function class_alias;
 use function count;
 use function strlen;
 use function substr;

@@ -16,6 +16,7 @@ use bovigo\vfs\vfsStreamDirectory;
 use bovigo\vfs\vfsStreamFile;
 use InvalidArgumentException;
 use const STDOUT;
+use function class_alias;
 use function fwrite;
 use function get_resource_type;
 use function is_resource;

@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\content;
 
+use function class_alias;
+
 /**
  * Interface for actual file contents.
  *

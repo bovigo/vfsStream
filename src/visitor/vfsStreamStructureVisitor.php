@@ -14,6 +14,7 @@ namespace bovigo\vfs\visitor;
 use bovigo\vfs\vfsStreamBlock;
 use bovigo\vfs\vfsStreamDirectory;
 use bovigo\vfs\vfsStreamFile;
+use function class_alias;
 
 /**
  * Visitor which traverses a content structure recursively to create an array structure from it.

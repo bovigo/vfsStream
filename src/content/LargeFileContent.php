@@ -13,6 +13,7 @@ namespace bovigo\vfs\content;
 
 use function array_filter;
 use function array_keys;
+use function class_alias;
 use function substr;
 
 /**

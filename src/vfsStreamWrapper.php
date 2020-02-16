@@ -28,6 +28,7 @@ use const STREAM_URL_STAT_QUIET;
 use function array_merge;
 use function array_pop;
 use function array_values;
+use function class_alias;
 use function clearstatcache;
 use function count;
 use function explode;

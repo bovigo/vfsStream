@@ -21,9 +21,11 @@ use const LOCK_NB;
 use const LOCK_SH;
 use const SEEK_END;
 use const SEEK_SET;
+use function class_alias;
 use function is_resource;
 use function is_string;
 use function spl_object_hash;
+use function sprintf;
 use function stream_get_meta_data;
 use function time;
 

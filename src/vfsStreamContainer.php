@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace bovigo\vfs;
 
 use IteratorAggregate;
+use function class_alias;
 
 /**
  * Interface for stream contents that are able to store other stream contents.

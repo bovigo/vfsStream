@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace bovigo\vfs;
 
+use function class_alias;
 use function clearstatcache;
 use function strlen;
 use function strncmp;

@@ -14,6 +14,7 @@ namespace bovigo\vfs\content;
 use const SEEK_CUR;
 use const SEEK_END;
 use const SEEK_SET;
+use function class_alias;
 use function strlen;
 use function substr;
 
