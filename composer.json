@@ -30,10 +30,14 @@
         "doctrine/coding-standard": "^6.0"
     },
     "autoload": {
-        "psr-4": { "org\\bovigo\\vfs\\": "src/main/php/org/bovigo/vfs" }
+        "psr-4": {
+            "bovigo\\vfs\\": "src"
+        }
     },
     "autoload-dev": {
-       "psr-4": { "org\\bovigo\\vfs\\": "src/test/php/org/bovigo/vfs" }
+       "psr-4": {
+           "bovigo\\vfs\\": "tests/phpunit"
+       }
     },
     "extra": {
         "branch-alias": {

@@ -6,8 +6,8 @@ includes:
 parameters:
     level: 4
     paths:
-        - src/main
+        - src
     ignoreErrors:
         -
             message: '/Default value of the parameter #1 \$out \(mixed\) of method [a-zA-Z0-9\\_]+::__construct\(\) is incompatible with type resource/'
-            path: %currentWorkingDirectory%/src/main/php/org/bovigo/vfs/visitor/vfsStreamPrintVisitor.php
+            path: %currentWorkingDirectory%/src/visitor/vfsStreamPrintVisitor.php

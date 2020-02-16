@@ -501,7 +501,7 @@ class vfsStreamTestCase extends TestCase
 
     private function fileSystemCopyDir(): string
     {
-        return realpath(dirname(__FILE__) . '/../../../../resources/filesystemcopy');
+        return realpath(dirname(__FILE__) . '/../resources/filesystemcopy');
     }
 
     /**

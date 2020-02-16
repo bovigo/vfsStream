@@ -9,6 +9,6 @@
     <target>docs/api</target>
   </transformer>
   <files>
-    <directory>src/main/php</directory>
+    <directory>src</directory>
   </files>
 </phpdoc>
