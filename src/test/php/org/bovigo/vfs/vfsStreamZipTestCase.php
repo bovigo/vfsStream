@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use PHPUnit\Framework\TestCase;
 use ZipArchive;
@@ -20,7 +20,7 @@ use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 
 /**
- * Test for org\bovigo\vfs\vfsStreamWrapper in conjunction with ext/zip.
+ * Test for bovigo\vfs\vfsStreamWrapper in conjunction with ext/zip.
  *
  * @group  zip
  */

@@ -9,10 +9,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\visitor;
+namespace bovigo\vfs\visitor;
 
+use bovigo\vfs\vfsStream;
 use InvalidArgumentException;
-use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
@@ -22,7 +22,7 @@ use function fopen;
 use function xml_parser_create;
 
 /**
- * Test for org\bovigo\vfs\visitor\vfsStreamPrintVisitor.
+ * Test for bovigo\vfs\visitor\vfsStreamPrintVisitor.
  *
  * @see    https://github.com/mikey179/vfsStream/issues/10
  *

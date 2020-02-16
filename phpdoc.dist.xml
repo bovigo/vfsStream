@@ -3,7 +3,7 @@
   <title>vfsStream API Doc</title>
   <parser>
     <target>docs/api</target>
-    <default-package-name>org\bovigo\vfs</default-package-name>
+    <default-package-name>bovigo\vfs</default-package-name>
   </parser>
   <transformer>
     <target>docs/api</target>

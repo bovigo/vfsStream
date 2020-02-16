@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use IteratorAggregate;
 
@@ -52,3 +52,5 @@ interface vfsStreamContainer extends IteratorAggregate
      */
     public function getChildren(): array;
 }
+
+class_alias('bovigo\vfs\vfsStreamContainer', 'org\bovigo\vfs\vfsStreamContainer');

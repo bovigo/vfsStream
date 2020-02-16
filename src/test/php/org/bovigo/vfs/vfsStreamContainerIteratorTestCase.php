@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +22,7 @@ use function bovigo\assert\predicate\isSameAs;
 use function is_string;
 
 /**
- * Test for org\bovigo\vfs\vfsStreamContainerIterator.
+ * Test for bovigo\vfs\vfsStreamContainerIterator.
  */
 class vfsStreamContainerIteratorTestCase extends TestCase
 {

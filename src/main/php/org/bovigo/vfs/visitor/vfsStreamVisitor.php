@@ -9,12 +9,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\visitor;
+namespace bovigo\vfs\visitor;
 
-use org\bovigo\vfs\vfsStreamBlock;
-use org\bovigo\vfs\vfsStreamContent;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
+use bovigo\vfs\vfsStreamBlock;
+use bovigo\vfs\vfsStreamContent;
+use bovigo\vfs\vfsStreamDirectory;
+use bovigo\vfs\vfsStreamFile;
 
 /**
  * Interface for a visitor to work on a vfsStream content structure.
@@ -45,3 +45,5 @@ interface vfsStreamVisitor
      */
     public function visitBlockDevice(vfsStreamBlock $block): self;
 }
+
+class_alias('bovigo\vfs\visitor\vfsStreamVisitor', 'org\bovigo\vfs\visitor\vfsStreamVisitor');

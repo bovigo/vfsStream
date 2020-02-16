@@ -9,12 +9,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use bovigo\callmap\NewInstance;
+use bovigo\vfs\content\LargeFileContent;
+use bovigo\vfs\visitor\vfsStreamVisitor;
 use InvalidArgumentException;
-use org\bovigo\vfs\content\LargeFileContent;
-use org\bovigo\vfs\visitor\vfsStreamVisitor;
 use PHPUnit\Framework\TestCase;
 use const DIRECTORY_SEPARATOR;
 use function bovigo\assert\assertFalse;
@@ -31,7 +31,7 @@ use function fileperms;
 use function realpath;
 
 /**
- * Test for org\bovigo\vfs\vfsStream.
+ * Test for bovigo\vfs\vfsStream.
  */
 class vfsStreamTestCase extends TestCase
 {

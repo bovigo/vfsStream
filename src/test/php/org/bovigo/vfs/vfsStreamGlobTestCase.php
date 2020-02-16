@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use PHPUnit\Framework\TestCase;
 use const GLOB_MARK;
@@ -18,7 +18,7 @@ use function glob;
 use function mkdir;
 
 /**
- * Test for org\bovigo\vfs\vfsStream.
+ * Test for bovigo\vfs\vfsStream.
  *
  * @since       0.9.0
  * @group       issue_2

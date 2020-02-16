@@ -9,13 +9,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\visitor;
+namespace bovigo\vfs\visitor;
 
+use bovigo\vfs\vfsStreamBlock;
+use bovigo\vfs\vfsStreamContent;
+use bovigo\vfs\vfsStreamDirectory;
+use bovigo\vfs\vfsStreamFile;
 use InvalidArgumentException;
-use org\bovigo\vfs\vfsStreamBlock;
-use org\bovigo\vfs\vfsStreamContent;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
 
 /**
  * Abstract base class providing an implementation for the visit() method.
@@ -58,3 +58,5 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
         return $this->visitFile($block);
     }
 }
+
+class_alias('bovigo\vfs\visitor\vfsStreamAbstractVisitor', 'org\bovigo\vfs\visitor\vfsStreamAbstractVisitor');

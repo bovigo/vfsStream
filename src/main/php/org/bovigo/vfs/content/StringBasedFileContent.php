@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\content;
+namespace bovigo\vfs\content;
 
 use function str_repeat;
 use function strlen;
@@ -91,3 +91,5 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
         return true;
     }
 }
+
+class_alias('bovigo\vfs\content\StringBasedFileContent', 'org\bovigo\vfs\content\StringBasedFileContent');

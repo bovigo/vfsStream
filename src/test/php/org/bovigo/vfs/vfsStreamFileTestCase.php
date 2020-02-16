@@ -9,11 +9,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use bovigo\callmap\NewInstance;
+use bovigo\vfs\content\FileContent;
 use InvalidArgumentException;
-use org\bovigo\vfs\content\FileContent;
 use PHPUnit\Framework\TestCase;
 use const SEEK_CUR;
 use const SEEK_END;
@@ -26,7 +26,7 @@ use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 
 /**
- * Test for org\bovigo\vfs\vfsStreamFile.
+ * Test for bovigo\vfs\vfsStreamFile.
  */
 class vfsStreamFileTestCase extends TestCase
 {

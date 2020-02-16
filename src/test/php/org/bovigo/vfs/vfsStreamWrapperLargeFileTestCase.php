@@ -9,9 +9,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
-use org\bovigo\vfs\content\LargeFileContent;
+use bovigo\vfs\content\LargeFileContent;
 use PHPUnit\Framework\TestCase;
 use const PHP_INT_MAX;
 use const SEEK_SET;

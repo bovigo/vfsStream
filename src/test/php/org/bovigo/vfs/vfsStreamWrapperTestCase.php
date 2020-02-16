@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use const E_USER_WARNING;
 use const E_WARNING;
@@ -55,7 +55,7 @@ use function touch;
 use function unlink;
 
 /**
- * Test for org\bovigo\vfs\vfsStreamWrapper.
+ * Test for bovigo\vfs\vfsStreamWrapper.
  */
 class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 {

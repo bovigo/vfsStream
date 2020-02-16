@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use Iterator;
 use function array_values;
@@ -229,3 +229,5 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
         return $this->name === '.' || $this->name === '..';
     }
 }
+
+class_alias('bovigo\vfs\vfsStreamDirectory', 'org\bovigo\vfs\vfsStreamDirectory');

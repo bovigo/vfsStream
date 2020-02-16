@@ -8,14 +8,14 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  bovigo\vfs
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
+use bovigo\vfs\content\FileContent;
+use bovigo\vfs\content\StringBasedFileContent;
 use InvalidArgumentException;
-use org\bovigo\vfs\content\FileContent;
-use org\bovigo\vfs\content\StringBasedFileContent;
 use const LOCK_EX;
 use const LOCK_NB;
 use const LOCK_SH;
@@ -113,7 +113,10 @@ class vfsStreamFile extends vfsStreamAbstractContent
             $this->content = $content;
         } else {
             throw new InvalidArgumentException(
-                'Given content must either be a string or an instance of org\bovigo\vfs\content\FileContent'
+                sprintf(
+                    'Given content must either be a string or an instance of %s',
+                    FileContent::class
+                )
             );
         }
 
@@ -405,3 +408,5 @@ class vfsStreamFile extends vfsStreamAbstractContent
         return $this->exclusiveLock !== null;
     }
 }
+
+class_alias('bovigo\vfs\vfsStreamFile', 'org\bovigo\vfs\vfsStreamFile');

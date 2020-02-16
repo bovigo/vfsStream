@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use const E_USER_WARNING;
 use const LOCK_NB;
@@ -1053,3 +1053,5 @@ class vfsStreamWrapper
         return array_merge(array_values($fileStat), $fileStat);
     }
 }
+
+class_alias('bovigo\vfs\vfsStreamWrapper', 'org\bovigo\vfs\vfsStreamWrapper');

@@ -9,11 +9,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\visitor;
+namespace bovigo\vfs\visitor;
 
-use org\bovigo\vfs\vfsStreamBlock;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
+use bovigo\vfs\vfsStreamBlock;
+use bovigo\vfs\vfsStreamDirectory;
+use bovigo\vfs\vfsStreamFile;
 
 /**
  * Visitor which traverses a content structure recursively to create an array structure from it.
@@ -113,3 +113,5 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
         return $this;
     }
 }
+
+class_alias('bovigo\vfs\visitor\vfsStreamStructureVisitor', 'org\bovigo\vfs\visitor\vfsStreamStructureVisitor');

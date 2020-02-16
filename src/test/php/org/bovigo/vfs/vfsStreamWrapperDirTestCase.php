@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use const E_USER_WARNING;
 use function bovigo\assert\assertFalse;
@@ -32,7 +32,7 @@ use function stat;
 use function unlink;
 
 /**
- * Test for org\bovigo\vfs\vfsStreamWrapper around mkdir().
+ * Test for bovigo\vfs\vfsStreamWrapper around mkdir().
  */
 class vfsStreamWrapperDirTestCase extends vfsStreamWrapperBaseTestCase
 {

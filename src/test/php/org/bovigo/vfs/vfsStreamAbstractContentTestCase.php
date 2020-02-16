@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +20,7 @@ use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 
 /**
- * Test for org\bovigo\vfs\vfsStreamAbstractContent.
+ * Test for bovigo\vfs\vfsStreamAbstractContent.
  */
 class vfsStreamAbstractContentTestCase extends TestCase
 {

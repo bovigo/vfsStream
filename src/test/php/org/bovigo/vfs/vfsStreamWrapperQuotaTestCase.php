@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
@@ -23,7 +23,7 @@ use function fopen;
 use function ftruncate;
 
 /**
- * Test for quota related functionality of org\bovigo\vfs\vfsStreamWrapper.
+ * Test for quota related functionality of bovigo\vfs\vfsStreamWrapper.
  *
  * @group  issue_35
  */

@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
@@ -29,7 +29,7 @@ use function time;
 use function unlink;
 
 /**
- * Test for org\bovigo\vfs\vfsStreamWrapper.
+ * Test for bovigo\vfs\vfsStreamWrapper.
  *
  * @since  0.9.0
  */

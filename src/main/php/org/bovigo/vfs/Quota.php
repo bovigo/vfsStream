@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 /**
  * Represents a quota for disk space.
@@ -80,3 +80,5 @@ class Quota
         return $spaceLeft;
     }
 }
+
+class_alias('bovigo\vfs\Quota', 'org\bovigo\vfs\Quota');

@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\content;
+namespace bovigo\vfs\content;
 
 use const SEEK_CUR;
 use const SEEK_END;
@@ -129,3 +129,5 @@ abstract class SeekableFileContent implements FileContent
         return $data === false ? '' : $data;
     }
 }
+
+class_alias('bovigo\vfs\content\SeekableFileContent', 'org\bovigo\vfs\content\SeekableFileContent');

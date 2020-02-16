@@ -9,13 +9,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
+use bovigo\vfs\content\FileContent;
+use bovigo\vfs\content\LargeFileContent;
+use bovigo\vfs\visitor\vfsStreamVisitor;
 use DirectoryIterator;
 use InvalidArgumentException;
-use org\bovigo\vfs\content\FileContent;
-use org\bovigo\vfs\content\LargeFileContent;
-use org\bovigo\vfs\visitor\vfsStreamVisitor;
 use function array_map;
 use function explode;
 use function file_get_contents;
@@ -506,3 +506,5 @@ class vfsStream
         self::$dotFiles = true;
     }
 }
+
+class_alias('bovigo\vfs\vfsStream', 'org\bovigo\vfs\vfsStream');

@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\content;
+namespace bovigo\vfs\content;
 
 use PHPUnit\Framework\TestCase;
 use const SEEK_END;
@@ -20,7 +20,7 @@ use function bovigo\assert\predicate\equals;
 use function str_repeat;
 
 /**
- * Test for org\bovigo\vfs\content\LargeFileContent.
+ * Test for bovigo\vfs\content\LargeFileContent.
  *
  * @since  1.3.0
  * @group  issue_79

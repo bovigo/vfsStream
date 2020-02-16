@@ -9,15 +9,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\visitor;
+namespace bovigo\vfs\visitor;
 
-use org\bovigo\vfs\vfsStream;
+use bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 
 /**
- * Test for org\bovigo\vfs\visitor\vfsStreamStructureVisitor.
+ * Test for bovigo\vfs\visitor\vfsStreamStructureVisitor.
  *
  * @see    https://github.com/mikey179/vfsStream/issues/10
  *

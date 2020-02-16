@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use function clearstatcache;
 use function strlen;
@@ -402,3 +402,5 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
         return vfsStream::url($this->path());
     }
 }
+
+class_alias('bovigo\vfs\vfsStreamAbstractContent', 'org\bovigo\vfs\vfsStreamAbstractContent');

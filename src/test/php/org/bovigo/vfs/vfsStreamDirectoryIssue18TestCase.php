@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
@@ -18,7 +18,7 @@ use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isOfSize;
 
 /**
- * Test for org\bovigo\vfs\vfsStreamDirectory.
+ * Test for bovigo\vfs\vfsStreamDirectory.
  *
  * @group  bug_18
  */

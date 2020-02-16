@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +40,7 @@ class TestvfsStreamWrapper extends vfsStreamWrapper
 }
 
 /**
- * Test for org\bovigo\vfs\vfsStreamWrapper.
+ * Test for bovigo\vfs\vfsStreamWrapper.
  */
 class vfsStreamWrapperAlreadyRegisteredTestCase extends TestCase
 {

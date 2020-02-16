@@ -9,20 +9,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\visitor;
+namespace bovigo\vfs\visitor;
 
 use bovigo\callmap\NewInstance;
+use bovigo\vfs\vfsStreamBlock;
+use bovigo\vfs\vfsStreamContent;
+use bovigo\vfs\vfsStreamDirectory;
+use bovigo\vfs\vfsStreamFile;
 use InvalidArgumentException;
-use org\bovigo\vfs\vfsStreamBlock;
-use org\bovigo\vfs\vfsStreamContent;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\expect;
 use function bovigo\callmap\verify;
 
 /**
- * Test for org\bovigo\vfs\visitor\vfsStreamAbstractVisitor.
+ * Test for bovigo\vfs\visitor\vfsStreamAbstractVisitor.
  *
  * @see    https://github.com/mikey179/vfsStream/issues/10
  *

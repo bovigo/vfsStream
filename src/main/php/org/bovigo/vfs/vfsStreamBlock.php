@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 /**
  * Block container.
@@ -33,3 +33,5 @@ class vfsStreamBlock extends vfsStreamFile
         $this->type = vfsStreamContent::TYPE_BLOCK;
     }
 }
+
+class_alias('bovigo\vfs\vfsStreamBlock', 'org\bovigo\vfs\vfsStreamBlock');

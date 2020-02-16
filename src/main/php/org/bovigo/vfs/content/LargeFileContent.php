@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\content;
+namespace bovigo\vfs\content;
 
 use function array_filter;
 use function array_keys;
@@ -147,3 +147,5 @@ class LargeFileContent extends SeekableFileContent implements FileContent
         return true;
     }
 }
+
+class_alias('bovigo\vfs\content\LargeFileContent', 'org\bovigo\vfs\content\LargeFileContent');

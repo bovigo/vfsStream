@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use const SEEK_CUR;
 use const SEEK_END;
@@ -33,7 +33,7 @@ use function rename;
 use function unlink;
 
 /**
- * Test for org\bovigo\vfs\vfsStreamWrapper.
+ * Test for bovigo\vfs\vfsStreamWrapper.
  */
 class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
 {

@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\content;
+namespace bovigo\vfs\content;
 
 /**
  * Interface for actual file contents.
@@ -73,3 +73,5 @@ interface FileContent
      */
     public function readUntilEnd(): string;
 }
+
+class_alias('bovigo\vfs\content\FileContent', 'org\bovigo\vfs\content\FileContent');

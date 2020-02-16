@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
@@ -19,7 +19,7 @@ use function rename;
 use function unlink;
 
 /**
- * Test for org\bovigo\vfs\vfsStreamWrapper.
+ * Test for bovigo\vfs\vfsStreamWrapper.
  */
 class vfsStreamWrapperWithoutRootTestCase extends TestCase
 {

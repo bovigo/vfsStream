@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 /**
  * Interface for stream contents.
@@ -178,3 +178,5 @@ interface vfsStreamContent
      */
     public function url(): string;
 }
+
+class_alias('bovigo\vfs\vfsStreamContent', 'org\bovigo\vfs\vfsStreamContent');

@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use Iterator;
 use function array_unshift;
@@ -94,3 +94,5 @@ class vfsStreamContainerIterator implements Iterator
         return current($this->children) !== false;
     }
 }
+
+class_alias('bovigo\vfs\vfsStreamContainerIterator', 'org\bovigo\vfs\vfsStreamContainerIterator');

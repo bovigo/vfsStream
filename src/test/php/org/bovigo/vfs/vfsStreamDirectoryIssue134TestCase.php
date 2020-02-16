@@ -8,13 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertNotNull;
 
 /**
- * Test for org\bovigo\vfs\vfsStreamDirectory.
+ * Test for bovigo\vfs\vfsStreamDirectory.
  *
  * @group  issue_134
  */

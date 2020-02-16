@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
@@ -18,7 +18,7 @@ use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 
 /**
- * Test for org\bovigo\vfs\Quota.
+ * Test for bovigo\vfs\Quota.
  *
  * @group  issue_35
  */

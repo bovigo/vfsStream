@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs;
+namespace bovigo\vfs;
 
 use PHPUnit\Framework\TestCase;
 use const PATH_SEPARATOR;
@@ -23,7 +23,7 @@ use function set_include_path;
 use function stream_resolve_include_path;
 
 /**
- * Test for org\bovigo\vfs\vfsStream.
+ * Test for bovigo\vfs\vfsStream.
  *
  * @since  0.9.0
  * @group  issue_5

@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace org\bovigo\vfs\content;
+namespace bovigo\vfs\content;
 
 use PHPUnit\Framework\TestCase;
 use const SEEK_CUR;
@@ -22,7 +22,7 @@ use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 
 /**
- * Test for org\bovigo\vfs\content\StringBasedFileContent.
+ * Test for bovigo\vfs\content\StringBasedFileContent.
  *
  * @since  1.3.0
  * @group  issue_79
