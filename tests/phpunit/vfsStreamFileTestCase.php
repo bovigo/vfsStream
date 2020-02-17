@@ -9,10 +9,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs;
+namespace bovigo\vfs\Tests;
 
 use bovigo\callmap\NewInstance;
 use bovigo\vfs\content\FileContent;
+use bovigo\vfs\vfsStream;
+use bovigo\vfs\vfsStreamContent;
+use bovigo\vfs\vfsStreamException;
+use bovigo\vfs\vfsStreamFile;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use const SEEK_CUR;

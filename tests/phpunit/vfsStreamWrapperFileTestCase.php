@@ -9,8 +9,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs;
+namespace bovigo\vfs\Tests;
 
+use bovigo\vfs\vfsStream;
 use const SEEK_CUR;
 use const SEEK_END;
 use const SEEK_SET;

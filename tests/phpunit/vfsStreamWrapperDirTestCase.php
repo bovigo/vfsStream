@@ -9,8 +9,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs;
+namespace bovigo\vfs\Tests;
 
+use bovigo\vfs\vfsStream;
+use bovigo\vfs\vfsStreamWrapper;
 use const E_USER_WARNING;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNotNull;

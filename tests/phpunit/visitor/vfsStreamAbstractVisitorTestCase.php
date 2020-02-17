@@ -9,13 +9,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs\visitor;
+namespace bovigo\vfs\Tests\visitor;
 
 use bovigo\callmap\NewInstance;
 use bovigo\vfs\vfsStreamBlock;
 use bovigo\vfs\vfsStreamContent;
 use bovigo\vfs\vfsStreamDirectory;
 use bovigo\vfs\vfsStreamFile;
+use bovigo\vfs\visitor\vfsStreamAbstractVisitor;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\expect;

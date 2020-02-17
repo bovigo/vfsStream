@@ -9,9 +9,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs;
+namespace bovigo\vfs\Tests;
 
 use bovigo\callmap\NewInstance;
+use bovigo\vfs\vfsStream;
+use bovigo\vfs\vfsStreamContent;
+use bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;

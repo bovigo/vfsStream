@@ -9,9 +9,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs\visitor;
+namespace bovigo\vfs\Tests\visitor;
 
 use bovigo\vfs\vfsStream;
+use bovigo\vfs\visitor\vfsStreamStructureVisitor;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;

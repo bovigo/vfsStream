@@ -9,9 +9,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs;
+namespace bovigo\vfs\Tests;
 
 use bovigo\vfs\content\LargeFileContent;
+use bovigo\vfs\vfsStream;
+use bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
 use const PHP_INT_MAX;
 use const SEEK_SET;

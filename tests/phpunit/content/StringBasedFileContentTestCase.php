@@ -9,8 +9,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs\content;
+namespace bovigo\vfs\Tests\content;
 
+use bovigo\vfs\content\StringBasedFileContent;
 use PHPUnit\Framework\TestCase;
 use const SEEK_CUR;
 use const SEEK_END;

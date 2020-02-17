@@ -9,8 +9,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs;
+namespace bovigo\vfs\Tests;
 
+use bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use const E_WARNING;
 use function bovigo\assert\expect;
