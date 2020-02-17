@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs\Tests\content;
+namespace bovigo\vfs\tests\content;
 
 use bovigo\vfs\content\StringBasedFileContent;
 use PHPUnit\Framework\TestCase;

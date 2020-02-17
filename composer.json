@@ -37,7 +37,7 @@
     },
     "autoload-dev": {
        "psr-4": {
-           "bovigo\\vfs\\Tests\\": "tests/phpunit"
+           "bovigo\\vfs\\tests\\": "tests/phpunit"
        }
     },
     "extra": {

@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs\Tests\visitor;
+namespace bovigo\vfs\tests\visitor;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\visitor\vfsStreamPrintVisitor;

@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs\Tests;
+namespace bovigo\vfs\tests;
 
 use bovigo\callmap\NewInstance;
 use bovigo\vfs\content\LargeFileContent;

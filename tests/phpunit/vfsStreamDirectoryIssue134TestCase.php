@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace bovigo\vfs\Tests;
+namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamDirectory;
