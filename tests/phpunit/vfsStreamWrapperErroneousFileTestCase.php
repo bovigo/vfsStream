@@ -36,6 +36,7 @@ use function ftruncate;
 use function fwrite;
 use function rand;
 use function spl_object_id;
+use function time;
 use function uniqid;
 
 /**
@@ -100,7 +101,7 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
         $file = vfsStream::newErroneousFile('foo', ['write' => $message])->at($this->root);
 
         expect(static function () use ($file): void {
-            $fh = fopen($file->url(), 'w');
+            $fh = fopen($file->url(), 'a');
             fwrite($fh, uniqid());
         })->triggers(E_USER_WARNING)->withMessage($message);
     }
@@ -109,7 +110,7 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
     {
         $file = vfsStream::newErroneousFile('foo', ['write' => uniqid()])->at($this->root);
 
-        $fh = fopen($file->url(), 'w');
+        $fh = fopen($file->url(), 'a');
         $actual = @fwrite($fh, uniqid());
 
         assertThat($actual, equals(0));
@@ -296,6 +297,15 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
         assertThat($actual, equals(0));
     }
 
+    public function testFilemtimeWithoutError(): void
+    {
+        $file = vfsStream::newErroneousFile('foo', [])->at($this->root);
+
+        $actual = filemtime($file->url());
+
+        assertThat($actual, equals(time(), 1));
+    }
+
     public function testFileatimeWithErrorMessageTriggersError(): void
     {
         $message = uniqid();
@@ -315,6 +325,15 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
         assertThat($actual, equals(0));
     }
 
+    public function testFileatimeWithoutError(): void
+    {
+        $file = vfsStream::newErroneousFile('foo', [])->at($this->root);
+
+        $actual = fileatime($file->url());
+
+        assertThat($actual, equals(time(), 1));
+    }
+
     public function testFilectimeWithErrorMessageTriggersError(): void
     {
         $message = uniqid();
@@ -332,5 +351,14 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
         $actual = @filectime($file->url());
 
         assertThat($actual, equals(0));
+    }
+
+    public function testFilectimeWithoutError(): void
+    {
+        $file = vfsStream::newErroneousFile('foo', [])->at($this->root);
+
+        $actual = filectime($file->url());
+
+        assertThat($actual, equals(time(), 1));
     }
 }
