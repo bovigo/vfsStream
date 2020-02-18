@@ -13,7 +13,6 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamErroneousFile;
-use bovigo\vfs\vfsStreamWrapper;
 use const E_USER_WARNING;
 use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
@@ -228,21 +227,19 @@ class vfsStreamErroneousFileTestCase extends vfsStreamFileTestCase
 
     public function testLockWithErrorMessageTriggersError(): void
     {
-        $wrapper = $this->createMock(vfsStreamWrapper::class);
         $message = uniqid();
         $file = vfsStream::newErroneousFile('foo', ['lock' => $message]);
 
         expect(static function () use ($file): void {
-            $file->lock($wrapper, rand());
+            $file->lock($file, rand());
         })->triggers(E_USER_WARNING)->withMessage($message);
     }
 
     public function testLockWithErrorMessageReturnsFalse(): void
     {
-        $wrapper = $this->createMock(vfsStreamWrapper::class);
         $file = vfsStream::newErroneousFile('foo', ['lock' => uniqid()]);
 
-        $actual = @$file->lock($wrapper, rand());
+        $actual = @$file->lock($file, rand());
 
         assertFalse($actual);
     }

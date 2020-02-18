@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
-use bovigo\vfs\vfsStreamWrapper;
 use const E_USER_WARNING;
 use const LOCK_SH;
 use const SEEK_SET;
@@ -258,7 +257,6 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
 
     public function testLockWithErrorMessageTriggersError(): void
     {
-        $wrapper = $this->createMock(vfsStreamWrapper::class);
         $message = uniqid();
         $file = vfsStream::newErroneousFile('foo', ['lock' => $message])->at($this->root);
 
@@ -270,7 +268,6 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
 
     public function testLockWithErrorMessageReturnsFalse(): void
     {
-        $wrapper = $this->createMock(vfsStreamWrapper::class);
         $file = vfsStream::newErroneousFile('foo', ['lock' => uniqid()])->at($this->root);
 
         $fh = @fopen($file->url(), 'r');
