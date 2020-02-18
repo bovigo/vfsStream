@@ -375,6 +375,32 @@ class vfsStream
     }
 
     /**
+     * Returns a new erroneous file with given name.
+     *
+     * Allows for throwing an error during fopen, fwrite, etc.
+     *
+     * For example:
+     *
+     * $file = vfsStream::newErroneousFile('foo.txt', ['open' => 'error message']);
+     *
+     * Will generate a file that always fails on open and displays "error message".
+     *
+     * You can set errors for: open, read, write, truncate, tell, seek, stat,
+     * eof, and lock.
+     *
+     * @param string   $name          name of file to create
+     * @param string[] $errorMessages Formatted as [action => message], e.g. ['open' => 'error message']
+     * @param int|null $permissions   permissions of file to create
+     */
+    public static function newErroneousFile(
+        string $name,
+        array $errorMessages,
+        ?int $permissions = null
+    ): vfsStreamErroneousFile {
+        return new vfsStreamErroneousFile($name, $errorMessages, $permissions);
+    }
+
+    /**
      * returns a new directory with given name
      *
      * If the name contains slashes, a new directory structure will be created.
