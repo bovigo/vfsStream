@@ -187,7 +187,7 @@ class vfsStreamErroneousFile extends vfsStreamFile
         if (isset($this->errorMessages['stat'])) {
             trigger_error($this->errorMessages['stat'], E_USER_WARNING);
 
-            return 0;
+            return -1;
         }
 
         return parent::size();
@@ -215,7 +215,7 @@ class vfsStreamErroneousFile extends vfsStreamFile
         if (isset($this->errorMessages['stat'])) {
             trigger_error($this->errorMessages['stat'], E_USER_WARNING);
 
-            return 0;
+            return -1;
         }
 
         return parent::filemtime();
@@ -229,7 +229,7 @@ class vfsStreamErroneousFile extends vfsStreamFile
         if (isset($this->errorMessages['stat'])) {
             trigger_error($this->errorMessages['stat'], E_USER_WARNING);
 
-            return 0;
+            return -1;
         }
 
         return parent::fileatime();
@@ -243,7 +243,7 @@ class vfsStreamErroneousFile extends vfsStreamFile
         if (isset($this->errorMessages['stat'])) {
             trigger_error($this->errorMessages['stat'], E_USER_WARNING);
 
-            return 0;
+            return -1;
         }
 
         return parent::filectime();

@@ -13,6 +13,7 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use const E_USER_WARNING;
+use const E_WARNING;
 use const LOCK_SH;
 use const SEEK_SET;
 use function bovigo\assert\assertEmptyString;
@@ -35,7 +36,6 @@ use function ftell;
 use function ftruncate;
 use function fwrite;
 use function rand;
-use function spl_object_id;
 use function time;
 use function uniqid;
 
@@ -214,46 +214,14 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
         })->triggers(E_USER_WARNING)->withMessage($message);
     }
 
-    public function testStatWithErrorMessageReturnsArray(): void
+    public function testStatWithErrorMessageReturnsFalse(): void
     {
         $file = vfsStream::newErroneousFile('foo', ['stat' => uniqid()])->at($this->root);
 
         $fh = fopen($file->url(), 'w');
         $actual = @fstat($fh);
 
-        assertThat(
-            $actual,
-            equals(
-                [
-                    0 => 0,
-                    1 => spl_object_id($file),
-                    2 => 0100666,
-                    3 => 0,
-                    4 => vfsStream::getCurrentUser(),
-                    5 => vfsStream::getCurrentGroup(),
-                    6 => 0,
-                    7 => 0,
-                    8 => 0,
-                    9 => 0,
-                    10 => 0,
-                    11 => -1,
-                    12 => -1,
-                    'dev' => 0,
-                    'ino' => spl_object_id($file),
-                    'mode' => 0100666,
-                    'nlink' => 0,
-                    'uid' => vfsStream::getCurrentUser(),
-                    'gid' => vfsStream::getCurrentGroup(),
-                    'rdev' => 0,
-                    'size' => 0,
-                    'atime' => 0,
-                    'mtime' => 0,
-                    'ctime' => 0,
-                    'blksize' => -1,
-                    'blocks' => -1,
-                ]
-            )
-        );
+        assertFalse($actual);
     }
 
     public function testLockWithErrorMessageTriggersError(): void
@@ -280,21 +248,20 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
 
     public function testFilemtimeWithErrorMessageTriggersError(): void
     {
-        $message = uniqid();
-        $file = vfsStream::newErroneousFile('foo', ['stat' => $message])->at($this->root);
+        $file = vfsStream::newErroneousFile('foo', ['stat' => uniqid()])->at($this->root);
 
         expect(static function () use ($file): void {
             filemtime($file->url());
-        })->triggers(E_USER_WARNING)->withMessage($message);
+        })->triggers(E_WARNING)->withMessage('filemtime(): stat failed for ' . $file->url());
     }
 
-    public function testFilemtimeWithErrorMessageReturnsZero(): void
+    public function testFilemtimeWithErrorMessageReturnsFalse(): void
     {
         $file = vfsStream::newErroneousFile('foo', ['stat' => uniqid()])->at($this->root);
 
         $actual = @filemtime($file->url());
 
-        assertThat($actual, equals(0));
+        assertFalse($actual);
     }
 
     public function testFilemtimeWithoutError(): void
@@ -308,21 +275,20 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
 
     public function testFileatimeWithErrorMessageTriggersError(): void
     {
-        $message = uniqid();
-        $file = vfsStream::newErroneousFile('foo', ['stat' => $message])->at($this->root);
+        $file = vfsStream::newErroneousFile('foo', ['stat' => uniqid()])->at($this->root);
 
         expect(static function () use ($file): void {
             fileatime($file->url());
-        })->triggers(E_USER_WARNING)->withMessage($message);
+        })->triggers(E_WARNING)->withMessage('fileatime(): stat failed for ' . $file->url());
     }
 
-    public function testFileatimeWithErrorMessageReturnsZero(): void
+    public function testFileatimeWithErrorMessageReturnsFalse(): void
     {
         $file = vfsStream::newErroneousFile('foo', ['stat' => uniqid()])->at($this->root);
 
         $actual = @fileatime($file->url());
 
-        assertThat($actual, equals(0));
+        assertFalse($actual);
     }
 
     public function testFileatimeWithoutError(): void
@@ -336,21 +302,20 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
 
     public function testFilectimeWithErrorMessageTriggersError(): void
     {
-        $message = uniqid();
-        $file = vfsStream::newErroneousFile('foo', ['stat' => $message])->at($this->root);
+        $file = vfsStream::newErroneousFile('foo', ['stat' => uniqid()])->at($this->root);
 
         expect(static function () use ($file): void {
             filectime($file->url());
-        })->triggers(E_USER_WARNING)->withMessage($message);
+        })->triggers(E_WARNING)->withMessage('filectime(): stat failed for ' . $file->url());
     }
 
-    public function testFilectimeWithErrorMessageReturnsZero(): void
+    public function testFilectimeWithErrorMessageReturnsFalse(): void
     {
         $file = vfsStream::newErroneousFile('foo', ['stat' => uniqid()])->at($this->root);
 
         $actual = @filectime($file->url());
 
-        assertThat($actual, equals(0));
+        assertFalse($actual);
     }
 
     public function testFilectimeWithoutError(): void

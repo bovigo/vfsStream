@@ -216,13 +216,13 @@ class vfsStreamErroneousFileTestCase extends vfsStreamFileTestCase
         })->triggers(E_USER_WARNING)->withMessage($message);
     }
 
-    public function testSizeWithErrorMessageReturnsZero(): void
+    public function testSizeWithErrorMessageReturnsNegativeOne(): void
     {
         $file = vfsStream::newErroneousFile('foo', ['stat' => uniqid()]);
 
         $actual = @$file->size();
 
-        assertThat($actual, equals(0));
+        assertThat($actual, equals(-1));
     }
 
     public function testLockWithErrorMessageTriggersError(): void
@@ -254,13 +254,13 @@ class vfsStreamErroneousFileTestCase extends vfsStreamFileTestCase
         })->triggers(E_USER_WARNING)->withMessage($message);
     }
 
-    public function testFilemtimeWithErrorMessageReturnsZero(): void
+    public function testFilemtimeWithErrorMessageReturnsNegativeOne(): void
     {
         $file = vfsStream::newErroneousFile('foo', ['stat' => uniqid()]);
 
         $actual = @$file->filemtime();
 
-        assertThat($actual, equals(0));
+        assertThat($actual, equals(-1));
     }
 
     public function testFileatimeWithErrorMessageTriggersError(): void
@@ -273,13 +273,13 @@ class vfsStreamErroneousFileTestCase extends vfsStreamFileTestCase
         })->triggers(E_USER_WARNING)->withMessage($message);
     }
 
-    public function testFileatimeWithErrorMessageReturnsZero(): void
+    public function testFileatimeWithErrorMessageReturnsNegativeOne(): void
     {
         $file = vfsStream::newErroneousFile('foo', ['stat' => uniqid()]);
 
         $actual = @$file->fileatime();
 
-        assertThat($actual, equals(0));
+        assertThat($actual, equals(-1));
     }
 
     public function testFilectimeWithErrorMessageTriggersError(): void
@@ -292,12 +292,12 @@ class vfsStreamErroneousFileTestCase extends vfsStreamFileTestCase
         })->triggers(E_USER_WARNING)->withMessage($message);
     }
 
-    public function testFilectimeWithErrorMessageReturnsZero(): void
+    public function testFilectimeWithErrorMessageReturnsNegativeOne(): void
     {
         $file = vfsStream::newErroneousFile('foo', ['stat' => uniqid()]);
 
         $actual = @$file->filectime();
 
-        assertThat($actual, equals(0));
+        assertThat($actual, equals(-1));
     }
 }

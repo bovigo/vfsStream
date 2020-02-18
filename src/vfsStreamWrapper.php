@@ -679,10 +679,18 @@ class vfsStreamWrapper
     /**
      * returns status of stream
      *
-     * @return  mixed[]
+     * @return int[]|false
      */
-    public function stream_stat(): array
+    public function stream_stat()
     {
+        $atime = $this->content->fileatime();
+        $ctime = $this->content->filectime();
+        $mtime = $this->content->filemtime();
+        $size = $this->content->size();
+        if ($atime === -1 || $ctime === -1 || $mtime === -1 || $size === -1) {
+            return false;
+        }
+
         $fileStat = [
             'dev' => 0,
             'ino' => spl_object_id($this->content),
@@ -691,10 +699,10 @@ class vfsStreamWrapper
             'uid' => $this->content->getUser(),
             'gid' => $this->content->getGroup(),
             'rdev' => 0,
-            'size' => $this->content->size(),
-            'atime' => $this->content->fileatime(),
-            'mtime' => $this->content->filemtime(),
-            'ctime' => $this->content->filectime(),
+            'size' => $size,
+            'atime' => $atime,
+            'mtime' => $mtime,
+            'ctime' => $ctime,
             'blksize' => -1,
             'blocks' => -1,
         ];
@@ -1035,6 +1043,14 @@ class vfsStreamWrapper
             return false;
         }
 
+        $atime = $content->fileatime();
+        $ctime = $content->filectime();
+        $mtime = $content->filemtime();
+        $size = $content->size();
+        if ($atime === -1 || $ctime === -1 || $mtime === -1 || $size === -1) {
+            return false;
+        }
+
         $fileStat = [
             'dev' => 0,
             'ino' => spl_object_id($content),
@@ -1043,10 +1059,10 @@ class vfsStreamWrapper
             'uid' => $content->getUser(),
             'gid' => $content->getGroup(),
             'rdev' => 0,
-            'size' => $content->size(),
-            'atime' => $content->fileatime(),
-            'mtime' => $content->filemtime(),
-            'ctime' => $content->filectime(),
+            'size' => $size,
+            'atime' => $atime,
+            'mtime' => $mtime,
+            'ctime' => $ctime,
             'blksize' => -1,
             'blocks' => -1,
         ];
