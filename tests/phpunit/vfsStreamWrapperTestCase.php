@@ -249,7 +249,12 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
         $actual = is_readable($this->fileInRoot->url());
 
-        assertFalse($actual);
+        if (stripos(PHP_OS, 'WIN') === 0) {
+            // Windows does not honor the group/other perms
+            assertTrue($actual);
+        } else {
+            assertFalse($actual);
+        }
     }
 
     /**
@@ -313,7 +318,12 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
         $actual = is_writable($this->fileInRoot->url());
 
-        assertFalse($actual);
+        if (stripos(PHP_OS, 'WIN') === 0) {
+            // Windows does not honor the group/other perms
+            assertTrue($actual);
+        } else {
+            assertFalse($actual);
+        }
     }
 
     /**
@@ -374,7 +384,12 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
         $actual = is_executable($this->fileInRoot->url());
 
-        assertFalse($actual);
+        if (stripos(PHP_OS, 'WIN') === 0) {
+            // Windows does not honor the group/other perms
+            assertTrue($actual);
+        } else {
+            assertFalse($actual);
+        }
     }
 
     /**
