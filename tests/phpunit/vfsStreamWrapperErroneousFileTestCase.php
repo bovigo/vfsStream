@@ -73,6 +73,7 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
             'create+read' => ['c+'],
         ];
     }
+
     public function testReadWithErrorMessageTriggersError(): void
     {
         $message = uniqid();
