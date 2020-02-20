@@ -137,6 +137,16 @@ class vfsStreamFile extends vfsStreamAbstractContent
     }
 
     /**
+     * returns the raw content object.
+     *
+     * @internal
+     */
+    public function getContentObject(): FileContent
+    {
+        return $this->content;
+    }
+
+    /**
      * simply open the file
      *
      * @since  0.9
