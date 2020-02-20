@@ -81,7 +81,7 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
 
         expect(static function () use ($file): void {
             $fh = fopen($file->url(), 'r');
-            fread($fh, rand());
+            fread($fh, rand(1, 10000));
         })->triggers(E_USER_WARNING)->withMessage($message);
     }
 
@@ -90,7 +90,7 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
         $file = vfsStream::newErroneousFile('foo', ['read' => uniqid()])->at($this->root);
 
         $fh = fopen($file->url(), 'r');
-        $actual = @fread($fh, rand());
+        $actual = @fread($fh, rand(1, 10000));
 
         assertEmptyString($actual);
     }
@@ -123,7 +123,7 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
 
         expect(static function () use ($file): void {
             $fh = fopen($file->url(), 'w+');
-            ftruncate($fh, rand());
+            ftruncate($fh, rand(1, 10000));
         })->triggers(E_USER_WARNING)->withMessage($message);
     }
 
@@ -132,7 +132,7 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
         $file = vfsStream::newErroneousFile('foo', ['truncate' => uniqid()])->at($this->root);
 
         $fh = fopen($file->url(), 'w+');
-        $actual = @ftruncate($fh, rand());
+        $actual = @ftruncate($fh, rand(1, 10000));
 
         assertFalse($actual);
     }
