@@ -24,7 +24,7 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         extensions: mbstring
-        tools: cs2pr, phpstan:0.11.5
+        tools: cs2pr, phpstan:0.11.19
 
     - name: Validate composer.json and composer.lock
       run: composer validate
