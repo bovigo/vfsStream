@@ -15,6 +15,7 @@ use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamWrapper;
 use const E_USER_WARNING;
 use const E_WARNING;
+use const PHP_OS;
 use const PHP_VERSION_ID;
 use function basename;
 use function bovigo\assert\assertEmptyString;
@@ -53,6 +54,7 @@ use function is_writable;
 use function rename;
 use function spl_object_id;
 use function stat;
+use function stripos;
 use function time;
 use function touch;
 use function unlink;
@@ -236,6 +238,47 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
+     * @group issue_167
+     */
+    public function fileNotOwnedByUserOrGroupIsNotReadable(): void
+    {
+        $this->root->chown(vfsStream::getCurrentUser());
+        $this->root->chgrp(vfsStream::getCurrentGroup());
+
+        $this->fileInRoot->chmod(0400);
+        $this->fileInRoot->chown(vfsStream::getCurrentUser() + 1);
+        $this->fileInRoot->chgrp(vfsStream::getCurrentGroup() + 1);
+
+        $actual = is_readable($this->fileInRoot->url());
+
+        if (stripos(PHP_OS, 'WIN') === 0) {
+            // Windows does not honor the group/other perms
+            assertTrue($actual);
+        } else {
+            assertFalse($actual);
+        }
+    }
+
+    /**
+     * @test
+     * @group issue_167
+     */
+    public function fileNotOwnedByUserOrGroupIsReadable(): void
+    {
+        $this->root->chown(vfsStream::getCurrentUser());
+        $this->root->chgrp(vfsStream::getCurrentGroup());
+
+        $this->fileInRoot->chmod(0404);
+        $this->fileInRoot->chown(vfsStream::getCurrentUser() + 1);
+        $this->fileInRoot->chgrp(vfsStream::getCurrentGroup() + 1);
+
+        $actual = is_readable($this->fileInRoot->url());
+
+        assertTrue($actual);
+    }
+
+    /**
+     * @test
      * @dataProvider  elements
      */
     public function is_writable(string $element): void
@@ -264,6 +307,47 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 
     /**
      * @test
+     * @group issue_167
+     */
+    public function fileNotOwnedByUserOrGroupIsNotWritable(): void
+    {
+        $this->root->chown(vfsStream::getCurrentUser());
+        $this->root->chgrp(vfsStream::getCurrentGroup());
+
+        $this->fileInRoot->chmod(0200);
+        $this->fileInRoot->chown(vfsStream::getCurrentUser() + 1);
+        $this->fileInRoot->chgrp(vfsStream::getCurrentGroup() + 1);
+
+        $actual = is_writable($this->fileInRoot->url());
+
+        if (stripos(PHP_OS, 'WIN') === 0) {
+            // Windows does not honor the group/other perms
+            assertTrue($actual);
+        } else {
+            assertFalse($actual);
+        }
+    }
+
+    /**
+     * @test
+     * @group issue_167
+     */
+    public function fileNotOwnedByUserOrGroupIsWritable(): void
+    {
+        $this->root->chown(vfsStream::getCurrentUser());
+        $this->root->chgrp(vfsStream::getCurrentGroup());
+
+        $this->fileInRoot->chmod(0202);
+        $this->fileInRoot->chown(vfsStream::getCurrentUser() + 1);
+        $this->fileInRoot->chgrp(vfsStream::getCurrentGroup() + 1);
+
+        $actual = is_writable($this->fileInRoot->url());
+
+        assertTrue($actual);
+    }
+
+    /**
+     * @test
      */
     public function nonExistingIsNotExecutable(): void
     {
@@ -285,6 +369,47 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     {
         $this->fileInSubdir->chmod(0766);
         assertTrue(is_executable($this->fileInSubdir->url()));
+    }
+
+    /**
+     * @test
+     * @group issue_167
+     */
+    public function fileNotOwnedByUserOrGroupIsNotExecutable(): void
+    {
+        $this->root->chown(vfsStream::getCurrentUser());
+        $this->root->chgrp(vfsStream::getCurrentGroup());
+
+        $this->fileInRoot->chmod(0100);
+        $this->fileInRoot->chown(vfsStream::getCurrentUser() + 1);
+        $this->fileInRoot->chgrp(vfsStream::getCurrentGroup() + 1);
+
+        $actual = is_executable($this->fileInRoot->url());
+
+        if (stripos(PHP_OS, 'WIN') === 0) {
+            // Windows does not honor the group/other perms
+            assertTrue($actual);
+        } else {
+            assertFalse($actual);
+        }
+    }
+
+    /**
+     * @test
+     * @group issue_167
+     */
+    public function fileNotOwnedByUserOrGroupIsExecutable(): void
+    {
+        $this->root->chown(vfsStream::getCurrentUser());
+        $this->root->chgrp(vfsStream::getCurrentGroup());
+
+        $this->fileInRoot->chmod(0101);
+        $this->fileInRoot->chown(vfsStream::getCurrentUser() + 1);
+        $this->fileInRoot->chgrp(vfsStream::getCurrentGroup() + 1);
+
+        $actual = is_executable($this->fileInRoot->url());
+
+        assertTrue($actual);
     }
 
     /**
