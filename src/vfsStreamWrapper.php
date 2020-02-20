@@ -1008,9 +1008,11 @@ class vfsStreamWrapper
     /**
      * reset directory iteration
      */
-    public function dir_rewinddir(): void
+    public function dir_rewinddir(): bool
     {
         $this->dirIterator->rewind();
+
+        return true;
     }
 
     /**
