@@ -21,7 +21,7 @@ use const SEEK_SET;
  *
  * @internal
  */
-final class MultiInstanceFile
+final class OpenedFile
 {
     /** @var vfsStreamFile */
     private $base;

@@ -13,7 +13,7 @@ namespace bovigo\vfs\tests;
 
 use bovigo\callmap\NewInstance;
 use bovigo\vfs\content\StringBasedFileContent;
-use bovigo\vfs\MultiInstanceFile;
+use bovigo\vfs\OpenedFile;
 use bovigo\vfs\vfsStreamFile;
 use bovigo\vfs\vfsStreamWrapper;
 use PHPUnit\Framework\TestCase;
@@ -29,11 +29,11 @@ use function strlen;
 use function uniqid;
 
 /**
- * Test for bovigo\vfs\MultiInstanceFile.
+ * Test for bovigo\vfs\OpenedFile.
  */
-class MultiInstanceFileTestCase extends TestCase
+class OpenedFileTestCase extends TestCase
 {
-    /** @var MultiInstanceFile */
+    /** @var OpenedFile */
     private $fixture;
 
     /** @var vfsStreamFile&ClassProxy */
@@ -50,7 +50,7 @@ class MultiInstanceFileTestCase extends TestCase
         $this->base = NewInstance::of(vfsStreamFile::class, [uniqid()]);
         $this->base->withContent($this->content);
 
-        $this->fixture = new MultiInstanceFile($this->base);
+        $this->fixture = new OpenedFile($this->base);
     }
 
     public function testGetBaseFile(): void
