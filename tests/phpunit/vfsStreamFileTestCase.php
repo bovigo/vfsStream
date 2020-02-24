@@ -13,6 +13,7 @@ namespace bovigo\vfs\tests;
 
 use bovigo\callmap\NewInstance;
 use bovigo\vfs\content\FileContent;
+use bovigo\vfs\content\StringBasedFileContent;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamContent;
 use bovigo\vfs\vfsStreamException;
@@ -28,6 +29,7 @@ use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
+use function uniqid;
 
 /**
  * Test for bovigo\vfs\vfsStreamFile.
@@ -486,5 +488,18 @@ class vfsStreamFileTestCase extends TestCase
             $this->file->withContent(313);
         })
           ->throws(InvalidArgumentException::class);
+    }
+
+    /**
+     * @test
+     */
+    public function getContentObject(): void
+    {
+        $content = new StringBasedFileContent(uniqid());
+        $this->file->setContent($content);
+
+        $actual = $this->file->getContentObject();
+
+        assertThat($content, equals($actual));
     }
 }

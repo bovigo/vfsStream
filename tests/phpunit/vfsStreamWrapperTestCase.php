@@ -46,8 +46,10 @@ use function fileowner;
 use function fileperms;
 use function filesize;
 use function fopen;
+use function fread;
 use function fstat;
 use function ftruncate;
+use function fwrite;
 use function is_executable;
 use function is_readable;
 use function is_writable;
@@ -57,6 +59,7 @@ use function stat;
 use function stripos;
 use function time;
 use function touch;
+use function uniqid;
 use function unlink;
 
 /**
@@ -861,5 +864,44 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
         assertTrue(copy($this->fileInSubdir->url(), $baz3URL));
         assertTrue($this->root->hasChild('baz3'));
         assertThat($baz3URL, isNotEqualTo($this->fileInSubdir->url()));
+    }
+
+    /**
+     * @test
+     */
+    public function multipleReadsOnSameFileHaveDifferentPointers(): void
+    {
+        $content = uniqid();
+        $this->fileInSubdir->setContent($content);
+
+        $fp1 = fopen($this->fileInSubdir->url(), 'rb');
+        $fp2 = fopen($this->fileInSubdir->url(), 'rb');
+
+        assertThat(fread($fp1, 4096), equals($content));
+        assertThat(fread($fp2, 4096), equals($content));
+
+        fclose($fp1);
+        fclose($fp2);
+    }
+
+    /**
+     * @test
+     */
+    public function multipleWritesOnSameFileHaveDifferentPointers(): void
+    {
+        $contentA = uniqid('a');
+        $contentB = uniqid('b');
+        $url = $this->fileInSubdir->url();
+
+        $fp1 = fopen($url, 'wb');
+        $fp2 = fopen($url, 'wb');
+
+        fwrite($fp1, $contentA . $contentA);
+        fwrite($fp2, $contentB);
+
+        fclose($fp1);
+        fclose($fp2);
+
+        assertThat(file_get_contents($url), equals($contentB . $contentA));
     }
 }

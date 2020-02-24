@@ -112,7 +112,7 @@ class vfsStreamWrapper
     /**
      * shortcut to file container
      *
-     * @var  vfsStreamFile|null
+     * @var  OpenedFile|null
      */
     protected $content;
     /**
@@ -329,7 +329,7 @@ class vfsStreamWrapper
         /** @var vfsStreamFile|null $content */
         $content = $this->getContentOfType($path, vfsStreamContent::TYPE_FILE);
         if ($content !== null) {
-            $this->content = $content;
+            $this->content = new OpenedFile($content);
             if ($mode === self::WRITE) {
                 if (($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS) {
                     trigger_error(
@@ -370,7 +370,7 @@ class vfsStreamWrapper
             return false;
         }
 
-        $this->content = $content;
+        $this->content = new OpenedFile($content);
 
         return true;
     }
@@ -693,7 +693,7 @@ class vfsStreamWrapper
 
         $fileStat = [
             'dev' => 0,
-            'ino' => spl_object_id($this->content),
+            'ino' => spl_object_id($this->content->getBaseFile()),
             'mode' => $this->content->getType() | $this->content->getPermissions(),
             'nlink' => 0,
             'uid' => $this->content->getUser(),
