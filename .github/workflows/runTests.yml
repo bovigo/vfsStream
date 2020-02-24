@@ -1,0 +1,64 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php-versions }} on ${{ matrix.os }} w/ ${{ matrix.dependencies }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.3', '7.4']
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        dependencies: ['install', 'update --prefer-lowest', 'update']
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up PHP ${{ matrix.php-versions }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: mbstring
+        coverage: pcov
+
+    - name: Setup Problem Matchers for PHP
+      run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+    - name: Setup Problem Matchers for PHPUnit
+      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install dependencies
+      run: composer ${{ matrix.dependencies }} --prefer-dist --no-progress --no-suggest
+
+    - name: Run test suite
+      run: composer run-script test -- --coverage-text
+
+    - name: Notify Coveralls
+      if: matrix.php-versions == '7.3' && runner.os == 'Linux' && matrix.dependencies == 'install'
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      run: |
+        composer require php-coveralls/php-coveralls
+        composer run-script php-coveralls -- --verbose

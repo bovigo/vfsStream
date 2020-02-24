@@ -44,5 +44,9 @@
         "branch-alias": {
             "dev-master": "2.0.x-dev"
         }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "php-coveralls": "php-coveralls"
     }
 }
