@@ -35,6 +35,7 @@ final class Root
 
     public static function empty(): self
     {
+        // Using a directory with a name hopefully no-one else uses for their root path name.
         $r = new self(new vfsDirectory('.vfs'));
         $r->empty = true;
         return $r;
