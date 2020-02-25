@@ -18,7 +18,7 @@ use function class_alias;
 /**
  * Directory container.
  */
-class DotDirectory extends vfsStreamDirectory
+class DotDirectory extends vfsDirectory
 {
     /**
      * returns iterator for the children

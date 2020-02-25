@@ -30,7 +30,7 @@ use function substr;
  *
  * @since  1.3.0
  */
-class LargeFileContent extends SeekableFileContent implements FileContent
+class LargeFileContent implements FileContent
 {
     /**
      * byte array of written content
@@ -84,7 +84,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
      */
     public function content(): string
     {
-        return $this->doRead(0, $this->size);
+        return $this->read(0, $this->size);
     }
 
     /**
@@ -96,9 +96,9 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     }
 
     /**
-     * actual reading of given byte count starting at given offset
+     * reads the given amount of bytes starting at offset
      */
-    protected function doRead(int $offset, int $count): string
+    public function read(int $offset, int $count): string
     {
         if (($offset + $count) > $this->size) {
             $count = $this->size - $offset;
@@ -113,9 +113,11 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     }
 
     /**
-     * actual writing of data with specified length at given offset
+     * writes an amount of data starting at given offset
+     *
+     * @return  int     amount of written bytes
      */
-    protected function doWrite(string $data, int $offset, int $length): void
+    public function write(string $data, int $offset, int $length): void
     {
         for ($i = 0; $i < $length; $i++) {
             $this->content[$i + $offset] = substr($data, $i, 1);

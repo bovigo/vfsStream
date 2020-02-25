@@ -14,10 +14,11 @@ namespace bovigo\vfs\tests;
 use bovigo\callmap\NewInstance;
 use bovigo\vfs\content\LargeFileContent;
 use bovigo\vfs\vfsStream;
-use bovigo\vfs\vfsStreamContent;
-use bovigo\vfs\vfsStreamDirectory;
-use bovigo\vfs\vfsStreamWrapper;
+use bovigo\vfs\BasicFile;
+use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\StreamWrapper;
 use bovigo\vfs\visitor\vfsStreamVisitor;
+use bovigo\vfs\internal\Type;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use const DIRECTORY_SEPARATOR;
@@ -44,7 +45,7 @@ class vfsStreamTestCase extends TestCase
      */
     protected function setUp(): void
     {
-        vfsStreamWrapper::register();
+        StreamWrapper::register();
     }
 
     /**
@@ -110,21 +111,21 @@ class vfsStreamTestCase extends TestCase
      * @dataProvider createDirectories
      */
     public function newDirectoryCreatesStructureWhenNameContainsSlashes(
-        vfsStreamDirectory $root,
+        vfsDirectory $root,
         int $permissions
     ): void {
-        assertThat($root->getPermissions(), equals($permissions));
+        assertThat($root->permissions(), equals($permissions));
 
         assertTrue($root->hasChild('bar'));
         assertTrue($root->hasChild('bar/baz'));
         assertFalse($root->hasChild('baz'));
 
         $bar = $root->getChild('bar');
-        assertThat($bar->getPermissions(), equals($permissions));
+        assertThat($bar->permissions(), equals($permissions));
         assertTrue($bar->hasChild('baz'));
         $baz1 = $bar->getChild('baz');
 
-        assertThat($baz1->getPermissions(), equals($permissions));
+        assertThat($baz1->permissions(), equals($permissions));
         $baz2 = $root->getChild('bar/baz');
         assertThat($baz1, isSameAs($baz2));
     }
@@ -137,7 +138,7 @@ class vfsStreamTestCase extends TestCase
     public function setupRegistersStreamWrapper(): void
     {
         $root = vfsStream::setup();
-        assertThat(vfsStreamWrapper::getRoot(), isSameAs($root));
+        assertThat(StreamWrapper::getRoot(), isSameAs($root));
     }
 
     /**
@@ -148,7 +149,7 @@ class vfsStreamTestCase extends TestCase
     public function setupCreatesRootDirectoryWithDefaultName(): void
     {
         $root = vfsStream::setup();
-        assertThat($root->getName(), equals('root'));
+        assertThat($root->name(), equals('root'));
     }
 
     /**
@@ -159,7 +160,7 @@ class vfsStreamTestCase extends TestCase
     public function setupCreatesRootDirectoryWithDefaultPermissions(): void
     {
         $root = vfsStream::setup();
-        assertThat($root->getPermissions(), equals(0777));
+        assertThat($root->permissions(), equals(0777));
     }
 
     /**
@@ -170,7 +171,7 @@ class vfsStreamTestCase extends TestCase
     public function setupCreatesRootDirectoryWithGivenNameAn(): void
     {
         $root = vfsStream::setup('foo');
-        assertThat($root->getName(), equals('foo'));
+        assertThat($root->name(), equals('foo'));
     }
 
     /**
@@ -181,7 +182,7 @@ class vfsStreamTestCase extends TestCase
     public function setupCreatesRootDirectoryWithPermissions(): void
     {
         $root = vfsStream::setup('foo', 0444);
-        assertThat($root->getPermissions(), equals(0444));
+        assertThat($root->permissions(), equals(0444));
     }
 
     /**
@@ -209,7 +210,7 @@ class vfsStreamTestCase extends TestCase
         assertTrue($root->hasChild('test'));
         assertThat(
             $root->getChild('test'),
-            isInstanceOf(vfsStreamDirectory::class)
+            isInstanceOf(vfsDirectory::class)
         );
         assertFalse($root->getChild('test')->hasChildren());
     }
@@ -225,7 +226,7 @@ class vfsStreamTestCase extends TestCase
         $root = vfsStream::setup('root', null, ['test.txt' => 'some content']);
         assertTrue($root->hasChildren());
         assertTrue($root->hasChild('test.txt'));
-        assertThat($root->getChild('test.txt')->getContent(), equals('some content'));
+        assertThat($root->getChild('test.txt')->content(), equals('some content'));
     }
 
     /**
@@ -251,13 +252,13 @@ class vfsStreamTestCase extends TestCase
         $test = $root->getChild('test');
         assertTrue($test->hasChildren());
         assertTrue($test->hasChild('baz.txt'));
-        assertThat($test->getChild('baz.txt')->getContent(), equals('world'));
+        assertThat($test->getChild('baz.txt')->content(), equals('world'));
 
         assertTrue($test->hasChild('foo'));
         $foo = $test->getChild('foo');
         assertTrue($foo->hasChildren());
         assertTrue($foo->hasChild('test.txt'));
-        assertThat($foo->getChild('test.txt')->getContent(), equals('hello'));
+        assertThat($foo->getChild('test.txt')->content(), equals('hello'));
     }
 
     /**
@@ -275,7 +276,7 @@ class vfsStreamTestCase extends TestCase
         assertTrue($root->hasChild('2011'));
 
         $directory = $root->getChild('2011');
-        assertThat($directory->getChild('test.txt')->getContent(), equals('some content'));
+        assertThat($directory->getChild('test.txt')->content(), equals('some content'));
 
         assertTrue(file_exists('vfs://root/2011/test.txt'));
     }
@@ -290,7 +291,7 @@ class vfsStreamTestCase extends TestCase
         $baseDir = vfsStream::create(['test' => []], vfsStream::newDirectory('baseDir'));
         assertTrue($baseDir->hasChildren());
         assertTrue($baseDir->hasChild('test'));
-        assertThat($baseDir->getChild('test'), isInstanceOf(vfsStreamDirectory::class));
+        assertThat($baseDir->getChild('test'), isInstanceOf(vfsDirectory::class));
         assertFalse($baseDir->getChild('test')->hasChildren());
     }
 
@@ -307,7 +308,7 @@ class vfsStreamTestCase extends TestCase
         assertTrue($root->hasChild('test'));
         assertThat(
             $root->getChild('test'),
-            isInstanceOf(vfsStreamDirectory::class)
+            isInstanceOf(vfsDirectory::class)
         );
         assertFalse($root->getChild('test')->hasChildren());
     }
@@ -347,14 +348,14 @@ class vfsStreamTestCase extends TestCase
 
         assertTrue($test->hasChildren());
         assertTrue($test->hasChild('baz.txt'));
-        assertThat($test->getChild('baz.txt')->getContent(), equals('world'));
+        assertThat($test->getChild('baz.txt')->content(), equals('world'));
 
         assertTrue($test->hasChild('foo'));
         $foo = $test->getChild('foo');
 
         assertTrue($foo->hasChildren());
         assertTrue($foo->hasChild('test.txt'));
-        assertThat($foo->getChild('test.txt')->getContent(), equals('hello'));
+        assertThat($foo->getChild('test.txt')->content(), equals('hello'));
     }
 
     /**
@@ -379,13 +380,13 @@ class vfsStreamTestCase extends TestCase
         $test = $root->getChild('test');
         assertTrue($test->hasChildren());
         assertTrue($test->hasChild('baz.txt'));
-        assertThat($test->getChild('baz.txt')->getContent(), equals('world'));
+        assertThat($test->getChild('baz.txt')->content(), equals('world'));
 
         assertTrue($test->hasChild('foo'));
         $foo = $test->getChild('foo');
         assertTrue($foo->hasChildren());
         assertTrue($foo->hasChild('test.txt'));
-        assertThat($foo->getChild('test.txt')->getContent(), equals('hello'));
+        assertThat($foo->getChild('test.txt')->content(), equals('hello'));
     }
 
     /**
@@ -401,7 +402,7 @@ class vfsStreamTestCase extends TestCase
         );
         assertTrue($baseDir->hasChildren());
         assertTrue($baseDir->hasChild('test.txt'));
-        assertThat($baseDir->getChild('test.txt')->getContent(), equals('some content'));
+        assertThat($baseDir->getChild('test.txt')->content(), equals('some content'));
     }
 
     /**
@@ -415,7 +416,7 @@ class vfsStreamTestCase extends TestCase
         vfsStream::create(['test.txt' => 'some content']);
         assertTrue($root->hasChildren());
         assertTrue($root->hasChild('test.txt'));
-        assertThat($root->getChild('test.txt')->getContent(), equals('some content'));
+        assertThat($root->getChild('test.txt')->content(), equals('some content'));
     }
 
     /**
@@ -432,7 +433,7 @@ class vfsStreamTestCase extends TestCase
         assertTrue($baseDir->hasChild('2011'));
 
         $directory = $baseDir->getChild('2011');
-        assertThat($directory->getChild('test.txt')->getContent(), equals('some content'));
+        assertThat($directory->getChild('test.txt')->content(), equals('some content'));
     }
 
     /**
@@ -447,7 +448,7 @@ class vfsStreamTestCase extends TestCase
         assertTrue($root->hasChild('2011'));
 
         $directory = $root->getChild('2011');
-        assertThat($directory->getChild('test.txt')->getContent(), equals('some content'));
+        assertThat($directory->getChild('test.txt')->content(), equals('some content'));
     }
 
     /**
@@ -457,7 +458,7 @@ class vfsStreamTestCase extends TestCase
      */
     public function inspectReturnsGivenVisitor(): void
     {
-        $content = NewInstance::of(vfsStreamContent::class);
+        $content = NewInstance::stub(BasicFile::class);
         $visitor = NewInstance::of(vfsStreamVisitor::class);
         assertThat(vfsStream::inspect($visitor, $content), isSameAs($visitor));
     }
@@ -469,7 +470,7 @@ class vfsStreamTestCase extends TestCase
      */
     public function inspectWithContentGivesContentToVisitor(): void
     {
-        $content = NewInstance::of(vfsStreamContent::class);
+        $content = NewInstance::stub(BasicFile::class);
         $visitor = NewInstance::of(vfsStreamVisitor::class);
         vfsStream::inspect($visitor, $content);
         verify($visitor, 'visit')->received($content);
@@ -578,7 +579,7 @@ class vfsStreamTestCase extends TestCase
         $this->assertFileSystemCopy($root);
     }
 
-    private function assertFileSystemCopy(vfsStreamDirectory $baseDir): void
+    private function assertFileSystemCopy(vfsDirectory $baseDir): void
     {
         assertTrue($baseDir->hasChildren());
         assertTrue($baseDir->hasChild('emptyFolder'));
@@ -586,10 +587,10 @@ class vfsStreamTestCase extends TestCase
         $subfolderDir = $baseDir->getChild('withSubfolders');
         assertTrue($subfolderDir->hasChild('subfolder1'));
         assertTrue($subfolderDir->getChild('subfolder1')->hasChild('file1.txt'));
-        assertThat($subfolderDir->getChild('subfolder1/file1.txt')->getContent(), equals('      '));
+        assertThat($subfolderDir->getChild('subfolder1/file1.txt')->content(), equals('      '));
         assertTrue($subfolderDir->hasChild('subfolder2'));
         assertTrue($subfolderDir->hasChild('aFile.txt'));
-        assertThat($subfolderDir->getChild('aFile.txt')->getContent(), equals('foo'));
+        assertThat($subfolderDir->getChild('aFile.txt')->content(), equals('foo'));
     }
 
     /**
@@ -608,12 +609,12 @@ class vfsStreamTestCase extends TestCase
         $root = vfsStream::setup();
         vfsStream::copyFromFileSystem($copyDir);
         assertThat(
-            $root->getChild('withSubfolders')->getPermissions(),
-            equals(fileperms($copyDir . '/withSubfolders') - vfsStreamContent::TYPE_DIR)
+            $root->getChild('withSubfolders')->permissions(),
+            equals(fileperms($copyDir . '/withSubfolders') - Type::DIR)
         );
         assertThat(
-            $root->getChild('withSubfolders/aFile.txt')->getPermissions(),
-            equals(fileperms($copyDir . '/withSubfolders/aFile.txt') - vfsStreamContent::TYPE_FILE)
+            $root->getChild('withSubfolders/aFile.txt')->permissions(),
+            equals(fileperms($copyDir . '/withSubfolders/aFile.txt') - Type::FILE)
         );
     }
 
@@ -634,7 +635,7 @@ class vfsStreamTestCase extends TestCase
         $root = vfsStream::setup();
         vfsStream::copyFromFileSystem($copyDir, $root, 3);
         assertThat(
-            $root->getChild('withSubfolders/subfolder1/file1.txt')->getContent(),
+            $root->getChild('withSubfolders/subfolder1/file1.txt')->content(),
             equals('      ')
         );
     }
