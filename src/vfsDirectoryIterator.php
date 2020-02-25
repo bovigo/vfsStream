@@ -26,14 +26,14 @@ class vfsDirectoryIterator implements Iterator
     /**
      * list of children from container to iterate over
      *
-     * @var  array<vfsFile|vfsDirectory>
+     * @var  BasicFile[]
      */
     protected $children;
 
     /**
      * constructor
      *
-     * @param  array<vfsFile|vfsDirectory> $children
+     * @param  BasicFile[] $children
      */
     public function __construct(array $children)
     {
