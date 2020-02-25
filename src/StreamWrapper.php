@@ -178,7 +178,7 @@ class StreamWrapper
 
     private function reportErrors(int $options): bool
     {
-        return true;# ($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS;
+        return ($options & STREAM_REPORT_ERRORS) === STREAM_REPORT_ERRORS;
     }
 
     /**
