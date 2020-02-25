@@ -51,7 +51,7 @@ class StructureInspector extends AbstractVisitor
     /**
      * visit a file and process it
      *
-     * @return  vfsStreamStructureVisitor
+     * @return  StructureInspector
      */
     public function visitFile(vfsFile $file): vfsStreamVisitor
     {
@@ -63,7 +63,7 @@ class StructureInspector extends AbstractVisitor
     /**
      * visit a block device and process it
      *
-     * @return  vfsStreamStructureVisitor
+     * @return  StructureInspector
      */
     public function visitBlockDevice(vfsBlock $block): vfsStreamVisitor
     {
@@ -75,7 +75,7 @@ class StructureInspector extends AbstractVisitor
     /**
      * visit a directory and process it
      *
-     * @return  vfsStreamStructureVisitor
+     * @return  StructureInspector
      */
     public function visitDirectory(vfsDirectory $dir): vfsStreamVisitor
     {

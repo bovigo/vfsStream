@@ -66,8 +66,6 @@ class StringBasedFileContent implements FileContent
 
     /**
      * writes an amount of data starting at given offset
-     *
-     * @return  int     amount of written bytes
      */
     public function write(string $data, int $offset, int $length): void
     {

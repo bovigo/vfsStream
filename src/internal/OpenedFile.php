@@ -15,6 +15,7 @@ namespace bovigo\vfs\internal;
 
 use bovigo\vfs\vfsFile;
 use bovigo\vfs\vfsStream;
+use bovigo\vfs\StreamWrapper;
 use bovigo\vfs\content\FileContent;
 use const SEEK_CUR;
 use const SEEK_END;

@@ -196,7 +196,7 @@ class vfsFile extends BasicFile
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      *
-     * @param resource|vfsStreamWrapper $resource
+     * @param resource|StreamWrapper $resource
      *
      * @since   0.10.0
      */
@@ -231,7 +231,7 @@ class vfsFile extends BasicFile
      *
      * @see     https://github.com/mikey179/vfsStream/issues/40
      *
-     * @param resource|vfsStreamWrapper $resource
+     * @param resource|StreamWrapper $resource
      */
     public function unlock($resource): void
     {
@@ -250,7 +250,7 @@ class vfsFile extends BasicFile
      *
      * @see     https://github.com/mikey179/vfsStream/issues/40
      *
-     * @param resource|vfsStreamWrapper $resource
+     * @param resource|StreamWrapper $resource
      */
     protected function setExclusiveLock($resource): void
     {
@@ -262,7 +262,7 @@ class vfsFile extends BasicFile
      *
      * @see     https://github.com/mikey179/vfsStream/issues/40
      *
-     * @param resource|vfsStreamWrapper $resource
+     * @param resource|StreamWrapper $resource
      */
     protected function addSharedLock($resource): void
     {
@@ -275,7 +275,7 @@ class vfsFile extends BasicFile
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      *
-     * @param resource|vfsStreamWrapper $resource
+     * @param resource|StreamWrapper $resource
      *
      * @since   0.10.0
      */
@@ -290,7 +290,7 @@ class vfsFile extends BasicFile
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      *
-     * @param resource|vfsStreamWrapper $resource
+     * @param resource|StreamWrapper $resource
      *
      * @since   0.10.0
      */
@@ -308,7 +308,7 @@ class vfsFile extends BasicFile
      *
      * @see     https://github.com/mikey179/vfsStream/issues/40
      *
-     * @param resource|vfsStreamWrapper $resource
+     * @param resource|StreamWrapper $resource
      */
     private function resourceId($resource): string
     {
@@ -326,7 +326,7 @@ class vfsFile extends BasicFile
      * @see     https://github.com/mikey179/vfsStream/issues/6
      * @see     https://github.com/mikey179/vfsStream/issues/40
      *
-     * @param resource|vfsStreamWrapper $resource
+     * @param resource|StreamWrapper $resource
      *
      * @since   0.10.0
      */

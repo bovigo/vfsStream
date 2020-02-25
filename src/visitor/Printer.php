@@ -67,7 +67,7 @@ class Printer extends AbstractVisitor
     /**
      * visit a file and process it
      *
-     * @return  vfsStreamPrintVisitor
+     * @return  Printer
      */
     public function visitFile(vfsFile $file): vfsStreamVisitor
     {
@@ -79,7 +79,7 @@ class Printer extends AbstractVisitor
     /**
      * visit a block device and process it
      *
-     * @return  vfsStreamPrintVisitor
+     * @return  Printer
      */
     public function visitBlockDevice(vfsBlock $block): vfsStreamVisitor
     {
@@ -92,7 +92,7 @@ class Printer extends AbstractVisitor
     /**
      * visit a directory and process it
      *
-     * @return  vfsStreamPrintVisitor
+     * @return  Printer
      */
     public function visitDirectory(vfsDirectory $dir): vfsStreamVisitor
     {

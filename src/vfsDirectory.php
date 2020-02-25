@@ -30,7 +30,7 @@ class vfsDirectory extends BasicFile implements IteratorAggregate
     /**
      * list of directory children
      *
-     * @var  array<vfsFile|vfsDirectory>
+     * @var  array<BasicFile>
      */
     private $children = [];
     /**
@@ -224,7 +224,7 @@ class vfsDirectory extends BasicFile implements IteratorAggregate
     /**
      * returns a list of children for this directory
      *
-     * @return  array<vfsFile|vfsDirectory>
+     * @return  array<BasicFile>
      */
     public function getChildren(): array
     {
