@@ -586,7 +586,7 @@ class StreamWrapper
             return false;
         }
 
-        if ($content->type() !== TYPE::FILE) {
+        if ($content->type() !== Type::FILE) {
             trigger_error('unlink(' . $path . '): Operation not permitted', E_USER_WARNING);
 
             return false;
@@ -649,7 +649,7 @@ class StreamWrapper
 
             return false;
         }
-        if ($dstParentContent->type() !== TYPE::DIR) {
+        if ($dstParentContent->type() !== Type::DIR) {
             trigger_error('Target is not a directory', E_USER_WARNING);
 
             return false;
@@ -711,7 +711,7 @@ class StreamWrapper
         }
 
         if ($dir === null
-            || $dir->type() !== TYPE::DIR
+            || $dir->type() !== Type::DIR
             || $dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
             return false;
         }
