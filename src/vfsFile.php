@@ -141,10 +141,10 @@ class vfsFile extends BasicFile
     /**
      * @deprecated  use content() instead
      */
-    // public function getContent(): string
-    // {
-    //     return $this->content();
-    // }
+    public function getContent(): string
+    {
+        return $this->content();
+    }
 
     public function content(): string
     {
