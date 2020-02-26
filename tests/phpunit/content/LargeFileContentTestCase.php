@@ -13,8 +13,6 @@ namespace bovigo\vfs\tests\content;
 
 use bovigo\vfs\content\LargeFileContent;
 use PHPUnit\Framework\TestCase;
-use const SEEK_END;
-use const SEEK_SET;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;

@@ -12,8 +12,8 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\callmap\NewInstance;
-use bovigo\vfs\vfsStream;
 use bovigo\vfs\BasicFile;
+use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamException;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
@@ -32,9 +32,7 @@ class BasicFileTestCase extends TestCase
     private function createContent(int $permissions): BasicFile
     {
         return NewInstance::of(BasicFile::class, ['foo', $permissions])
-            ->returns([
-                'size' => 0
-            ]);
+            ->returns(['size' => 0]);
     }
 
     /**

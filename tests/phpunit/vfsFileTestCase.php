@@ -12,12 +12,11 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\callmap\NewInstance;
+use bovigo\vfs\content\FileContent;
+use bovigo\vfs\internal\Type;
+use bovigo\vfs\vfsFile;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamException;
-use bovigo\vfs\vfsFile;
-use bovigo\vfs\content\FileContent;
-use bovigo\vfs\content\StringBasedFileContent;
-use bovigo\vfs\internal\Type;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertEmptyString;

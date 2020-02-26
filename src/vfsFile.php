@@ -21,8 +21,6 @@ use InvalidArgumentException;
 use const LOCK_EX;
 use const LOCK_NB;
 use const LOCK_SH;
-use const SEEK_END;
-use const SEEK_SET;
 use function class_alias;
 use function is_resource;
 use function is_string;
@@ -59,7 +57,7 @@ class vfsFile extends BasicFile
     /**
      * default file permissions
      */
-    const DEFAULT_PERMISSIONS = 0666;
+    public const DEFAULT_PERMISSIONS = 0666;
 
     /**
      * constructor
@@ -154,32 +152,37 @@ class vfsFile extends BasicFile
     /**
      * simply open the file
      *
-     * @since  0.9
      * @internal
+     *
+     * @since  0.9
      */
     public function open(int $mode): OpenedFile
     {
         $this->lastAccessed(time());
+
         return new OpenedFile($this, $this->content, $mode);
     }
 
     /**
      * open file and set pointer to end of file
      *
-     * @since  0.9
      * @internal
+     *
+     * @since  0.9
      */
     public function openForAppend(int $mode): OpenedFile
     {
         $this->lastAccessed(time());
+
         return OpenedFile::append($this, $this->content, $mode);
     }
 
     /**
      * open file and truncate content
      *
-     * @since  0.9
      * @internal
+     *
+     * @since  0.9
      */
     public function openWithTruncate(int $mode): OpenedFile
     {
@@ -187,6 +190,7 @@ class vfsFile extends BasicFile
         $time = time();
         $this->lastAccessed($time);
         $this->lastModified($time);
+
         return new OpenedFile($this, $this->content, $mode);
     }
 

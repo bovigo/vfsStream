@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\internal;
 
+use bovigo\vfs\content\FileContent;
+use bovigo\vfs\StreamWrapper;
 use bovigo\vfs\vfsFile;
 use bovigo\vfs\vfsStream;
-use bovigo\vfs\StreamWrapper;
-use bovigo\vfs\content\FileContent;
 use const SEEK_CUR;
 use const SEEK_END;
 use const SEEK_SET;
+use function strlen;
+use function time;
 
 /**
  * Decorator for vfsFile to allow multiple instances of a file to be open.
@@ -46,15 +48,16 @@ class OpenedFile
 
     public function __construct(vfsFile $file, FileContent $content, int $mode)
     {
-        $this->file    = $file;
+        $this->file = $file;
         $this->content = $content;
-        $this->mode    = $mode;
+        $this->mode = $mode;
     }
 
     public static function append(vfsFile $file, FileContent $content, int $mode): self
     {
         $s = new OpenedFile($file, $content, $mode);
         $s->offset = $content->size();
+
         return $s;
     }
 
@@ -104,6 +107,7 @@ class OpenedFile
         $this->file->lastAccessed(time());
         $data = $this->content->read($this->offset, $count);
         $this->offset += $count;
+
         return $data;
     }
 

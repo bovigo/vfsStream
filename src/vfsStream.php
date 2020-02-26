@@ -233,7 +233,7 @@ class vfsStream
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
      *
-     * @param string[][]              $structure directory structure to add under root directory
+     * @param string[][]        $structure directory structure to add under root directory
      * @param vfsDirectory|null $baseDir   base directory to add structure to
      *
      * @throws InvalidArgumentException
@@ -472,8 +472,8 @@ class vfsStream
      *
      * @see     https://github.com/mikey179/vfsStream/issues/10
      *
-     * @param vfsStreamVisitor      $visitor the visitor who inspects
-     * @param BasicFile|null $content directory structure to inspect
+     * @param vfsStreamVisitor $visitor the visitor who inspects
+     * @param BasicFile|null   $content directory structure to inspect
      *
      * @throws InvalidArgumentException
      *

@@ -70,5 +70,4 @@ final class Mode
 
         return self::WRITEONLY;
     }
-
 }

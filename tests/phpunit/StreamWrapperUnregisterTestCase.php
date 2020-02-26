@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\callmap\NewInstance;
+use bovigo\vfs\StreamWrapper;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamException;
-use bovigo\vfs\StreamWrapper;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;

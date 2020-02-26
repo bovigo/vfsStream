@@ -14,6 +14,8 @@ namespace bovigo\vfs\internal;
 use bovigo\vfs\BasicFile;
 use bovigo\vfs\vfsDirectory;
 use bovigo\vfs\vfsFile;
+use function strlen;
+use function substr;
 
 /**
  * Helper for working with the root directory.
@@ -38,6 +40,7 @@ final class Root
         // Using a directory with a name hopefully no-one else uses for their root path name.
         $r = new self(new vfsDirectory('.vfs'));
         $r->empty = true;
+
         return $r;
     }
 

@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
-use bovigo\vfs\vfsStreamContainer;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertThat;

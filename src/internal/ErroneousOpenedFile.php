@@ -13,13 +13,9 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\internal;
 
-use bovigo\vfs\FileContent;
-use bovigo\vfs\vfsFile;
-use bovigo\vfs\vfsStream;
 use bovigo\vfs\StreamWrapper;
-use const SEEK_CUR;
-use const SEEK_END;
-use const SEEK_SET;
+use const E_USER_WARNING;
+use function trigger_error;
 
 /**
  * Decorator for vfsErronousFile to allow multiple instances of a file to be open.

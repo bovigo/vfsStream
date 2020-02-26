@@ -12,13 +12,13 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\callmap\NewInstance;
-use bovigo\vfs\content\LargeFileContent;
-use bovigo\vfs\vfsStream;
 use bovigo\vfs\BasicFile;
-use bovigo\vfs\vfsDirectory;
-use bovigo\vfs\StreamWrapper;
-use bovigo\vfs\visitor\vfsStreamVisitor;
+use bovigo\vfs\content\LargeFileContent;
 use bovigo\vfs\internal\Type;
+use bovigo\vfs\StreamWrapper;
+use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\vfsStream;
+use bovigo\vfs\visitor\vfsStreamVisitor;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use const DIRECTORY_SEPARATOR;

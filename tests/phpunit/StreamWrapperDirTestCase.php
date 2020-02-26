@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\tests;
 
-use bovigo\vfs\vfsStream;
 use bovigo\vfs\StreamWrapper;
+use bovigo\vfs\vfsStream;
 use const E_USER_WARNING;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNotNull;

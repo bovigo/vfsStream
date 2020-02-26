@@ -18,6 +18,7 @@ use function array_values;
 use function class_alias;
 use function count;
 use function strlen;
+use function strncmp;
 use function substr;
 
 /**
@@ -33,14 +34,12 @@ class vfsDirectory extends BasicFile implements IteratorAggregate
      * @var  BasicFile[]
      */
     private $children = [];
-    /**
-     * @var  bool
-     */
+    /** @var  bool */
     private $isDot;
     /**
      * default directory permissions
      */
-    const DEFAULT_PERMISSIONS = 0777;
+    public const DEFAULT_PERMISSIONS = 0777;
 
     /**
      * constructor

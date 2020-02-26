@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\tests;
 
-use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;

@@ -269,15 +269,15 @@ class StreamWrapper
     /**
      * creates a file at given path
      *
-     * @param string      $path    the path to open
-     * @param int|null    $options options for opening
+     * @param string   $path    the path to open
+     * @param int|null $options options for opening
      *
      * @return  vfsFile|false
      */
     private function createFile(string $path, ?int $options = null)
     {
         $filepath = Path::split($path);
-        if (!$filepath->hasDirname()) {
+        if (! $filepath->hasDirname()) {
             if ($this->reportErrors($options)) {
                 trigger_error('File ' . $filepath->basename() . ' does not exist', E_USER_WARNING);
             }
@@ -685,6 +685,7 @@ class StreamWrapper
         $path = Path::resolve(vfsStream::path($path));
         if (self::$root->itemFor($path) !== null) {
             trigger_error('mkdir(): Path vfs://' . $path . ' exists', E_USER_WARNING);
+
             return false;
         }
 

@@ -13,10 +13,10 @@ namespace bovigo\vfs\tests;
 
 use bovigo\callmap\NewInstance;
 use bovigo\vfs\BasicFile;
+use bovigo\vfs\internal\Type;
 use bovigo\vfs\vfsDirectory;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamException;
-use bovigo\vfs\internal\Type;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertFalse;

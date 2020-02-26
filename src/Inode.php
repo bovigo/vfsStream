@@ -16,7 +16,7 @@ use function time;
 
 /**
  * Wraps all metadata about a file.
- * 
+ *
  * @internal
  */
 class Inode
@@ -60,8 +60,6 @@ class Inode
 
     /**
      * constructor
-     *
-     * @param  int  $permissions
      */
     public function __construct(int $permissions)
     {
@@ -76,7 +74,7 @@ class Inode
 
     /**
      * sets the last modification time of the stream content
-     * 
+     *
      * @api
      */
     public function lastModified(int $filemtime): self
@@ -88,7 +86,7 @@ class Inode
 
     /**
      * returns the last modification time of the stream content
-     * 
+     *
      * @api
      */
     public function filemtime(): int
@@ -156,7 +154,7 @@ class Inode
 
     /**
      * change file mode to given permissions
-     * 
+     *
      * @api
      */
     public function chmod(int $permissions): self
@@ -178,7 +176,7 @@ class Inode
 
     /**
      * returns permissions
-     * 
+     *
      * @api
      */
     public function permissions(): int
@@ -245,7 +243,7 @@ class Inode
 
     /**
      * change owner of file to given user
-     * 
+     *
      * @api
      */
     public function chown(int $user): self
@@ -282,7 +280,7 @@ class Inode
 
     /**
      * change owner group of file to given group
-     * 
+     *
      * @api
      */
     public function chgrp(int $group): self

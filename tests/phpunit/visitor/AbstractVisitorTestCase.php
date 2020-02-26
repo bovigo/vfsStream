@@ -12,8 +12,8 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests\visitor;
 
 use bovigo\callmap\NewInstance;
-use bovigo\vfs\vfsBlock;
 use bovigo\vfs\BasicFile;
+use bovigo\vfs\vfsBlock;
 use bovigo\vfs\vfsDirectory;
 use bovigo\vfs\vfsFile;
 use bovigo\vfs\visitor\AbstractVisitor;

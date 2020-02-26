@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\tests;
 
+use bovigo\vfs\vfsDirectory;
 use bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use const LOCK_EX;
@@ -37,7 +38,7 @@ class FlockTestCase extends TestCase
     /**
      * root directory
      *
-     * @var  \bovigo\vfs\vfsDirectory
+     * @var vfsDirectory
      */
     private $root;
 

@@ -11,9 +11,16 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\internal;
 
+use function array_pop;
+use function count;
+use function explode;
+use function implode;
+use function strrpos;
+use function substr;
+
 /**
  * Helper methods for working with pathes.
- * 
+ *
  * @internal
  */
 final class Path
@@ -36,7 +43,7 @@ final class Path
 
     public function hasDirname(): bool
     {
-        return !empty($this->dirname);
+        return ! empty($this->dirname);
     }
 
     public function basename(): string
@@ -80,5 +87,4 @@ final class Path
 
         return implode('/', $newPath);
     }
-
 }

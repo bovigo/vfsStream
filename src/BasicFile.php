@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace bovigo\vfs;
 
+use function array_merge;
+use function array_values;
+use function spl_object_id;
+use function strstr;
+
 /**
  * Represents a basic entry in the file system.
  *
@@ -23,16 +28,14 @@ namespace bovigo\vfs;
  */
 abstract class BasicFile extends Inode
 {
-    /**
-     * @var  string
-     */
+    /** @var  string */
     private $name;
     /**
-    * path to to this file
-    *
-    * @var  string|null
-    */
-   private $parentPath;
+     * path to to this file
+     *
+     * @var  string|null
+     */
+    private $parentPath;
 
     public function __construct(string $name, int $permissions)
     {
@@ -41,7 +44,7 @@ abstract class BasicFile extends Inode
         parent::__construct($permissions);
     }
 
-    private function check(string $name)
+    private function check(string $name): void
     {
         if (strstr($name, '/') !== false) {
             throw new vfsStreamException('Name can not contain /.');
