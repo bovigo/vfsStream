@@ -32,6 +32,9 @@ class ErroneousOpenedFile extends OpenedFile
     /** @var string[] */
     private $errorMessages;
 
+    /**
+     * @param string[] $errorMessages Formatted as [action => message], e.g. ['open' => 'error message']
+     */
     public function __construct(OpenedFile $openedFile, array $errorMessages)
     {
         $this->openedFile = $openedFile;
