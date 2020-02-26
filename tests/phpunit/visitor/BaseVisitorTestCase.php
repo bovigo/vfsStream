@@ -16,35 +16,35 @@ use bovigo\vfs\BasicFile;
 use bovigo\vfs\vfsBlock;
 use bovigo\vfs\vfsDirectory;
 use bovigo\vfs\vfsFile;
-use bovigo\vfs\visitor\AbstractVisitor;
+use bovigo\vfs\visitor\BaseVisitor;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\expect;
 use function bovigo\callmap\verify;
 
 /**
- * Test for bovigo\vfs\visitor\vfsStreamAbstractVisitor.
+ * Test for bovigo\vfs\visitor\BaseVisitor.
  *
  * @see    https://github.com/mikey179/vfsStream/issues/10
  *
  * @since  0.10.0
  * @group  issue_10
  */
-class AbstractVisitorTestCase extends TestCase
+class BaseVisitorTestCase extends TestCase
 {
     /**
      * instance to test
      *
-     * @var  AbstractVisitor
+     * @var  BaseVisitor
      */
-    protected $abstractVisitor;
+    protected $baseVisitor;
 
     /**
      * set up test environment
      */
     protected function setUp(): void
     {
-        $this->abstractVisitor = NewInstance::of(AbstractVisitor::class);
+        $this->baseVisitor = NewInstance::of(BaseVisitor::class);
     }
 
     /**
@@ -57,7 +57,7 @@ class AbstractVisitorTestCase extends TestCase
             'type' => -1,
         ]);
         expect(function () use ($content): void {
-            $this->abstractVisitor->visit($content);
+            $this->baseVisitor->visit($content);
         })
           ->throws(InvalidArgumentException::class);
     }
@@ -68,8 +68,8 @@ class AbstractVisitorTestCase extends TestCase
     public function visitWithFileCallsVisitFile(): void
     {
         $file = new vfsFile('foo.txt');
-        $this->abstractVisitor->visit($file);
-        verify($this->abstractVisitor, 'visitFile')->received($file);
+        $this->baseVisitor->visit($file);
+        verify($this->baseVisitor, 'visitFile')->received($file);
     }
 
     /**
@@ -78,8 +78,8 @@ class AbstractVisitorTestCase extends TestCase
     public function visitWithBlockEventuallyCallsVisitFile(): void
     {
         $block = new vfsBlock('foo');
-        $this->abstractVisitor->visit($block);
-        verify($this->abstractVisitor, 'visitFile')->received($block);
+        $this->baseVisitor->visit($block);
+        verify($this->baseVisitor, 'visitFile')->received($block);
     }
 
     /**
@@ -88,7 +88,7 @@ class AbstractVisitorTestCase extends TestCase
     public function visitWithDirectoryCallsVisitDirectory(): void
     {
         $dir = new vfsDirectory('bar');
-        $this->abstractVisitor->visit($dir);
-        verify($this->abstractVisitor, 'visitDirectory')->received($dir);
+        $this->baseVisitor->visit($dir);
+        verify($this->baseVisitor, 'visitDirectory')->received($dir);
     }
 }

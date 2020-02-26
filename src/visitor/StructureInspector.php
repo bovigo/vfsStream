@@ -23,7 +23,7 @@ use function class_alias;
  *
  * @since  0.10.0
  */
-class StructureInspector extends AbstractVisitor
+class StructureInspector extends BaseVisitor
 {
     /**
      * collected structure

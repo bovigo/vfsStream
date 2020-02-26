@@ -29,7 +29,7 @@ use function str_repeat;
  *
  * @since  0.10.0
  */
-class Printer extends AbstractVisitor
+class Printer extends BaseVisitor
 {
     /**
      * target to write output to

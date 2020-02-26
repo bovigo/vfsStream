@@ -25,7 +25,7 @@ use function class_alias;
  *
  * @since  0.10.0
  */
-abstract class AbstractVisitor implements vfsStreamVisitor
+abstract class BaseVisitor implements vfsStreamVisitor
 {
     /**
      * visit a content and process it
@@ -60,4 +60,4 @@ abstract class AbstractVisitor implements vfsStreamVisitor
     }
 }
 
-class_alias('bovigo\vfs\visitor\AbstractVisitor', 'org\bovigo\vfs\visitor\vfsStreamAbstractVisitor');
+class_alias('bovigo\vfs\visitor\BaseVisitor', 'org\bovigo\vfs\visitor\vfsStreamAbstractVisitor');
