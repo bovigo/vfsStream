@@ -15,6 +15,7 @@ namespace bovigo\vfs;
 
 use bovigo\vfs\content\FileContent;
 use bovigo\vfs\content\StringBasedFileContent;
+use bovigo\vfs\internal\FileHandle;
 use bovigo\vfs\internal\OpenedFile;
 use bovigo\vfs\internal\Type;
 use InvalidArgumentException;
@@ -156,7 +157,7 @@ class vfsFile extends BasicFile
      *
      * @since  0.9
      */
-    public function open(int $mode): OpenedFile
+    public function open(int $mode): FileHandle
     {
         $this->lastAccessed(time());
 
@@ -170,7 +171,7 @@ class vfsFile extends BasicFile
      *
      * @since  0.9
      */
-    public function openForAppend(int $mode): OpenedFile
+    public function openForAppend(int $mode): FileHandle
     {
         $this->lastAccessed(time());
 
@@ -184,7 +185,7 @@ class vfsFile extends BasicFile
      *
      * @since  0.9
      */
-    public function openWithTruncate(int $mode): OpenedFile
+    public function openWithTruncate(int $mode): FileHandle
     {
         $this->content->truncate(0);
         $time = time();

@@ -20,14 +20,13 @@ use function trigger_error;
 /**
  * Decorator for vfsErronousFile to allow multiple instances of a file to be open.
  *
- * It works by tracking and restoring the position in the file for each specific
- * instance created, even though the underlying file is shared.
+ * Decorates a regular opened file and triggers errors when configured to do so.
  *
  * @internal
  */
-class ErroneousOpenedFile extends OpenedFile
+class ErroneousOpenedFile implements FileHandle
 {
-    /** @var  OpenedFile */
+    /** @var  FileHandle */
     private $openedFile;
     /** @var string[] */
     private $errorMessages;
@@ -35,7 +34,7 @@ class ErroneousOpenedFile extends OpenedFile
     /**
      * @param string[] $errorMessages Formatted as [action => message], e.g. ['open' => 'error message']
      */
-    public function __construct(OpenedFile $openedFile, array $errorMessages)
+    public function __construct(FileHandle $openedFile, array $errorMessages)
     {
         $this->openedFile = $openedFile;
         $this->errorMessages = $errorMessages;

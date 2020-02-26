@@ -31,7 +31,7 @@ use function time;
  *
  * @internal
  */
-class OpenedFile
+class OpenedFile implements FileHandle
 {
     /** @var  vfsFile */
     private $file;

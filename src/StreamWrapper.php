@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace bovigo\vfs;
 
+use bovigo\vfs\internal\FileHandle;
 use bovigo\vfs\internal\Mode;
-use bovigo\vfs\internal\OpenedFile;
 use bovigo\vfs\internal\Path;
 use bovigo\vfs\internal\Root;
 use bovigo\vfs\internal\Type;
@@ -71,7 +71,7 @@ class StreamWrapper
     /**
      * shortcut to file container
      *
-     * @var  OpenedFile|null
+     * @var  FileHandle|null
      */
     protected $file;
     /**

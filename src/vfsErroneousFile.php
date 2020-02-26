@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace bovigo\vfs;
 
 use bovigo\vfs\internal\ErroneousOpenedFile;
-use bovigo\vfs\internal\OpenedFile;
+use bovigo\vfs\internal\FileHandle;
 use const E_USER_WARNING;
 use function trigger_error;
 
@@ -42,7 +42,7 @@ class vfsErroneousFile extends vfsFile
     /**
      * {@inheritDoc}
      */
-    public function open(int $mode): OpenedFile
+    public function open(int $mode): FileHandle
     {
         if (isset($this->errorMessages['open'])) {
             trigger_error($this->errorMessages['open'], E_USER_WARNING);
@@ -54,7 +54,7 @@ class vfsErroneousFile extends vfsFile
     /**
      * {@inheritDoc}
      */
-    public function openForAppend(int $mode): OpenedFile
+    public function openForAppend(int $mode): FileHandle
     {
         if (isset($this->errorMessages['open'])) {
             trigger_error($this->errorMessages['open'], E_USER_WARNING);
@@ -66,7 +66,7 @@ class vfsErroneousFile extends vfsFile
     /**
      * {@inheritDoc}
      */
-    public function openWithTruncate(int $mode): OpenedFile
+    public function openWithTruncate(int $mode): FileHandle
     {
         if (isset($this->errorMessages['open'])) {
             trigger_error($this->errorMessages['open'], E_USER_WARNING);
