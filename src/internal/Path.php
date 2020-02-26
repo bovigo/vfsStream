@@ -56,7 +56,7 @@ final class Path
 
         return new Path(
             substr($path, 0, $lastSlashPos),
-            substr($path, $lastSlashPos + 1),
+            substr($path, $lastSlashPos + 1)
         );
     }
 
