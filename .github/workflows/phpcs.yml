@@ -40,6 +40,4 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: phpcs
-      run: |
-        vendor/bin/phpcs --report-checkstyle=cs-report.xml
-        cs2pr cs-report.xml
+      run: vendor/bin/phpcs --report=checkstyle -q | cs2pr
