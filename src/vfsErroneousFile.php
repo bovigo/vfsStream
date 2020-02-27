@@ -75,6 +75,14 @@ class vfsErroneousFile extends vfsFile
         return new ErroneousOpenedFile(parent::openWithTruncate($mode), $this->errorMessages);
     }
 
+    /**
+     * locks file
+     *
+     * @see     https://github.com/mikey179/vfsStream/issues/6
+     * @see     https://github.com/mikey179/vfsStream/issues/40
+     *
+     * @param resource|StreamWrapper $resource
+     */
     public function lock($resource, int $operation): bool
     {
         if (isset($this->errorMessages['lock'])) {
