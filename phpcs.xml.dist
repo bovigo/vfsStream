@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<ruleset name="vfsStream">
+ <description>The coding standard for vfsStream.</description>
+
+    <file>src</file>
+    <file>tests/phpunit</file>
+    <arg value="p"/>
+    <rule ref="Doctrine">
+        <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps" />
+        <exclude name="SlevomatCodingStandard.Commenting.ForbiddenAnnotations.AnnotationForbidden" />
+        <exclude name="Generic.Formatting.MultipleStatementAlignment" />
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix">
+     <exclude-pattern>src/vfsStreamException.php</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.WhiteSpace.OperatorSpacing">
+        <properties>
+            <property name="ignoreSpacingBeforeAssignments" value="false" />
+        </properties>
+    </rule>
+
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>tests/*</exclude-pattern>
+        <exclude-pattern>src/vfsStreamWrapper.php</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+        <!--
+            Disabled until version 3.
+            Version 2 needs to support two separate namespaces.
+        -->
+        <exclude-pattern>src/*</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing">
+        <exclude-pattern>tests/phpunit/vfsStreamDirectoryIssue134TestCase.php</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
+        <exclude-pattern>tests/phpunit/vfsStreamWrapperAlreadyRegisteredTestCase.php</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Classes.ClassFileName.NoMatch">
+        <exclude-pattern>tests/phpunit/vfsStreamWrapperAlreadyRegisteredTestCase.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing">
+        <properties>
+            <property name="spacesCountBeforeColon" value="0"/>
+        </properties>
+    </rule>
+</ruleset>

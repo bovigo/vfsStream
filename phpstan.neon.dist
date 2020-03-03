@@ -1,0 +1,13 @@
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+
+parameters:
+    level: 4
+    paths:
+        - src
+    ignoreErrors:
+        -
+            message: '/Default value of the parameter #1 \$out \(mixed\) of method [a-zA-Z0-9\\_]+::__construct\(\) is incompatible with type resource/'
+            path: %currentWorkingDirectory%/src/visitor/vfsStreamPrintVisitor.php
