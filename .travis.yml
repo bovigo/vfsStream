@@ -11,13 +11,6 @@ php:
 
 matrix:
   fast_finish: true
-  include:
-    - php: 5.5
-      dist: precise
-    - php: 5.4
-      dist: precise
-    - php: 5.3
-      dist: precise
   allow_failures:
     - php: nightly
     - php: 7.4snapshot
