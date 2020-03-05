@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         bootstrap="src/test/bootstrap.php"
+         bootstrap="tests/bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -16,15 +16,15 @@
          stopOnSkipped="false"
          verbose="true">
   <testsuites>
-    <testsuite>
-      <directory suffix=".phpt">./src/test/phpt</directory>
-      <directory suffix="TestCase.php">./src/test/php</directory>
+    <testsuite name="vfsStream tests">
+      <directory suffix=".phpt">tests/phpt</directory>
+      <directory suffix="TestCase.php">tests/phpunit</directory>
     </testsuite>
   </testsuites>
 
   <filter>
     <whitelist>
-      <directory>src/main/php</directory>
+      <directory>src</directory>
     </whitelist>
   </filter>
 

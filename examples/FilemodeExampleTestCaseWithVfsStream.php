@@ -5,10 +5,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  org\bovigo\vfs
+ * @package  bovigo\vfs
  */
-namespace org\bovigo\vfs\example;
-use org\bovigo\vfs\vfsStream;
+namespace bovigo\vfs\example;
+use bovigo\vfs\vfsStream;
 require_once 'FilemodeExample.php';
 /**
  * Test case for class FilemodeExample.

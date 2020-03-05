@@ -1,3 +1,12 @@
+=======
+1.7.0 (20??-??-??)
+------------------
+
+  * Namespace changed from `org\bovigo\vfs` to `bovigo\vfs`
+    - The old namespace still works, but has been deprecated. It will be removed in version 2.
+  * raised requirement for minimum PHP version to 5.6.0
+
+
 1.6.8 (2019-10-30)
 ------------------
 
