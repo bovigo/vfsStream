@@ -91,7 +91,7 @@ class vfsFile extends BasicFile
      * alias for withContent()
      *
      * @param   string  $content
-     * @return  vfsStreamFile
+     * @return  vfsFile
      * @see     withContent()
      */
     public function setContent($content)
@@ -106,7 +106,7 @@ class vfsFile extends BasicFile
      * was last modified.
      *
      * @param   string]FileContent  $content
-     * @return  vfsStreamFile
+     * @return  vfsFile
      * @throws  \InvalidArgumentException
      */
     public function withContent($content)

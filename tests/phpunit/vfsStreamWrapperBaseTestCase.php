@@ -12,7 +12,7 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsDirectory;
-use bovigo\vfs\vfsStreamFile;
+use bovigo\vfs\vfsFile;
 use bovigo\vfs\StreamWrapper;
 use PHPUnit\Framework\TestCase;
 
@@ -48,7 +48,7 @@ abstract class vfsStreamWrapperBaseTestCase extends \BC_PHPUnit_Framework_TestCa
     /**
      * a file
      *
-     * @var  vfsStreamFile
+     * @var  vfsFile
      */
     protected $baz1;
     /**
@@ -60,7 +60,7 @@ abstract class vfsStreamWrapperBaseTestCase extends \BC_PHPUnit_Framework_TestCa
     /**
      * another file
      *
-     * @var  vfsStreamFile
+     * @var  vfsFile
      */
     protected $baz2;
     /**

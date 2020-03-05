@@ -111,7 +111,7 @@ class StreamWrapper
     /**
      * shortcut to file container
      *
-     * @type  vfsStreamFile
+     * @type  vfsFile
      */
     protected $content;
     /**
