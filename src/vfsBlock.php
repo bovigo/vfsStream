@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace bovigo\vfs;
 
 use bovigo\vfs\internal\Type;
-use function class_alias;
 
 /**
  * Block container.
@@ -42,5 +41,3 @@ class vfsBlock extends vfsFile
         return Type::BLOCK;
     }
 }
-
-class_alias('bovigo\vfs\vfsBlock', 'org\bovigo\vfs\vfsStreamBlock');

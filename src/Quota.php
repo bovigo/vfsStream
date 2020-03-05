@@ -11,8 +11,6 @@ declare(strict_types=1);
 
 namespace bovigo\vfs;
 
-use function class_alias;
-
 /**
  * Represents a quota for disk space.
  *
@@ -82,5 +80,3 @@ class Quota
         return $spaceLeft;
     }
 }
-
-class_alias('bovigo\vfs\Quota', 'org\bovigo\vfs\Quota');

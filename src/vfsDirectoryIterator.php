@@ -13,7 +13,6 @@ namespace bovigo\vfs;
 
 use Iterator;
 use function array_unshift;
-use function class_alias;
 use function current;
 use function next;
 use function reset;
@@ -95,5 +94,3 @@ class vfsDirectoryIterator implements Iterator
         return current($this->children) !== false;
     }
 }
-
-class_alias('bovigo\vfs\vfsDirectoryIterator', 'org\bovigo\vfs\vfsStreamContainerIterator');

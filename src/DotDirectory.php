@@ -13,7 +13,6 @@ namespace bovigo\vfs;
 
 use ArrayIterator;
 use Iterator;
-use function class_alias;
 
 /**
  * Directory container.
@@ -36,5 +35,3 @@ class DotDirectory extends vfsDirectory
         return true;
     }
 }
-
-class_alias('bovigo\vfs\DotDirectory', 'org\bovigo\vfs\DotDirectory');

@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\content;
 
-use function class_alias;
 use function str_repeat;
 use function strlen;
 use function substr;
@@ -92,5 +91,3 @@ class StringBasedFileContent implements FileContent
         return true;
     }
 }
-
-class_alias('bovigo\vfs\content\StringBasedFileContent', 'org\bovigo\vfs\content\StringBasedFileContent');

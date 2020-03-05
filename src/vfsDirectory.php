@@ -15,7 +15,6 @@ use bovigo\vfs\internal\Type;
 use Iterator;
 use IteratorAggregate;
 use function array_values;
-use function class_alias;
 use function count;
 use function strlen;
 use function strncmp;
@@ -248,5 +247,3 @@ class vfsDirectory extends BasicFile implements IteratorAggregate
         return $this->isDot;
     }
 }
-
-class_alias('bovigo\vfs\vfsDirectory', 'org\bovigo\vfs\vfsStreamDirectory');

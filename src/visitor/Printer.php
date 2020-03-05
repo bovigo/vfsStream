@@ -16,7 +16,6 @@ use bovigo\vfs\vfsDirectory;
 use bovigo\vfs\vfsFile;
 use InvalidArgumentException;
 use const STDOUT;
-use function class_alias;
 use function fwrite;
 use function get_resource_type;
 use function is_resource;
@@ -115,5 +114,3 @@ class Printer extends BaseVisitor
         fwrite($this->out, str_repeat('  ', $this->depth) . '- ' . $name . "\n");
     }
 }
-
-class_alias('bovigo\vfs\visitor\Printer', 'org\bovigo\vfs\visitor\vfsStreamPrintVisitor');

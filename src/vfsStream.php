@@ -17,7 +17,6 @@ use bovigo\vfs\visitor\vfsStreamVisitor;
 use DirectoryIterator;
 use InvalidArgumentException;
 use function array_map;
-use function class_alias;
 use function explode;
 use function file_get_contents;
 use function filetype;
@@ -533,5 +532,3 @@ class vfsStream
         self::$dotFiles = true;
     }
 }
-
-class_alias('bovigo\vfs\vfsStream', 'org\bovigo\vfs\vfsStream');

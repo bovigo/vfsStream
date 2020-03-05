@@ -22,7 +22,6 @@ use InvalidArgumentException;
 use const LOCK_EX;
 use const LOCK_NB;
 use const LOCK_SH;
-use function class_alias;
 use function is_resource;
 use function is_string;
 use function spl_object_hash;
@@ -344,4 +343,3 @@ class vfsFile extends BasicFile
         return $this->exclusiveLock !== null;
     }
 }
-class_alias('bovigo\vfs\vfsFile', 'org\bovigo\vfs\vfsStreamFile');

@@ -15,7 +15,6 @@ use bovigo\vfs\BasicFile;
 use bovigo\vfs\vfsBlock;
 use bovigo\vfs\vfsDirectory;
 use bovigo\vfs\vfsFile;
-use function class_alias;
 
 /**
  * Interface for a visitor to work on a vfsStream content structure.
@@ -46,5 +45,3 @@ interface vfsStreamVisitor
      */
     public function visitBlockDevice(vfsBlock $block): self;
 }
-
-class_alias('bovigo\vfs\visitor\vfsStreamVisitor', 'org\bovigo\vfs\visitor\vfsStreamVisitor');

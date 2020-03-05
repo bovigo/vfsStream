@@ -16,7 +16,6 @@ use bovigo\vfs\vfsBlock;
 use bovigo\vfs\vfsDirectory;
 use bovigo\vfs\vfsFile;
 use InvalidArgumentException;
-use function class_alias;
 
 /**
  * Abstract base class providing an implementation for the visit() method.
@@ -59,5 +58,3 @@ abstract class BaseVisitor implements vfsStreamVisitor
         return $this->visitFile($block);
     }
 }
-
-class_alias('bovigo\vfs\visitor\BaseVisitor', 'org\bovigo\vfs\visitor\vfsStreamAbstractVisitor');

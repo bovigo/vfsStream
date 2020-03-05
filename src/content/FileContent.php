@@ -11,8 +11,6 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\content;
 
-use function class_alias;
-
 /**
  * Interface for actual file contents.
  *
@@ -47,5 +45,3 @@ interface FileContent
      */
     public function truncate(int $size): bool;
 }
-
-class_alias('bovigo\vfs\content\FileContent', 'org\bovigo\vfs\content\FileContent');

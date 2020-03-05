@@ -2,15 +2,38 @@
 ------------------
 
   * Add inode support
-  * Namespace changed from `org\bovigo\vfs` to `bovigo\vfs`
-    - The old namespace will still work, but has been deprecated. It will be removed in version 3.
 
 ### BC breaks
 
   * raised minimum required PHP version to 7.2.0
   * all methods of `bovigo\vfs\visitor\vfsStreamVisitor` are now declared with `self` as return type
-  * `vfsStreamWrapper::setRoot()` and `vsfStreamWrapper::getRoot()` method signatures now require and return `bovigo\vfs\vfsStreamDirectory` vice `bovigo\vfs\vfsStreamContainer`.
-  * `vfsStream::newFile()`, `vfsStream::newBlock()`, `bovigo\vfs\vfsStreamFile`, and `bovigo\vfs\vfsStreamBlock` will throw an exception if the filename contains a forward slash (`/`).
+  * `StreamWrapper::setRoot()` and `StreamWrapper::getRoot()` method signatures now require and return `bovigo\vfs\vfsDirectory` vice `bovigo\vfs\vfsStreamContainer`.
+  * `vfsStream::newFile()`, `vfsStream::newBlock()`, `bovigo\vfs\vfsFile`, and `bovigo\vfs\vfsBlock` will throw an exception if the filename contains a forward slash (`/`).
+  * removed deprecated classes and interfaces
+    - `bovigo\vfs\vfsStreamContent`
+    - `bovigo\vfs\vfsStreamContainer`
+    - `bovigo\vfs\content\SeekableFileContent`
+
+1.7.0 (20??-??-??)
+------------------
+
+  * Namespace changed from `org\bovigo\vfs` to `bovigo\vfs`
+    - The old namespace still works, but has been deprecated. It will be removed in version 2.
+  * Renamed some classes in the new namespace. When moving your code to the new namespace please be aware of the following name changes:
+    - `org\bovigo\vfs\vfsStreamBlock` => `bovigo\vfs\vfsBlock`
+    - `org\bovigo\vfs\vfsStreamContainerIterator` => `bovigo\vfs\vfsDirectoryIterator`
+    - `org\bovigo\vfs\vfsStreamDirectory` => `bovigo\vfs\vfsDirectory`
+    - `org\bovigo\vfs\vfsStreamFile` => `bovigo\vfs\vfsFile`
+    - `org\bovigo\vfs\vfsStreamWrapper` => `bovigo\vfs\StreamWrapper`
+    - `org\bovigo\vfs\visitor\vfsStreamAbstractVisitor` => `bovigo\vfs\visitor\BaseVisitor`
+    - `org\bovigo\vfs\visitor\vfsStreamPrintVisitor` => `bovigo\vfs\visitor\Printer`
+    - `org\bovigo\vfs\visitor\vfsStreamStructureVisitor` => `bovigo\vfs\visitor\StructureInspector`
+    - `org\bovigo\vfs\vfsStreamAbstractContent` => `bovigo\vfs\BasicFile`
+  * Deprecated (internal) classes and interfaces, they will be removed in version 2.
+    - `org\bovigo\vfs\vfsStreamContent`
+    - `org\bovigo\vfs\vfsStreamContainer`
+    - `org\bovigo\vfs\content\SeekableFileContent`
+  * raised requirement for minimum PHP version to 5.6.0
 
 1.6.8 (2019-10-30)
 ------------------

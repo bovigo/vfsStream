@@ -30,7 +30,6 @@ use const STREAM_OPTION_READ_TIMEOUT;
 use const STREAM_OPTION_WRITE_BUFFER;
 use const STREAM_REPORT_ERRORS;
 use const STREAM_URL_STAT_QUIET;
-use function class_alias;
 use function clearstatcache;
 use function count;
 use function explode;
@@ -844,5 +843,3 @@ class StreamWrapper
         return $content->stat();
     }
 }
-
-class_alias('bovigo\vfs\StreamWrapper', 'org\bovigo\vfs\vfsStreamWrapper');

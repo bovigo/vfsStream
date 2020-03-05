@@ -14,7 +14,6 @@ namespace bovigo\vfs\visitor;
 use bovigo\vfs\vfsBlock;
 use bovigo\vfs\vfsDirectory;
 use bovigo\vfs\vfsFile;
-use function class_alias;
 
 /**
  * Visitor which traverses a content structure recursively to create an array structure from it.
@@ -114,5 +113,3 @@ class StructureInspector extends BaseVisitor
         return $this;
     }
 }
-
-class_alias('bovigo\vfs\visitor\StructureInspector', 'org\bovigo\vfs\visitor\vfsStreamStructureVisitor');

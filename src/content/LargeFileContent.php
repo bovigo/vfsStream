@@ -13,7 +13,6 @@ namespace bovigo\vfs\content;
 
 use function array_filter;
 use function array_keys;
-use function class_alias;
 use function substr;
 
 /**
@@ -148,5 +147,3 @@ class LargeFileContent implements FileContent
         return true;
     }
 }
-
-class_alias('bovigo\vfs\content\LargeFileContent', 'org\bovigo\vfs\content\LargeFileContent');
