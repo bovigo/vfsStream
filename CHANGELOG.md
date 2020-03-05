@@ -4,6 +4,20 @@
 
   * Namespace changed from `org\bovigo\vfs` to `bovigo\vfs`
     - The old namespace still works, but has been deprecated. It will be removed in version 2.
+  * Renamed some classes in the new namespace. When moving your code to the new namespace please be aware of the following name changes:
+    - `org\bovigo\vfs\vfsStreamBlock` => `bovigo\vfs\vfsBlock`
+    - `org\bovigo\vfs\vfsStreamContainerIterator` => `bovigo\vfs\vfsDirectoryIterator`
+    - `org\bovigo\vfs\vfsStreamDirectory` => `bovigo\vfs\vfsDirectory`
+    - `org\bovigo\vfs\vfsStreamFile` => `bovigo\vfs\vfsFile`
+    - `org\bovigo\vfs\vfsStreamWrapper` => `bovigo\vfs\StreamWrapper`
+    - `org\bovigo\vfs\visitor\vfsStreamAbstractVisitor` => `bovigo\vfs\visitor\BaseVisitor`
+    - `org\bovigo\vfs\visitor\vfsStreamPrintVisitor` => `bovigo\vfs\visitor\Printer`
+    - `org\bovigo\vfs\visitor\vfsStreamStructureVisitor` => `bovigo\vfs\visitor\StructureInspector`
+    - `org\bovigo\vfs\vfsStreamAbstractContent` => `bovigo\vfs\BasicFile`
+  * Deprecated (internal) classes and interfaces, they will be removed in version 2.
+    - `org\bovigo\vfs\vfsStreamContent`
+    - `org\bovigo\vfs\vfsStreamContainer`
+    - `org\bovigo\vfs\content\SeekableFileContent`
   * raised requirement for minimum PHP version to 5.6.0
 
 

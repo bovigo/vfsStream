@@ -15,7 +15,7 @@ use bovigo\vfs\content\FileContent;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamContent;
 use bovigo\vfs\vfsStreamException;
-use bovigo\vfs\vfsStreamFile;
+use org\bovigo\vfs\vfsStreamFile;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use const SEEK_CUR;

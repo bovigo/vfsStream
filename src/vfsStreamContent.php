@@ -14,6 +14,8 @@ use function class_alias;
 
 /**
  * Interface for stream contents.
+ * 
+ * @deprecated since 1.7, will be removed in version 2
  */
 interface vfsStreamContent
 {

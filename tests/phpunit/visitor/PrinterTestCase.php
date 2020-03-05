@@ -11,7 +11,7 @@
 namespace bovigo\vfs\tests\visitor;
 
 use bovigo\vfs\vfsStream;
-use org\bovigo\vfs\visitor\vfsStreamPrintVisitor;
+use bovigo\vfs\visitor\Printer;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
@@ -22,13 +22,13 @@ use function fopen;
 use function xml_parser_create;
 
 /**
- * Test for bovigo\vfs\visitor\vfsStreamPrintVisitor.
+ * Test for bovigo\vfs\visitor\Printer.
  *
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  * @group  issue_10
  */
-class vfsStreamPrintVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
+class PrinterTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -36,7 +36,7 @@ class vfsStreamPrintVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function constructWithNonResourceThrowsInvalidArgumentException()
     {
-        new vfsStreamPrintVisitor('invalid');
+        new Printer('invalid');
     }
 
     /**
@@ -45,7 +45,7 @@ class vfsStreamPrintVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function constructWithNonStreamResourceThrowsInvalidArgumentException()
     {
-        new vfsStreamPrintVisitor(xml_parser_create());
+        new Printer(xml_parser_create());
     }
 
     /**
@@ -55,9 +55,9 @@ class vfsStreamPrintVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
     {
         $output       = vfsStream::newFile('foo.txt')
                                        ->at(vfsStream::setup());
-        $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
-        $this->assertSame($printVisitor,
-                          $printVisitor->visitFile(vfsStream::newFile('bar.txt'))
+        $printer = new Printer(fopen('vfs://root/foo.txt', 'wb'));
+        $this->assertSame($printer,
+                          $printer->visitFile(vfsStream::newFile('bar.txt'))
         );
         $this->assertEquals("- bar.txt\n", $output->getContent());
     }
@@ -69,9 +69,9 @@ class vfsStreamPrintVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
     {
         $output       = vfsStream::newFile('foo.txt')
                                        ->at(vfsStream::setup());
-        $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
-        $this->assertSame($printVisitor,
-                          $printVisitor->visitBlockDevice(vfsStream::newBlock('bar'))
+        $printer = new Printer(fopen('vfs://root/foo.txt', 'wb'));
+        $this->assertSame($printer,
+                          $printer->visitBlockDevice(vfsStream::newBlock('bar'))
         );
         $this->assertEquals("- [bar]\n", $output->getContent());
     }
@@ -83,9 +83,9 @@ class vfsStreamPrintVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
     {
         $output       = vfsStream::newFile('foo.txt')
                                        ->at(vfsStream::setup());
-        $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
-        $this->assertSame($printVisitor,
-                          $printVisitor->visitDirectory(vfsStream::newDirectory('baz'))
+        $printer = new Printer(fopen('vfs://root/foo.txt', 'wb'));
+        $this->assertSame($printer,
+                          $printer->visitDirectory(vfsStream::newDirectory('baz'))
         );
         $this->assertEquals("- baz\n", $output->getContent());
     }
@@ -103,9 +103,9 @@ class vfsStreamPrintVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
                                                'foo.txt' => ''
                                          )
                         );
-        $printVisitor = new vfsStreamPrintVisitor(fopen('vfs://root/foo.txt', 'wb'));
-        $this->assertSame($printVisitor,
-                          $printVisitor->visitDirectory($root)
+        $printer = new Printer(fopen('vfs://root/foo.txt', 'wb'));
+        $this->assertSame($printer,
+                          $printer->visitDirectory($root)
         );
         $this->assertEquals("- root\n  - test\n    - foo\n      - test.txt\n    - baz.txt\n  - foo.txt\n", file_get_contents('vfs://root/foo.txt'));
     }

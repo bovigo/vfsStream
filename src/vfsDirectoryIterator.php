@@ -20,7 +20,7 @@ use function reset;
 /**
  * Iterator for children of a directory container.
  */
-class vfsStreamContainerIterator implements \Iterator
+class vfsDirectoryIterator implements \Iterator
 {
     /**
      * list of children from container to iterate over
@@ -101,4 +101,4 @@ class vfsStreamContainerIterator implements \Iterator
     }
 }
 
-class_alias('bovigo\vfs\vfsStreamContainerIterator', 'org\bovigo\vfs\vfsStreamContainerIterator');
+class_alias('bovigo\vfs\vfsDirectoryIterator', 'org\bovigo\vfs\vfsStreamContainerIterator');

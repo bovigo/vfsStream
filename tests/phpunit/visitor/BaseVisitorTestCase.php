@@ -11,38 +11,38 @@
 namespace bovigo\vfs\tests\visitor;
 
 use bovigo\callmap\NewInstance;
-use org\bovigo\vfs\vfsStreamBlock;
+use bovigo\vfs\vfsBlock;
+use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\vfsFile;
 use bovigo\vfs\vfsStreamContent;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
-use org\bovigo\vfs\visitor\vfsStreamAbstractVisitor;
+use bovigo\vfs\visitor\BaseVisitor;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\expect;
 use function bovigo\callmap\verify;
 
 /**
- * Test for bovigo\vfs\visitor\vfsStreamAbstractVisitor.
+ * Test for bovigo\vfs\visitor\BaseVisitor.
  *
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  * @group  issue_10
  */
-class vfsStreamAbstractVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
+class BaseVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @var  vfsStreamAbstractVisitor
+     * @var  BaseVisitor
      */
-    protected $abstractVisitor;
+    protected $baseVisitor;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->abstractVisitor = $this->bc_getMock('org\\bovigo\\vfs\\visitor\\vfsStreamAbstractVisitor',
+        $this->baseVisitor = $this->bc_getMock('bovigo\\vfs\\visitor\\BaseVisitor',
                                                 array('visitFile', 'visitDirectory')
                                  );
     }
@@ -57,8 +57,8 @@ class vfsStreamAbstractVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
         $mockContent->expects($this->any())
                     ->method('getType')
                     ->will($this->returnValue('invalid'));
-        $this->assertSame($this->abstractVisitor,
-                          $this->abstractVisitor->visit($mockContent)
+        $this->assertSame($this->baseVisitor,
+                          $this->baseVisitor->visit($mockContent)
         );
     }
 
@@ -67,12 +67,12 @@ class vfsStreamAbstractVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function visitWithFileCallsVisitFile()
     {
-        $file = new vfsStreamFile('foo.txt');
-        $this->abstractVisitor->expects($this->once())
+        $file = new vfsFile('foo.txt');
+        $this->baseVisitor->expects($this->once())
                               ->method('visitFile')
                               ->with($this->equalTo($file));
-        $this->assertSame($this->abstractVisitor,
-                          $this->abstractVisitor->visit($file)
+        $this->assertSame($this->baseVisitor,
+                          $this->baseVisitor->visit($file)
         );
     }
 
@@ -83,12 +83,12 @@ class vfsStreamAbstractVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function visitWithBlockCallsVisitFile()
     {
-        $block = new vfsStreamBlock('foo');
-        $this->abstractVisitor->expects($this->once())
+        $block = new vfsBlock('foo');
+        $this->baseVisitor->expects($this->once())
                               ->method('visitFile')
                               ->with($this->equalTo($block));
-        $this->assertSame($this->abstractVisitor,
-                          $this->abstractVisitor->visit($block)
+        $this->assertSame($this->baseVisitor,
+                          $this->baseVisitor->visit($block)
         );
     }
 
@@ -97,12 +97,12 @@ class vfsStreamAbstractVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function visitWithDirectoryCallsVisitDirectory()
     {
-        $dir = new vfsStreamDirectory('bar');
-        $this->abstractVisitor->expects($this->once())
+        $dir = new vfsDirectory('bar');
+        $this->baseVisitor->expects($this->once())
                               ->method('visitDirectory')
                               ->with($this->equalTo($dir));
-        $this->assertSame($this->abstractVisitor,
-                          $this->abstractVisitor->visit($dir)
+        $this->assertSame($this->baseVisitor,
+                          $this->baseVisitor->visit($dir)
         );
     }
 }

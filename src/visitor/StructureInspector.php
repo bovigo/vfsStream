@@ -10,9 +10,9 @@
 
 namespace bovigo\vfs\visitor;
 
-use bovigo\vfs\vfsStreamBlock;
-use bovigo\vfs\vfsStreamDirectory;
-use bovigo\vfs\vfsStreamFile;
+use bovigo\vfs\vfsBlock;
+use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\vfsFile;
 use function class_alias;
 
 /**
@@ -21,7 +21,7 @@ use function class_alias;
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  */
-class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
+class StructureInspector extends BaseVisitor
 {
     /**
      * collected structure
@@ -49,10 +49,10 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a file and process it
      *
-     * @param   vfsStreamFile  $file
-     * @return  vfsStreamStructureVisitor
+     * @param   vfsFile  $file
+     * @return  StructureInspector
      */
-    public function visitFile(vfsStreamFile $file)
+    public function visitFile(vfsFile $file)
     {
         $this->current[$file->getName()] = $file->getContent();
         return $this;
@@ -61,10 +61,10 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a block device and process it
      *
-     * @param   vfsStreamBlock $block
-     * @return  vfsStreamStructureVisitor
+     * @param   vfsBlock $block
+     * @return  StructureInspector
      */
-    public function visitBlockDevice(vfsStreamBlock $block)
+    public function visitBlockDevice(vfsBlock $block)
     {
         $this->current['[' . $block->getName() . ']'] = $block->getContent();
         return $this;
@@ -73,10 +73,10 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a directory and process it
      *
-     * @param   vfsStreamDirectory  $dir
-     * @return  vfsStreamStructureVisitor
+     * @param   vfsDirectory  $dir
+     * @return  StructureInspector
      */
-    public function visitDirectory(vfsStreamDirectory $dir)
+    public function visitDirectory(vfsDirectory $dir)
     {
         $this->current[$dir->getName()] = array();
         $tmp           =& $this->current;
@@ -103,7 +103,7 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     /**
      * resets structure so visitor could be reused
      *
-     * @return  vfsStreamStructureVisitor
+     * @return  StructureInspector
      */
     public function reset()
     {
@@ -113,4 +113,4 @@ class vfsStreamStructureVisitor extends vfsStreamAbstractVisitor
     }
 }
 
-class_alias('bovigo\vfs\visitor\vfsStreamStructureVisitor', 'org\bovigo\vfs\visitor\vfsStreamStructureVisitor');
+class_alias('bovigo\vfs\visitor\StructureInspector', 'org\bovigo\vfs\visitor\vfsStreamStructureVisitor');

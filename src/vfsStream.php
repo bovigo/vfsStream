@@ -144,8 +144,8 @@ class vfsStream
      * helper method for setting up vfsStream in unit tests
      *
      * Instead of
-     * vfsStreamWrapper::register();
-     * vfsStreamWrapper::setRoot(vfsStream::newDirectory('root'));
+     * StreamWrapper::register();
+     * StreamWrapper::setRoot(vfsStream::newDirectory('root'));
      * you can simply do
      * vfsStream::setup()
      * which yields the same result. Additionally, the method returns the
@@ -181,15 +181,15 @@ class vfsStream
      * @param   string  $rootDirName  name of root directory
      * @param   int     $permissions  file permissions of root directory
      * @param   array   $structure    directory structure to add under root directory
-     * @return  \org\bovigo\vfs\vfsStreamDirectory
+     * @return  vfsDirectory
      * @since   0.7.0
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
      */
     public static function setup($rootDirName = 'root', $permissions = null, array $structure = array())
     {
-        vfsStreamWrapper::register();
-        return self::create($structure, vfsStreamWrapper::setRoot(self::newDirectory($rootDirName, $permissions)));
+        StreamWrapper::register();
+        return self::create($structure, StreamWrapper::setRoot(self::newDirectory($rootDirName, $permissions)));
     }
 
     /**
@@ -225,18 +225,18 @@ class vfsStream
      * root directory without replacing existing childs except those with equal
      * names.
      *
-     * @param   array               $structure  directory structure to add under root directory
-     * @param   vfsStreamDirectory  $baseDir    base directory to add structure to
-     * @return  vfsStreamDirectory
+     * @param   array         $structure  directory structure to add under root directory
+     * @param   vfsDirectory  $baseDir    base directory to add structure to
+     * @return  vfsDirectory
      * @throws  \InvalidArgumentException
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
      */
-    public static function create(array $structure, vfsStreamDirectory $baseDir = null)
+    public static function create(array $structure, vfsDirectory $baseDir = null)
     {
         if (null === $baseDir) {
-            $baseDir = vfsStreamWrapper::getRoot();
+            $baseDir = StreamWrapper::getRoot();
         }
 
         if (null === $baseDir) {
@@ -249,11 +249,11 @@ class vfsStream
     /**
      * helper method to create subdirectories recursively
      *
-     * @param   array               $structure  subdirectory structure to add
-     * @param   vfsStreamDirectory  $baseDir    directory to add the structure to
-     * @return  vfsStreamDirectory
+     * @param   array         $structure  subdirectory structure to add
+     * @param   vfsDirectory  $baseDir    directory to add the structure to
+     * @return  vfsDirectory
      */
-    protected static function addStructure(array $structure, vfsStreamDirectory $baseDir)
+    protected static function addStructure(array $structure, vfsDirectory $baseDir)
     {
         foreach ($structure as $name => $data) {
             $name = (string) $name;
@@ -269,7 +269,7 @@ class vfsStream
                 }
             } elseif ($data instanceof FileContent) {
                 self::newFile($name)->withContent($data)->at($baseDir);
-            } elseif ($data instanceof vfsStreamFile) {
+            } elseif ($data instanceof vfsFile) {
                 $baseDir->addChild($data);
             }
         }
@@ -289,18 +289,18 @@ class vfsStream
      * the file is larger file content will be mocked, see
      * https://github.com/mikey179/vfsStream/wiki/MockingLargeFiles.
      *
-     * @param   string              $path         path to copy the structure from
-     * @param   vfsStreamDirectory  $baseDir      directory to add the structure to
-     * @param   int                 $maxFileSize  maximum file size of files to copy content from
-     * @return  vfsStreamDirectory
+     * @param   string        $path         path to copy the structure from
+     * @param   vfsDirectory  $baseDir      directory to add the structure to
+     * @param   int           $maxFileSize  maximum file size of files to copy content from
+     * @return  vfsDirectory
      * @throws  \InvalidArgumentException
      * @since   0.11.0
      * @see     https://github.com/mikey179/vfsStream/issues/4
      */
-    public static function copyFromFileSystem($path, vfsStreamDirectory $baseDir = null, $maxFileSize = 1048576)
+    public static function copyFromFileSystem($path, vfsDirectory $baseDir = null, $maxFileSize = 1048576)
     {
         if (null === $baseDir) {
-            $baseDir = vfsStreamWrapper::getRoot();
+            $baseDir = StreamWrapper::getRoot();
         }
 
         if (null === $baseDir) {
@@ -356,11 +356,11 @@ class vfsStream
      *
      * @param   string  $name         name of file to create
      * @param   int     $permissions  permissions of file to create
-     * @return  vfsStreamFile
+     * @return  vfsFile
      */
     public static function newFile($name, $permissions = null)
     {
-        return new vfsStreamFile($name, $permissions);
+        return new vfsFile($name, $permissions);
     }
 
     /**
@@ -372,7 +372,7 @@ class vfsStream
      *
      * @param   string  $name         name of directory to create
      * @param   int     $permissions  permissions of directory to create
-     * @return  vfsStreamDirectory
+     * @return  vfsDirectory
      */
     public static function newDirectory($name, $permissions = null)
     {
@@ -382,12 +382,12 @@ class vfsStream
 
         $firstSlash = strpos($name, '/');
         if (false === $firstSlash) {
-            return new vfsStreamDirectory($name, $permissions);
+            return new vfsDirectory($name, $permissions);
         }
 
         $ownName   = substr($name, 0, $firstSlash);
         $subDirs   = substr($name, $firstSlash + 1);
-        $directory = new vfsStreamDirectory($ownName, $permissions);
+        $directory = new vfsDirectory($ownName, $permissions);
         if (is_string($subDirs) && strlen($subDirs) > 0) {
             self::newDirectory($subDirs, $permissions)->at($directory);
         }
@@ -400,11 +400,11 @@ class vfsStream
      *
      * @param   string  $name           name of the block device
      * @param   int     $permissions    permissions of block to create
-     * @return vfsStreamBlock
+     * @return vfsBlock
      */
     public static function newBlock($name, $permissions = null)
     {
-        return new vfsStreamBlock($name, $permissions);
+        return new vfsBlock($name, $permissions);
     }
 
     /**
@@ -452,7 +452,7 @@ class vfsStream
             return $visitor->visit($content);
         }
 
-        $root = vfsStreamWrapper::getRoot();
+        $root = StreamWrapper::getRoot();
         if (null === $root) {
             throw new \InvalidArgumentException('No content given and no root directory set.');
         }
@@ -468,7 +468,7 @@ class vfsStream
      */
     public static function setQuota($bytes)
     {
-        vfsStreamWrapper::setQuota(new Quota($bytes));
+        StreamWrapper::setQuota(new Quota($bytes));
     }
 
     /**

@@ -10,10 +10,10 @@
 
 namespace bovigo\vfs\visitor;
 
-use bovigo\vfs\vfsStreamBlock;
+use bovigo\vfs\vfsBlock;
+use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\vfsFile;
 use bovigo\vfs\vfsStreamContent;
-use bovigo\vfs\vfsStreamDirectory;
-use bovigo\vfs\vfsStreamFile;
 use function class_alias;
 
 /**
@@ -35,26 +35,26 @@ interface vfsStreamVisitor
     /**
      * visit a file and process it
      *
-     * @param   vfsStreamFile  $file
+     * @param   vfsFile  $file
      * @return  vfsStreamVisitor
      */
-    public function visitFile(vfsStreamFile $file);
+    public function visitFile(vfsFile $file);
 
     /**
      * visit a directory and process it
      *
-     * @param   vfsStreamDirectory  $dir
+     * @param   vfsDirectory  $dir
      * @return  vfsStreamVisitor
      */
-    public function visitDirectory(vfsStreamDirectory $dir);
+    public function visitDirectory(vfsDirectory $dir);
 
     /**
      * visit a block device and process it
      *
-     * @param   vfsStreamBlock  $block
+     * @param   vfsBlock  $block
      * @return  vfsStreamVisitor
      */
-    public function visitBlockDevice(vfsStreamBlock $block);
+    public function visitBlockDevice(vfsBlock $block);
 }
 
 class_alias('bovigo\vfs\visitor\vfsStreamVisitor', 'org\bovigo\vfs\visitor\vfsStreamVisitor');

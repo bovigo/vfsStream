@@ -13,7 +13,7 @@ namespace bovigo\vfs\tests;
 use bovigo\callmap\NewInstance;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamContent;
-use bovigo\vfs\vfsStreamDirectory;
+use bovigo\vfs\vfsDirectory;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
@@ -24,14 +24,14 @@ use function bovigo\assert\predicate\isSameAs;
 use function is_string;
 
 /**
- * Test for bovigo\vfs\vfsStreamContainerIterator.
+ * Test for bovigo\vfs\vfsDirectoryIterator.
  */
-class vfsStreamContainerIteratorTestCase extends \BC_PHPUnit_Framework_TestCase
+class vfsDirectoryIteratorTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  vfsStreamDirectory
+     * @type  vfsDirectory
      */
     private $dir;
     /**
@@ -52,7 +52,7 @@ class vfsStreamContainerIteratorTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->dir = new vfsStreamDirectory('foo');
+        $this->dir = new vfsDirectory('foo');
         $this->mockChild1 = $this->bc_getMock('org\\bovigo\\vfs\\vfsStreamContent');
         $this->mockChild1->expects($this->any())
                          ->method('getName')

@@ -13,10 +13,10 @@ namespace bovigo\vfs\tests;
 use bovigo\callmap\NewInstance;
 use bovigo\vfs\content\LargeFileContent;
 use bovigo\vfs\vfsStream;
-use bovigo\vfs\vfsStreamFile;
+use bovigo\vfs\vfsFile;
 use bovigo\vfs\vfsStreamContent;
-use bovigo\vfs\vfsStreamDirectory;
-use bovigo\vfs\vfsStreamWrapper;
+use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\StreamWrapper;
 use bovigo\vfs\visitor\vfsStreamVisitor;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -44,7 +44,7 @@ class vfsStreamTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        vfsStreamWrapper::register();
+        StreamWrapper::register();
     }
 
     /**
@@ -239,7 +239,7 @@ class vfsStreamTestCase extends \BC_PHPUnit_Framework_TestCase
     public function setupRegistersStreamWrapperAndCreatesRootDirectoryWithDefaultNameAndPermissions()
     {
         $root = vfsStream::setup();
-        $this->assertSame($root, vfsStreamWrapper::getRoot());
+        $this->assertSame($root, StreamWrapper::getRoot());
         $this->assertEquals('root', $root->getName());
         $this->assertEquals(0777, $root->getPermissions());
     }
@@ -252,7 +252,7 @@ class vfsStreamTestCase extends \BC_PHPUnit_Framework_TestCase
     public function setupRegistersStreamWrapperAndCreatesRootDirectoryWithGivenNameAndDefaultPermissions()
     {
         $root = vfsStream::setup('foo');
-        $this->assertSame($root, vfsStreamWrapper::getRoot());
+        $this->assertSame($root, StreamWrapper::getRoot());
         $this->assertEquals('foo', $root->getName());
         $this->assertEquals(0777, $root->getPermissions());
     }
@@ -265,7 +265,7 @@ class vfsStreamTestCase extends \BC_PHPUnit_Framework_TestCase
     public function setupRegistersStreamWrapperAndCreatesRootDirectoryWithGivenNameAndPermissions()
     {
         $root = vfsStream::setup('foo', 0444);
-        $this->assertSame($root, vfsStreamWrapper::getRoot());
+        $this->assertSame($root, StreamWrapper::getRoot());
         $this->assertEquals('foo', $root->getName());
         $this->assertEquals(0444, $root->getPermissions());
     }
@@ -381,7 +381,7 @@ class vfsStreamTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function createArraysAreTurnedIntoSubdirectories()
     {
-        $baseDir = vfsStream::create(array('test' => array()), new vfsStreamDirectory('baseDir'));
+        $baseDir = vfsStream::create(array('test' => array()), new vfsDirectory('baseDir'));
         $this->assertTrue($baseDir->hasChildren());
         $this->assertTrue($baseDir->hasChild('test'));
         $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamDirectory',
@@ -429,7 +429,7 @@ class vfsStreamTestCase extends \BC_PHPUnit_Framework_TestCase
                                                            'baz.txt' => 'world'
                                                      )
                                      ),
-                                     new vfsStreamDirectory('baseDir')
+                                     new vfsDirectory('baseDir')
                    );
         $this->assertTrue($baseDir->hasChildren());
         $this->assertTrue($baseDir->hasChild('test'));
@@ -485,7 +485,7 @@ class vfsStreamTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function createStringsAreTurnedIntoFilesWithContent()
     {
-        $baseDir = vfsStream::create(array('test.txt' => 'some content'), new vfsStreamDirectory('baseDir'));
+        $baseDir = vfsStream::create(array('test.txt' => 'some content'), new vfsDirectory('baseDir'));
         $this->assertTrue($baseDir->hasChildren());
         $this->assertTrue($baseDir->hasChild('test.txt'));
         $this->assertVfsFile($baseDir->getChild('test.txt'), 'some content');
@@ -514,7 +514,7 @@ class vfsStreamTestCase extends \BC_PHPUnit_Framework_TestCase
     */
     public function createCastsNumericDirectoriesToStrings()
     {
-        $baseDir = vfsStream::create(array(2011 => array ('test.txt' => 'some content')), new vfsStreamDirectory('baseDir'));
+        $baseDir = vfsStream::create(array(2011 => array ('test.txt' => 'some content')), new vfsDirectory('baseDir'));
         $this->assertTrue($baseDir->hasChild('2011'));
 
         $directory = $baseDir->getChild('2011');
@@ -539,14 +539,14 @@ class vfsStreamTestCase extends \BC_PHPUnit_Framework_TestCase
     }
 
     /**
-     * helper function for assertions on vfsStreamFile
+     * helper function for assertions on vfsFile
      *
-     * @param  vfsStreamFile  $file
+     * @param  vfsFile  $file
      * @param  string         $content
      */
-    protected function assertVfsFile(vfsStreamFile $file, $content)
+    protected function assertVfsFile(vfsFile $file, $content)
     {
-        $this->assertInstanceOf('org\\bovigo\\vfs\\vfsStreamFile',
+        $this->assertInstanceOf('bovigo\\vfs\\vfsFile',
                                 $file
         );
         $this->assertEquals($content,

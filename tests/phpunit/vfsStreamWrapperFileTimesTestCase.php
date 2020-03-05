@@ -12,8 +12,7 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamContent;
-use bovigo\vfs\vfsStreamDirectory;
-use bovigo\vfs\vfsStreamWrapper;
+use bovigo\vfs\StreamWrapper;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
@@ -32,7 +31,7 @@ use function time;
 use function unlink;
 
 /**
- * Test for bovigo\vfs\vfsStreamWrapper.
+ * Test for bovigo\vfs\StreamWrapper.
  *
  * @since  0.9.0
  */
@@ -93,7 +92,7 @@ class vfsStreamWrapperFileTimesTestCase extends \BC_PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')
                          ->withContent('test')
-                         ->at(vfsStreamWrapper::getRoot())
+                         ->at(StreamWrapper::getRoot())
                          ->lastModified(100)
                          ->lastAccessed(100)
                          ->lastAttributeModified(100);
@@ -114,7 +113,7 @@ class vfsStreamWrapperFileTimesTestCase extends \BC_PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')
                          ->withContent('test')
-                         ->at(vfsStreamWrapper::getRoot())
+                         ->at(StreamWrapper::getRoot())
                          ->lastModified(100)
                          ->lastAccessed(100)
                          ->lastAttributeModified(100);
@@ -135,7 +134,7 @@ class vfsStreamWrapperFileTimesTestCase extends \BC_PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')
                          ->withContent('test')
-                         ->at(vfsStreamWrapper::getRoot())
+                         ->at(StreamWrapper::getRoot())
                          ->lastModified(100)
                          ->lastAccessed(100)
                          ->lastAttributeModified(100);
@@ -156,7 +155,7 @@ class vfsStreamWrapperFileTimesTestCase extends \BC_PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('foo.txt')
                          ->withContent('test')
-                         ->at(vfsStreamWrapper::getRoot())
+                         ->at(StreamWrapper::getRoot())
                          ->lastModified(100)
                          ->lastAccessed(100)
                          ->lastAttributeModified(100);
@@ -178,7 +177,7 @@ class vfsStreamWrapperFileTimesTestCase extends \BC_PHPUnit_Framework_TestCase
     public function writeFileChangesModificationTime()
     {
         $file = vfsStream::newFile('foo.txt')
-                         ->at(vfsStreamWrapper::getRoot())
+                         ->at(StreamWrapper::getRoot())
                          ->lastModified(100)
                          ->lastAccessed(100)
                          ->lastAttributeModified(100);
@@ -204,7 +203,7 @@ class vfsStreamWrapperFileTimesTestCase extends \BC_PHPUnit_Framework_TestCase
         $this->assertLessThanOrEqual(time(), filemtime($this->fooUrl));
         $this->assertEquals(fileatime($this->fooUrl), filectime($this->fooUrl));
         $this->assertEquals(fileatime($this->fooUrl), filemtime($this->fooUrl));
-        $this->assertFileTimesEqualStreamTimes($this->fooUrl, vfsStreamWrapper::getRoot()->getChild('foo.txt'));
+        $this->assertFileTimesEqualStreamTimes($this->fooUrl, StreamWrapper::getRoot()->getChild('foo.txt'));
     }
 
     /**
@@ -214,7 +213,7 @@ class vfsStreamWrapperFileTimesTestCase extends \BC_PHPUnit_Framework_TestCase
     public function createNewFileChangesAttributeAndModificationTimeOfContainingDirectory()
     {
         $dir = vfsStream::newDirectory('bar')
-                        ->at(vfsStreamWrapper::getRoot())
+                        ->at(StreamWrapper::getRoot())
                         ->lastModified(100)
                         ->lastAccessed(100)
                         ->lastAttributeModified(100);
@@ -250,7 +249,7 @@ class vfsStreamWrapperFileTimesTestCase extends \BC_PHPUnit_Framework_TestCase
     public function removeFileChangesAttributeAndModificationTimeOfContainingDirectory()
     {
         $dir = vfsStream::newDirectory('bar')
-                        ->at(vfsStreamWrapper::getRoot());
+                        ->at(StreamWrapper::getRoot());
         $file = vfsStream::newFile('baz.txt')
                          ->at($dir)
                          ->lastModified(100)
@@ -273,12 +272,12 @@ class vfsStreamWrapperFileTimesTestCase extends \BC_PHPUnit_Framework_TestCase
     public function renameFileChangesAttributeAndModificationTimeOfAffectedDirectories()
     {
         $target = vfsStream::newDirectory('target')
-                           ->at(vfsStreamWrapper::getRoot())
+                           ->at(StreamWrapper::getRoot())
                            ->lastModified(200)
                            ->lastAccessed(200)
                            ->lastAttributeModified(200);
         $source = vfsStream::newDirectory('bar')
-                           ->at(vfsStreamWrapper::getRoot());
+                           ->at(StreamWrapper::getRoot());
         $file = vfsStream::newFile('baz.txt')
                          ->at($source)
                          ->lastModified(300)
@@ -305,12 +304,12 @@ class vfsStreamWrapperFileTimesTestCase extends \BC_PHPUnit_Framework_TestCase
     public function renameFileDoesNotChangeFileTimesOfFileItself()
     {
         $target = vfsStream::newDirectory('target')
-                           ->at(vfsStreamWrapper::getRoot())
+                           ->at(StreamWrapper::getRoot())
                            ->lastModified(200)
                            ->lastAccessed(200)
                            ->lastAttributeModified(200);
         $source = vfsStream::newDirectory('bar')
-                           ->at(vfsStreamWrapper::getRoot());
+                           ->at(StreamWrapper::getRoot());
         $file = vfsStream::newFile('baz.txt')
                          ->at($source)
                          ->lastModified(300)

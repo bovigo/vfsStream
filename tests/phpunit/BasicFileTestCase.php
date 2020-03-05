@@ -11,8 +11,8 @@
 namespace bovigo\vfs\tests;
 
 use bovigo\callmap\NewInstance;
+use bovigo\vfs\BasicFile;
 use bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamAbstractContent;
 use bovigo\vfs\vfsStreamContent;
 use bovigo\vfs\vfsStreamException;
 use PHPUnit\Framework\TestCase;
@@ -23,9 +23,9 @@ use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 
 /**
- * Test for bovigo\vfs\vfsStreamAbstractContent.
+ * Test for bovigo\vfs\BasicFile.
  */
-class TestvfsStreamAbstractContent extends vfsStreamAbstractContent
+class TestBasicFile extends BasicFile
 {
     /**
      * returns default permissions for concrete implementation
@@ -49,9 +49,9 @@ class TestvfsStreamAbstractContent extends vfsStreamAbstractContent
     }
 }
 /**
- * Test for org\bovigo\vfs\vfsStreamAbstractContent.
+ * Test for org\bovigo\vfs\BasicFile.
  */
-class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
+class BasicFileTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -60,7 +60,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function noPermissionsForEveryone()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0000);
+        $abstractContent = new TestBasicFile('foo', 0000);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -106,7 +106,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function executePermissionsForUser()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0100);
+        $abstractContent = new TestBasicFile('foo', 0100);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -152,7 +152,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function executePermissionsForGroup()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0010);
+        $abstractContent = new TestBasicFile('foo', 0010);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -198,7 +198,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function executePermissionsForOther()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0001);
+        $abstractContent = new TestBasicFile('foo', 0001);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -244,7 +244,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function writePermissionsForUser()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0200);
+        $abstractContent = new TestBasicFile('foo', 0200);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -290,7 +290,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function writePermissionsForGroup()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0020);
+        $abstractContent = new TestBasicFile('foo', 0020);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -336,7 +336,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function writePermissionsForOther()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0002);
+        $abstractContent = new TestBasicFile('foo', 0002);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -382,7 +382,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function executeAndWritePermissionsForUser()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0300);
+        $abstractContent = new TestBasicFile('foo', 0300);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -428,7 +428,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function executeAndWritePermissionsForGroup()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0030);
+        $abstractContent = new TestBasicFile('foo', 0030);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -474,7 +474,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function executeAndWritePermissionsForOther()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0003);
+        $abstractContent = new TestBasicFile('foo', 0003);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -520,7 +520,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function readPermissionsForUser()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0400);
+        $abstractContent = new TestBasicFile('foo', 0400);
         $this->assertTrue($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                        vfsStream::getCurrentGroup()
                                             )
@@ -566,7 +566,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function readPermissionsForGroup()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0040);
+        $abstractContent = new TestBasicFile('foo', 0040);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -612,7 +612,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function readPermissionsForOther()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0004);
+        $abstractContent = new TestBasicFile('foo', 0004);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -658,7 +658,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function readAndExecutePermissionsForUser()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0500);
+        $abstractContent = new TestBasicFile('foo', 0500);
         $this->assertTrue($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                        vfsStream::getCurrentGroup()
                                             )
@@ -704,7 +704,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function readAndExecutePermissionsForGroup()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0050);
+        $abstractContent = new TestBasicFile('foo', 0050);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -750,7 +750,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function readAndExecutePermissionsForOther()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0005);
+        $abstractContent = new TestBasicFile('foo', 0005);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -796,7 +796,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function readAndWritePermissionsForUser()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0600);
+        $abstractContent = new TestBasicFile('foo', 0600);
         $this->assertTrue($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                        vfsStream::getCurrentGroup()
                                             )
@@ -842,7 +842,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function readAndWritePermissionsForGroup()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0060);
+        $abstractContent = new TestBasicFile('foo', 0060);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -888,7 +888,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function readAndWritePermissionsForOther()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0006);
+        $abstractContent = new TestBasicFile('foo', 0006);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -934,7 +934,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function allPermissionsForUser()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0700);
+        $abstractContent = new TestBasicFile('foo', 0700);
         $this->assertTrue($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                        vfsStream::getCurrentGroup()
                                             )
@@ -980,7 +980,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function allPermissionsForGroup()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0070);
+        $abstractContent = new TestBasicFile('foo', 0070);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )
@@ -1026,7 +1026,7 @@ class vfsStreamAbstractContentTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function allPermissionsForOther()
     {
-        $abstractContent = new TestvfsStreamAbstractContent('foo', 0007);
+        $abstractContent = new TestBasicFile('foo', 0007);
         $this->assertFalse($abstractContent->isReadable(vfsStream::getCurrentUser(),
                                                         vfsStream::getCurrentGroup()
                                              )

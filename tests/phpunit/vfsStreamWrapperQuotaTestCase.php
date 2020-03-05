@@ -11,7 +11,7 @@
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
-use bovigo\vfs\vfsStreamDirectory;
+use bovigo\vfs\vfsDirectory;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertThat;
@@ -24,7 +24,7 @@ use function fopen;
 use function ftruncate;
 
 /**
- * Test for quota related functionality of bovigo\vfs\vfsStreamWrapper.
+ * Test for quota related functionality of bovigo\vfs\StreamWrapper.
  *
  * @group  issue_35
  */
@@ -33,7 +33,7 @@ class vfsStreamWrapperQuotaTestCase extends \BC_PHPUnit_Framework_TestCase
     /**
      * access to root
      *
-     * @type  vfsStreamDirectory
+     * @type  vfsDirectory
      */
     private $root;
 

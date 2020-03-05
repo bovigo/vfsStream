@@ -31,7 +31,7 @@ use function time;
  *
  * @api
  */
-class vfsStreamFile extends vfsStreamAbstractContent
+class vfsFile extends BasicFile
 {
     /**
      * content of the file
@@ -279,7 +279,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * locks file for
      *
-     * @param   resource|vfsStreamWrapper $resource
+     * @param   resource|StreamWrapper $resource
      * @param   int  $operation
      * @return  bool
      * @since   0.10.0
@@ -315,7 +315,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * Removes lock from file acquired by given resource
      *
-     * @param   resource|vfsStreamWrapper $resource
+     * @param   resource|StreamWrapper $resource
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
     public function unlock($resource) {
@@ -330,7 +330,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * Set exlusive lock on file by given resource
      *
-     * @param   resource|vfsStreamWrapper $resource
+     * @param   resource|StreamWrapper $resource
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
     protected function setExclusiveLock($resource) {
@@ -340,7 +340,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * Add shared lock on file by given resource
      *
-     * @param   resource|vfsStreamWrapper $resource
+     * @param   resource|StreamWrapper $resource
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
     protected function addSharedLock($resource) {
@@ -350,7 +350,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * checks whether file is locked
      *
-     * @param   resource|vfsStreamWrapper $resource
+     * @param   resource|StreamWrapper $resource
      * @return  bool
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
@@ -364,7 +364,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * checks whether file is locked in shared mode
      *
-     * @param   resource|vfsStreamWrapper $resource
+     * @param   resource|StreamWrapper $resource
      * @return  bool
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
@@ -382,7 +382,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * Returns unique resource id
      *
-     * @param   resource|vfsStreamWrapper $resource
+     * @param   resource|StreamWrapper $resource
      * @return  string
      * @see     https://github.com/mikey179/vfsStream/issues/40
      */
@@ -398,7 +398,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * checks whether file is locked in exclusive mode
      *
-     * @param   resource|vfsStreamWrapper $resource
+     * @param   resource|StreamWrapper $resource
      * @return  bool
      * @since   0.10.0
      * @see     https://github.com/mikey179/vfsStream/issues/6
@@ -414,4 +414,4 @@ class vfsStreamFile extends vfsStreamAbstractContent
     }
 }
 
-class_alias('bovigo\vfs\vfsStreamFile', 'org\bovigo\vfs\vfsStreamFile');
+class_alias('bovigo\vfs\vfsFile', 'org\bovigo\vfs\vfsStreamFile');

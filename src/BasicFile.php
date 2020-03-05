@@ -20,7 +20,7 @@ use function time;
 /**
  * Base stream contents container.
  */
-abstract class vfsStreamAbstractContent implements vfsStreamContent
+abstract class BasicFile implements vfsStreamContent
 {
     /**
      * name of the container
@@ -426,4 +426,4 @@ abstract class vfsStreamAbstractContent implements vfsStreamContent
     }
 }
 
-class_alias('bovigo\vfs\vfsStreamAbstractContent', 'org\bovigo\vfs\vfsStreamAbstractContent');
+class_alias('bovigo\vfs\BasicFile', 'org\bovigo\vfs\vfsStreamAbstractContent');

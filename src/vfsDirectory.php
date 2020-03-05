@@ -23,7 +23,7 @@ use function time;
  *
  * @api
  */
-class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamContainer
+class vfsDirectory extends BasicFile implements vfsStreamContainer
 {
     /**
      * list of directory children
@@ -253,11 +253,11 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     /**
      * returns iterator for the children
      *
-     * @return  vfsStreamContainerIterator
+     * @return  vfsDirectoryIterator
      */
     public function getIterator()
     {
-        return new vfsStreamContainerIterator($this->children);
+        return new vfsDirectoryIterator($this->children);
     }
 
     /**
@@ -275,4 +275,4 @@ class vfsStreamDirectory extends vfsStreamAbstractContent implements vfsStreamCo
     }
 }
 
-class_alias('bovigo\vfs\vfsStreamDirectory', 'org\bovigo\vfs\vfsStreamDirectory');
+class_alias('bovigo\vfs\vfsDirectory', 'org\bovigo\vfs\vfsStreamDirectory');
