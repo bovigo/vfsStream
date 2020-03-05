@@ -11,8 +11,6 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\content;
 
-use function class_alias;
-
 /**
  * Interface for actual file contents.
  *
@@ -31,26 +29,14 @@ interface FileContent
     public function size(): int;
 
     /**
-     * reads the given amount of bytes from content
+     * reads the given amount of bytes starting at offset
      */
-    public function read(int $count): string;
+    public function read(int $offset, int $count): string;
 
     /**
-     * seeks to the given offset
+     * writes an amount of data starting at given offset
      */
-    public function seek(int $offset, int $whence): bool;
-
-    /**
-     * checks whether pointer is at end of file
-     */
-    public function eof(): bool;
-
-    /**
-     * writes an amount of data
-     *
-     * @return  int     amount of written bytes
-     */
-    public function write(string $data): int;
+    public function write(string $data, int $offset, int $length): void;
 
     /**
      * Truncates a file to a given length
@@ -58,22 +44,4 @@ interface FileContent
      * @param   int $size length to truncate file to
      */
     public function truncate(int $size): bool;
-
-    /**
-     * Returns the current position within the file.
-     *
-     * @internal
-     */
-    public function bytesRead(): int;
-
-    /**
-     * Returns the content until its end from current offset.
-     *
-     * Using this method changes the time when the file was last accessed.
-     *
-     * @internal
-     */
-    public function readUntilEnd(): string;
 }
-
-class_alias('bovigo\vfs\content\FileContent', 'org\bovigo\vfs\content\FileContent');

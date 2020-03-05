@@ -35,7 +35,7 @@ use function rewinddir;
  * @group  dir
  * @group  iteration
  */
-class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
+class DirectoryIterationTestCase extends StreamWrapperBaseTestCase
 {
     /**
      * clean up test environment
@@ -264,7 +264,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
             ],
         ];
         $root = vfsStream::create($structure);
-        $rootPath = vfsStream::url($root->getName());
+        $rootPath = vfsStream::url($root->name());
 
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($rootPath),
@@ -315,7 +315,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
             ],
         ];
         $root = vfsStream::create($structure);
-        $rootPath = vfsStream::url($root->getName());
+        $rootPath = vfsStream::url($root->name());
 
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($rootPath),

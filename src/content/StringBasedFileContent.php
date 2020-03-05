@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\content;
 
-use function class_alias;
 use function str_repeat;
 use function strlen;
 use function substr;
@@ -21,7 +20,7 @@ use function substr;
  *
  * @since  1.3.0
  */
-class StringBasedFileContent extends SeekableFileContent implements FileContent
+class StringBasedFileContent implements FileContent
 {
     /**
      * actual content
@@ -55,9 +54,9 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
     }
 
     /**
-     * actual reading of length starting at given offset
+     * reads the given amount of bytes starting at offset
      */
-    protected function doRead(int $offset, int $count): string
+    public function read(int $offset, int $count): string
     {
         /** @var string|false $data */
         $data = substr($this->content, $offset, $count);
@@ -66,9 +65,9 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
     }
 
     /**
-     * actual writing of data with specified length at given offset
+     * writes an amount of data starting at given offset
      */
-    protected function doWrite(string $data, int $offset, int $length): void
+    public function write(string $data, int $offset, int $length): void
     {
         $this->content = substr($this->content, 0, $offset)
                        . $data
@@ -92,5 +91,3 @@ class StringBasedFileContent extends SeekableFileContent implements FileContent
         return true;
     }
 }
-
-class_alias('bovigo\vfs\content\StringBasedFileContent', 'org\bovigo\vfs\content\StringBasedFileContent');

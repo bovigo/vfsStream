@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace bovigo\vfs;
 
 use Exception;
-use function class_alias;
 
 /**
  * Exception for vfsStream errors.
@@ -23,5 +22,3 @@ class vfsStreamException extends Exception
 {
     // intentionally empty
 }
-
-class_alias('bovigo\vfs\vfsStreamException', 'org\bovigo\vfs\vfsStreamException');

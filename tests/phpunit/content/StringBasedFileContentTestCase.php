@@ -13,11 +13,7 @@ namespace bovigo\vfs\tests\content;
 
 use bovigo\vfs\content\StringBasedFileContent;
 use PHPUnit\Framework\TestCase;
-use const SEEK_CUR;
-use const SEEK_END;
-use const SEEK_SET;
 use function bovigo\assert\assertEmptyString;
-use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
@@ -56,14 +52,6 @@ class StringBasedFileContentTestCase extends TestCase
     /**
      * @test
      */
-    public function hasNotReachedEofAfterCreation(): void
-    {
-        assertFalse($this->stringBasedFileContent->eof());
-    }
-
-    /**
-     * @test
-     */
     public function sizeEqualsLengthOfGivenString(): void
     {
         assertThat($this->stringBasedFileContent->size(), equals(9));
@@ -74,17 +62,17 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function readReturnsSubstringWithRequestedLength(): void
     {
-        assertThat($this->stringBasedFileContent->read(3), equals('foo'));
+        assertThat($this->stringBasedFileContent->read(0, 3), equals('foo'));
     }
 
     /**
      * @test
      */
-    public function readMovesOffset(): void
+    public function readFromOffset(): void
     {
-        assertThat($this->stringBasedFileContent->read(3), equals('foo'));
-        assertThat($this->stringBasedFileContent->read(3), equals('bar'));
-        assertThat($this->stringBasedFileContent->read(3), equals('baz'));
+        assertThat($this->stringBasedFileContent->read(0, 3), equals('foo'));
+        assertThat($this->stringBasedFileContent->read(3, 3), equals('bar'));
+        assertThat($this->stringBasedFileContent->read(6, 3), equals('baz'));
     }
 
     /**
@@ -92,7 +80,7 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function readMoreThanSizeReturnsWholeContent(): void
     {
-        assertThat($this->stringBasedFileContent->read(10), equals('foobarbaz'));
+        assertThat($this->stringBasedFileContent->read(0, 10), equals('foobarbaz'));
     }
 
     /**
@@ -100,8 +88,7 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function readAfterEndReturnsEmptyString(): void
     {
-        $this->stringBasedFileContent->read(9);
-        assertEmptyString($this->stringBasedFileContent->read(3));
+        assertEmptyString($this->stringBasedFileContent->read(9, 3));
     }
 
     /**
@@ -109,71 +96,8 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function readDoesNotChangeSize(): void
     {
-        $this->stringBasedFileContent->read(3);
+        $this->stringBasedFileContent->read(0, 3);
         assertThat($this->stringBasedFileContent->size(), equals(9));
-    }
-
-    /**
-     * @test
-     */
-    public function readLessThenSizeDoesNotReachEof(): void
-    {
-        $this->stringBasedFileContent->read(3);
-        assertFalse($this->stringBasedFileContent->eof());
-    }
-
-    /**
-     * @test
-     */
-    public function readSizeReachesEof(): void
-    {
-        $this->stringBasedFileContent->read(9);
-        assertTrue($this->stringBasedFileContent->eof());
-    }
-
-    /**
-     * @test
-     */
-    public function readMoreThanSizeReachesEof(): void
-    {
-        $this->stringBasedFileContent->read(10);
-        assertTrue($this->stringBasedFileContent->eof());
-    }
-
-    /**
-     * @test
-     */
-    public function seekWithInvalidOptionReturnsFalse(): void
-    {
-        assertFalse($this->stringBasedFileContent->seek(0, 55));
-    }
-
-    /**
-     * @test
-     */
-    public function canSeekToGivenOffset(): void
-    {
-        assertTrue($this->stringBasedFileContent->seek(5, SEEK_SET));
-        assertThat($this->stringBasedFileContent->read(10), equals('rbaz'));
-    }
-
-    /**
-     * @test
-     */
-    public function canSeekFromCurrentOffset(): void
-    {
-        $this->stringBasedFileContent->seek(5, SEEK_SET);
-        assertTrue($this->stringBasedFileContent->seek(2, SEEK_CUR));
-        assertThat($this->stringBasedFileContent->read(10), equals('az'));
-    }
-
-    /**
-     * @test
-     */
-    public function canSeekToEnd(): void
-    {
-        assertTrue($this->stringBasedFileContent->seek(0, SEEK_END));
-        assertEmptyString($this->stringBasedFileContent->read(10));
     }
 
     /**
@@ -181,7 +105,7 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function writeOverwritesExistingContentWhenOffsetNotAtEof(): void
     {
-        assertThat($this->stringBasedFileContent->write('bar'), equals(3));
+        $this->stringBasedFileContent->write('bar', 0, 3);
         assertThat($this->stringBasedFileContent->content(), equals('barbarbaz'));
     }
 
@@ -190,8 +114,7 @@ class StringBasedFileContentTestCase extends TestCase
      */
     public function writeAppendsContentWhenOffsetAtEof(): void
     {
-        $this->stringBasedFileContent->seek(0, SEEK_END);
-        assertThat($this->stringBasedFileContent->write('bar'), equals(3));
+        $this->stringBasedFileContent->write('bar', 9, 3);
         assertThat($this->stringBasedFileContent->content(), equals('foobarbazbar'));
     }
 

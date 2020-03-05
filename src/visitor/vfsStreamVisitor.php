@@ -11,11 +11,10 @@ declare(strict_types=1);
 
 namespace bovigo\vfs\visitor;
 
-use bovigo\vfs\vfsStreamBlock;
-use bovigo\vfs\vfsStreamContent;
-use bovigo\vfs\vfsStreamDirectory;
-use bovigo\vfs\vfsStreamFile;
-use function class_alias;
+use bovigo\vfs\BasicFile;
+use bovigo\vfs\vfsBlock;
+use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\vfsFile;
 
 /**
  * Interface for a visitor to work on a vfsStream content structure.
@@ -29,22 +28,20 @@ interface vfsStreamVisitor
     /**
      * visit a content and process it
      */
-    public function visit(vfsStreamContent $content): self;
+    public function visit(BasicFile $file): self;
 
     /**
      * visit a file and process it
      */
-    public function visitFile(vfsStreamFile $file): self;
+    public function visitFile(vfsFile $file): self;
 
     /**
      * visit a directory and process it
      */
-    public function visitDirectory(vfsStreamDirectory $dir): self;
+    public function visitDirectory(vfsDirectory $dir): self;
 
     /**
      * visit a block device and process it
      */
-    public function visitBlockDevice(vfsStreamBlock $block): self;
+    public function visitBlockDevice(vfsBlock $block): self;
 }
-
-class_alias('bovigo\vfs\visitor\vfsStreamVisitor', 'org\bovigo\vfs\visitor\vfsStreamVisitor');
