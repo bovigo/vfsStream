@@ -21,6 +21,7 @@ use function substr;
  * Default implementation for file contents based on simple strings.
  *
  * @since  1.3.0
+ * @deprecated since 1.7, will be removed in version 2
  */
 abstract class SeekableFileContent implements FileContent
 {

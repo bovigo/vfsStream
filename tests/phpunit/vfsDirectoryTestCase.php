@@ -13,7 +13,7 @@ namespace bovigo\vfs\tests;
 use bovigo\callmap\NewInstance;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamContent;
-use org\bovigo\vfs\vfsStreamDirectory;
+use bovigo\vfs\vfsDirectory;
 use bovigo\vfs\vfsStreamException;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertEmptyArray;
@@ -26,14 +26,14 @@ use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isSameAs;
 
 /**
- * Test for bovigo\vfs\vfsStreamDirectory.
+ * Test for bovigo\vfs\vfsDirectory.
  */
-class vfsStreamDirectoryTestCase extends \BC_PHPUnit_Framework_TestCase
+class vfsDirectoryTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @var  vfsStreamDirectory
+     * @var  vfsDirectory
      */
     protected $dir;
 
@@ -42,7 +42,7 @@ class vfsStreamDirectoryTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->dir = new vfsStreamDirectory('foo');
+        $this->dir = new vfsDirectory('foo');
     }
 
     /**
@@ -53,7 +53,7 @@ class vfsStreamDirectoryTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function invalidCharacterInName()
     {
-        $dir = new vfsStreamDirectory('foo/bar');
+        $dir = new vfsDirectory('foo/bar');
     }
 
     /**
@@ -213,7 +213,7 @@ class vfsStreamDirectoryTestCase extends \BC_PHPUnit_Framework_TestCase
         $mockChild->expects($this->once())
                   ->method('size')
                   ->will($this->returnValue(5));
-        $subdir = new vfsStreamDirectory('subdir');
+        $subdir = new vfsDirectory('subdir');
         $subdir->addChild($mockChild);
         $this->dir->addChild($subdir);
         $this->assertTrue($this->dir->hasChild('subdir'));
@@ -276,10 +276,10 @@ class vfsStreamDirectoryTestCase extends \BC_PHPUnit_Framework_TestCase
                   ->method('getName')
                   ->will($this->returnValue('bar'));
 
-        $subdir1 = new vfsStreamDirectory('subdir1');
+        $subdir1 = new vfsDirectory('subdir1');
         $this->dir->addChild($subdir1);
 
-        $subdir2 = new vfsStreamDirectory('subdir2');
+        $subdir2 = new vfsDirectory('subdir2');
         $subdir1->addChild($subdir2);
 
         $subdir2->addChild($mockChild);
@@ -313,7 +313,7 @@ class vfsStreamDirectoryTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function permissionsSet()
     {
-        $this->dir = new vfsStreamDirectory('foo', 0755);
+        $this->dir = new vfsDirectory('foo', 0755);
         $this->assertEquals(0755, $this->dir->getPermissions());
         $this->assertSame($this->dir, $this->dir->chmod(0700));
         $this->assertEquals(0700, $this->dir->getPermissions());

@@ -11,8 +11,8 @@
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
-use bovigo\vfs\vfsStreamDirectory;
-use bovigo\vfs\vfsStreamWrapper;
+use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\StreamWrapper;
 use const SEEK_CUR;
 use const SEEK_END;
 use const SEEK_SET;
@@ -35,7 +35,7 @@ use function rename;
 use function unlink;
 
 /**
- * Test for bovigo\vfs\vfsStreamWrapper.
+ * Test for bovigo\vfs\StreamWrapper.
  */
 class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
 {
@@ -59,9 +59,9 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function file_get_contentsNonReadableFile()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root'));
-        vfsStream::newFile('new.txt', 0000)->at(vfsStreamWrapper::getRoot())->withContent('content');
+        StreamWrapper::register();
+        StreamWrapper::setRoot(new vfsDirectory('root'));
+        vfsStream::newFile('new.txt', 0000)->at(StreamWrapper::getRoot())->withContent('content');
         $this->assertEquals('', @file_get_contents(vfsStream::url('root/new.txt')));
     }
 
@@ -87,9 +87,9 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function file_put_contentsExistingFileNonWritableDirectory()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root', 0000));
-        vfsStream::newFile('new.txt')->at(vfsStreamWrapper::getRoot())->withContent('content');
+        StreamWrapper::register();
+        StreamWrapper::setRoot(new vfsDirectory('root', 0000));
+        vfsStream::newFile('new.txt')->at(StreamWrapper::getRoot())->withContent('content');
         $this->assertEquals(15, @file_put_contents(vfsStream::url('root/new.txt'), 'This does work.'));
         $this->assertEquals('This does work.', file_get_contents(vfsStream::url('root/new.txt')));
 
@@ -102,9 +102,9 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function file_put_contentsExistingNonWritableFile()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root'));
-        vfsStream::newFile('new.txt', 0400)->at(vfsStreamWrapper::getRoot())->withContent('content');
+        StreamWrapper::register();
+        StreamWrapper::setRoot(new vfsDirectory('root'));
+        vfsStream::newFile('new.txt', 0400)->at(StreamWrapper::getRoot())->withContent('content');
         $this->assertFalse(@file_put_contents(vfsStream::url('root/new.txt'), 'This does not work.'));
         $this->assertEquals('content', file_get_contents(vfsStream::url('root/new.txt')));
     }
@@ -129,8 +129,8 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function file_put_contentsNonExistingFileNonWritableDirectory()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root', 0000));
+        StreamWrapper::register();
+        StreamWrapper::setRoot(new vfsDirectory('root', 0000));
         $this->assertFalse(@file_put_contents(vfsStream::url('root/new.txt'), 'This does not work.'));
         $this->assertFalse(file_exists(vfsStream::url('root/new.txt')));
 
@@ -333,9 +333,9 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function canNotRemoveFileFromDirectoryWithoutWritePermissions()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('root', 0000));
-        vfsStream::newFile('new.txt')->at(vfsStreamWrapper::getRoot());
+        StreamWrapper::register();
+        StreamWrapper::setRoot(new vfsDirectory('root', 0000));
+        vfsStream::newFile('new.txt')->at(StreamWrapper::getRoot());
         $this->assertFalse(unlink(vfsStream::url('root/new.txt')));
         $this->assertTrue(file_exists(vfsStream::url('root/new.txt')));
     }

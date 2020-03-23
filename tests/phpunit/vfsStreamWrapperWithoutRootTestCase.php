@@ -11,7 +11,7 @@
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
-use bovigo\vfs\vfsStreamWrapper;
+use bovigo\vfs\StreamWrapper;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function dir;
@@ -20,7 +20,7 @@ use function rename;
 use function unlink;
 
 /**
- * Test for bovigo\vfs\vfsStreamWrapper.
+ * Test for bovigo\vfs\StreamWrapper.
  */
 class vfsStreamWrapperWithoutRootTestCase extends \BC_PHPUnit_Framework_TestCase
 {
@@ -29,7 +29,7 @@ class vfsStreamWrapperWithoutRootTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        vfsStreamWrapper::register();
+        StreamWrapper::register();
     }
 
     /**

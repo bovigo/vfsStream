@@ -17,7 +17,7 @@ use function class_alias;
  *
  * @api
  */
-class vfsStreamBlock extends vfsStreamFile
+class vfsBlock extends vfsFile
 {
     /**
      * constructor
@@ -36,4 +36,4 @@ class vfsStreamBlock extends vfsStreamFile
     }
 }
 
-class_alias('bovigo\vfs\vfsStreamBlock', 'org\bovigo\vfs\vfsStreamBlock');
+class_alias('bovigo\vfs\vfsBlock', 'org\bovigo\vfs\vfsStreamBlock');

@@ -11,7 +11,7 @@
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
-use bovigo\vfs\vfsStreamWrapper;
+use bovigo\vfs\StreamWrapper;
 use const E_USER_WARNING;
 use const E_WARNING;
 use const PHP_VERSION_ID;
@@ -57,12 +57,12 @@ use function touch;
 use function unlink;
 
 /**
- * Test for bovigo\vfs\vfsStreamWrapper.
+ * Test for bovigo\vfs\StreamWrapper.
  */
 class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
 {
     /**
-     * ensure that a call to vfsStreamWrapper::register() resets the stream
+     * ensure that a call to StreamWrapper::register() resets the stream
      *
      * Implemented after a request by David Zülke.
      *
@@ -70,9 +70,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function resetByRegister()
     {
-        $this->assertSame($this->foo, vfsStreamWrapper::getRoot());
-        vfsStreamWrapper::register();
-        $this->assertNull(vfsStreamWrapper::getRoot());
+        $this->assertSame($this->foo, StreamWrapper::getRoot());
+        StreamWrapper::register();
+        $this->assertNull(StreamWrapper::getRoot());
     }
 
     /**
@@ -81,9 +81,9 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function setRootReturnsRoot()
     {
-        vfsStreamWrapper::register();
+        StreamWrapper::register();
         $root = vfsStream::newDirectory('root');
-        $this->assertSame($root, vfsStreamWrapper::setRoot($root));
+        $this->assertSame($root, StreamWrapper::setRoot($root));
     }
 
     /**
@@ -670,7 +670,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      */
     public function openFileWithoutDirectory()
     {
-        vfsStreamWrapper::register();
+        StreamWrapper::register();
         $this->assertFalse(file_get_contents(vfsStream::url('file.txt')));
     }
 

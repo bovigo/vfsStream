@@ -13,7 +13,7 @@ namespace bovigo\vfs\tests;
 use bovigo\callmap\NewInstance;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamException;
-use bovigo\vfs\vfsStreamWrapper;
+use bovigo\vfs\StreamWrapper;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\expect;
 use function in_array;
@@ -24,10 +24,10 @@ use function stream_wrapper_unregister;
 /**
  * Helper class for the test.
  */
-class TestvfsStreamWrapper extends vfsStreamWrapper
+class TestvfsStreamWrapper extends StreamWrapper
 {
     /**
-     * unregisters vfsStreamWrapper
+     * unregisters StreamWrapper
      */
     public static function unregister()
     {
@@ -70,6 +70,6 @@ class vfsStreamWrapperAlreadyRegisteredTestCase extends \BC_PHPUnit_Framework_Te
      */
     public function registerOverAnotherStreamWrapper()
     {
-        vfsStreamWrapper::register();
+        StreamWrapper::register();
     }
 }

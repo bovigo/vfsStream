@@ -20,7 +20,7 @@ use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 
 /**
- * Test for bovigo\vfs\vfsStreamWrapper in conjunction with ext/zip.
+ * Test for bovigo\vfs\StreamWrapper in conjunction with ext/zip.
  *
  * @group  zip
  */
@@ -37,8 +37,8 @@ class vfsStreamZipTestCase extends \BC_PHPUnit_Framework_TestCase
 
         $this->markTestSkipped('Zip extension can not work with vfsStream urls.');
 
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(vfsStream::newDirectory('root'));
+        StreamWrapper::register();
+        StreamWrapper::setRoot(vfsStream::newDirectory('root'));
 
     }
 

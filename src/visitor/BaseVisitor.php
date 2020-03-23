@@ -10,10 +10,10 @@
 
 namespace bovigo\vfs\visitor;
 
-use bovigo\vfs\vfsStreamBlock;
+use bovigo\vfs\vfsBlock;
+use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\vfsFile;
 use bovigo\vfs\vfsStreamContent;
-use bovigo\vfs\vfsStreamDirectory;
-use bovigo\vfs\vfsStreamFile;
 use InvalidArgumentException;
 use function class_alias;
 
@@ -23,7 +23,7 @@ use function class_alias;
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  */
-abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
+abstract class BaseVisitor implements vfsStreamVisitor
 {
     /**
      * visit a content and process it
@@ -60,13 +60,13 @@ abstract class vfsStreamAbstractVisitor implements vfsStreamVisitor
     /**
      * visit a block device and process it
      *
-     * @param   vfsStreamBlock $block
+     * @param   vfsBlock $block
      * @return  vfsStreamVisitor
      */
-    public function visitBlockDevice(vfsStreamBlock $block)
+    public function visitBlockDevice(vfsBlock $block)
     {
         return $this->visitFile($block);
     }
 }
 
-class_alias('bovigo\vfs\visitor\vfsStreamAbstractVisitor', 'org\bovigo\vfs\visitor\vfsStreamAbstractVisitor');
+class_alias('bovigo\vfs\visitor\BaseVisitor', 'org\bovigo\vfs\visitor\vfsStreamAbstractVisitor');

@@ -49,7 +49,7 @@ use function trigger_error;
 /**
  * Stream wrapper to mock file system requests.
  */
-class vfsStreamWrapper
+class StreamWrapper
 {
     /**
      * open file for reading
@@ -111,19 +111,19 @@ class vfsStreamWrapper
     /**
      * shortcut to file container
      *
-     * @type  vfsStreamFile
+     * @type  vfsFile
      */
     protected $content;
     /**
      * shortcut to directory container
      *
-     * @type  vfsStreamDirectory
+     * @type  vfsDirectory
      */
     protected $dir;
     /**
      * shortcut to directory container iterator
      *
-     * @type  vfsStreamDirectory
+     * @type  vfsDirectory
      */
     protected $dirIterator;
 
@@ -612,12 +612,12 @@ class vfsStreamWrapper
     /**
      * executes given permission change when necessary rights allow such a change
      *
-     * @param   string                    $path
-     * @param   vfsStreamAbstractContent  $content
-     * @param   \Closure                  $change
+     * @param   string     $path
+     * @param   BasicFile  $content
+     * @param   \Closure   $change
      * @return  bool
      */
-    private function doPermChange($path, vfsStreamAbstractContent $content, \Closure $change)
+    private function doPermChange($path, BasicFile $content, \Closure $change)
     {
         if (!$content->isOwnedByUser(vfsStream::getCurrentUser())) {
             return false;
@@ -1049,4 +1049,4 @@ class vfsStreamWrapper
     }
 }
 
-class_alias('bovigo\vfs\vfsStreamWrapper', 'org\bovigo\vfs\vfsStreamWrapper');
+class_alias('bovigo\vfs\StreamWrapper', 'org\bovigo\vfs\vfsStreamWrapper');

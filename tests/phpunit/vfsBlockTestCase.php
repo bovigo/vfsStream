@@ -11,7 +11,7 @@
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamBlock;
+use bovigo\vfs\vfsBlock;
 use bovigo\vfs\vfsStreamContent;
 use bovigo\vfs\vfsStreamException;
 use PHPUnit\Framework\TestCase;
@@ -23,20 +23,20 @@ use function bovigo\assert\predicate\equals;
 use function filetype;
 
 /**
- * Test for bovigo\vfs\vfsStreamBlock.
+ * Test for bovigo\vfs\vfsBlock.
  */
-class vfsStreamBlockTestCase extends \BC_PHPUnit_Framework_TestCase
+class vfsBlockTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * The block device being tested.
      *
-     * @var vfsStreamBlock $block
+     * @var vfsBlock $block
      */
     protected $block;
 
     public function setUp()
     {
-        $this->block = new vfsStreamBlock('foo');
+        $this->block = new vfsBlock('foo');
     }
 
     /**

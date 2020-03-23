@@ -11,20 +11,20 @@
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
-use bovigo\vfs\vfsStreamDirectory;
-use bovigo\vfs\vfsStreamFile;
-use bovigo\vfs\vfsStreamWrapper;
+use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\vfsFile;
+use bovigo\vfs\StreamWrapper;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test for bovigo\vfs\vfsStreamWrapper.
+ * Test for bovigo\vfs\StreamWrapper.
  */
 abstract class vfsStreamWrapperBaseTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * root directory
      *
-     * @var  vfsStreamDirectory
+     * @var  vfsDirectory
      */
     protected $foo;
     /**
@@ -36,7 +36,7 @@ abstract class vfsStreamWrapperBaseTestCase extends \BC_PHPUnit_Framework_TestCa
     /**
      * sub directory
      *
-     * @var  vfsStreamDirectory
+     * @var  vfsDirectory
      */
     protected $bar;
     /**
@@ -48,7 +48,7 @@ abstract class vfsStreamWrapperBaseTestCase extends \BC_PHPUnit_Framework_TestCa
     /**
      * a file
      *
-     * @var  vfsStreamFile
+     * @var  vfsFile
      */
     protected $baz1;
     /**
@@ -60,7 +60,7 @@ abstract class vfsStreamWrapperBaseTestCase extends \BC_PHPUnit_Framework_TestCa
     /**
      * another file
      *
-     * @var  vfsStreamFile
+     * @var  vfsFile
      */
     protected $baz2;
     /**
@@ -79,8 +79,8 @@ abstract class vfsStreamWrapperBaseTestCase extends \BC_PHPUnit_Framework_TestCa
         $this->barURL  = vfsStream::url('foo/bar');
         $this->baz1URL = vfsStream::url('foo/bar/baz1');
         $this->baz2URL = vfsStream::url('foo/baz2');
-        $this->foo     = new vfsStreamDirectory('foo');
-        $this->bar     = new vfsStreamDirectory('bar');
+        $this->foo     = new vfsDirectory('foo');
+        $this->bar     = new vfsDirectory('bar');
         $this->baz1    = vfsStream::newFile('baz1')
                                   ->lastModified(300)
                                   ->lastAccessed(300)
@@ -100,7 +100,7 @@ abstract class vfsStreamWrapperBaseTestCase extends \BC_PHPUnit_Framework_TestCa
         $this->bar->lastModified(200)
                   ->lastAccessed(100)
                   ->lastAttributeModified(100);
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot($this->foo);
+        StreamWrapper::register();
+        StreamWrapper::setRoot($this->foo);
     }
 }

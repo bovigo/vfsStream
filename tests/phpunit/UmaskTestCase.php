@@ -11,8 +11,8 @@
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamFile;
-use org\bovigo\vfs\vfsStreamDirectory;
+use bovigo\vfs\vfsFile;
+use bovigo\vfs\vfsDirectory;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
@@ -26,7 +26,7 @@ use function mkdir;
  * @group  umask
  * @since  0.8.0
  */
-class vfsStreamUmaskTestCase extends \BC_PHPUnit_Framework_TestCase
+class UmaskTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * set up test environment
@@ -75,7 +75,7 @@ class vfsStreamUmaskTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function createFileWithDefaultUmaskSetting()
     {
-        $file = new vfsStreamFile('foo');
+        $file = new vfsFile('foo');
         $this->assertEquals(0666, $file->getPermissions());
     }
 
@@ -85,7 +85,7 @@ class vfsStreamUmaskTestCase extends \BC_PHPUnit_Framework_TestCase
     public function createFileWithDifferentUmaskSetting()
     {
         vfsStream::umask(0022);
-        $file = new vfsStreamFile('foo');
+        $file = new vfsFile('foo');
         $this->assertEquals(0644, $file->getPermissions());
     }
 
@@ -94,7 +94,7 @@ class vfsStreamUmaskTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function createDirectoryWithDefaultUmaskSetting()
     {
-        $directory = new vfsStreamDirectory('foo');
+        $directory = new vfsDirectory('foo');
         $this->assertEquals(0777, $directory->getPermissions());
     }
 
@@ -104,7 +104,7 @@ class vfsStreamUmaskTestCase extends \BC_PHPUnit_Framework_TestCase
     public function createDirectoryWithDifferentUmaskSetting()
     {
         vfsStream::umask(0022);
-        $directory = new vfsStreamDirectory('foo');
+        $directory = new vfsDirectory('foo');
         $this->assertEquals(0755, $directory->getPermissions());
     }
 

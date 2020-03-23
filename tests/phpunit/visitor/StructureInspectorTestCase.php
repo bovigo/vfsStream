@@ -11,28 +11,28 @@
 namespace bovigo\vfs\tests\visitor;
 
 use bovigo\vfs\vfsStream;
-use org\bovigo\vfs\visitor\vfsStreamStructureVisitor;
+use bovigo\vfs\visitor\StructureInspector;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 
 /**
- * Test for bovigo\vfs\visitor\vfsStreamStructureVisitor.
+ * Test for bovigo\vfs\visitor\StructureInspector.
  *
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  * @group  issue_10
  */
-class vfsStreamStructureVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
+class StructureInspectorTestCase extends \BC_PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
     public function visitFileCreatesStructureForFile()
     {
-        $structureVisitor = new vfsStreamStructureVisitor();
+        $structureInspector = new StructureInspector();
         $this->assertEquals(array('foo.txt' => 'test'),
-                            $structureVisitor->visitFile(vfsStream::newFile('foo.txt')
+                            $structureInspector->visitFile(vfsStream::newFile('foo.txt')
                                                                   ->withContent('test')
                                                )
                                              ->getStructure()
@@ -44,12 +44,12 @@ class vfsStreamStructureVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function visitFileCreatesStructureForBlock()
     {
-        $structureVisitor = new vfsStreamStructureVisitor();
+        $structureInspector = new StructureInspector();
         $this->assertEquals(array('[foo]' => 'test'),
-                            $structureVisitor->visitBlockDevice(vfsStream::newBlock('foo')
+                            $structureInspector->visitBlockDevice(vfsStream::newBlock('foo')
                                                                   ->withContent('test')
-                                               )
-                                             ->getStructure()
+                                                 )
+                                               ->getStructure()
         );
     }
 
@@ -58,10 +58,10 @@ class vfsStreamStructureVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function visitDirectoryCreatesStructureForDirectory()
     {
-        $structureVisitor = new vfsStreamStructureVisitor();
+        $structureInspector = new StructureInspector();
         $this->assertEquals(array('baz' => array()),
-                            $structureVisitor->visitDirectory(vfsStream::newDirectory('baz'))
-                                             ->getStructure()
+                            $structureInspector->visitDirectory(vfsStream::newDirectory('baz'))
+                                               ->getStructure()
         );
     }
 
@@ -78,15 +78,15 @@ class vfsStreamStructureVisitorTestCase extends \BC_PHPUnit_Framework_TestCase
                                                'foo.txt' => ''
                                          )
                         );
-        $structureVisitor = new vfsStreamStructureVisitor();
+        $structureInspector = new StructureInspector();
         $this->assertEquals(array('root' => array('test' => array('foo'     => array('test.txt' => 'hello'),
                                                                   'baz.txt' => 'world'
                                                                                ),
                                                                   'foo.txt' => ''
                                             ),
                             ),
-                            $structureVisitor->visitDirectory($root)
-                                             ->getStructure()
+                            $structureInspector->visitDirectory($root)
+                                               ->getStructure()
         );
     }
 }

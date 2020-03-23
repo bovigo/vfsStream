@@ -10,9 +10,9 @@
 
 namespace bovigo\vfs\visitor;
 
-use bovigo\vfs\vfsStreamBlock;
-use bovigo\vfs\vfsStreamDirectory;
-use bovigo\vfs\vfsStreamFile;
+use bovigo\vfs\vfsBlock;
+use bovigo\vfs\vfsDirectory;
+use bovigo\vfs\vfsFile;
 use InvalidArgumentException;
 use const STDOUT;
 use function class_alias;
@@ -27,7 +27,7 @@ use function str_repeat;
  * @since  0.10.0
  * @see    https://github.com/mikey179/vfsStream/issues/10
  */
-class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
+class Printer extends BaseVisitor
 {
     /**
      * target to write output to
@@ -63,10 +63,10 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a file and process it
      *
-     * @param   vfsStreamFile  $file
-     * @return  vfsStreamPrintVisitor
+     * @param   vfsFile  $file
+     * @return  Printer
      */
-    public function visitFile(vfsStreamFile $file)
+    public function visitFile(vfsFile $file)
     {
         $this->printContent($file->getName());
         return $this;
@@ -75,10 +75,10 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a block device and process it
      *
-     * @param   vfsStreamBlock  $block
-     * @return  vfsStreamPrintVisitor
+     * @param   vfsBlock  $block
+     * @return  Printer
      */
-    public function visitBlockDevice(vfsStreamBlock $block)
+    public function visitBlockDevice(vfsBlock $block)
     {
         $name = '[' . $block->getName() . ']';
         $this->printContent($name);
@@ -88,10 +88,10 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     /**
      * visit a directory and process it
      *
-     * @param   vfsStreamDirectory  $dir
-     * @return  vfsStreamPrintVisitor
+     * @param   vfsDirectory  $dir
+     * @return  Printer
      */
-    public function visitDirectory(vfsStreamDirectory $dir)
+    public function visitDirectory(vfsDirectory $dir)
     {
         $this->printContent($dir->getName());
         $this->depth++;
@@ -114,4 +114,4 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
     }
 }
 
-class_alias('bovigo\vfs\visitor\vfsStreamPrintVisitor', 'org\bovigo\vfs\visitor\vfsStreamPrintVisitor');
+class_alias('bovigo\vfs\visitor\Printer', 'org\bovigo\vfs\visitor\vfsStreamPrintVisitor');

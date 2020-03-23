@@ -12,7 +12,7 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\content\LargeFileContent;
 use bovigo\vfs\vfsStream;
-use bovigo\vfs\vfsStreamFile;
+use bovigo\vfs\vfsFile;
 use PHPUnit\Framework\TestCase;
 use const PHP_INT_MAX;
 use const SEEK_SET;
@@ -39,7 +39,7 @@ class vfsStreamWrapperLargeFileTestCase extends \BC_PHPUnit_Framework_TestCase
     /**
      * large file to test
      *
-     * @var  vfsStreamFile
+     * @var  vfsFile
      */
     private $largeFile;
 
