@@ -54,16 +54,16 @@
         },
         {
             "name": "bovigo/callmap",
-            "version": "v5.0.1",
+            "version": "v5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/callmap.git",
-                "reference": "b97de0d67ad0e7cba74d1f7a7d6019d90aead877"
+                "reference": "0f7a11dfafc01fa7d2b2fbfb83f2c975aa1951a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/callmap/zipball/b97de0d67ad0e7cba74d1f7a7d6019d90aead877",
-                "reference": "b97de0d67ad0e7cba74d1f7a7d6019d90aead877",
+                "url": "https://api.github.com/repos/bovigo/callmap/zipball/0f7a11dfafc01fa7d2b2fbfb83f2c975aa1951a5",
+                "reference": "0f7a11dfafc01fa7d2b2fbfb83f2c975aa1951a5",
                 "shasum": ""
             },
             "require": {
@@ -82,7 +82,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0.x-dev"
+                    "dev-master": "5.1.x-dev"
                 }
             },
             "autoload": {
@@ -98,7 +98,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Allows to stub and mock method calls by applying a callmap.",
-            "time": "2019-07-25T08:00:41+00:00"
+            "time": "2019-11-19T15:38:28+00:00"
         },
         {
             "name": "composer/xdebug-handler",
@@ -2858,7 +2858,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -3030,5 +3030,6 @@
     "platform": {
         "php": "^7.2"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
