@@ -17,6 +17,7 @@ use bovigo\vfs\vfsStreamContent;
 use bovigo\vfs\vfsStreamDirectory;
 use bovigo\vfs\vfsStreamException;
 use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;

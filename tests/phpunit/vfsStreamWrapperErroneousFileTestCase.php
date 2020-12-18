@@ -12,10 +12,7 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
-use const E_USER_WARNING;
-use const E_WARNING;
-use const LOCK_SH;
-use const SEEK_SET;
+
 use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertThat;
@@ -38,6 +35,11 @@ use function fwrite;
 use function rand;
 use function time;
 use function uniqid;
+
+use const E_USER_WARNING;
+use const E_WARNING;
+use const LOCK_SH;
+use const SEEK_SET;
 
 /**
  * Test for bovigo\vfs\vfsStreamWrapper.

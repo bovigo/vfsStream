@@ -7,7 +7,10 @@
     <arg value="p"/>
     <rule ref="Doctrine">
         <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps" />
+        <exclude name="Squiz.NamingConventions.ValidVariableName.NotCamelCaps" />
         <exclude name="SlevomatCodingStandard.Commenting.ForbiddenAnnotations.AnnotationForbidden" />
+        <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion" />
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification" />
         <exclude name="Generic.Formatting.MultipleStatementAlignment" />
     </rule>
 

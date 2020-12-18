@@ -20,7 +20,7 @@ use bovigo\vfs\vfsStreamWrapper;
 use bovigo\vfs\visitor\vfsStreamVisitor;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use const DIRECTORY_SEPARATOR;
+
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
@@ -33,6 +33,8 @@ use function dirname;
 use function file_exists;
 use function fileperms;
 use function realpath;
+
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Test for bovigo\vfs\vfsStream.

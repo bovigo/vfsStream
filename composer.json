@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.5",
-        "doctrine/coding-standard": "^6.0",
+        "doctrine/coding-standard": "^8.2",
         "bovigo/callmap": "^6.2.1",
         "bovigo/assert": "^6.1",
         "phpunit/phpunit": "^9.5",

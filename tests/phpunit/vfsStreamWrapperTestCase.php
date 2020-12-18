@@ -13,10 +13,7 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamWrapper;
-use const E_USER_WARNING;
-use const E_WARNING;
-use const PHP_OS;
-use const PHP_VERSION_ID;
+
 use function basename;
 use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
@@ -61,6 +58,11 @@ use function time;
 use function touch;
 use function uniqid;
 use function unlink;
+
+use const E_USER_WARNING;
+use const E_WARNING;
+use const PHP_OS;
+use const PHP_VERSION_ID;
 
 /**
  * Test for bovigo\vfs\vfsStreamWrapper.

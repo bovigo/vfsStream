@@ -13,7 +13,7 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
-use const PATH_SEPARATOR;
+
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
@@ -22,6 +22,8 @@ use function get_include_path;
 use function mkdir;
 use function set_include_path;
 use function stream_resolve_include_path;
+
+use const PATH_SEPARATOR;
 
 /**
  * Test for bovigo\vfs\vfsStream.

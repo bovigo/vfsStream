@@ -15,8 +15,7 @@ use bovigo\vfs\content\LargeFileContent;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
-use const PHP_INT_MAX;
-use const SEEK_SET;
+
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 use function fclose;
@@ -26,6 +25,9 @@ use function fread;
 use function fseek;
 use function fwrite;
 use function str_repeat;
+
+use const PHP_INT_MAX;
+use const SEEK_SET;
 
 /**
  * Test for large file mocks.

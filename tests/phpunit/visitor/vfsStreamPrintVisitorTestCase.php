@@ -15,6 +15,7 @@ use bovigo\vfs\vfsStream;
 use bovigo\vfs\visitor\vfsStreamPrintVisitor;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;

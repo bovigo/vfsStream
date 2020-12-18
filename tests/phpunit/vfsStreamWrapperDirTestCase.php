@@ -13,7 +13,7 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamWrapper;
-use const E_USER_WARNING;
+
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNotNull;
 use function bovigo\assert\assertNull;
@@ -32,6 +32,8 @@ use function opendir;
 use function rmdir;
 use function stat;
 use function unlink;
+
+use const E_USER_WARNING;
 
 /**
  * Test for bovigo\vfs\vfsStreamWrapper around mkdir().

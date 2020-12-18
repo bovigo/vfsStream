@@ -14,6 +14,7 @@ namespace bovigo\vfs\tests;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamWrapper;
 use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assertFalse;
 use function dir;
 use function fopen;

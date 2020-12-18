@@ -100,7 +100,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
      */
     protected function doRead(int $offset, int $count): string
     {
-        if (($offset + $count) > $this->size) {
+        if ($offset + $count > $this->size) {
             $count = $this->size - $offset;
         }
 
@@ -123,7 +123,7 @@ class LargeFileContent extends SeekableFileContent implements FileContent
 
         if ($offset >= $this->size) {
             $this->size += $length;
-        } elseif (($offset + $length) > $this->size) {
+        } elseif ($offset + $length > $this->size) {
             $this->size = $offset + $length;
         }
     }
@@ -136,12 +136,14 @@ class LargeFileContent extends SeekableFileContent implements FileContent
     public function truncate(int $size): bool
     {
         $this->size = $size;
-        foreach (array_filter(
-            array_keys($this->content),
-            static function ($pos) use ($size) {
+        foreach (
+            array_filter(
+                array_keys($this->content),
+                static function ($pos) use ($size) {
                                     return $pos >= $size;
-            }
-        ) as $removePos) {
+                }
+            ) as $removePos
+        ) {
             unset($this->content[$removePos]);
         }
 

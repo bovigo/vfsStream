@@ -14,6 +14,7 @@ namespace bovigo\vfs\tests;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 use function fclose;
@@ -291,6 +292,7 @@ class vfsStreamWrapperFileTimesTestCase extends TestCase
         assertThat(fileatime($target), equals(300));
         assertThat(filectime($target), equals(300));
     }
+
     /**
      * @test
      * @group  issue_7

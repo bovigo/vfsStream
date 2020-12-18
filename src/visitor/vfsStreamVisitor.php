@@ -15,6 +15,7 @@ use bovigo\vfs\vfsStreamBlock;
 use bovigo\vfs\vfsStreamContent;
 use bovigo\vfs\vfsStreamDirectory;
 use bovigo\vfs\vfsStreamFile;
+
 use function class_alias;
 
 /**

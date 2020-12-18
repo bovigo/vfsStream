@@ -13,7 +13,7 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamErroneousFile;
-use const E_USER_WARNING;
+
 use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertThat;
@@ -22,6 +22,8 @@ use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function rand;
 use function uniqid;
+
+use const E_USER_WARNING;
 
 /**
  * Test for bovigo\vfs\vfsStreamErroneousFile.

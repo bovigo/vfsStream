@@ -14,6 +14,7 @@ namespace bovigo\vfs\tests\visitor;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\visitor\vfsStreamStructureVisitor;
 use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 

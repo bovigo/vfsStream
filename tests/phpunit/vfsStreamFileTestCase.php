@@ -20,9 +20,7 @@ use bovigo\vfs\vfsStreamException;
 use bovigo\vfs\vfsStreamFile;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use const SEEK_CUR;
-use const SEEK_END;
-use const SEEK_SET;
+
 use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertThat;
@@ -30,6 +28,10 @@ use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function uniqid;
+
+use const SEEK_CUR;
+use const SEEK_END;
+use const SEEK_SET;
 
 /**
  * Test for bovigo\vfs\vfsStreamFile.

@@ -14,6 +14,7 @@ namespace bovigo\vfs\tests;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\isInstanceOf;

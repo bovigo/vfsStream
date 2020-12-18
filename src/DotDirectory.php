@@ -13,6 +13,7 @@ namespace bovigo\vfs;
 
 use ArrayIterator;
 use Iterator;
+
 use function class_alias;
 
 /**
@@ -22,6 +23,8 @@ class DotDirectory extends vfsStreamDirectory
 {
     /**
      * returns iterator for the children
+     *
+     * @return Iterator<mixed[]>
      */
     public function getIterator(): Iterator
     {

@@ -14,11 +14,13 @@ namespace bovigo\vfs\tests;
 use bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use ZipArchive;
-use const DIRECTORY_SEPARATOR;
+
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
+
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Test for bovigo\vfs\vfsStreamWrapper in conjunction with ext/zip.

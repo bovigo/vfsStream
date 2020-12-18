@@ -11,8 +11,9 @@ declare(strict_types=1);
 
 namespace bovigo\vfs;
 
-use const E_USER_WARNING;
 use function trigger_error;
+
+use const E_USER_WARNING;
 
 /**
  * File to trigger errors on specific actions.
@@ -37,9 +38,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         $this->errorMessages = $errorMessages;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function open(): void
     {
         if (isset($this->errorMessages['open'])) {
@@ -51,9 +49,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         parent::open();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function openForAppend(): void
     {
         if (isset($this->errorMessages['open'])) {
@@ -65,9 +60,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         parent::openForAppend();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function openWithTruncate(): void
     {
         if (isset($this->errorMessages['open'])) {
@@ -79,9 +71,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         parent::openWithTruncate();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function read(int $count): string
     {
         if (isset($this->errorMessages['read'])) {
@@ -93,9 +82,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         return parent::read($count);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function readUntilEnd(): string
     {
         if (isset($this->errorMessages['read'])) {
@@ -107,9 +93,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         return parent::readUntilEnd();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function write(string $data): int
     {
         if (isset($this->errorMessages['write'])) {
@@ -121,9 +104,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         return parent::write($data);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function truncate(int $size): bool
     {
         if (isset($this->errorMessages['truncate'])) {
@@ -135,9 +115,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         return parent::truncate($size);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function eof(): bool
     {
         if (isset($this->errorMessages['eof'])) {
@@ -151,9 +128,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         return parent::eof();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getBytesRead(): int
     {
         if (isset($this->errorMessages['tell'])) {
@@ -165,9 +139,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         return parent::getBytesRead();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function seek(int $offset, int $whence): bool
     {
         if (isset($this->errorMessages['seek'])) {
@@ -179,9 +150,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         return parent::seek($offset, $whence);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function size(): int
     {
         if (isset($this->errorMessages['stat'])) {
@@ -207,9 +175,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         return parent::lock($resource, $operation);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function filemtime(): int
     {
         if (isset($this->errorMessages['stat'])) {
@@ -221,9 +186,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         return parent::filemtime();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function fileatime(): int
     {
         if (isset($this->errorMessages['stat'])) {
@@ -235,9 +197,6 @@ class vfsStreamErroneousFile extends vfsStreamFile
         return parent::fileatime();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function filectime(): int
     {
         if (isset($this->errorMessages['stat'])) {

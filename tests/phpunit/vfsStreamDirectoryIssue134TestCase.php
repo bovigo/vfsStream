@@ -13,6 +13,7 @@ namespace bovigo\vfs\tests;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assertNotNull;
 
 /**

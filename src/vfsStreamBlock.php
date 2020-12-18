@@ -30,6 +30,7 @@ class vfsStreamBlock extends vfsStreamFile
         if (empty($name)) {
             throw new vfsStreamException('Name of Block device was empty');
         }
+
         parent::__construct($name, $permissions);
 
         $this->type = vfsStreamContent::TYPE_BLOCK;
