@@ -75,7 +75,8 @@ class FilenameTestCase extends TestCase
         expect(function (): void {
             new RecursiveDirectoryIterator($this->rootDir . '/lost found/');
         })->throws(UnexpectedValueException::class)
-          ->message(contains('failed to open dir'));
+            //PHP8 error starts with capital F, so just check the last part.
+          ->message(contains('ailed to open dir'));
     }
 
     /**
