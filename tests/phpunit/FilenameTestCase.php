@@ -15,12 +15,14 @@ use bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use UnexpectedValueException;
-use const DIRECTORY_SEPARATOR;
+
 use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\contains;
 use function bovigo\assert\predicate\equals;
 use function mkdir;
+
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Test for directory iteration.
@@ -73,7 +75,8 @@ class FilenameTestCase extends TestCase
         expect(function (): void {
             new RecursiveDirectoryIterator($this->rootDir . '/lost found/');
         })->throws(UnexpectedValueException::class)
-          ->message(contains('failed to open dir'));
+            //PHP8 error starts with capital F, so just check the last part.
+          ->message(contains('ailed to open dir'));
     }
 
     /**

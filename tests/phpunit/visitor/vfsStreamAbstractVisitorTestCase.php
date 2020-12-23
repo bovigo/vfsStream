@@ -19,6 +19,7 @@ use bovigo\vfs\vfsStreamFile;
 use bovigo\vfs\visitor\vfsStreamAbstractVisitor;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\expect;
 use function bovigo\callmap\verify;
 

@@ -16,6 +16,7 @@ use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamException;
 use bovigo\vfs\vfsStreamWrapper;
 use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\expect;
 use function in_array;
 use function stream_get_wrappers;

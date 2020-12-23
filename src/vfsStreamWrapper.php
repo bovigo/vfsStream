@@ -11,20 +11,6 @@ declare(strict_types=1);
 
 namespace bovigo\vfs;
 
-use const E_USER_WARNING;
-use const LOCK_NB;
-use const LOCK_UN;
-use const STREAM_META_ACCESS;
-use const STREAM_META_GROUP;
-use const STREAM_META_GROUP_NAME;
-use const STREAM_META_OWNER;
-use const STREAM_META_OWNER_NAME;
-use const STREAM_META_TOUCH;
-use const STREAM_OPTION_BLOCKING;
-use const STREAM_OPTION_READ_TIMEOUT;
-use const STREAM_OPTION_WRITE_BUFFER;
-use const STREAM_REPORT_ERRORS;
-use const STREAM_URL_STAT_QUIET;
 use function array_merge;
 use function array_pop;
 use function array_values;
@@ -46,6 +32,21 @@ use function strstr;
 use function substr;
 use function time;
 use function trigger_error;
+
+use const E_USER_WARNING;
+use const LOCK_NB;
+use const LOCK_UN;
+use const STREAM_META_ACCESS;
+use const STREAM_META_GROUP;
+use const STREAM_META_GROUP_NAME;
+use const STREAM_META_OWNER;
+use const STREAM_META_OWNER_NAME;
+use const STREAM_META_TOUCH;
+use const STREAM_OPTION_BLOCKING;
+use const STREAM_OPTION_READ_TIMEOUT;
+use const STREAM_OPTION_WRITE_BUFFER;
+use const STREAM_REPORT_ERRORS;
+use const STREAM_URL_STAT_QUIET;
 
 /**
  * Stream wrapper to mock file system requests.
@@ -341,7 +342,8 @@ class vfsStreamWrapper
                 return false;
             }
 
-            if (($mode === self::TRUNCATE || $mode === self::APPEND) &&
+            if (
+                ($mode === self::TRUNCATE || $mode === self::APPEND) &&
                 $this->content->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false
             ) {
                 return false;
@@ -359,6 +361,7 @@ class vfsStreamWrapper
 
                     return false;
                 }
+
                 $this->content->open();
             }
 
@@ -577,8 +580,10 @@ class vfsStreamWrapper
                 $content->lastAccessed($var[1] ?? $currentTime);
 
                 return true;
+
             case STREAM_META_OWNER_NAME:
                 return false;
+
             case STREAM_META_OWNER:
                 if ($content === null) {
                     return false;
@@ -591,8 +596,10 @@ class vfsStreamWrapper
                         $content->chown($var);
                     }
                 );
+
             case STREAM_META_GROUP_NAME:
                 return false;
+
             case STREAM_META_GROUP:
                 if ($content === null) {
                     return false;
@@ -605,6 +612,7 @@ class vfsStreamWrapper
                         $content->chgrp($var);
                     }
                 );
+
             case STREAM_META_ACCESS:
                 if ($content === null) {
                     return false;
@@ -617,6 +625,7 @@ class vfsStreamWrapper
                         $content->chmod($var);
                     }
                 );
+
             default:
                 return false;
         }
@@ -749,7 +758,7 @@ class vfsStreamWrapper
      * @see     https://github.com/mikey179/vfsStream/issues/15
      * @see     http://www.php.net/manual/streamwrapper.stream-set-option.php
      */
-    //phpcs:ignore SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+    //phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint
     public function stream_set_option(int $option, $arg1, $arg2): bool
     {
         switch ($option) {
@@ -832,6 +841,7 @@ class vfsStreamWrapper
 
             return false;
         }
+
         $dstNames = $this->splitPath($dstRealPath);
 
         /** @var vfsStreamDirectory|null $dstParentContent */
@@ -841,11 +851,13 @@ class vfsStreamWrapper
 
             return false;
         }
+
         if (! $dstParentContent->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup())) {
             trigger_error('Permission denied', E_USER_WARNING);
 
             return false;
         }
+
         if ($dstParentContent->getType() !== vfsStreamContent::TYPE_DIR) {
             trigger_error('Target is not a directory', E_USER_WARNING);
 
@@ -907,9 +919,11 @@ class vfsStreamWrapper
             $i++;
         }
 
-        if ($dir === null
+        if (
+            $dir === null
             || $dir->getType() !== vfsStreamContent::TYPE_DIR
-            || $dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false) {
+            || $dir->isWritable(vfsStream::getCurrentUser(), vfsStream::getCurrentGroup()) === false
+        ) {
             return false;
         }
 

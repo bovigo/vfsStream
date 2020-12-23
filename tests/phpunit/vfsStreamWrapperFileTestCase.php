@@ -12,9 +12,7 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
-use const SEEK_CUR;
-use const SEEK_END;
-use const SEEK_SET;
+
 use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertThat;
@@ -32,6 +30,10 @@ use function fwrite;
 use function is_file;
 use function rename;
 use function unlink;
+
+use const SEEK_CUR;
+use const SEEK_END;
+use const SEEK_SET;
 
 /**
  * Test for bovigo\vfs\vfsStreamWrapper.
@@ -510,6 +512,7 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
         $this->subdir->chmod(0000);
         assertFalse(@rename($this->fileInRoot->url(), vfsStream::url('root/bar/baz3')));
     }
+
     /**
      * @test
      * @group permissions

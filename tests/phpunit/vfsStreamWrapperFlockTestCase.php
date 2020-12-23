@@ -14,16 +14,18 @@ namespace bovigo\vfs\tests;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamContainer;
 use PHPUnit\Framework\TestCase;
-use const LOCK_EX;
-use const LOCK_NB;
-use const LOCK_SH;
-use const LOCK_UN;
+
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 use function fclose;
 use function file_put_contents;
 use function flock;
 use function fopen;
+
+use const LOCK_EX;
+use const LOCK_NB;
+use const LOCK_SH;
+use const LOCK_UN;
 
 /**
  * Test for flock() implementation.

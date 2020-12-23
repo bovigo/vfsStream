@@ -14,7 +14,7 @@ namespace bovigo\vfs\tests;
 use bovigo\vfs\vfsStream;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use const DIRECTORY_SEPARATOR;
+
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
@@ -28,6 +28,8 @@ use function is_file;
 use function opendir;
 use function readdir;
 use function rewinddir;
+
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Test for directory iteration.

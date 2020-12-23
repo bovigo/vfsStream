@@ -19,7 +19,7 @@ jobs:
       with:
         php-version: '7.4'
         extensions: mbstring
-        tools: cs2pr, phpstan:0.11.19
+        tools: cs2pr 
 
     - name: Validate composer.json and composer.lock
       run: composer validate
@@ -39,4 +39,4 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: PHPStan
-      run: phpstan analyse --error-format=checkstyle | sed '/^$/d' | cs2pr
+      run: vendor/bin/phpstan analyse --error-format=checkstyle | sed '/^$/d' | cs2pr

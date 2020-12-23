@@ -15,12 +15,14 @@ use bovigo\vfs\vfsStreamBlock;
 use bovigo\vfs\vfsStreamDirectory;
 use bovigo\vfs\vfsStreamFile;
 use InvalidArgumentException;
-use const STDOUT;
+
 use function class_alias;
 use function fwrite;
 use function get_resource_type;
 use function is_resource;
 use function str_repeat;
+
+use const STDOUT;
 
 /**
  * Visitor which traverses a content structure recursively to print it to an output stream.

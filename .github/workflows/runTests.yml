@@ -10,10 +10,11 @@ jobs:
   tests:
     name: PHP ${{ matrix.php-versions }} on ${{ matrix.os }} w/ ${{ matrix.dependencies }}
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.php-versions == '8.0' }}
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.3', '7.4']
+        php-versions: ['7.3', '7.4', '8.0']
         os: [ubuntu-latest, windows-latest, macOS-latest]
         dependencies: ['install', 'update --prefer-lowest', 'update']
 
@@ -58,7 +59,7 @@ jobs:
     - name: Notify Coveralls
       if: matrix.php-versions == '7.3' && runner.os == 'Linux' && matrix.dependencies == 'install'
       env:
-        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         composer require php-coveralls/php-coveralls
         composer run-script php-coveralls -- --verbose

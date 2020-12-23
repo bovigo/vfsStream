@@ -13,10 +13,12 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
-use const GLOB_MARK;
+
 use function bovigo\assert\assertEmpty;
 use function glob;
 use function mkdir;
+
+use const GLOB_MARK;
 
 /**
  * Test for bovigo\vfs\vfsStream.
