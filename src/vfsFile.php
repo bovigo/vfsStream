@@ -60,7 +60,7 @@ class vfsFile extends BasicFile
      */
     public function __construct($name, $permissions = null)
     {
-        $this->content = new StringBasedFileContent(null);
+        $this->content = new StringBasedFileContent('');
         $this->type    = vfsStreamContent::TYPE_FILE;
         parent::__construct($name, $permissions);
     }
