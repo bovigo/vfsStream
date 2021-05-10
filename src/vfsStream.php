@@ -155,25 +155,28 @@ class vfsStream
      *
      * Assumed $structure contains an array like this:
      * <code>
-     * ['Core' = ['AbstractFactory' => ['test.php'    => 'some text content',
-     *                                  'other.php'   => 'Some more text content',
-     *                                  'Invalid.csv' => 'Something else',
-     *                                 ],
-     *            'AnEmptyFolder'   => [],
-     *            'badlocation.php' => 'some bad content',
-     *           ]
+     * [
+     *     'Core' => [
+     *         'AbstractFactory' => [
+     *             'test.php'    => 'some text content',
+     *             'other.php'   => 'Some more text content',
+     *             'Invalid.csv' => 'Something else',
+     *         ],
+     *         'AnEmptyFolder'   => [],
+     *         'badlocation.php' => 'some bad content',
+     *     ]
      * ]
      * </code>
      * the resulting directory tree will look like this:
      * <pre>
      * root
-     * \- Core
+     * `- Core
      *  |- badlocation.php
      *  |- AbstractFactory
      *  | |- test.php
      *  | |- other.php
-     *  | \- Invalid.csv
-     *  \- AnEmptyFolder
+     *  | `- Invalid.csv
+     *  `- AnEmptyFolder
      * </pre>
      * Arrays will become directories with their key as directory name, and
      * strings becomes files with their key as file name and their value as file
@@ -182,9 +185,9 @@ class vfsStream
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
      *
-     * @param string     $rootDirName name of root directory
-     * @param int|null   $permissions file permissions of root directory
-     * @param string[][] $structure   directory structure to add under root directory
+     * @param string                      $rootDirName name of root directory
+     * @param int|null                    $permissions file permissions of root directory
+     * @param array<string, string|array> $structure   directory structure to add under root directory
      *
      * @since   0.7.0
      */
@@ -203,25 +206,28 @@ class vfsStream
      *
      * Assumed $structure contains an array like this:
      * <code>
-     * array('Core' = array('AbstractFactory' => array('test.php'    => 'some text content',
-     *                                                 'other.php'   => 'Some more text content',
-     *                                                 'Invalid.csv' => 'Something else',
-     *                                           ),
-     *                      'AnEmptyFolder'   => array(),
-     *                      'badlocation.php' => 'some bad content',
-     *                )
-     * )
+     * [
+     *     'Core' => [
+     *         'AbstractFactory' => [
+     *             'test.php'    => 'some text content',
+     *             'other.php'   => 'Some more text content',
+     *             'Invalid.csv' => 'Something else',
+     *         ],
+     *         'AnEmptyFolder'   => [],
+     *         'badlocation.php' => 'some bad content',
+     *     ]
+     * ]
      * </code>
      * the resulting directory tree will look like this:
      * <pre>
      * baseDir
-     * \- Core
+     * `- Core
      *  |- badlocation.php
      *  |- AbstractFactory
      *  | |- test.php
      *  | |- other.php
-     *  | \- Invalid.csv
-     *  \- AnEmptyFolder
+     *  | `- Invalid.csv
+     *  `- AnEmptyFolder
      * </pre>
      * Arrays will become directories with their key as directory name, and
      * strings becomes files with their key as file name and their value as file
@@ -234,8 +240,8 @@ class vfsStream
      * @see     https://github.com/mikey179/vfsStream/issues/14
      * @see     https://github.com/mikey179/vfsStream/issues/20
      *
-     * @param string[][]              $structure directory structure to add under root directory
-     * @param vfsStreamDirectory|null $baseDir   base directory to add structure to
+     * @param array<string, string|array> $structure directory structure to add under root directory
+     * @param vfsStreamDirectory|null     $baseDir   base directory to add structure to
      *
      * @throws InvalidArgumentException
      *
