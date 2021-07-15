@@ -1,5 +1,6 @@
 /docs
 /vendor
+.phpunit.result.cache
 phpstan.neon
 phpunit.xml
 phpdoc.xml
