@@ -33,6 +33,9 @@
            "bovigo\\vfs\\tests\\": "tests/phpunit"
        }
     },
+    "scripts": {
+        "test": "phpunit"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.7.x-dev"
