@@ -1,3 +1,9 @@
+1.6.9 (2021-07-16)
+------------------
+
+   * Fix deprecation warning on `StringBasedFileContent` for PHP 8.1 (#252)
+   * Fix return type for `FileContent::write()` to fix static analysis tools
+
 1.6.8 (2019-10-30)
 ------------------
 
