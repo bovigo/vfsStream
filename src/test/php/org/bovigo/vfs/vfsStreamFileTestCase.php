@@ -49,7 +49,7 @@ class vfsStreamFileTestCase extends \BC_PHPUnit_Framework_TestCase
      */
     public function content()
     {
-        $this->assertNull($this->file->getContent());
+        $this->assertEquals('', $this->file->getContent());
         $this->assertSame($this->file, $this->file->setContent('bar'));
         $this->assertEquals('bar', $this->file->getContent());
         $this->assertSame($this->file, $this->file->withContent('baz'));

@@ -39,6 +39,6 @@
 
   <php>
     <ini name="memory_limit" value="-1"/>
-    <ini name="error_reporting" value="30719"/> <!-- E_ALL | E_STRICT -->
+    <ini name="error_reporting" value="30719"/> <!-- E_ALL | E_STRICT -->
   </php>
 </phpunit>

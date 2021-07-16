@@ -2,6 +2,38 @@
 
 require __DIR__ . "/../../vendor/autoload.php";
 
+if (!class_exists("PHPUnit_Framework_TestCase"))
+{
+    class_alias('\PHPUnit\Framework\TestCase', 'PHPUnit_Framework_TestCase');
+}
+
+if (!class_exists("PHPUnit_Framework_Error"))
+{
+    class_alias('PHPUnit\Framework\Error\Warning', 'PHPUnit_Framework_Error');
+}
+
+if (!class_exists("PHPUnit_Util_ErrorHandler"))
+{
+    class PHPUnit_Util_ErrorHandler {
+        public static function handleError($errno, $errstr, $errfile, $errline)
+        {
+            $errorHandler = new \PHPUnit\Util\ErrorHandler(
+                true,
+                true,
+                true,
+                true
+            );
+
+            return $errorHandler($errno, $errstr, $errfile, $errline);
+        }
+    }
+}
+
+if (!class_exists("PHPUnit_TextUI_ResultPrinter"))
+{
+    class PHPUnit_TextUI_ResultPrinter extends \PHPUnit\TextUI\ResultPrinter {}
+}
+
 /**
  * A modified version of PHPUnit's TestCase to rid ourselves of deprecation
  * warnings since we're using two different versions of PHPUnit in this branch

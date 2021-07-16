@@ -25,6 +25,9 @@
     "autoload": {
         "psr-0": { "org\\bovigo\\vfs\\": "src/main/php" }
     },
+    "scripts": {
+        "test": "phpunit"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.6.x-dev"
