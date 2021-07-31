@@ -255,6 +255,7 @@ class vfsDirectory extends BasicFile implements vfsStreamContainer
      *
      * @return  vfsDirectoryIterator
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new vfsDirectoryIterator($this->children);
