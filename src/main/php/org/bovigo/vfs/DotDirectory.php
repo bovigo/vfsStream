@@ -18,6 +18,7 @@ class DotDirectory extends vfsStreamDirectory
      *
      * @return  vfsStreamContainerIterator
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new \ArrayIterator(array());
