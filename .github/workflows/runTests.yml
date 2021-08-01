@@ -57,7 +57,6 @@ jobs:
       run: composer ${{ matrix.dependencies }} --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
 
     - name: Run test suite
-      continue-on-error: ${{ matrix.php-versions == '8.1' }}
       run: composer run-script test -- --coverage-text
 
     - name: Notify Coveralls
