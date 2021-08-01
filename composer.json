@@ -20,14 +20,15 @@
         "php": "^7.2|^8.0"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.5",
-        "doctrine/coding-standard": "^8.2",
+        "squizlabs/php_codesniffer": "^3.6.0",
+        "doctrine/coding-standard": "^8.2.1",
         "bovigo/callmap": "^6.2.1",
-        "bovigo/assert": "^6.1",
-        "phpunit/phpunit": "^9.5",
-        "phpstan/phpstan": "^0.12.63",
-        "phpstan/phpstan-phpunit": "^0.12.17",
-        "phpstan/phpstan-deprecation-rules": "^0.12.6"
+        "bovigo/assert": "^6.2",
+        "phpunit/phpunit": "^9.5.8",
+        "phpstan/phpstan": "^0.12.94",
+        "phpstan/phpstan-phpunit": "^0.12.21",
+        "phpstan/phpstan-deprecation-rules": "^0.12.6",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1"
     },
     "autoload": {
         "psr-4": {
