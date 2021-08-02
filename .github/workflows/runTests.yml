@@ -23,6 +23,7 @@ jobs:
           - '7.3'
           - '7.4'
           - '8.0'
+          - '8.1'
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
@@ -56,14 +57,14 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install dependencies
+      - name: Install dependencies for PHP < 8.0
+        if: matrix.php-versions != '8.0' && matrix.php-versions != '8.1'
         run: composer install --prefer-dist --no-progress
 
       - name: Install PHPUnit 8 for PHP 8
-        if: matrix.php-versions == '8.0'
+        if: matrix.php-versions == '8.0' || matrix.php-versions == '8.1'
         run: |
-          rm composer.lock
-          composer require --dev phpunit/phpunit:8.5.17
+          composer require --dev phpunit/phpunit:8.5.17 --ignore-platform-reqs
           git apply --reject --whitespace=fix src/test/patches/php8-return-types.diff
 
       - name: Run test suite
