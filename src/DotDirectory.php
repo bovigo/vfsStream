@@ -24,6 +24,7 @@ class DotDirectory extends vfsDirectory
      *
      * @return  vfsDirectoryIterator
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new \ArrayIterator(array());

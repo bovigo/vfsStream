@@ -58,6 +58,7 @@ class Printer extends BaseVisitor
         }
 
         $this->out = $out;
+        $this->depth = 0;
     }
 
     /**

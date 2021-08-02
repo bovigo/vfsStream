@@ -20,6 +20,16 @@
     - `org\bovigo\vfs\content\SeekableFileContent`
   * raised requirement for minimum PHP version to 5.6.0
 
+1.6.10 (20??-??-??)
+-------------------
+
+  * Fix more deprecation warnings for PHP 8.1 support affecting the following:
+    - `vfsStreamContainerIterator::current()`
+    - `vfsStreamContainerIterator::next()`
+    - `vfsStreamContainerIterator::key()`
+    - `vfsStreamContainerIterator::rewind()`
+    - `vfsStreamDirectory::getIterator()`
+    - `vfsStreamPrintVisitor::printContent()`
 
 1.6.9 (2021-07-16)
 ------------------
