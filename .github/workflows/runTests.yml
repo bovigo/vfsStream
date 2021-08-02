@@ -10,11 +10,14 @@ jobs:
   tests:
     name: PHP ${{ matrix.php-versions }} on ${{ matrix.os }} w/ ${{ matrix.dependencies }}
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.php-versions == '8.0' }}
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.3', '7.4', '8.0']
+        php-versions:
+          - '7.3'
+          - '7.4'
+          - '8.0'
+          - '8.1'
         os: [ubuntu-latest, windows-latest, macOS-latest]
         dependencies: ['install', 'update --prefer-lowest', 'update']
 
@@ -51,7 +54,7 @@ jobs:
         restore-keys: ${{ runner.os }}-composer-
 
     - name: Install dependencies
-      run: composer ${{ matrix.dependencies }} --prefer-dist --no-progress --no-suggest
+      run: composer ${{ matrix.dependencies }} --prefer-dist --no-progress --ignore-platform-reqs
 
     - name: Run test suite
       run: composer run-script test -- --coverage-text

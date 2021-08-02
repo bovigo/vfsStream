@@ -4,3 +4,4 @@
 phpstan.neon
 phpunit.xml
 phpdoc.xml
+.phpunit.result.cache
