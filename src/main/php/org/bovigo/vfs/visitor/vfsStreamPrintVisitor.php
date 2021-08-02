@@ -50,6 +50,7 @@ class vfsStreamPrintVisitor extends vfsStreamAbstractVisitor
         }
 
         $this->out = $out;
+        $this->depth = 0;
     }
 
     /**

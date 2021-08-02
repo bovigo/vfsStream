@@ -146,7 +146,7 @@ class vfsStreamUmaskTestCase extends \BC_PHPUnit_Framework_TestCase
     {
         $root = vfsStream::setup();
         vfsStream::umask(0022);
-        mkdir(vfsStream::url('root/newdir'), null);
+        mkdir(vfsStream::url('root/newdir'), 0000);
         $this->assertEquals(0000, $root->getChild('newdir')->getPermissions());
     }
 
