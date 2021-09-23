@@ -40,6 +40,15 @@ if (!class_exists("PHPUnit_TextUI_ResultPrinter"))
  * (PHPUnit 4 and 5).
  */
 class BC_PHPUnit_Framework_TestCase extends \PHPUnit_Framework_TestCase {
+    public function bc_expectException($exception)
+    {
+        if (method_exists($this, 'expectException')) {
+            $this->expectException($exception);
+        } elseif (method_exists($this, 'setExpectedException')) {
+            $this->setExpectedException($exception);
+        }
+    }
+
     // A BC hack to get handle the deprecation of this method in PHPUnit
     public function bc_getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
     {
