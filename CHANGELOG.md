@@ -8,7 +8,7 @@
     - `vfsStreamContainerIterator::rewind()`
     - `vfsStreamDirectory::getIterator()`
     - `vfsStreamPrintVisitor::printContent()`
-  * Fix support PHP 8.1 support in `vfsStreamPrintVisitor`
+  * Fix PHP 8.1 support in `vfsStreamPrintVisitor`
 
 1.6.9 (2021-07-16)
 ------------------
