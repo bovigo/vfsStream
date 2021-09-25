@@ -23,11 +23,11 @@ class vfsStreamWrapperSelectStreamTestCase extends \BC_PHPUnit_Framework_TestCas
     {
         if (PHP_VERSION_ID >= 80000)
         {
-            $this->expectException(\ValueError::class);
+            $this->bc_expectException('\ValueError');
         }
         else
         {
-            $this->expectException(\PHPUnit_Framework_Error::class);
+            $this->bc_expectException('\PHPUnit_Framework_Error');
         }
 
         $root = vfsStream::setup();
