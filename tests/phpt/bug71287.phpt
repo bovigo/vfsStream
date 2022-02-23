@@ -6,6 +6,12 @@ See https://github.com/mikey179/vfsStream/issues/120
 --FILE--
 <?php
 class Stream {
+    /**
+     * The current context or null if none passed.
+     *
+     * @var resource|null
+     */
+    public $context;
     public function stream_open($path, $mode, $options, $opened_path) {
 
         return true;
