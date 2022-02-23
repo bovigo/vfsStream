@@ -47,6 +47,12 @@ class vfsStreamWrapper
      */
     const ALL                    = 2;
     /**
+     * The current context or null if none passed.
+     *
+     * @var resource|null
+     */
+    public $context;
+    /**
      * switch whether class has already been registered as stream wrapper or not
      *
      * @type  bool
