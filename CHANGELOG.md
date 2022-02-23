@@ -11,6 +11,44 @@
   * all methods of `bovigo\vfs\visitor\vfsStreamVisitor` are now declared with `self` as return type
   * `vfsStreamWrapper::setRoot()` and `vsfStreamWrapper::getRoot()` method signatures now require and return `bovigo\vfs\vfsStreamDirectory` vice `bovigo\vfs\vfsStreamContainer`.
   * `vfsStream::newFile()`, `vfsStream::newBlock()`, `bovigo\vfs\vfsStreamFile`, and `bovigo\vfs\vfsStreamBlock` will throw an exception if the filename contains a forward slash (`/`).
+  
+1.7.0 (20??-??-??)
+------------------
+
+  * Namespace changed from `org\bovigo\vfs` to `bovigo\vfs`
+    - The old namespace still works, but has been deprecated. It will be removed in version 2.
+  * Renamed some classes in the new namespace. When moving your code to the new namespace please be aware of the following name changes:
+    - `org\bovigo\vfs\vfsStreamBlock` => `bovigo\vfs\vfsBlock`
+    - `org\bovigo\vfs\vfsStreamContainerIterator` => `bovigo\vfs\vfsDirectoryIterator`
+    - `org\bovigo\vfs\vfsStreamDirectory` => `bovigo\vfs\vfsDirectory`
+    - `org\bovigo\vfs\vfsStreamFile` => `bovigo\vfs\vfsFile`
+    - `org\bovigo\vfs\vfsStreamWrapper` => `bovigo\vfs\StreamWrapper`
+    - `org\bovigo\vfs\visitor\vfsStreamAbstractVisitor` => `bovigo\vfs\visitor\BaseVisitor`
+    - `org\bovigo\vfs\visitor\vfsStreamPrintVisitor` => `bovigo\vfs\visitor\Printer`
+    - `org\bovigo\vfs\visitor\vfsStreamStructureVisitor` => `bovigo\vfs\visitor\StructureInspector`
+    - `org\bovigo\vfs\vfsStreamAbstractContent` => `bovigo\vfs\BasicFile`
+  * Deprecated (internal) classes and interfaces, they will be removed in version 2.
+    - `org\bovigo\vfs\vfsStreamContent`
+    - `org\bovigo\vfs\vfsStreamContainer`
+    - `org\bovigo\vfs\content\SeekableFileContent`
+  * raised requirement for minimum PHP version to 5.6.0
+
+1.6.11 (2022-??-??)
+-------------------
+
+  * Add support for PHP 8.2's `$content` property in `vfsStreamWrapper`
+
+1.6.10 (2021-09-25)
+-------------------
+
+  * Fix more deprecation warnings for PHP 8.1 support affecting the following:
+    - `vfsStreamContainerIterator::current()`
+    - `vfsStreamContainerIterator::next()`
+    - `vfsStreamContainerIterator::key()`
+    - `vfsStreamContainerIterator::rewind()`
+    - `vfsStreamDirectory::getIterator()`
+    - `vfsStreamPrintVisitor::printContent()`
+  * Fix PHP 8.1 support in `vfsStreamPrintVisitor`
 
 1.6.9 (2021-07-16)
 ------------------
