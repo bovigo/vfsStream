@@ -62,11 +62,11 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies for PHP < 8.0
-        if: matrix.php-versions != '8.0' && matrix.php-versions != '8.1'
+        if: matrix.php-versions != '8.0' && matrix.php-versions != '8.1' && matrix.php-versions != '8.2'
         run: composer install --prefer-dist --no-progress
 
       - name: Install PHPUnit 8 for PHP 8
-        if: matrix.php-versions == '8.0' || matrix.php-versions == '8.1'
+        if: matrix.php-versions == '8.0' || matrix.php-versions == '8.1' || matrix.php-versions == '8.2'
         run: |
           composer require --dev phpunit/phpunit:8.5.17 --ignore-platform-reqs
           git apply --reject --whitespace=fix src/test/patches/php8-return-types.diff
