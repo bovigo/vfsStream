@@ -33,10 +33,10 @@
     - `org\bovigo\vfs\content\SeekableFileContent`
   * raised requirement for minimum PHP version to 5.6.0
 
-1.6.11 (2022-??-??)
+1.6.11 (2022-07-26)
 -------------------
 
-  * Add support for PHP 8.2's `$content` property in `vfsStreamWrapper`
+  * Add support for PHP 8.2's `$context` property in `vfsStreamWrapper`
 
 1.6.10 (2021-09-25)
 -------------------
