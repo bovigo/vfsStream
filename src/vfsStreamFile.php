@@ -260,7 +260,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
     /**
      * seeks to the given offset
      */
-    public function seek(int $offset, int $whence): bool
+    public function seek(int $offset, int $whence = SEEK_SET): bool
     {
         return $this->content->seek($offset, $whence);
     }
