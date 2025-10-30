@@ -62,7 +62,7 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return array<string, string[]>
      */
-    public function sampleModes(): array
+    public static function sampleModes(): array
     {
         return [
             'read' => ['r'],

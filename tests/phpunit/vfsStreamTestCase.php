@@ -52,7 +52,7 @@ class vfsStreamTestCase extends TestCase
     /**
      * @return string[][]
      */
-    public function pathes(): array
+    public static function pathes(): array
     {
         return [
             ['foo', 'vfs://foo'],
@@ -73,7 +73,7 @@ class vfsStreamTestCase extends TestCase
     /**
      * @return string[][]
      */
-    public function urls(): array
+    public static function urls(): array
     {
         return [
             ['vfs://foo', 'foo'],
@@ -99,7 +99,7 @@ class vfsStreamTestCase extends TestCase
     /**
      * @return mixed[][]
      */
-    public function createDirectories(): array
+    public static function createDirectories(): array
     {
         return [
             [vfsStream::newDirectory('foo/bar/baz'), 0777],

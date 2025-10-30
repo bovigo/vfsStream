@@ -50,7 +50,7 @@ class DirectoryIterationTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return string[][]
      */
-    public function provideSwitchWithExpectations(): array
+    public static function provideSwitchWithExpectations(): array
     {
         return [
             [[vfsStream::class, 'disableDotfiles'], ['subdir', 'file2']],

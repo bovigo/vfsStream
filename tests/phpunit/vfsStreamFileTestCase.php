@@ -254,7 +254,7 @@ class vfsStreamFileTestCase extends TestCase
     /**
      * @return mixed[][]
      */
-    public function seeks(): array
+    public static function seeks(): array
     {
         return [
             [0, SEEK_SET, 0, 'foobarbaz'],

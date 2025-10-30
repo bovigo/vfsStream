@@ -195,7 +195,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return string[][]
      */
-    public function basenames(): array
+    public static function basenames(): array
     {
         return [
             [vfsStream::url('root/subdir'), 'subdir'],
@@ -493,7 +493,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return string[][]
      */
-    public function targets(): array
+    public static function targets(): array
     {
         return [
             [vfsStream::url('root/subdir'), vfsStream::url('root/baz3')],
@@ -507,7 +507,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
      * @dataProvider targets
      * @group  issue_9
      */
-    public function renameDirectory(string $source, string $target): void
+    public static function renameDirectory(string $source, string $target): void
     {
         assertTrue(rename($source, $target));
         assertThat($target, isExistingDirectory());
@@ -813,7 +813,7 @@ class vfsStreamWrapperTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return mixed[][]
      */
-    public function elements(): array
+    public static function elements(): array
     {
         return [
             ['root', 40777],

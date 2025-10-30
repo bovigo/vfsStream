@@ -73,7 +73,7 @@ class vfsStreamContainerIteratorTestCase extends TestCase
     /**
      * @return string[][]
      */
-    public function provideSwitchWithExpectations(): array
+    public static function provideSwitchWithExpectations(): array
     {
         return [
             [[vfsStream::class, 'disableDotfiles'], []],

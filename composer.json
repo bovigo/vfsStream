@@ -20,15 +20,15 @@
         "php": "^7.2|^8.0"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.6.0",
-        "doctrine/coding-standard": "^8.2.1",
-        "bovigo/callmap": "^6.2.1",
-        "bovigo/assert": "^6.2",
-        "phpunit/phpunit": "^9.5.8",
-        "phpstan/phpstan": "^0.12.94",
-        "phpstan/phpstan-phpunit": "^0.12.21",
-        "phpstan/phpstan-deprecation-rules": "^0.12.6",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1"
+        "squizlabs/php_codesniffer": "^3.6.0 || ^4.0",
+        "doctrine/coding-standard": "^12.0.0 || ^13.0.1 || ^14.0.0",
+        "bovigo/callmap": "^6.2.1 || ^7.0 || ^8.1",
+        "bovigo/assert": "^6.2 || ^7.0 || ^8.1",
+        "phpunit/phpunit": "^9.6.29 || ^10.5.58 || ^11.5.42",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0.7",
+        "phpstan/phpstan-deprecation-rules": "^2.0.3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2 || ^1.1.2"
     },
     "autoload": {
         "psr-4": {
@@ -49,5 +49,10 @@
     "scripts": {
         "test": "phpunit",
         "php-coveralls": "php-coveralls"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }

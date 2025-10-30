@@ -43,7 +43,7 @@ class vfsStreamWrapperDirTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return string[][]
      */
-    public function newRoots(): array
+    public static function newRoots(): array
     {
         return [
             ['another'],
@@ -94,7 +94,7 @@ class vfsStreamWrapperDirTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return string[][]
      */
-    public function mkdirChildren(): array
+    public static function mkdirChildren(): array
     {
         return [['another'], ['another/more']];
     }
@@ -243,7 +243,7 @@ class vfsStreamWrapperDirTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return string[][]
      */
-    public function directories(): array
+    public static function directories(): array
     {
         return [
             [vfsStream::url('root')],
@@ -257,7 +257,7 @@ class vfsStreamWrapperDirTestCase extends vfsStreamWrapperBaseTestCase
      * @test
      * @dataProvider directories
      */
-    public function is_dirReturnsTrueForDirectories(string $directory): void
+    public static function is_dirReturnsTrueForDirectories(string $directory): void
     {
         assertTrue(is_dir($directory));
     }
@@ -265,7 +265,7 @@ class vfsStreamWrapperDirTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return string[][]
      */
-    public function nonDirectories(): array
+    public static function nonDirectories(): array
     {
         return [
             [vfsStream::url('root/subdir/file1.txt')],
