@@ -13,6 +13,8 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamContainer;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertFalse;
@@ -32,6 +34,7 @@ use function stream_set_write_buffer;
  * @since  0.10.0
  * @group  issue_15
  */
+#[Group('issue_15')]
 class vfsStreamWrapperSetOptionTestCase extends TestCase
 {
     /**
@@ -53,6 +56,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function setBlockingDoesNotWork(): void
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
@@ -63,6 +67,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function removeBlockingDoesNotWork(): void
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
@@ -73,6 +78,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function setTimeoutDoesNotWork(): void
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');
@@ -83,6 +89,7 @@ class vfsStreamWrapperSetOptionTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function setWriteBufferDoesNotWork(): void
     {
         $fp = fopen(vfsStream::url('root/foo.txt'), 'rb');

@@ -13,6 +13,8 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamContainer;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertFalse;
@@ -35,6 +37,7 @@ use const LOCK_UN;
  * @since       0.10.0
  * @group       issue_6
  */
+#[Group('issue_6')]
 class vfsStreamWrapperFlockTestCase extends TestCase
 {
     /**
@@ -55,6 +58,7 @@ class vfsStreamWrapperFlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function fileIsNotLockedByDefault(): void
     {
         assertFalse(vfsStream::newFile('foo.txt')->isLocked());
@@ -63,6 +67,7 @@ class vfsStreamWrapperFlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function streamIsNotLockedByDefault(): void
     {
         file_put_contents(vfsStream::url('root/foo.txt'), 'content');
@@ -72,6 +77,7 @@ class vfsStreamWrapperFlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function canAquireSharedLock(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -86,6 +92,7 @@ class vfsStreamWrapperFlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function canAquireSharedLockWithNonBlockingFlockCall(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -100,6 +107,7 @@ class vfsStreamWrapperFlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function canAquireEclusiveLock(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -114,6 +122,7 @@ class vfsStreamWrapperFlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function canAquireEclusiveLockWithNonBlockingFlockCall(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -128,6 +137,7 @@ class vfsStreamWrapperFlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function canRemoveLock(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -146,6 +156,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canRemoveLockWhenNotLocked(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -165,6 +177,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canRemoveSharedLockWithoutRemovingSharedLockOnOtherFileHandler(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -186,6 +200,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canNotRemoveSharedLockAcquiredOnOtherFileHandler(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -206,6 +222,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canNotRemoveExlusiveLockAcquiredOnOtherFileHandler(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -223,6 +241,7 @@ class vfsStreamWrapperFlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function canRemoveLockWithNonBlockingFlockCall(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -241,6 +260,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canNotAquireExclusiveLockIfAlreadyExclusivelyLockedOnOtherFileHandler(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -263,6 +284,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canAquireExclusiveLockIfAlreadySelfExclusivelyLocked(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -281,6 +304,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canNotAquireExclusiveLockIfAlreadySharedLockedOnOtherFileHandler(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -301,6 +326,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canAquireExclusiveLockIfAlreadySelfSharedLocked(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -319,6 +346,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canNotAquireSharedLockIfAlreadyExclusivelyLockedOnOtherFileHandler(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -339,6 +368,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canAquireSharedLockIfAlreadySelfExclusivelyLocked(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -357,6 +388,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canAquireSharedLockIfAlreadySelfSharedLocked(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -375,6 +408,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function canAquireSharedLockIfAlreadySharedLockedOnOtherFileHandler(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -399,6 +434,9 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @group  issue_31
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_31')]
+    #[Group('issue_40')]
     public function removesExclusiveLockOnStreamClose(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -418,6 +456,9 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @group  issue_31
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_31')]
+    #[Group('issue_40')]
     public function removesSharedLockOnStreamClose(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -435,6 +476,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function notRemovesExclusiveLockOnStreamCloseIfExclusiveLockAcquiredOnOtherFileHandler(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);
@@ -455,6 +498,8 @@ class vfsStreamWrapperFlockTestCase extends TestCase
      * @test
      * @group  issue_40
      */
+    #[Test]
+    #[Group('issue_40')]
     public function notRemovesSharedLockOnStreamCloseIfSharedLockAcquiredOnOtherFileHandler(): void
     {
         $file = vfsStream::newFile('foo.txt')->at($this->root);

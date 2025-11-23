@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertFalse;
@@ -31,12 +33,15 @@ use function unlink;
  *
  * @group  unlink
  */
+#[Group('unlink')]
 class UnlinkTestCase extends TestCase
 {
     /**
      * @test
      * @group  issue_51
      */
+    #[Test]
+    #[Group('isse_51')]
     public function canUnlinkNonWritableFileFromWritableDirectory(): void
     {
         $structure = ['test_directory' => ['test.file' => '']];
@@ -50,6 +55,8 @@ class UnlinkTestCase extends TestCase
      * @test
      * @group  issue_51
      */
+    #[Test]
+    #[Group('issue_51')]
     public function canNotUnlinkWritableFileFromNonWritableDirectory(): void
     {
         $structure = ['test_directory' => ['test.file' => '']];
@@ -64,6 +71,8 @@ class UnlinkTestCase extends TestCase
      * @since  1.4.0
      * @group  issue_68
      */
+    #[Test]
+    #[Grop('issue_68')]
     public function unlinkNonExistingFileTriggersError(): void
     {
         vfsStream::setup();
@@ -78,6 +87,8 @@ class UnlinkTestCase extends TestCase
      * @test
      * @group  issue_119
      */
+    #[Test]
+    #[Group('issue_119')]
     public function unlinkMaintainsInode(): void
     {
         $root = vfsStream::setup('root');

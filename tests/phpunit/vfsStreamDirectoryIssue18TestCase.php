@@ -13,6 +13,8 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamDirectory;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -25,6 +27,7 @@ use function bovigo\assert\predicate\isOfSize;
  *
  * @group  bug_18
  */
+#[Group('bug_18')]
 class vfsStreamDirectoryIssue18TestCase extends TestCase
 {
     /**
@@ -50,6 +53,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function shouldContainThreeSubdirectories(): void
     {
         assertThat(
@@ -61,6 +65,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function shouldContainSubdirectoryFoo(): void
     {
         assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('foo'));
@@ -73,6 +78,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function shouldContainSubdirectoryApp1(): void
     {
         assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app1'));
@@ -85,6 +91,7 @@ class vfsStreamDirectoryIssue18TestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function shouldContainSubdirectoryApp2(): void
     {
         assertTrue($this->rootDirectory->getChild('var/log/app')->hasChild('app2'));

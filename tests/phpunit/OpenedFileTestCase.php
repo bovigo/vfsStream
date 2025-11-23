@@ -16,6 +16,7 @@ use bovigo\vfs\content\StringBasedFileContent;
 use bovigo\vfs\OpenedFile;
 use bovigo\vfs\vfsStreamFile;
 use bovigo\vfs\vfsStreamWrapper;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -62,9 +63,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, isSameAs($this->base));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testOpenCallsBase(): void
     {
         $this->fixture->open();
@@ -73,9 +71,6 @@ class OpenedFileTestCase extends TestCase
         verify($this->base, 'open')->receivedNothing();
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testOpenForAppendCallsBase(): void
     {
         $this->fixture->openForAppend();
@@ -84,9 +79,6 @@ class OpenedFileTestCase extends TestCase
         verify($this->base, 'openForAppend')->receivedNothing();
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testOpenForAppendChecksPosition(): void
     {
         $this->fixture->openForAppend();
@@ -95,9 +87,6 @@ class OpenedFileTestCase extends TestCase
         verify($this->content, 'bytesRead')->receivedNothing();
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testOpenWithTruncateCallsBase(): void
     {
         $this->fixture->openWithTruncate();
@@ -106,9 +95,6 @@ class OpenedFileTestCase extends TestCase
         verify($this->base, 'openWithTruncate')->receivedNothing();
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testOpenWithTruncateChecksPosition(): void
     {
         $this->fixture->openWithTruncate();
@@ -137,9 +123,6 @@ class OpenedFileTestCase extends TestCase
         verify($this->content, 'seek')->receivedOn(2, 3, SEEK_SET);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testReadChecksPosition(): void
     {
         $this->fixture->read(rand(1, 10));
@@ -158,9 +141,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, equals($data));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testReadUntilEndCallsBase(): void
     {
         $this->fixture->readUntilEnd();
@@ -179,9 +159,6 @@ class OpenedFileTestCase extends TestCase
         verify($this->content, 'seek')->receivedOn(2, 3, SEEK_SET);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testReadUntilEndChecksPosition(): void
     {
         $this->fixture->readUntilEnd();
@@ -220,9 +197,6 @@ class OpenedFileTestCase extends TestCase
         verify($this->content, 'seek')->receivedOn(2, 6, SEEK_SET);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testWriteChecksPosition(): void
     {
         $this->fixture->write(uniqid());
@@ -261,9 +235,6 @@ class OpenedFileTestCase extends TestCase
         verify($this->content, 'seek')->receivedOn(2, 3, SEEK_SET);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testTruncateDoesNotCheckPosition(): void
     {
         $this->fixture->truncate(rand(1, 10));
@@ -282,9 +253,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, equals($response));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testEofCallsBase(): void
     {
         $this->fixture->eof();
@@ -303,9 +271,6 @@ class OpenedFileTestCase extends TestCase
         verify($this->content, 'seek')->receivedOn(2, 3, SEEK_SET);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testEofDoesNotCheckPosition(): void
     {
         $this->fixture->eof();
@@ -324,9 +289,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, equals($response));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testGetBytesReadCallsBase(): void
     {
         $this->fixture->getBytesRead();
@@ -384,7 +346,7 @@ class OpenedFileTestCase extends TestCase
     /**
      * @return mixed[]
      */
-    public function sampleSeeks(): array
+    public static function sampleSeeks(): array
     {
         $offset = rand();
 
@@ -402,9 +364,6 @@ class OpenedFileTestCase extends TestCase
         ];
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testSeekDoesNotCallContentSeek(): void
     {
         $this->base->returns(['seek' => (bool) rand(0, 1)]);
@@ -414,9 +373,6 @@ class OpenedFileTestCase extends TestCase
         verify($this->content, 'seek')->wasNeverCalled();
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testSeekChecksPosition(): void
     {
         $this->fixture->seek(rand(1, 10), SEEK_SET);
@@ -435,9 +391,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, equals($response));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testSizeCallsBase(): void
     {
         $this->fixture->size();
@@ -478,9 +431,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, equals($response));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testGetTypeCallsBase(): void
     {
         $this->fixture->getType();
@@ -499,9 +449,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, equals($type));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testFilemtimeCallsBase(): void
     {
         $this->fixture->filemtime();
@@ -520,9 +467,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, equals($time));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testFileatimeCallsBase(): void
     {
         $this->fixture->fileatime();
@@ -541,9 +485,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, equals($time));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testFilectimeCallsBase(): void
     {
         $this->fixture->filectime();
@@ -562,9 +503,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, equals($time));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testGetPermissionsCallsBase(): void
     {
         $this->fixture->getPermissions();
@@ -583,9 +521,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, equals($response));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testGetUserCallsBase(): void
     {
         $this->fixture->getUser();
@@ -604,9 +539,6 @@ class OpenedFileTestCase extends TestCase
         assertThat($actual, equals($response));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testGetGroupCallsBase(): void
     {
         $this->fixture->getGroup();

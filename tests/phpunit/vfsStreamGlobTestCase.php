@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertEmpty;
@@ -26,6 +28,7 @@ use const GLOB_MARK;
  * @since       0.9.0
  * @group       issue_2
  */
+#[Group('issue_2')]
 class vfsStreamGlobTestCase extends TestCase
 {
     /**

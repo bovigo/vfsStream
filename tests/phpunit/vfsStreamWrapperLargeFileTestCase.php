@@ -14,6 +14,8 @@ namespace bovigo\vfs\tests;
 use bovigo\vfs\content\LargeFileContent;
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamFile;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -35,6 +37,7 @@ use const SEEK_SET;
  * @since       1.3.0
  * @group       issue_79
  */
+#[Group('issue_79')]
 class vfsStreamWrapperLargeFileTestCase extends TestCase
 {
     /**
@@ -58,6 +61,7 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function hasLargeFileSize(): void
     {
         if (PHP_INT_MAX === 2147483647) {
@@ -70,6 +74,7 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function canReadFromLargeFile(): void
     {
         $fp = fopen($this->largeFile->url(), 'rb');
@@ -81,6 +86,7 @@ class vfsStreamWrapperLargeFileTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function canWriteIntoLargeFile(): void
     {
         $fp = fopen($this->largeFile->url(), 'rb+');

@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ZipArchive;
 
@@ -27,6 +29,7 @@ use const DIRECTORY_SEPARATOR;
  *
  * @group  zip
  */
+#[Group('zip')]
 class vfsStreamZipTestCase extends TestCase
 {
     /**

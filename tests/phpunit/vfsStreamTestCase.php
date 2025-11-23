@@ -19,6 +19,9 @@ use bovigo\vfs\vfsStreamDirectory;
 use bovigo\vfs\vfsStreamWrapper;
 use bovigo\vfs\visitor\vfsStreamVisitor;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertFalse;
@@ -52,7 +55,7 @@ class vfsStreamTestCase extends TestCase
     /**
      * @return string[][]
      */
-    public function pathes(): array
+    public static function pathes(): array
     {
         return [
             ['foo', 'vfs://foo'],
@@ -65,6 +68,8 @@ class vfsStreamTestCase extends TestCase
      * @test
      * @dataProvider pathes
      */
+    #[Test]
+    #[DataProvider('pathes')]
     public function pathToUrlConversion(string $path, string $url): void
     {
         assertThat(vfsStream::url($path), equals($url));
@@ -73,7 +78,7 @@ class vfsStreamTestCase extends TestCase
     /**
      * @return string[][]
      */
-    public function urls(): array
+    public static function urls(): array
     {
         return [
             ['vfs://foo', 'foo'],
@@ -91,6 +96,8 @@ class vfsStreamTestCase extends TestCase
      * @test
      * @dataProvider urls
      */
+    #[Test]
+    #[DataProvider('urls')]
     public function urlToPathConversion(string $url, string $path): void
     {
         assertThat(vfsStream::path($url), equals($path));
@@ -99,7 +106,7 @@ class vfsStreamTestCase extends TestCase
     /**
      * @return mixed[][]
      */
-    public function createDirectories(): array
+    public static function createDirectories(): array
     {
         return [
             [vfsStream::newDirectory('foo/bar/baz'), 0777],
@@ -111,6 +118,8 @@ class vfsStreamTestCase extends TestCase
      * @test
      * @dataProvider createDirectories
      */
+    #[Test]
+    #[DataProvider('createDirectories')]
     public function newDirectoryCreatesStructureWhenNameContainsSlashes(
         vfsStreamDirectory $root,
         int $permissions
@@ -136,6 +145,8 @@ class vfsStreamTestCase extends TestCase
      * @group  setup
      * @since  0.7.0
      */
+    #[Test]
+    #[Group('setup')]
     public function setupRegistersStreamWrapper(): void
     {
         $root = vfsStream::setup();
@@ -147,6 +158,8 @@ class vfsStreamTestCase extends TestCase
      * @group  setup
      * @since  0.7.0
      */
+    #[Test]
+    #[Group('setup')]
     public function setupCreatesRootDirectoryWithDefaultName(): void
     {
         $root = vfsStream::setup();
@@ -158,6 +171,8 @@ class vfsStreamTestCase extends TestCase
      * @group  setup
      * @since  0.7.0
      */
+    #[Test]
+    #[Group('setup')]
     public function setupCreatesRootDirectoryWithDefaultPermissions(): void
     {
         $root = vfsStream::setup();
@@ -169,6 +184,8 @@ class vfsStreamTestCase extends TestCase
      * @group  setup
      * @since  0.7.0
      */
+    #[Test]
+    #[Group('setup')]
     public function setupCreatesRootDirectoryWithGivenNameAn(): void
     {
         $root = vfsStream::setup('foo');
@@ -180,6 +197,8 @@ class vfsStreamTestCase extends TestCase
      * @group  setup
      * @since  0.7.0
      */
+    #[Test]
+    #[Group('setup')]
     public function setupCreatesRootDirectoryWithPermissions(): void
     {
         $root = vfsStream::setup('foo', 0444);

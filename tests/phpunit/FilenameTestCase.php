@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use UnexpectedValueException;
@@ -31,6 +33,8 @@ use const DIRECTORY_SEPARATOR;
  * @group  issue_128
  * @since  1.6.2
  */
+#[Group('issue_104')]
+#[Group('issue_128')]
 class FilenameTestCase extends TestCase
 {
     /** @var string */
@@ -53,6 +57,7 @@ class FilenameTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function worksWithCorrectName(): void
     {
         $results = [];
@@ -70,6 +75,7 @@ class FilenameTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function doesNotWorkWithInvalidName(): void
     {
         expect(function (): void {
@@ -82,6 +88,7 @@ class FilenameTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function returnsCorrectNames(): void
     {
         $results = [];

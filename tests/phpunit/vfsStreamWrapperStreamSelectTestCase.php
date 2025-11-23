@@ -12,6 +12,9 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
@@ -26,12 +29,15 @@ use const E_WARNING;
  * @since  0.9.0
  * @group  issue_3
  */
+#[Group('issue_3')]
 class vfsStreamWrapperStreamSelectTestCase extends TestCase
 {
     /**
      * @test
      * @requires PHP < 8
      */
+    #[Test]
+    #[RequiresPhp('< 8')]
     public function selectStreamDoesNotWorkPHP7(): void
     {
         $root = vfsStream::setup();
@@ -49,6 +55,8 @@ class vfsStreamWrapperStreamSelectTestCase extends TestCase
      * @test
      * @requires PHP >= 8
      */
+    #[Test]
+    #[RequiresPhp('>= 8')]
     public function selectStreamDoesNotWork(): void
     {
         $root = vfsStream::setup();

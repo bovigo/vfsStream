@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -32,6 +34,7 @@ use const LOCK_UN;
  *
  * @group   lock_fpc
  */
+#[Group('lock_fpc')]
 class vfsStreamExLockTestCase extends TestCase
 {
     /**
@@ -50,6 +53,7 @@ class vfsStreamExLockTestCase extends TestCase
      *
      * @test
      */
+    #[Test]
     public function filePutContentsWithLockShouldReportError(): void
     {
         expect(static function (): void {
@@ -61,6 +65,7 @@ class vfsStreamExLockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function flockShouldPass(): void
     {
         $fp = fopen(vfsStream::url('root/testfile'), 'w');

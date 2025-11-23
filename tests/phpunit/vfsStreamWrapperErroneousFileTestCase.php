@@ -13,6 +13,8 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertThat;
@@ -49,6 +51,7 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @dataProvider sampleModes
      */
+    #[DataProvider('sampleModes')]
     public function testOpenWithErrorMessageTriggersError(string $mode): void
     {
         $message = uniqid();
@@ -62,7 +65,7 @@ class vfsStreamWrapperErroneousFileTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return array<string, string[]>
      */
-    public function sampleModes(): array
+    public static function sampleModes(): array
     {
         return [
             'read' => ['r'],

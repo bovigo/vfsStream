@@ -146,7 +146,7 @@ class vfsStreamWrapperFileTestCase extends vfsStreamWrapperBaseTestCase
     /**
      * @return int[][]
      */
-    public function seekArgs(): array
+    public static function seekArgs(): array
     {
         return [
             [2, SEEK_SET, 2],

@@ -15,6 +15,7 @@ use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamBlock;
 use bovigo\vfs\vfsStreamContent;
 use bovigo\vfs\vfsStreamException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertFalse;
@@ -32,6 +33,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function isOfTypeBlock(): void
     {
         assertThat((new vfsStreamBlock('foo'))->getType(), equals(vfsStreamContent::TYPE_BLOCK));
@@ -40,6 +42,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function appliesForSelf(): void
     {
         assertTrue((new vfsStreamBlock('foo'))->appliesTo('foo'));
@@ -48,6 +51,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function doesNotApplyForSubDirectories(): void
     {
         assertFalse((new vfsStreamBlock('foo'))->appliesTo('foo/bar'));
@@ -56,6 +60,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function doesNotApplyForOtherNames(): void
     {
         assertFalse((new vfsStreamBlock('foo'))->appliesTo('bar'));
@@ -64,6 +69,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function hasGivenName(): void
     {
         assertThat((new vfsStreamBlock('foo'))->getName(), equals('foo'));
@@ -74,6 +80,7 @@ class vfsStreamBlockTestCase extends TestCase
      *
      * @test
      */
+    #[Test]
     public function external(): void
     {
         $root = vfsStream::setup('root');
@@ -86,6 +93,7 @@ class vfsStreamBlockTestCase extends TestCase
      *
      * @test
      */
+    #[Test]
     public function addStructure(): void
     {
         vfsStream::create([
@@ -103,6 +111,7 @@ class vfsStreamBlockTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function createWithEmptyNameThrowsException(): void
     {
         expect(static function (): void {

@@ -12,6 +12,9 @@ namespace bovigo\vfs\tests;
 
 use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamDirectory;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertNotNull;
@@ -21,6 +24,8 @@ use function bovigo\assert\assertNotNull;
  *
  * @group  issue_134
  */
+#[Group('issue_134')]
+#[Small]
 class vfsStreamDirectoryIssue134TestCase extends TestCase
 {
     /**
@@ -43,6 +48,7 @@ class vfsStreamDirectoryIssue134TestCase extends TestCase
      * @test
      * @small
      */
+    #[Test]
     public function shouldSaveDirectoryNameAsStringInternal(): void
     {
         $dir = $this->rootDirectory->getChild('var/log/app');
@@ -54,6 +60,7 @@ class vfsStreamDirectoryIssue134TestCase extends TestCase
      * @test
      * @small
      */
+    #[Test]
     public function shouldRenameDirectoryNameAsStringInternal(): void
     {
         $dir = $this->rootDirectory->getChild('var/log/app');

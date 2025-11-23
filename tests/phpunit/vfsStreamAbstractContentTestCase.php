@@ -16,6 +16,8 @@ use bovigo\vfs\vfsStream;
 use bovigo\vfs\vfsStreamAbstractContent;
 use bovigo\vfs\vfsStreamContent;
 use bovigo\vfs\vfsStreamException;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertFalse;
@@ -43,6 +45,7 @@ class vfsStreamAbstractContentTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
     public function invalidCharacterInNameThrowsException(): void
     {
         expect(static function (): void {
@@ -55,6 +58,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function noPermissionsForEveryone(): void
     {
         $content = $this->createContent(0000);
@@ -85,6 +91,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function executePermissionsForUser(): void
     {
         $content = $this->createContent(0100);
@@ -115,6 +124,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function executePermissionsForGroup(): void
     {
         $content = $this->createContent(0010);
@@ -145,6 +157,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function executePermissionsForOther(): void
     {
         $content = $this->createContent(0001);
@@ -175,6 +190,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function writePermissionsForUser(): void
     {
         $content = $this->createContent(0200);
@@ -205,6 +223,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function writePermissionsForGroup(): void
     {
         $content = $this->createContent(0020);
@@ -235,6 +256,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function writePermissionsForOther(): void
     {
         $content = $this->createContent(0002);
@@ -265,6 +289,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function executeAndWritePermissionsForUser(): void
     {
         $content = $this->createContent(0300);
@@ -295,6 +322,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function executeAndWritePermissionsForGroup(): void
     {
         $content = $this->createContent(0030);
@@ -325,6 +355,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function executeAndWritePermissionsForOther(): void
     {
         $content = $this->createContent(0003);
@@ -355,6 +388,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function readPermissionsForUser(): void
     {
         $content = $this->createContent(0400);
@@ -385,6 +421,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function readPermissionsForGroup(): void
     {
         $content = $this->createContent(0040);
@@ -415,6 +454,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function readPermissionsForOther(): void
     {
         $content = $this->createContent(0004);
@@ -445,6 +487,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function readAndExecutePermissionsForUser(): void
     {
         $content = $this->createContent(0500);
@@ -475,6 +520,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function readAndExecutePermissionsForGroup(): void
     {
         $content = $this->createContent(0050);
@@ -505,6 +553,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function readAndExecutePermissionsForOther(): void
     {
         $content = $this->createContent(0005);
@@ -535,6 +586,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function readAndWritePermissionsForUser(): void
     {
         $content = $this->createContent(0600);
@@ -565,6 +619,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function readAndWritePermissionsForGroup(): void
     {
         $content = $this->createContent(0060);
@@ -595,6 +652,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function readAndWritePermissionsForOther(): void
     {
         $content = $this->createContent(0006);
@@ -625,6 +685,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function allPermissionsForUser(): void
     {
         $content = $this->createContent(0700);
@@ -655,6 +718,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function allPermissionsForGroup(): void
     {
         $content = $this->createContent(0070);
@@ -685,6 +751,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
      * @group  permissions
      * @group  bug_15
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function allPermissionsForOther(): void
     {
         $content = $this->createContent(0007);
@@ -713,6 +782,9 @@ class vfsStreamAbstractContentTestCase extends TestCase
     /**
      * @test
      */
+    #[Test]
+    #[Group('permissions')]
+    #[Group('bug_15')]
     public function canBeRenamed(): void
     {
         $content = $this->createContent(0600);
