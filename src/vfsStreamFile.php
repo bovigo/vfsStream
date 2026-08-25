@@ -20,7 +20,7 @@ use InvalidArgumentException;
 use function class_alias;
 use function is_resource;
 use function is_string;
-use function spl_object_hash;
+use function spl_object_id;
 use function sprintf;
 use function stream_get_meta_data;
 use function time;
@@ -401,7 +401,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
             $resource = $data['wrapper_data'];
         }
 
-        return spl_object_hash($resource);
+        return (string) spl_object_id($resource);
     }
 
     /**
