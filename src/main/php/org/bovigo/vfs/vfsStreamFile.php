@@ -371,7 +371,7 @@ class vfsStreamFile extends vfsStreamAbstractContent
             $resource = $data['wrapper_data'];
         }
 
-        return spl_object_hash($resource);
+        return function_exists('spl_object_id') ? (string) spl_object_id($resource) : spl_object_hash($resource);
     }
 
     /**
